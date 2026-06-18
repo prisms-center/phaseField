@@ -148,9 +148,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7b1568d7be5ce26453a262bd81e19064" id="r_a7b1568d7be5ce26453a262bd81e19064"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b1568d7be5ce26453a262bd81e19064">ExplicitSolver</a> (<a class="el" href="classSolveBlock.html">SolveBlock</a> _solve_block, const <a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt; &amp;_solve_context)</td></tr>
 <tr class="memdesc:a7b1568d7be5ce26453a262bd81e19064"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a7b1568d7be5ce26453a262bd81e19064"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf8f4fa50aae2afa1965bd3e6c9bc278" id="r_aaf8f4fa50aae2afa1965bd3e6c9bc278"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaf8f4fa50aae2afa1965bd3e6c9bc278">init</a> (const std::list&lt; <a class="el" href="dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d">DependencyMap</a> &gt; &amp;all_dependeny_sets) override</td></tr>
-<tr class="memdesc:aaf8f4fa50aae2afa1965bd3e6c9bc278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the solver.  <br /></td></tr>
-<tr class="separator:aaf8f4fa50aae2afa1965bd3e6c9bc278"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afff52eb536882c34af0b8485da6c8a9f" id="r_afff52eb536882c34af0b8485da6c8a9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afff52eb536882c34af0b8485da6c8a9f">init</a> (const std::list&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;all_solve_blocks) override</td></tr>
+<tr class="memdesc:afff52eb536882c34af0b8485da6c8a9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the solver.  <br /></td></tr>
+<tr class="separator:afff52eb536882c34af0b8485da6c8a9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8a44e969ae8a6841f4c65baf6b932d8" id="r_ab8a44e969ae8a6841f4c65baf6b932d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab8a44e969ae8a6841f4c65baf6b932d8">solve_impl</a> () override</td></tr>
 <tr class="memdesc:ab8a44e969ae8a6841f4c65baf6b932d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve for a single update step.  <br /></td></tr>
 <tr class="separator:ab8a44e969ae8a6841f4c65baf6b932d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -267,8 +267,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aaf8f4fa50aae2afa1965bd3e6c9bc278" name="aaf8f4fa50aae2afa1965bd3e6c9bc278"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf8f4fa50aae2afa1965bd3e6c9bc278">&#9670;&#160;</a></span>init()</h2>
+<a id="afff52eb536882c34af0b8485da6c8a9f" name="afff52eb536882c34af0b8485da6c8a9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afff52eb536882c34af0b8485da6c8a9f">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -281,7 +281,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classExplicitSolver.html">ExplicitSolver</a>&lt; dim, degree, number &gt;::init </td>
           <td>(</td>
-          <td class="paramtype">const std::list&lt; <a class="el" href="dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d">DependencyMap</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>all_dependeny_sets</em></span></td><td>)</td>
+          <td class="paramtype">const std::list&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>all_solve_blocks</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -294,7 +294,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 <p>Initialize the solver. </p>
 
-<p>Reimplemented from <a class="el" href="classSolverBase.html#a9096e85006aaa8a2faf963eb5b6ec405">SolverBase&lt; dim, degree, number &gt;</a>.</p>
+<p>Reimplemented from <a class="el" href="classSolverBase.html#a241912622484936ad4601a3bd14ff869">SolverBase&lt; dim, degree, number &gt;</a>.</p>
 
 </div>
 </div>

@@ -125,6 +125,7 @@ $(function(){initNavTree('classLinearSolver.html',''); initResizable(true); });
 <a href="#pro-types">Protected Types</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-types">Private Types</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classLinearSolver-members.html">List of all members</a>  </div>
@@ -139,7 +140,7 @@ $(function(){initNavTree('classLinearSolver.html',''); initResizable(true); });
 <div class="dynheader">
 Inheritance diagram for LinearSolver&lt; dim, degree, number &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classLinearSolver__inherit__graph.svg" width="374" height="242"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classLinearSolver__inherit__graph.svg" width="203" height="242"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for LinearSolver&lt; dim, degree, number &gt;:</div>
@@ -152,16 +153,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae3b77af5f056e684117a2d707189f971" id="r_ae3b77af5f056e684117a2d707189f971"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3b77af5f056e684117a2d707189f971">LinearSolver</a> (<a class="el" href="classSolveBlock.html">SolveBlock</a> _solve_block, const <a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt; &amp;_solve_context)</td></tr>
 <tr class="memdesc:ae3b77af5f056e684117a2d707189f971"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:ae3b77af5f056e684117a2d707189f971"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c0484fc8d1c9b8baa1dd8200ae6e913" id="r_a6c0484fc8d1c9b8baa1dd8200ae6e913"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c0484fc8d1c9b8baa1dd8200ae6e913">init</a> (const std::list&lt; <a class="el" href="dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d">DependencyMap</a> &gt; &amp;all_dependeny_sets) override</td></tr>
-<tr class="memdesc:a6c0484fc8d1c9b8baa1dd8200ae6e913"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the solver.  <br /></td></tr>
-<tr class="separator:a6c0484fc8d1c9b8baa1dd8200ae6e913"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a757f4bb146ea81ef2d5b3cab92505b73" id="r_a757f4bb146ea81ef2d5b3cab92505b73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a757f4bb146ea81ef2d5b3cab92505b73">init</a> (const std::list&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;all_solve_blocks) override</td></tr>
+<tr class="memdesc:a757f4bb146ea81ef2d5b3cab92505b73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the solver.  <br /></td></tr>
+<tr class="separator:a757f4bb146ea81ef2d5b3cab92505b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afebd4080229eba14d6c1c16541ea3661" id="r_afebd4080229eba14d6c1c16541ea3661"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afebd4080229eba14d6c1c16541ea3661">reinit</a> () override</td></tr>
 <tr class="memdesc:afebd4080229eba14d6c1c16541ea3661"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize the solver.  <br /></td></tr>
 <tr class="separator:afebd4080229eba14d6c1c16541ea3661"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2409c641f1732fac9d07a865136a68e" id="r_ae2409c641f1732fac9d07a865136a68e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2409c641f1732fac9d07a865136a68e">solve_impl</a> () override</td></tr>
 <tr class="memdesc:ae2409c641f1732fac9d07a865136a68e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve for a single update step.  <br /></td></tr>
 <tr class="separator:ae2409c641f1732fac9d07a865136a68e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5546aff1cd68fade625bbdaf22cc8724" id="r_a5546aff1cd68fade625bbdaf22cc8724"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5546aff1cd68fade625bbdaf22cc8724">do_linear_solve</a> (<a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;b_vector, <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt; &amp;lhs_matrix, <a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;x_vector)</td></tr>
+<tr class="memitem:a5546aff1cd68fade625bbdaf22cc8724" id="r_a5546aff1cd68fade625bbdaf22cc8724"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5546aff1cd68fade625bbdaf22cc8724">do_linear_solve</a> (<a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;b_vector, <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt; &amp;lhs_matrix, <a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;x_vector)</td></tr>
 <tr class="separator:a5546aff1cd68fade625bbdaf22cc8724"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSolverBase"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classSolverBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSolverBase.html">SolverBase&lt; dim, degree, number &gt;</a></td></tr>
 <tr class="memitem:a84149fa02932ffb0254b239d561ce35e inherit pub_methods_classSolverBase" id="r_a84149fa02932ffb0254b239d561ce35e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a84149fa02932ffb0254b239d561ce35e">SolverBase</a> (<a class="el" href="classSolveBlock.html">SolveBlock</a> _solve_block, const <a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt; &amp;_solve_context)</td></tr>
@@ -236,7 +237,7 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a24d2e9496552c6bf1355d9fb9ea9f76b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a647034c706ee70586a4554dca2b2c2e9" id="r_a647034c706ee70586a4554dca2b2c2e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a647034c706ee70586a4554dca2b2c2e9">lhs_operator</a></td></tr>
 <tr class="separator:a647034c706ee70586a4554dca2b2c2e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32eab3de4f0a4c01e3b9ee4b33f3b563" id="r_a32eab3de4f0a4c01e3b9ee4b33f3b563"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a32eab3de4f0a4c01e3b9ee4b33f3b563">rhs_vector</a></td></tr>
+<tr class="memitem:a32eab3de4f0a4c01e3b9ee4b33f3b563" id="r_a32eab3de4f0a4c01e3b9ee4b33f3b563"><td class="memItemLeft" align="right" valign="top"><a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a32eab3de4f0a4c01e3b9ee4b33f3b563">rhs_vector</a></td></tr>
 <tr class="separator:a32eab3de4f0a4c01e3b9ee4b33f3b563"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classSolverBase"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classSolverBase')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSolverBase.html">SolverBase&lt; dim, degree, number &gt;</a></td></tr>
 <tr class="memitem:ae2e3be10e79adacb07a691d9618df8f4 inherit pro_attribs_classSolverBase" id="r_ae2e3be10e79adacb07a691d9618df8f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolveBlock.html">SolveBlock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#ae2e3be10e79adacb07a691d9618df8f4">solve_block</a></td></tr>
@@ -251,30 +252,45 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a33adc8d479b23f8d0e79186f411839a5 inherit pro_attribs_classSolverBase" id="r_a33adc8d479b23f8d0e79186f411839a5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; dim, degree, number &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a33adc8d479b23f8d0e79186f411839a5">aux_solvers</a></td></tr>
 <tr class="separator:a33adc8d479b23f8d0e79186f411839a5 inherit pro_attribs_classSolverBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-types" name="pri-types"></a>
+Private Types</h2></td></tr>
+<tr class="memitem:a7f5975de58ca49779d89ed91c7b62dc6" id="r_a7f5975de58ca49779d89ed91c7b62dc6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f5975de58ca49779d89ed91c7b62dc6">PreconditionMG</a></td></tr>
+<tr class="separator:a7f5975de58ca49779d89ed91c7b62dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a3fce5f57903c375eaa685621790a494d" id="r_a3fce5f57903c375eaa685621790a494d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structLinearSolverParameters.html">LinearSolverParameters</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3fce5f57903c375eaa685621790a494d">lin_params</a> () const</td></tr>
 <tr class="memdesc:a3fce5f57903c375eaa685621790a494d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear solver parameters.  <br /></td></tr>
 <tr class="separator:a3fce5f57903c375eaa685621790a494d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4a925f898de2f1462e3861fd05d16ca" id="r_aa4a925f898de2f1462e3861fd05d16ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa4a925f898de2f1462e3861fd05d16ca">initialize_multigrid</a> ()</td></tr>
+<tr class="separator:aa4a925f898de2f1462e3861fd05d16ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa336391217dd8b4889aa191fad21dd1d" id="r_aa336391217dd8b4889aa191fad21dd1d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; dealii::MGConstrainedDoFs &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa336391217dd8b4889aa191fad21dd1d">make_mg_constraints</a> ()</td></tr>
+<tr class="memdesc:aa336391217dd8b4889aa191fad21dd1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multigrid constraints.  <br /></td></tr>
+<tr class="separator:aa336391217dd8b4889aa191fad21dd1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:ac9f7aa00bbccab9a806513417a940c28" id="r_ac9f7aa00bbccab9a806513417a940c28"><td class="memItemLeft" align="right" valign="top">dealii::SolverControl&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9f7aa00bbccab9a806513417a940c28">linear_solver_control</a></td></tr>
 <tr class="memdesc:ac9f7aa00bbccab9a806513417a940c28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver control. Contains max iterations and tolerance.  <br /></td></tr>
 <tr class="separator:ac9f7aa00bbccab9a806513417a940c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a933fe3ec5e22329efc330bb5be2cc6d0" id="r_a933fe3ec5e22329efc330bb5be2cc6d0"><td class="memItemLeft" align="right" valign="top">dealii::SolverSelector&lt; <a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a933fe3ec5e22329efc330bb5be2cc6d0">lin_solver</a></td></tr>
+<tr class="memitem:a933fe3ec5e22329efc330bb5be2cc6d0" id="r_a933fe3ec5e22329efc330bb5be2cc6d0"><td class="memItemLeft" align="right" valign="top">dealii::SolverSelector&lt; <a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a933fe3ec5e22329efc330bb5be2cc6d0">lin_solver</a></td></tr>
 <tr class="memdesc:a933fe3ec5e22329efc330bb5be2cc6d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver. Can switch between different linear solvers.  <br /></td></tr>
 <tr class="separator:a933fe3ec5e22329efc330bb5be2cc6d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fb16805454c50f82bae0b84546b0823" id="r_a0fb16805454c50f82bae0b84546b0823"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fb16805454c50f82bae0b84546b0823">inhomogeneous_values</a></td></tr>
+<tr class="memitem:a0fb16805454c50f82bae0b84546b0823" id="r_a0fb16805454c50f82bae0b84546b0823"><td class="memItemLeft" align="right" valign="top"><a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fb16805454c50f82bae0b84546b0823">inhomogeneous_values</a></td></tr>
 <tr class="memdesc:a0fb16805454c50f82bae0b84546b0823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector containing only the inhomogeneous constraints (namely, non-zero Dirichlet values)  <br /></td></tr>
 <tr class="separator:a0fb16805454c50f82bae0b84546b0823"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a730bddc055e54986797b1602bc2a5c0f" id="r_a730bddc055e54986797b1602bc2a5c0f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a730bddc055e54986797b1602bc2a5c0f">inhomogeneous_rhs</a></td></tr>
+<tr class="memitem:a730bddc055e54986797b1602bc2a5c0f" id="r_a730bddc055e54986797b1602bc2a5c0f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a730bddc055e54986797b1602bc2a5c0f">inhomogeneous_rhs</a></td></tr>
 <tr class="memdesc:a730bddc055e54986797b1602bc2a5c0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Result of the linear operator applied to the inhomogeneous values.  <br /></td></tr>
 <tr class="separator:a730bddc055e54986797b1602bc2a5c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51a30a940050d9ba23c37be97a15be14" id="r_a51a30a940050d9ba23c37be97a15be14"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a978c802315f6716d0c013da3290a8dbe">PreconditionChebyshev</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51a30a940050d9ba23c37be97a15be14">precond_chebyshev</a></td></tr>
 <tr class="separator:a51a30a940050d9ba23c37be97a15be14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58f4b26d4aa77d68f2deda2703587068" id="r_a58f4b26d4aa77d68f2deda2703587068"><td class="memItemLeft" align="right" valign="top">PreconditionChebyshev::AdditionalData&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a58f4b26d4aa77d68f2deda2703587068">precond_data</a></td></tr>
 <tr class="separator:a58f4b26d4aa77d68f2deda2703587068"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0d337f985b5976655f5f1f34440d328" id="r_af0d337f985b5976655f5f1f34440d328"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMGContext.html">MGContext</a>&lt; dim, degree, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0d337f985b5976655f5f1f34440d328">mg_context</a></td></tr>
+<tr class="separator:af0d337f985b5976655f5f1f34440d328"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab17deb0767566dfcf052e5d215cbdf79" id="r_ab17deb0767566dfcf052e5d215cbdf79"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="#a7f5975de58ca49779d89ed91c7b62dc6">PreconditionMG</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab17deb0767566dfcf052e5d215cbdf79">multigrid_preconditioner</a> = nullptr</td></tr>
+<tr class="memdesc:ab17deb0767566dfcf052e5d215cbdf79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multigrid preconditioner.  <br /></td></tr>
+<tr class="separator:ab17deb0767566dfcf052e5d215cbdf79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
@@ -304,9 +320,38 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line"> </div>
 <div class="line">    dealii::PreconditionChebyshev&lt;MFOperator&lt;dim, degree, number&gt;,</div>
-<div class="line">                                  <a class="code hl_typedef" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector&lt;number&gt;</a>,</div>
+<div class="line">                                  <a class="code hl_typedef" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector&lt;number&gt;</a>,</div>
 <div class="line">                                  dealii::DiagonalMatrix&lt;BlockVector&lt;number&gt;&gt;&gt;</div>
-<div class="ttc" id="agroup__solution__handler_8h_html_ac3c985dc29b3bf1104df7ebd51bc7c15"><div class="ttname"><a href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a></div><div class="ttdeci">dealii::LinearAlgebra::distributed::BlockVector&lt; number &gt; BlockVector</div><div class="ttdoc">Typedef for solution block vector.</div><div class="ttdef"><b>Definition</b> group_solution_handler.h:29</div></div>
+<div class="ttc" id="amatrix__free__manager_8h_html_ac3c985dc29b3bf1104df7ebd51bc7c15"><div class="ttname"><a href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a></div><div class="ttdeci">dealii::LinearAlgebra::distributed::BlockVector&lt; number &gt; BlockVector</div><div class="ttdoc">Typedef for solution block vector.</div><div class="ttdef"><b>Definition</b> matrix_free_manager.h:32</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a7f5975de58ca49779d89ed91c7b62dc6" name="a7f5975de58ca49779d89ed91c7b62dc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f5975de58ca49779d89ed91c7b62dc6">&#9670;&#160;</a></span>PreconditionMG</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::PreconditionMG</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line"> </div>
+<div class="line">    dealii::PreconditionMG&lt;dim,</div>
+<div class="line">                           <a class="code hl_typedef" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector&lt;number&gt;</a>,</div>
+<div class="line">                           <span class="keyword">typename</span> <a class="code hl_typedef" href="classMGContext.html#abc0dd5f378d196d16d1fdf19ce16d4b6">MGContext&lt;dim, degree, number&gt;::MGTransferType</a>&gt;</div>
+<div class="ttc" id="aclassMGContext_html_abc0dd5f378d196d16d1fdf19ce16d4b6"><div class="ttname"><a href="classMGContext.html#abc0dd5f378d196d16d1fdf19ce16d4b6">MGContext::MGTransferType</a></div><div class="ttdeci">dealii::MGTransferBlockGlobalCoarsening&lt; dim, BlockVector&lt; number &gt; &gt; MGTransferType</div><div class="ttdef"><b>Definition</b> linear_solver.h:58</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -360,7 +405,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="memname">int <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::do_linear_solve </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b_vector</em></span>, </td>
+          <td class="paramtype"><a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>b_vector</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -370,7 +415,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x_vector</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>x_vector</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -382,8 +427,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a6c0484fc8d1c9b8baa1dd8200ae6e913" name="a6c0484fc8d1c9b8baa1dd8200ae6e913"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c0484fc8d1c9b8baa1dd8200ae6e913">&#9670;&#160;</a></span>init()</h2>
+<a id="a757f4bb146ea81ef2d5b3cab92505b73" name="a757f4bb146ea81ef2d5b3cab92505b73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a757f4bb146ea81ef2d5b3cab92505b73">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -396,7 +441,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::init </td>
           <td>(</td>
-          <td class="paramtype">const std::list&lt; <a class="el" href="dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d">DependencyMap</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>all_dependeny_sets</em></span></td><td>)</td>
+          <td class="paramtype">const std::list&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>all_solve_blocks</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -409,9 +454,9 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 <p>Initialize the solver. </p>
 
-<p>Reimplemented from <a class="el" href="classSolverBase.html#a9096e85006aaa8a2faf963eb5b6ec405">SolverBase&lt; dim, degree, number &gt;</a>.</p>
+<p>Reimplemented from <a class="el" href="classSolverBase.html#a241912622484936ad4601a3bd14ff869">SolverBase&lt; dim, degree, number &gt;</a>.</p>
 
-<p>Reimplemented in <a class="el" href="classNewtonSolver.html#a65c26fa3c7f78ecbb0f0811622f8116c">NewtonSolver&lt; dim, degree, number &gt;</a>.</p>
+<p>Reimplemented in <a class="el" href="classNewtonSolver.html#aface87b82971da2cfb5d9cbfd303a15a">NewtonSolver&lt; dim, degree, number &gt;</a>.</p>
 
 </div>
 </div>
@@ -436,6 +481,33 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa4a925f898de2f1462e3861fd05d16ca" name="aa4a925f898de2f1462e3861fd05d16ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4a925f898de2f1462e3861fd05d16ca">&#9670;&#160;</a></span>initialize_multigrid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::initialize_multigrid </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -522,6 +594,35 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Linear solver parameters. </p>
+
+</div>
+</div>
+<a id="aa336391217dd8b4889aa191fad21dd1d" name="aa336391217dd8b4889aa191fad21dd1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa336391217dd8b4889aa191fad21dd1d">&#9670;&#160;</a></span>make_mg_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; dealii::MGConstrainedDoFs &gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::make_mg_constraints </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Multigrid constraints. </p>
 
 </div>
 </div>
@@ -614,7 +715,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 <p>Reimplemented from <a class="el" href="classSolverBase.html#a84e7b40e9ed956b72903ab8f297485bf">SolverBase&lt; dim, degree, number &gt;</a>.</p>
 
-<p>Reimplemented in <a class="el" href="classMGSolver.html#a3cddddb526f8a5c73192359ed4e4f25c">MGSolver&lt; dim, degree, number &gt;</a>, and <a class="el" href="classNewtonSolver.html#a64e42f20afbf2e75a400056b97d43b22">NewtonSolver&lt; dim, degree, number &gt;</a>.</p>
+<p>Reimplemented in <a class="el" href="classNewtonSolver.html#a64e42f20afbf2e75a400056b97d43b22">NewtonSolver&lt; dim, degree, number &gt;</a>.</p>
 
 </div>
 </div>
@@ -631,7 +732,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::inhomogeneous_rhs</td>
+          <td class="memname"><a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::inhomogeneous_rhs</td>
         </tr>
       </table>
   </td>
@@ -657,7 +758,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::inhomogeneous_values</td>
+          <td class="memname"><a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::inhomogeneous_values</td>
         </tr>
       </table>
   </td>
@@ -707,7 +808,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">dealii::SolverSelector&lt;<a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; &gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::lin_solver</td>
+          <td class="memname">dealii::SolverSelector&lt;<a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; &gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::lin_solver</td>
         </tr>
       </table>
   </td>
@@ -744,6 +845,56 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Solver control. Contains max iterations and tolerance. </p>
+
+</div>
+</div>
+<a id="af0d337f985b5976655f5f1f34440d328" name="af0d337f985b5976655f5f1f34440d328"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0d337f985b5976655f5f1f34440d328">&#9670;&#160;</a></span>mg_context</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMGContext.html">MGContext</a>&lt;dim, degree, number&gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::mg_context</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab17deb0767566dfcf052e5d215cbdf79" name="ab17deb0767566dfcf052e5d215cbdf79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab17deb0767566dfcf052e5d215cbdf79">&#9670;&#160;</a></span>multigrid_preconditioner</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="#a7f5975de58ca49779d89ed91c7b62dc6">PreconditionMG</a>&gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::multigrid_preconditioner = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Multigrid preconditioner. </p>
 
 </div>
 </div>
@@ -833,7 +984,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::rhs_vector</td>
+          <td class="memname"><a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::rhs_vector</td>
         </tr>
       </table>
   </td>

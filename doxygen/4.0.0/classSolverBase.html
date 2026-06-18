@@ -132,7 +132,7 @@ $(function(){initNavTree('classSolverBase.html',''); initResizable(true); });
 <div class="dynheader">
 Inheritance diagram for SolverBase&lt; dim, degree, number &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classSolverBase__inherit__graph.svg" width="438" height="242"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classSolverBase__inherit__graph.svg" width="342" height="242"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for SolverBase&lt; dim, degree, number &gt;:</div>
@@ -160,9 +160,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a974a20bc684247f729de953d6b077154" id="r_a974a20bc684247f729de953d6b077154"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html">SolverBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a974a20bc684247f729de953d6b077154">operator=</a> (<a class="el" href="classSolverBase.html">SolverBase</a> &amp;&amp;solver_base) noexcept=delete</td></tr>
 <tr class="memdesc:a974a20bc684247f729de953d6b077154"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment.  <br /></td></tr>
 <tr class="separator:a974a20bc684247f729de953d6b077154"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9096e85006aaa8a2faf963eb5b6ec405" id="r_a9096e85006aaa8a2faf963eb5b6ec405"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9096e85006aaa8a2faf963eb5b6ec405">init</a> (const std::list&lt; <a class="el" href="dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d">DependencyMap</a> &gt; &amp;all_dependeny_sets)</td></tr>
-<tr class="memdesc:a9096e85006aaa8a2faf963eb5b6ec405"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the solver.  <br /></td></tr>
-<tr class="separator:a9096e85006aaa8a2faf963eb5b6ec405"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a241912622484936ad4601a3bd14ff869" id="r_a241912622484936ad4601a3bd14ff869"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a241912622484936ad4601a3bd14ff869">init</a> (const std::list&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;all_solve_blocks)</td></tr>
+<tr class="memdesc:a241912622484936ad4601a3bd14ff869"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the solver.  <br /></td></tr>
+<tr class="separator:a241912622484936ad4601a3bd14ff869"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25726215bb0ee51240fe4ddb659a2465" id="r_a25726215bb0ee51240fe4ddb659a2465"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25726215bb0ee51240fe4ddb659a2465">reinit</a> ()</td></tr>
 <tr class="memdesc:a25726215bb0ee51240fe4ddb659a2465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize the solution vectors &amp; apply constraints.  <br /></td></tr>
 <tr class="separator:a25726215bb0ee51240fe4ddb659a2465"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -455,8 +455,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a9096e85006aaa8a2faf963eb5b6ec405" name="a9096e85006aaa8a2faf963eb5b6ec405"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9096e85006aaa8a2faf963eb5b6ec405">&#9670;&#160;</a></span>init()</h2>
+<a id="a241912622484936ad4601a3bd14ff869" name="a241912622484936ad4601a3bd14ff869"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a241912622484936ad4601a3bd14ff869">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -469,7 +469,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="memname">virtual void <a class="el" href="classSolverBase.html">SolverBase</a>&lt; dim, degree, number &gt;::init </td>
           <td>(</td>
-          <td class="paramtype">const std::list&lt; <a class="el" href="dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d">DependencyMap</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>all_dependeny_sets</em></span></td><td>)</td>
+          <td class="paramtype">const std::list&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>all_solve_blocks</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -482,7 +482,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 <p>Initialize the solver. </p>
 
-<p>Reimplemented in <a class="el" href="classExplicitSolver.html#aaf8f4fa50aae2afa1965bd3e6c9bc278">ExplicitSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolver.html#a6c0484fc8d1c9b8baa1dd8200ae6e913">LinearSolver&lt; dim, degree, number &gt;</a>, and <a class="el" href="classNewtonSolver.html#a65c26fa3c7f78ecbb0f0811622f8116c">NewtonSolver&lt; dim, degree, number &gt;</a>.</p>
+<p>Reimplemented in <a class="el" href="classExplicitSolver.html#afff52eb536882c34af0b8485da6c8a9f">ExplicitSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolver.html#a757f4bb146ea81ef2d5b3cab92505b73">LinearSolver&lt; dim, degree, number &gt;</a>, and <a class="el" href="classNewtonSolver.html#aface87b82971da2cfb5d9cbfd303a15a">NewtonSolver&lt; dim, degree, number &gt;</a>.</p>
 
 </div>
 </div>
@@ -720,7 +720,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 <p>Solve implementation. </p>
 
-<p>Reimplemented in <a class="el" href="classExplicitSolver.html#ab8a44e969ae8a6841f4c65baf6b932d8">ExplicitSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolver.html#ae2409c641f1732fac9d07a865136a68e">LinearSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classMGSolver.html#a3cddddb526f8a5c73192359ed4e4f25c">MGSolver&lt; dim, degree, number &gt;</a>, and <a class="el" href="classNewtonSolver.html#a64e42f20afbf2e75a400056b97d43b22">NewtonSolver&lt; dim, degree, number &gt;</a>.</p>
+<p>Reimplemented in <a class="el" href="classExplicitSolver.html#ab8a44e969ae8a6841f4c65baf6b932d8">ExplicitSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolver.html#ae2409c641f1732fac9d07a865136a68e">LinearSolver&lt; dim, degree, number &gt;</a>, and <a class="el" href="classNewtonSolver.html#a64e42f20afbf2e75a400056b97d43b22">NewtonSolver&lt; dim, degree, number &gt;</a>.</p>
 
 </div>
 </div>

@@ -1,19 +1,17 @@
 <map id="include/prismspf/core/timer.h" name="include/prismspf/core/timer.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="391,5,552,50"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="327,5,488,50"/>
 <area shape="rect" id="Node000002" href="$refinement__manager_8h.html" title=" " alt="" coords="5,98,178,143"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="376,54,179,101,177,96,375,49"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="318,57,168,100,166,95,317,52"/>
 <area shape="rect" id="Node000004" href="$problem_8cc.html" title=" " alt="" coords="141,376,290,404"/>
-<area shape="poly" id="edge15_Node000001_Node000004" title=" " alt="" coords="402,59,359,82,315,111,274,148,243,192,225,242,217,295,215,342,217,375,212,376,210,342,211,294,220,241,238,189,270,145,312,107,356,77,400,54"/>
+<area shape="poly" id="edge13_Node000001_Node000004" title=" " alt="" coords="364,61,299,117,268,152,243,192,226,242,217,295,216,342,217,376,212,376,210,342,212,294,220,241,238,190,264,149,295,113,361,57"/>
 <area shape="rect" id="Node000005" href="$explicit__solver_8h.html" title=" " alt="" coords="253,191,434,235"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="413,60,390,78,371,100,359,122,352,146,346,190,341,190,347,145,355,120,367,96,387,74,410,56"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="388,65,371,99,357,148,349,191,344,190,352,146,366,97,383,63"/>
 <area shape="rect" id="Node000008" href="$linear__solver_8h.html" title=" " alt="" coords="381,98,562,143"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="474,66,474,98,469,98,469,66"/>
-<area shape="rect" id="Node000009" href="$mg__solver_8h.html" title=" " alt="" coords="713,191,894,235"/>
-<area shape="poly" id="edge13_Node000001_Node000009" title=" " alt="" coords="520,57,576,96,601,119,626,140,679,167,732,188,730,193,676,172,623,145,597,123,572,100,517,61"/>
-<area shape="rect" id="Node000011" href="$group__solution__handler_8cc.html" title=" " alt="" coords="637,98,810,143"/>
-<area shape="poly" id="edge14_Node000001_Node000011" title=" " alt="" coords="547,53,664,95,662,100,545,58"/>
-<area shape="rect" id="Node000012" href="$timer_8cc.html" title=" " alt="" coords="834,106,962,134"/>
-<area shape="poly" id="edge16_Node000001_Node000012" title=" " alt="" coords="568,43,823,95,854,103,852,108,822,101,567,49"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="434,61,459,96,454,99,429,64"/>
+<area shape="rect" id="Node000010" href="$group__solution__handler_8cc.html" title=" " alt="" coords="585,98,758,143"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="486,53,609,95,607,100,484,58"/>
+<area shape="rect" id="Node000011" href="$timer_8cc.html" title=" " alt="" coords="782,106,910,134"/>
+<area shape="poly" id="edge14_Node000001_Node000011" title=" " alt="" coords="504,42,631,66,771,95,802,103,800,108,770,101,630,71,503,48"/>
 <area shape="rect" id="Node000003" href="$problem_8h.html" title=" " alt="" coords="15,283,176,328"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="95,158,98,283,92,283,90,158"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="141,335,198,373,195,378,138,339"/>
@@ -22,9 +20,8 @@
 <area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="362,336,251,378,249,373,360,331"/>
 <area shape="rect" id="Node000007" href="$solvers_8cc.html" title=" " alt="" coords="353,376,513,404"/>
 <area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="436,344,436,375,430,375,430,344"/>
-<area shape="poly" id="edge12_Node000008_Node000006" title=" " alt="" coords="466,158,440,284,435,283,461,157"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="566,145,725,188,723,193,565,150"/>
-<area shape="rect" id="Node000010" href="$newton__solver_8h.html" title=" " alt="" coords="509,191,690,235"/>
-<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="516,150,570,188,567,192,513,154"/>
-<area shape="poly" id="edge11_Node000010_Node000006" title=" " alt="" coords="548,245,474,285,471,281,545,241"/>
+<area shape="poly" id="edge11_Node000008_Node000006" title=" " alt="" coords="466,158,440,284,435,283,461,157"/>
+<area shape="rect" id="Node000009" href="$newton__solver_8h.html" title=" " alt="" coords="509,191,690,235"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="516,150,570,188,567,192,513,154"/>
+<area shape="poly" id="edge10_Node000009_Node000006" title=" " alt="" coords="548,245,474,285,471,281,545,241"/>
 </map>

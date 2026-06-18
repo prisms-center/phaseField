@@ -145,32 +145,35 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a010d55b73253a017a15b43813698ac99" id="r_a010d55b73253a017a15b43813698ac99"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a010d55b73253a017a15b43813698ac99">InvMManager</a> (const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;dof_manager, const <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt; &amp;constraint_manager, bool _calculate_scalar, bool _calculate_vector)</td></tr>
-<tr class="memdesc:a010d55b73253a017a15b43813698ac99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
-<tr class="separator:a010d55b73253a017a15b43813698ac99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa51cbd6d371800befda9616f7d03844" id="r_afa51cbd6d371800befda9616f7d03844"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa51cbd6d371800befda9616f7d03844">reinit</a> (const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;dof_manager, const <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt; &amp;constraint_manager)</td></tr>
-<tr class="separator:afa51cbd6d371800befda9616f7d03844"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79757a1439265a83f3d8c4801e5d43aa" id="r_a79757a1439265a83f3d8c4801e5d43aa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79757a1439265a83f3d8c4801e5d43aa">InvMManager</a> ()=default</td></tr>
+<tr class="memdesc:a79757a1439265a83f3d8c4801e5d43aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
+<tr class="separator:a79757a1439265a83f3d8c4801e5d43aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73a5f40f59c5007f791df85a2bd2c9d6" id="r_a73a5f40f59c5007f791df85a2bd2c9d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73a5f40f59c5007f791df85a2bd2c9d6">reinit</a> (const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; &amp;matrix_free_manager)</td></tr>
+<tr class="memdesc:a73a5f40f59c5007f791df85a2bd2c9d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reserve space.  <br /></td></tr>
+<tr class="separator:a73a5f40f59c5007f791df85a2bd2c9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aff072c048aa29420415f0519711e53" id="r_a8aff072c048aa29420415f0519711e53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8aff072c048aa29420415f0519711e53">compute_invm</a> ()</td></tr>
 <tr class="memdesc:a8aff072c048aa29420415f0519711e53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recompute the invm vectors.  <br /></td></tr>
 <tr class="separator:a8aff072c048aa29420415f0519711e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94f35789d465e6e6eda605208165f2b2" id="r_a94f35789d465e6e6eda605208165f2b2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a94f35789d465e6e6eda605208165f2b2">get_invm</a> (<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> rank, unsigned int relative_level) const</td></tr>
-<tr class="memdesc:a94f35789d465e6e6eda605208165f2b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the invm vector for a given rank and level.  <br /></td></tr>
-<tr class="separator:a94f35789d465e6e6eda605208165f2b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac015b58fd06c7872787f6e63ca43366a" id="r_ac015b58fd06c7872787f6e63ca43366a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac015b58fd06c7872787f6e63ca43366a">get_jxw</a> (<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> rank, unsigned int relative_level) const</td></tr>
-<tr class="memdesc:ac015b58fd06c7872787f6e63ca43366a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the integrated jxw vector for a given rank and level.  <br /></td></tr>
-<tr class="separator:ac015b58fd06c7872787f6e63ca43366a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf866a99c0ec7b33af3b79135ffd0b82" id="r_adf866a99c0ec7b33af3b79135ffd0b82"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf866a99c0ec7b33af3b79135ffd0b82">get_invm_sqrt</a> (<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> rank, unsigned int relative_level) const</td></tr>
-<tr class="memdesc:adf866a99c0ec7b33af3b79135ffd0b82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the integrated jxw vector for a given rank and level.  <br /></td></tr>
-<tr class="separator:adf866a99c0ec7b33af3b79135ffd0b82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02267684c0001d9a09027fbb27ab44d4" id="r_a02267684c0001d9a09027fbb27ab44d4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02267684c0001d9a09027fbb27ab44d4">get_invm</a> (const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;field_container, const std::set&lt; unsigned int &gt; &amp;field_indices, unsigned int relative_level) const</td></tr>
-<tr class="separator:a02267684c0001d9a09027fbb27ab44d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa780655b777080c3a76f8fa5cb856c31" id="r_aa780655b777080c3a76f8fa5cb856c31"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa780655b777080c3a76f8fa5cb856c31">get_jxw</a> (const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;field_container, const std::set&lt; unsigned int &gt; &amp;field_indices, unsigned int relative_level) const</td></tr>
-<tr class="separator:aa780655b777080c3a76f8fa5cb856c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac45fc92cd2df556eaf89bb621d5395c2" id="r_ac45fc92cd2df556eaf89bb621d5395c2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac45fc92cd2df556eaf89bb621d5395c2">get_invm_sqrt</a> (const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;field_container, const std::set&lt; unsigned int &gt; &amp;field_indices, unsigned int relative_level) const</td></tr>
-<tr class="separator:ac45fc92cd2df556eaf89bb621d5395c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af268c0fc4e4d3f939ccd64d1cec7ac18" id="r_af268c0fc4e4d3f939ccd64d1cec7ac18"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af268c0fc4e4d3f939ccd64d1cec7ac18">get_invm</a> (<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> rank, unsigned int relative_level=-1) const</td></tr>
+<tr class="memdesc:af268c0fc4e4d3f939ccd64d1cec7ac18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the invm vector for a given rank and level.  <br /></td></tr>
+<tr class="separator:af268c0fc4e4d3f939ccd64d1cec7ac18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18868c1eefb91d8137de2600b94fd7af" id="r_a18868c1eefb91d8137de2600b94fd7af"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18868c1eefb91d8137de2600b94fd7af">get_jxw</a> (<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> rank, unsigned int relative_level=-1) const</td></tr>
+<tr class="memdesc:a18868c1eefb91d8137de2600b94fd7af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the integrated jxw vector for a given rank and level.  <br /></td></tr>
+<tr class="separator:a18868c1eefb91d8137de2600b94fd7af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97626621dcb88b3a449b06b156f2a373" id="r_a97626621dcb88b3a449b06b156f2a373"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97626621dcb88b3a449b06b156f2a373">get_invm_sqrt</a> (<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> rank, unsigned int relative_level=-1) const</td></tr>
+<tr class="memdesc:a97626621dcb88b3a449b06b156f2a373"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the integrated jxw vector for a given rank.  <br /></td></tr>
+<tr class="separator:a97626621dcb88b3a449b06b156f2a373"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa98ce739ddc49783a61897a568ab2690" id="r_aa98ce739ddc49783a61897a568ab2690"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa98ce739ddc49783a61897a568ab2690">get_invm</a> (const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;field_container, const std::set&lt; unsigned int &gt; &amp;field_indices, unsigned int relative_level=-1) const</td></tr>
+<tr class="separator:aa98ce739ddc49783a61897a568ab2690"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c40f0f1baaf9543b78f2f10a71b6eb6" id="r_a4c40f0f1baaf9543b78f2f10a71b6eb6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c40f0f1baaf9543b78f2f10a71b6eb6">get_jxw</a> (const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;field_container, const std::set&lt; unsigned int &gt; &amp;field_indices, unsigned int relative_level=-1) const</td></tr>
+<tr class="separator:a4c40f0f1baaf9543b78f2f10a71b6eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01daa535b486ed21c744365f643a1d0f" id="r_a01daa535b486ed21c744365f643a1d0f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a01daa535b486ed21c744365f643a1d0f">get_invm_sqrt</a> (const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;field_container, const std::set&lt; unsigned int &gt; &amp;field_indices, unsigned int relative_level=-1) const</td></tr>
+<tr class="separator:a01daa535b486ed21c744365f643a1d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
+<tr class="memitem:a6a3d4c02d16afc58cc7173f94709c629" id="r_a6a3d4c02d16afc58cc7173f94709c629"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a3d4c02d16afc58cc7173f94709c629">mf_manager</a> ()</td></tr>
+<tr class="separator:a6a3d4c02d16afc58cc7173f94709c629"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0cb61f7ead72f764db3c5bd06cd4a12" id="r_ae0cb61f7ead72f764db3c5bd06cd4a12"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae0cb61f7ead72f764db3c5bd06cd4a12">initialize</a> ()</td></tr>
 <tr class="memdesc:ae0cb61f7ead72f764db3c5bd06cd4a12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize.  <br /></td></tr>
 <tr class="separator:ae0cb61f7ead72f764db3c5bd06cd4a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,39 +182,46 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:ab70ab91541f9e9b5dbd4518378161223"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5c9e626a6760a44401449503905587e" id="r_ab5c9e626a6760a44401449503905587e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5c9e626a6760a44401449503905587e">compute_vector_invm</a> ()</td></tr>
 <tr class="separator:ab5c9e626a6760a44401449503905587e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30e49014a8df6a554f9eb6b731cf1805" id="r_a30e49014a8df6a554f9eb6b731cf1805"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a30e49014a8df6a554f9eb6b731cf1805">compute_local_scalar</a> (const MatrixFree&lt; dim, number &gt; &amp;_data, <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;dst, const int &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range) const</td></tr>
+<tr class="memitem:a30e49014a8df6a554f9eb6b731cf1805" id="r_a30e49014a8df6a554f9eb6b731cf1805"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a30e49014a8df6a554f9eb6b731cf1805">compute_local_scalar</a> (const MatrixFree&lt; dim, number &gt; &amp;_data, <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;dst, const int &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range) const</td></tr>
 <tr class="separator:a30e49014a8df6a554f9eb6b731cf1805"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a114713d8dd6b8e5ce225f874834e9170" id="r_a114713d8dd6b8e5ce225f874834e9170"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a114713d8dd6b8e5ce225f874834e9170">compute_local_vector</a> (const MatrixFree&lt; dim, number &gt; &amp;_data, <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;dst, const int &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range) const</td></tr>
+<tr class="memitem:a114713d8dd6b8e5ce225f874834e9170" id="r_a114713d8dd6b8e5ce225f874834e9170"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a114713d8dd6b8e5ce225f874834e9170">compute_local_vector</a> (const MatrixFree&lt; dim, number &gt; &amp;_data, <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;dst, const int &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range) const</td></tr>
 <tr class="separator:a114713d8dd6b8e5ce225f874834e9170"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada8b05c17b9e592477d28c51938b71d5" id="r_ada8b05c17b9e592477d28c51938b71d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada8b05c17b9e592477d28c51938b71d5">invert</a> (<a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;dst, const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;src) const</td></tr>
+<tr class="memitem:ada8b05c17b9e592477d28c51938b71d5" id="r_ada8b05c17b9e592477d28c51938b71d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada8b05c17b9e592477d28c51938b71d5">invert</a> (<a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;dst, const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;src) const</td></tr>
 <tr class="separator:ada8b05c17b9e592477d28c51938b71d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaef460da324382a16a4bd5c4d26ada07" id="r_aaef460da324382a16a4bd5c4d26ada07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaef460da324382a16a4bd5c4d26ada07">sqrt</a> (<a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;dst, const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;src) const</td></tr>
+<tr class="memitem:aaef460da324382a16a4bd5c4d26ada07" id="r_aaef460da324382a16a4bd5c4d26ada07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaef460da324382a16a4bd5c4d26ada07">sqrt</a> (<a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;dst, const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;src) const</td></tr>
 <tr class="separator:aaef460da324382a16a4bd5c4d26ada07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:ab7668aad729ce9147b7444f9338c018e" id="r_ab7668aad729ce9147b7444f9338c018e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; MatrixFree&lt; dim, number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7668aad729ce9147b7444f9338c018e">data</a></td></tr>
-<tr class="memdesc:ab7668aad729ce9147b7444f9338c018e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-free object.  <br /></td></tr>
-<tr class="separator:ab7668aad729ce9147b7444f9338c018e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a541264bfc6a440393f11e36daa19c67d" id="r_a541264bfc6a440393f11e36daa19c67d"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a541264bfc6a440393f11e36daa19c67d">num_levels</a></td></tr>
+<tr class="memitem:a541264bfc6a440393f11e36daa19c67d" id="r_a541264bfc6a440393f11e36daa19c67d"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a541264bfc6a440393f11e36daa19c67d">num_levels</a> = 0</td></tr>
 <tr class="separator:a541264bfc6a440393f11e36daa19c67d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a904967d8334b7d1fb318aa5210461d70" id="r_a904967d8334b7d1fb318aa5210461d70"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a904967d8334b7d1fb318aa5210461d70">calculate_scalar</a> = false</td></tr>
-<tr class="separator:a904967d8334b7d1fb318aa5210461d70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55de5262ab2b6389a3507dffca8808a6" id="r_a55de5262ab2b6389a3507dffca8808a6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a55de5262ab2b6389a3507dffca8808a6">calculate_vector</a> = false</td></tr>
-<tr class="separator:a55de5262ab2b6389a3507dffca8808a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fdeb7ac128e87e0e9a42e0c5d152f59" id="r_a2fdeb7ac128e87e0e9a42e0c5d152f59"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2fdeb7ac128e87e0e9a42e0c5d152f59">jxw_scalar</a></td></tr>
-<tr class="memdesc:a2fdeb7ac128e87e0e9a42e0c5d152f59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector that stores element volumes.  <br /></td></tr>
-<tr class="separator:a2fdeb7ac128e87e0e9a42e0c5d152f59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa328f343db8013595cb4b82d640a9409" id="r_aa328f343db8013595cb4b82d640a9409"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa328f343db8013595cb4b82d640a9409">jxw_vector</a></td></tr>
-<tr class="separator:aa328f343db8013595cb4b82d640a9409"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96a140c11f0b78d3251bddf600c52be8" id="r_a96a140c11f0b78d3251bddf600c52be8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96a140c11f0b78d3251bddf600c52be8">invm_scalar</a></td></tr>
-<tr class="separator:a96a140c11f0b78d3251bddf600c52be8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8adff8530af5cc4db7c76c678a6f5575" id="r_a8adff8530af5cc4db7c76c678a6f5575"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8adff8530af5cc4db7c76c678a6f5575">invm_vector</a></td></tr>
-<tr class="separator:a8adff8530af5cc4db7c76c678a6f5575"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6434c1f7268e8dc6aa66a29f3db590f7" id="r_a6434c1f7268e8dc6aa66a29f3db590f7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6434c1f7268e8dc6aa66a29f3db590f7">invm_sqrt_scalar</a></td></tr>
-<tr class="separator:a6434c1f7268e8dc6aa66a29f3db590f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a552b08b49fc589f8c66c971b25a3ca3a" id="r_a552b08b49fc589f8c66c971b25a3ca3a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a552b08b49fc589f8c66c971b25a3ca3a">invm_sqrt_vector</a></td></tr>
-<tr class="separator:a552b08b49fc589f8c66c971b25a3ca3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad50d6ff146b544d80941dfc8354e486b" id="r_ad50d6ff146b544d80941dfc8354e486b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad50d6ff146b544d80941dfc8354e486b">jxw_scalar</a></td></tr>
+<tr class="memdesc:ad50d6ff146b544d80941dfc8354e486b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector that stores element volumes.  <br /></td></tr>
+<tr class="separator:ad50d6ff146b544d80941dfc8354e486b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69295d0af9b9bd2a7f17545958b7a831" id="r_a69295d0af9b9bd2a7f17545958b7a831"><td class="memItemLeft" align="right" valign="top"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69295d0af9b9bd2a7f17545958b7a831">jxw_vector</a></td></tr>
+<tr class="separator:a69295d0af9b9bd2a7f17545958b7a831"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3f469d386c7cf357916add2a347e3a3" id="r_af3f469d386c7cf357916add2a347e3a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3f469d386c7cf357916add2a347e3a3">invm_scalar</a></td></tr>
+<tr class="separator:af3f469d386c7cf357916add2a347e3a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ab7a44b91ad9c918f708b82d6965b6b" id="r_a5ab7a44b91ad9c918f708b82d6965b6b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ab7a44b91ad9c918f708b82d6965b6b">invm_vector</a></td></tr>
+<tr class="separator:a5ab7a44b91ad9c918f708b82d6965b6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88f0866f8636c35043d891de8f641dd6" id="r_a88f0866f8636c35043d891de8f641dd6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a88f0866f8636c35043d891de8f641dd6">invm_sqrt_scalar</a></td></tr>
+<tr class="separator:a88f0866f8636c35043d891de8f641dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75d5103e005dfb32ba2f849cbb495e27" id="r_a75d5103e005dfb32ba2f849cbb495e27"><td class="memItemLeft" align="right" valign="top"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75d5103e005dfb32ba2f849cbb495e27">invm_sqrt_vector</a></td></tr>
+<tr class="separator:a75d5103e005dfb32ba2f849cbb495e27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65d48089029b19e939cb7a17405f7a07" id="r_a65d48089029b19e939cb7a17405f7a07"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65d48089029b19e939cb7a17405f7a07">mg_jxw_scalar</a></td></tr>
+<tr class="separator:a65d48089029b19e939cb7a17405f7a07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41b276b77e8437933e88742c91f791d6" id="r_a41b276b77e8437933e88742c91f791d6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41b276b77e8437933e88742c91f791d6">mg_jxw_vector</a></td></tr>
+<tr class="separator:a41b276b77e8437933e88742c91f791d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e696ab565378419d511b76589106022" id="r_a2e696ab565378419d511b76589106022"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e696ab565378419d511b76589106022">mg_invm_scalar</a></td></tr>
+<tr class="separator:a2e696ab565378419d511b76589106022"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19d55fbd7a554b4ee462dc25eed37503" id="r_a19d55fbd7a554b4ee462dc25eed37503"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a19d55fbd7a554b4ee462dc25eed37503">mg_invm_vector</a></td></tr>
+<tr class="separator:a19d55fbd7a554b4ee462dc25eed37503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4a4c7376f9d95a75c005051c27afcbc" id="r_ab4a4c7376f9d95a75c005051c27afcbc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4a4c7376f9d95a75c005051c27afcbc">mg_invm_sqrt_scalar</a></td></tr>
+<tr class="separator:ab4a4c7376f9d95a75c005051c27afcbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c983f0c2ab7b6d6e415c3cf3e2df637" id="r_a5c983f0c2ab7b6d6e415c3cf3e2df637"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5c983f0c2ab7b6d6e415c3cf3e2df637">mg_invm_sqrt_vector</a></td></tr>
+<tr class="separator:a5c983f0c2ab7b6d6e415c3cf3e2df637"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8edefcf5129e32ba9ecd67ee6bfadc5" id="r_aa8edefcf5129e32ba9ecd67ee6bfadc5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8edefcf5129e32ba9ecd67ee6bfadc5">mf_manager_ptr</a> = nullptr</td></tr>
+<tr class="separator:aa8edefcf5129e32ba9ecd67ee6bfadc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
@@ -255,8 +265,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a010d55b73253a017a15b43813698ac99" name="a010d55b73253a017a15b43813698ac99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a010d55b73253a017a15b43813698ac99">&#9670;&#160;</a></span>InvMManager()</h2>
+<a id="a79757a1439265a83f3d8c4801e5d43aa" name="a79757a1439265a83f3d8c4801e5d43aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79757a1439265a83f3d8c4801e5d43aa">&#9670;&#160;</a></span>InvMManager()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -269,40 +279,18 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;<a class="el" href="classInvMManager.html">::InvMManager</a> </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dof_manager</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>constraint_manager</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>_calculate_scalar</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>_calculate_vector</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+<span class="mlabels"><span class="mlabel default">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Constructor. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dof_manager</td><td>The DoF manager to get the triangulation and DoF handlers from. </td></tr>
-    <tr><td class="paramname">_calculate_scalar</td><td>Whether to calculate the scalar invm (element volume). </td></tr>
-    <tr><td class="paramname">_calculate_vector</td><td>Whether to calculate the vector invm (for vector fields). </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -355,7 +343,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dst</em></span>, </td>
+          <td class="paramtype"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dst</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -396,7 +384,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dst</em></span>, </td>
+          <td class="paramtype"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dst</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -474,8 +462,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a02267684c0001d9a09027fbb27ab44d4" name="a02267684c0001d9a09027fbb27ab44d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a02267684c0001d9a09027fbb27ab44d4">&#9670;&#160;</a></span>get_invm() <span class="overload">[1/2]</span></h2>
+<a id="aa98ce739ddc49783a61897a568ab2690" name="aa98ce739ddc49783a61897a568ab2690"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa98ce739ddc49783a61897a568ab2690">&#9670;&#160;</a></span>get_invm() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -486,7 +474,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; * &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::get_invm </td>
+          <td class="memname">std::vector&lt; const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; * &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::get_invm </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>field_container</em></span>, </td>
         </tr>
@@ -498,7 +486,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span>&#160;) const</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">-1</span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -510,8 +498,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a94f35789d465e6e6eda605208165f2b2" name="a94f35789d465e6e6eda605208165f2b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94f35789d465e6e6eda605208165f2b2">&#9670;&#160;</a></span>get_invm() <span class="overload">[2/2]</span></h2>
+<a id="af268c0fc4e4d3f939ccd64d1cec7ac18" name="af268c0fc4e4d3f939ccd64d1cec7ac18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af268c0fc4e4d3f939ccd64d1cec7ac18">&#9670;&#160;</a></span>get_invm() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -522,14 +510,14 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::get_invm </td>
+          <td class="memname">const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::get_invm </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a></td>          <td class="paramname"><span class="paramname"><em>rank</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span>&#160;) const</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">-1</span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -543,15 +531,14 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rank</td><td>The tensor rank of the field (scalar or vector). </td></tr>
-    <tr><td class="paramname">relative_level</td><td>The relative level to get the invm for. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="ac45fc92cd2df556eaf89bb621d5395c2" name="ac45fc92cd2df556eaf89bb621d5395c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac45fc92cd2df556eaf89bb621d5395c2">&#9670;&#160;</a></span>get_invm_sqrt() <span class="overload">[1/2]</span></h2>
+<a id="a01daa535b486ed21c744365f643a1d0f" name="a01daa535b486ed21c744365f643a1d0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01daa535b486ed21c744365f643a1d0f">&#9670;&#160;</a></span>get_invm_sqrt() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -562,7 +549,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; * &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::get_invm_sqrt </td>
+          <td class="memname">std::vector&lt; const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; * &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::get_invm_sqrt </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>field_container</em></span>, </td>
         </tr>
@@ -574,7 +561,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span>&#160;) const</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">-1</span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -586,8 +573,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="adf866a99c0ec7b33af3b79135ffd0b82" name="adf866a99c0ec7b33af3b79135ffd0b82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf866a99c0ec7b33af3b79135ffd0b82">&#9670;&#160;</a></span>get_invm_sqrt() <span class="overload">[2/2]</span></h2>
+<a id="a97626621dcb88b3a449b06b156f2a373" name="a97626621dcb88b3a449b06b156f2a373"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97626621dcb88b3a449b06b156f2a373">&#9670;&#160;</a></span>get_invm_sqrt() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -598,14 +585,89 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::get_invm_sqrt </td>
+          <td class="memname">const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::get_invm_sqrt </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a></td>          <td class="paramname"><span class="paramname"><em>rank</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span>&#160;) const</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">-1</span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the integrated jxw vector for a given rank. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rank</td><td>The tensor rank of the field (scalar or vector). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4c40f0f1baaf9543b78f2f10a71b6eb6" name="a4c40f0f1baaf9543b78f2f10a71b6eb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c40f0f1baaf9543b78f2f10a71b6eb6">&#9670;&#160;</a></span>get_jxw() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; * &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::get_jxw </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>field_container</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::set&lt; unsigned int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>field_indices</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">-1</span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a18868c1eefb91d8137de2600b94fd7af" name="a18868c1eefb91d8137de2600b94fd7af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18868c1eefb91d8137de2600b94fd7af">&#9670;&#160;</a></span>get_jxw() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::get_jxw </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a></td>          <td class="paramname"><span class="paramname"><em>rank</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">-1</span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -619,83 +681,6 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rank</td><td>The tensor rank of the field (scalar or vector). </td></tr>
-    <tr><td class="paramname">relative_level</td><td>The relative level to get the jxw for. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="aa780655b777080c3a76f8fa5cb856c31" name="aa780655b777080c3a76f8fa5cb856c31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa780655b777080c3a76f8fa5cb856c31">&#9670;&#160;</a></span>get_jxw() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt; const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; * &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::get_jxw </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>field_container</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::set&lt; unsigned int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>field_indices</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span>&#160;) const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ac015b58fd06c7872787f6e63ca43366a" name="ac015b58fd06c7872787f6e63ca43366a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac015b58fd06c7872787f6e63ca43366a">&#9670;&#160;</a></span>get_jxw() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::get_jxw </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a></td>          <td class="paramname"><span class="paramname"><em>rank</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span>&#160;) const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get the integrated jxw vector for a given rank and level. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">rank</td><td>The tensor rank of the field (scalar or vector). </td></tr>
-    <tr><td class="paramname">relative_level</td><td>The relative level to get the jxw for. </td></tr>
   </table>
   </dd>
 </dl>
@@ -745,12 +730,12 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::invert </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dst</em></span>, </td>
+          <td class="paramtype"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dst</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>src</em></span>&#160;) const</td>
+          <td class="paramtype">const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>src</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -762,8 +747,35 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="afa51cbd6d371800befda9616f7d03844" name="afa51cbd6d371800befda9616f7d03844"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa51cbd6d371800befda9616f7d03844">&#9670;&#160;</a></span>reinit()</h2>
+<a id="a6a3d4c02d16afc58cc7173f94709c629" name="a6a3d4c02d16afc58cc7173f94709c629"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a3d4c02d16afc58cc7173f94709c629">&#9670;&#160;</a></span>mf_manager()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; &amp; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::mf_manager </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a73a5f40f59c5007f791df85a2bd2c9d6" name="a73a5f40f59c5007f791df85a2bd2c9d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73a5f40f59c5007f791df85a2bd2c9d6">&#9670;&#160;</a></span>reinit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -776,12 +788,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::reinit </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dof_manager</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix_free_manager</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>constraint_manager</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -790,6 +798,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Reserve space. </p>
 
 </div>
 </div>
@@ -807,12 +817,12 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::sqrt </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dst</em></span>, </td>
+          <td class="paramtype"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dst</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>src</em></span>&#160;) const</td>
+          <td class="paramtype">const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>src</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -825,8 +835,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a904967d8334b7d1fb318aa5210461d70" name="a904967d8334b7d1fb318aa5210461d70"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a904967d8334b7d1fb318aa5210461d70">&#9670;&#160;</a></span>calculate_scalar</h2>
+<a id="af3f469d386c7cf357916add2a347e3a3" name="af3f469d386c7cf357916add2a347e3a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3f469d386c7cf357916add2a347e3a3">&#9670;&#160;</a></span>invm_scalar</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -837,7 +847,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::calculate_scalar = false</td>
+          <td class="memname"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::invm_scalar</td>
         </tr>
       </table>
   </td>
@@ -849,8 +859,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a55de5262ab2b6389a3507dffca8808a6" name="a55de5262ab2b6389a3507dffca8808a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55de5262ab2b6389a3507dffca8808a6">&#9670;&#160;</a></span>calculate_vector</h2>
+<a id="a88f0866f8636c35043d891de8f641dd6" name="a88f0866f8636c35043d891de8f641dd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88f0866f8636c35043d891de8f641dd6">&#9670;&#160;</a></span>invm_sqrt_scalar</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -861,7 +871,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::calculate_vector = false</td>
+          <td class="memname"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::invm_sqrt_scalar</td>
         </tr>
       </table>
   </td>
@@ -873,8 +883,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="ab7668aad729ce9147b7444f9338c018e" name="ab7668aad729ce9147b7444f9338c018e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7668aad729ce9147b7444f9338c018e">&#9670;&#160;</a></span>data</h2>
+<a id="a75d5103e005dfb32ba2f849cbb495e27" name="a75d5103e005dfb32ba2f849cbb495e27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75d5103e005dfb32ba2f849cbb495e27">&#9670;&#160;</a></span>invm_sqrt_vector</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -885,33 +895,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;MatrixFree&lt;dim, number&gt; &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::data</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Matrix-free object. </p>
-
-</div>
-</div>
-<a id="a96a140c11f0b78d3251bddf600c52be8" name="a96a140c11f0b78d3251bddf600c52be8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96a140c11f0b78d3251bddf600c52be8">&#9670;&#160;</a></span>invm_scalar</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::invm_scalar</td>
+          <td class="memname"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::invm_sqrt_vector</td>
         </tr>
       </table>
   </td>
@@ -923,8 +907,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a6434c1f7268e8dc6aa66a29f3db590f7" name="a6434c1f7268e8dc6aa66a29f3db590f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6434c1f7268e8dc6aa66a29f3db590f7">&#9670;&#160;</a></span>invm_sqrt_scalar</h2>
+<a id="a5ab7a44b91ad9c918f708b82d6965b6b" name="a5ab7a44b91ad9c918f708b82d6965b6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ab7a44b91ad9c918f708b82d6965b6b">&#9670;&#160;</a></span>invm_vector</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -935,7 +919,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::invm_sqrt_scalar</td>
+          <td class="memname"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::invm_vector</td>
         </tr>
       </table>
   </td>
@@ -947,8 +931,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a552b08b49fc589f8c66c971b25a3ca3a" name="a552b08b49fc589f8c66c971b25a3ca3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a552b08b49fc589f8c66c971b25a3ca3a">&#9670;&#160;</a></span>invm_sqrt_vector</h2>
+<a id="ad50d6ff146b544d80941dfc8354e486b" name="ad50d6ff146b544d80941dfc8354e486b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad50d6ff146b544d80941dfc8354e486b">&#9670;&#160;</a></span>jxw_scalar</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -959,55 +943,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::invm_sqrt_vector</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a8adff8530af5cc4db7c76c678a6f5575" name="a8adff8530af5cc4db7c76c678a6f5575"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8adff8530af5cc4db7c76c678a6f5575">&#9670;&#160;</a></span>invm_vector</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::invm_vector</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a2fdeb7ac128e87e0e9a42e0c5d152f59" name="a2fdeb7ac128e87e0e9a42e0c5d152f59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2fdeb7ac128e87e0e9a42e0c5d152f59">&#9670;&#160;</a></span>jxw_scalar</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::jxw_scalar</td>
+          <td class="memname"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::jxw_scalar</td>
         </tr>
       </table>
   </td>
@@ -1021,8 +957,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="aa328f343db8013595cb4b82d640a9409" name="aa328f343db8013595cb4b82d640a9409"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa328f343db8013595cb4b82d640a9409">&#9670;&#160;</a></span>jxw_vector</h2>
+<a id="a69295d0af9b9bd2a7f17545958b7a831" name="a69295d0af9b9bd2a7f17545958b7a831"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69295d0af9b9bd2a7f17545958b7a831">&#9670;&#160;</a></span>jxw_vector</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1033,7 +969,175 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::jxw_vector</td>
+          <td class="memname"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::jxw_vector</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa8edefcf5129e32ba9ecd67ee6bfadc5" name="aa8edefcf5129e32ba9ecd67ee6bfadc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8edefcf5129e32ba9ecd67ee6bfadc5">&#9670;&#160;</a></span>mf_manager_ptr</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt;dim, number&gt;* <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::mf_manager_ptr = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2e696ab565378419d511b76589106022" name="a2e696ab565378419d511b76589106022"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e696ab565378419d511b76589106022">&#9670;&#160;</a></span>mg_invm_scalar</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::mg_invm_scalar</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab4a4c7376f9d95a75c005051c27afcbc" name="ab4a4c7376f9d95a75c005051c27afcbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4a4c7376f9d95a75c005051c27afcbc">&#9670;&#160;</a></span>mg_invm_sqrt_scalar</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::mg_invm_sqrt_scalar</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5c983f0c2ab7b6d6e415c3cf3e2df637" name="a5c983f0c2ab7b6d6e415c3cf3e2df637"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c983f0c2ab7b6d6e415c3cf3e2df637">&#9670;&#160;</a></span>mg_invm_sqrt_vector</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::mg_invm_sqrt_vector</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a19d55fbd7a554b4ee462dc25eed37503" name="a19d55fbd7a554b4ee462dc25eed37503"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19d55fbd7a554b4ee462dc25eed37503">&#9670;&#160;</a></span>mg_invm_vector</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::mg_invm_vector</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a65d48089029b19e939cb7a17405f7a07" name="a65d48089029b19e939cb7a17405f7a07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65d48089029b19e939cb7a17405f7a07">&#9670;&#160;</a></span>mg_jxw_scalar</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::mg_jxw_scalar</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a41b276b77e8437933e88742c91f791d6" name="a41b276b77e8437933e88742c91f791d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41b276b77e8437933e88742c91f791d6">&#9670;&#160;</a></span>mg_jxw_vector</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt;number&gt; &gt; <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::mg_jxw_vector</td>
         </tr>
       </table>
   </td>
@@ -1057,7 +1161,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::num_levels</td>
+          <td class="memname">unsigned int <a class="el" href="classInvMManager.html">InvMManager</a>&lt; dim, degree, number &gt;::num_levels = 0</td>
         </tr>
       </table>
   </td>
@@ -1099,7 +1203,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 <div class="line">      }</div>
 <div class="line">    <span class="keywordflow">return</span> one1;</div>
 <div class="line">  }()</div>
-<div class="ttc" id="aclassInvMManager_html_a9f0e491fdc22f704e13a9455fc354de5"><div class="ttname"><a href="#a9f0e491fdc22f704e13a9455fc354de5">InvMManager::VectorValue</a></div><div class="ttdeci">dealii::Tensor&lt; 1, dim, ScalarValue &gt; VectorValue</div><div class="ttdef"><b>Definition</b> invm_manager.h:31</div></div>
+<div class="ttc" id="aclassInvMManager_html_a9f0e491fdc22f704e13a9455fc354de5"><div class="ttname"><a href="#a9f0e491fdc22f704e13a9455fc354de5">InvMManager::VectorValue</a></div><div class="ttdeci">dealii::Tensor&lt; 1, dim, ScalarValue &gt; VectorValue</div><div class="ttdef"><b>Definition</b> invm_manager.h:25</div></div>
 </div><!-- fragment -->
 </div>
 </div>

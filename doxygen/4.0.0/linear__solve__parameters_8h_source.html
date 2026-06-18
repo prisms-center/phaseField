@@ -174,8 +174,8 @@ $(function(){initNavTree('linear__solve__parameters_8h_source.html',''); initRes
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="comment">// gmres_parameters for both solvers</span></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">// dealii::SolverFGMRES&lt;&gt;::AdditionalData     fgmres_parameters;</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">// The minimum multigrid level</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="structLinearSolverParameters.html#a2bace2f96efd6f8d66ebd2f4204472a3">   55</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="structLinearSolverParameters.html#a2bace2f96efd6f8d66ebd2f4204472a3">min_mg_level</a> = 0;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">// The multigrid depth</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="structLinearSolverParameters.html#ad5dab9c9ee42896193462d216ba65c5d">   55</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="structLinearSolverParameters.html#ad5dab9c9ee42896193462d216ba65c5d">mg_depth</a> = 1;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>};</div>
 </div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span></div>
@@ -279,237 +279,243 @@ $(function(){initNavTree('linear__solve__parameters_8h_source.html',''); initRes
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>          dealii::Patterns::Integer(1, INT_MAX),</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>          <span class="stringliteral">&quot;The maximum number of linear solver iterations before the loop &quot;</span></div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>          <span class="stringliteral">&quot;is stopped.&quot;</span>);</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        parameter_handler.declare_entry(<span class="stringliteral">&quot;preconditioner type&quot;</span>,</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                                        <span class="stringliteral">&quot;None&quot;</span>,</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>                                        dealii::Patterns::Selection(<span class="stringliteral">&quot;None|Chebyshev&quot;</span>),</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>                                        <span class="stringliteral">&quot;The preconditioner type for the linear solver.&quot;</span>);</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;Chebyshev&quot;</span>);</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>        {</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;smoothing range&quot;</span>,</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                                          <span class="stringliteral">&quot;15.0&quot;</span>,</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                                          dealii::Patterns::Double(DBL_MIN, DBL_MAX),</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                                          <span class="stringliteral">&quot;The smoothing range for eigenvalues.&quot;</span>);</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;smoother degree&quot;</span>,</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>                                          <span class="stringliteral">&quot;5&quot;</span>,</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>                                          dealii::Patterns::Integer(1, INT_MAX),</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>                                          <span class="stringliteral">&quot;The smoother polynomial degree.&quot;</span>);</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>          parameter_handler.declare_entry(</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>            <span class="stringliteral">&quot;eigenvalue cg iterations&quot;</span>,</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>            <span class="stringliteral">&quot;10&quot;</span>,</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>            dealii::Patterns::Integer(1, INT_MAX),</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>            <span class="stringliteral">&quot;The maximum number of CG iterations used to find the maximum eigenvalue.&quot;</span>);</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        }</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        parameter_handler.leave_subsection();</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;Richardson&quot;</span>);</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        {</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;omega&quot;</span>,</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                                          <span class="stringliteral">&quot;1.0&quot;</span>,</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                                          dealii::Patterns::Double(),</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                                          <span class="stringliteral">&quot;Damping factor.&quot;</span>);</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;use preconditioned residual&quot;</span>,</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>                                          <span class="stringliteral">&quot;false&quot;</span>,</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>                                          dealii::Patterns::Bool(),</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>                                          <span class="stringliteral">&quot;Whether to use the preconditioned residual l2 &quot;</span></div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>                                          <span class="stringliteral">&quot;norm in the stopping criterion.&quot;</span>);</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>        }</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        parameter_handler.leave_subsection();</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;BiCGStab&quot;</span>);</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        {</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;exact residual&quot;</span>,</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>                                          <span class="stringliteral">&quot;true&quot;</span>,</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>                                          dealii::Patterns::Bool(),</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>                                          <span class="stringliteral">&quot;Flag for exact computation of residual.&quot;</span>);</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;breakdown&quot;</span>,</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>                                          std::to_string(</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>                                            std::numeric_limits&lt;double&gt;::min()),</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>                                          dealii::Patterns::Double(),</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>                                          <span class="stringliteral">&quot;Breakdown threshold.&quot;</span>);</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        }</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        parameter_handler.leave_subsection();</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;GMRES&quot;</span>);</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        {</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>          parameter_handler.declare_entry(</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>            <span class="stringliteral">&quot;max basis size&quot;</span>,</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>            <span class="stringliteral">&quot;30&quot;</span>,</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>            dealii::Patterns::Integer(1, INT_MAX),</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>            <span class="stringliteral">&quot;The maximum size of the Krylov basis used in GMRES before restarting.&quot;</span>);</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>          parameter_handler.declare_entry(</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>            <span class="stringliteral">&quot;orthogonalization strategy&quot;</span>,</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>            <span class="stringliteral">&quot;delayed_classical_gram_schmidt&quot;</span>,</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>            dealii::Patterns::Selection(<span class="stringliteral">&quot;classical_gram_schmidt|modified_gram_schmidt|&quot;</span></div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>                                        <span class="stringliteral">&quot;delayed_classical_gram_schmidt&quot;</span>),</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>            <span class="stringliteral">&quot;The orthogonalization strategy to use in GMRES.&quot;</span>);</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;right preconditioning&quot;</span>,</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>                                          <span class="stringliteral">&quot;false&quot;</span>,</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>                                          dealii::Patterns::Bool(),</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>                                          <span class="stringliteral">&quot;Whether to use right preconditioning.&quot;</span>);</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>          parameter_handler.declare_entry(</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>            <span class="stringliteral">&quot;use default residual&quot;</span>,</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>            <span class="stringliteral">&quot;true&quot;</span>,</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>            dealii::Patterns::Bool(),</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>            <span class="stringliteral">&quot;Whether to use the default residual computation in GMRES.&quot;</span>);</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>          parameter_handler.declare_entry(</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>            <span class="stringliteral">&quot;force re-orthogonalization&quot;</span>,</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>            <span class="stringliteral">&quot;false&quot;</span>,</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>            dealii::Patterns::Bool(),</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>            <span class="stringliteral">&quot;Whether to force re-orthogonalization of the Krylov basis in GMRES.&quot;</span>);</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;batched mode&quot;</span>,</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>                                          <span class="stringliteral">&quot;false&quot;</span>,</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>                                          dealii::Patterns::Bool(),</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>                                          <span class="stringliteral">&quot;Whether to use batched mode in GMRES.&quot;</span>);</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        }</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        parameter_handler.leave_subsection();</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        parameter_handler.declare_entry(<span class="stringliteral">&quot;min mg level&quot;</span>,</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>                                        <span class="stringliteral">&quot;0&quot;</span>,</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>                                        dealii::Patterns::Integer(0, INT_MAX),</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                                        <span class="stringliteral">&quot;The minimum multigrid level.&quot;</span>);</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;tolerance value&quot;</span>, <span class="stringliteral">&quot;tolerance&quot;</span>);</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver_ids&quot;</span>, <span class="stringliteral">&quot;solve blocks&quot;</span>);</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver_ids&quot;</span>, <span class="stringliteral">&quot;solve_blocks&quot;</span>);</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver_ids&quot;</span>, <span class="stringliteral">&quot;solve block ids&quot;</span>);</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver_ids&quot;</span>, <span class="stringliteral">&quot;solve_block_ids&quot;</span>);</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver type&quot;</span>, <span class="stringliteral">&quot;solver_type&quot;</span>);</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver type&quot;</span>, <span class="stringliteral">&quot;linear solver type&quot;</span>);</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver type&quot;</span>, <span class="stringliteral">&quot;linear_solver_type&quot;</span>);</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver type&quot;</span>, <span class="stringliteral">&quot;linear solver&quot;</span>);</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver type&quot;</span>, <span class="stringliteral">&quot;linear_solver&quot;</span>);</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver type&quot;</span>, <span class="stringliteral">&quot;type&quot;</span>);</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;preconditioner type&quot;</span>, <span class="stringliteral">&quot;preconditioner_type&quot;</span>);</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;preconditioner type&quot;</span>, <span class="stringliteral">&quot;preconditioner&quot;</span>);</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>      }</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>      parameter_handler.leave_subsection();</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    }</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>}</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        parameter_handler.declare_entry(</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>          <span class="stringliteral">&quot;preconditioner type&quot;</span>,</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>          <span class="stringliteral">&quot;None&quot;</span>,</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>          dealii::Patterns::Selection(</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>            <span class="stringliteral">&quot;|None|Chebyshev|GMG|none|chebyshev|gmg|MG|mg|multigrid&quot;</span>),</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>          <span class="stringliteral">&quot;The preconditioner type for the linear solver.&quot;</span>);</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;Chebyshev&quot;</span>);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        {</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;smoothing range&quot;</span>,</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                                          <span class="stringliteral">&quot;15.0&quot;</span>,</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                                          dealii::Patterns::Double(DBL_MIN, DBL_MAX),</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>                                          <span class="stringliteral">&quot;The smoothing range for eigenvalues.&quot;</span>);</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;smoother degree&quot;</span>,</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>                                          <span class="stringliteral">&quot;5&quot;</span>,</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>                                          dealii::Patterns::Integer(1, INT_MAX),</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>                                          <span class="stringliteral">&quot;The smoother polynomial degree.&quot;</span>);</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>          parameter_handler.declare_entry(</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>            <span class="stringliteral">&quot;eigenvalue cg iterations&quot;</span>,</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>            <span class="stringliteral">&quot;10&quot;</span>,</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>            dealii::Patterns::Integer(1, INT_MAX),</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>            <span class="stringliteral">&quot;The maximum number of CG iterations used to find the maximum eigenvalue.&quot;</span>);</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        }</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        parameter_handler.leave_subsection();</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;Richardson&quot;</span>);</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        {</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;omega&quot;</span>,</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                                          <span class="stringliteral">&quot;1.0&quot;</span>,</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                                          dealii::Patterns::Double(),</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>                                          <span class="stringliteral">&quot;Damping factor.&quot;</span>);</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;use preconditioned residual&quot;</span>,</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>                                          <span class="stringliteral">&quot;false&quot;</span>,</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>                                          dealii::Patterns::Bool(),</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>                                          <span class="stringliteral">&quot;Whether to use the preconditioned residual l2 &quot;</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>                                          <span class="stringliteral">&quot;norm in the stopping criterion.&quot;</span>);</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        }</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        parameter_handler.leave_subsection();</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;BiCGStab&quot;</span>);</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        {</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;exact residual&quot;</span>,</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>                                          <span class="stringliteral">&quot;true&quot;</span>,</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>                                          dealii::Patterns::Bool(),</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>                                          <span class="stringliteral">&quot;Flag for exact computation of residual.&quot;</span>);</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;breakdown&quot;</span>,</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>                                          std::to_string(</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>                                            std::numeric_limits&lt;double&gt;::min()),</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>                                          dealii::Patterns::Double(),</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>                                          <span class="stringliteral">&quot;Breakdown threshold.&quot;</span>);</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        }</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        parameter_handler.leave_subsection();</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;GMRES&quot;</span>);</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        {</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>          parameter_handler.declare_entry(</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>            <span class="stringliteral">&quot;max basis size&quot;</span>,</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>            <span class="stringliteral">&quot;30&quot;</span>,</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>            dealii::Patterns::Integer(1, INT_MAX),</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>            <span class="stringliteral">&quot;The maximum size of the Krylov basis used in GMRES before restarting.&quot;</span>);</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>          parameter_handler.declare_entry(</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>            <span class="stringliteral">&quot;orthogonalization strategy&quot;</span>,</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>            <span class="stringliteral">&quot;delayed_classical_gram_schmidt&quot;</span>,</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>            dealii::Patterns::Selection(<span class="stringliteral">&quot;classical_gram_schmidt|modified_gram_schmidt|&quot;</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>                                        <span class="stringliteral">&quot;delayed_classical_gram_schmidt&quot;</span>),</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>            <span class="stringliteral">&quot;The orthogonalization strategy to use in GMRES.&quot;</span>);</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;right preconditioning&quot;</span>,</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>                                          <span class="stringliteral">&quot;false&quot;</span>,</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>                                          dealii::Patterns::Bool(),</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>                                          <span class="stringliteral">&quot;Whether to use right preconditioning.&quot;</span>);</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>          parameter_handler.declare_entry(</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>            <span class="stringliteral">&quot;use default residual&quot;</span>,</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>            <span class="stringliteral">&quot;true&quot;</span>,</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>            dealii::Patterns::Bool(),</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>            <span class="stringliteral">&quot;Whether to use the default residual computation in GMRES.&quot;</span>);</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>          parameter_handler.declare_entry(</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>            <span class="stringliteral">&quot;force re-orthogonalization&quot;</span>,</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>            <span class="stringliteral">&quot;false&quot;</span>,</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>            dealii::Patterns::Bool(),</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>            <span class="stringliteral">&quot;Whether to force re-orthogonalization of the Krylov basis in GMRES.&quot;</span>);</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>          parameter_handler.declare_entry(<span class="stringliteral">&quot;batched mode&quot;</span>,</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>                                          <span class="stringliteral">&quot;false&quot;</span>,</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>                                          dealii::Patterns::Bool(),</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>                                          <span class="stringliteral">&quot;Whether to use batched mode in GMRES.&quot;</span>);</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        }</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        parameter_handler.leave_subsection();</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        parameter_handler.declare_entry(<span class="stringliteral">&quot;mg depth&quot;</span>,</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>                                        <span class="stringliteral">&quot;1&quot;</span>,</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                                        dealii::Patterns::Integer(1, INT_MAX),</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>                                        <span class="stringliteral">&quot;The depth of the multigrid hierarchy.&quot;</span>);</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;tolerance value&quot;</span>, <span class="stringliteral">&quot;tolerance&quot;</span>);</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver_ids&quot;</span>, <span class="stringliteral">&quot;solve blocks&quot;</span>);</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver_ids&quot;</span>, <span class="stringliteral">&quot;solve_blocks&quot;</span>);</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver_ids&quot;</span>, <span class="stringliteral">&quot;solve block ids&quot;</span>);</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver_ids&quot;</span>, <span class="stringliteral">&quot;solve_block_ids&quot;</span>);</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver type&quot;</span>, <span class="stringliteral">&quot;solver_type&quot;</span>);</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver type&quot;</span>, <span class="stringliteral">&quot;linear solver type&quot;</span>);</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver type&quot;</span>, <span class="stringliteral">&quot;linear_solver_type&quot;</span>);</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver type&quot;</span>, <span class="stringliteral">&quot;linear solver&quot;</span>);</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver type&quot;</span>, <span class="stringliteral">&quot;linear_solver&quot;</span>);</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;solver type&quot;</span>, <span class="stringliteral">&quot;type&quot;</span>);</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;preconditioner type&quot;</span>, <span class="stringliteral">&quot;preconditioner_type&quot;</span>);</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;preconditioner type&quot;</span>, <span class="stringliteral">&quot;preconditioner&quot;</span>);</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>        parameter_handler.declare_alias(<span class="stringliteral">&quot;mg depth&quot;</span>, <span class="stringliteral">&quot;mg_depth&quot;</span>);</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>      }</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>      parameter_handler.leave_subsection();</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    }</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>}</div>
 </div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
-<div class="foldopen" id="foldopen00271" data-start="{" data-end="}">
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno"><a class="line" href="structLinearSolveParameters.html#a60020933352c9ccb32b3bbf298f58a97">  271</a></span><a class="code hl_function" href="structLinearSolveParameters.html#a60020933352c9ccb32b3bbf298f58a97">LinearSolveParameters::assign_parameters</a>(dealii::ParameterHandler &amp;parameter_handler,</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>                                         <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>              max_criteria)</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>{</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> criterion_id = 0; criterion_id &lt; max_criteria; criterion_id++)</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    {</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>      <span class="comment">// For linear solves</span></div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>      std::string subsection_text =</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>        <span class="stringliteral">&quot;linear solver parameters: &quot;</span> + std::to_string(criterion_id);</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>      parameter_handler.enter_subsection(subsection_text);</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>      {</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        std::vector&lt;int&gt; solver_ids = dealii::Utilities::string_to_int(</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>          dealii::Utilities::split_string_list(parameter_handler.get(<span class="stringliteral">&quot;solver_ids&quot;</span>)));</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        <a class="code hl_struct" href="structLinearSolverParameters.html">LinearSolverParameters</a> linear_solver_parameters;</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        <span class="comment">// Set the linear solver type</span></div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>        linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a8f5d5c47c7a548b36a51b510e47fc2aa">solver_type</a> = parameter_handler.get(<span class="stringliteral">&quot;solver type&quot;</span>);</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
+<div class="foldopen" id="foldopen00274" data-start="{" data-end="}">
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno"><a class="line" href="structLinearSolveParameters.html#a60020933352c9ccb32b3bbf298f58a97">  274</a></span><a class="code hl_function" href="structLinearSolveParameters.html#a60020933352c9ccb32b3bbf298f58a97">LinearSolveParameters::assign_parameters</a>(dealii::ParameterHandler &amp;parameter_handler,</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>                                         <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>              max_criteria)</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>{</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> criterion_id = 0; criterion_id &lt; max_criteria; criterion_id++)</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    {</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>      <span class="comment">// For linear solves</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>      std::string subsection_text =</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        <span class="stringliteral">&quot;linear solver parameters: &quot;</span> + std::to_string(criterion_id);</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>      parameter_handler.enter_subsection(subsection_text);</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>      {</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        std::vector&lt;int&gt; solver_ids = dealii::Utilities::string_to_int(</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>          dealii::Utilities::split_string_list(parameter_handler.get(<span class="stringliteral">&quot;solver_ids&quot;</span>)));</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>        <a class="code hl_struct" href="structLinearSolverParameters.html">LinearSolverParameters</a> linear_solver_parameters;</div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>        <span class="comment">// Set the tolerance type</span></div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        <span class="keyword">static</span> <span class="keyword">const</span> std::map&lt;std::string, SolverToleranceType&gt; tolerance_types = {</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>          {<span class="stringliteral">&quot;AbsoluteResidual&quot;</span>,   <a class="code hl_enumvalue" href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a8a7b4434d8968e3e5ee9910b43a1a4a0">AbsoluteResidual</a>  },</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>          {<span class="stringliteral">&quot;RMSEPerField&quot;</span>,       <a class="code hl_enumvalue" href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a429ddc9697410939181b58898469d8a9">RMSEPerField</a>      },</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>          {<span class="stringliteral">&quot;IntegratedPerField&quot;</span>, <a class="code hl_enumvalue" href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700ad78fca036136942a30423b5f23c53ac2">IntegratedPerField</a>},</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>          {<span class="stringliteral">&quot;RMSETotal&quot;</span>,          <a class="code hl_enumvalue" href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a97a89bb2ce90ae05d35fc96471c3d33c">RMSETotal</a>         },</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>          {<span class="stringliteral">&quot;IntegratedTotal&quot;</span>,    <a class="code hl_enumvalue" href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a4c2ac2bcb88e4a20e5a6310bbc39a294">IntegratedTotal</a>   },</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>        };</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        <span class="keyword">const</span> std::string type_string = parameter_handler.get(<span class="stringliteral">&quot;tolerance type&quot;</span>);</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        <span class="keyword">const</span> <span class="keyword">auto</span>       &amp;iter        = tolerance_types.find(type_string);</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        <span class="keywordflow">if</span> (iter != tolerance_types.end())</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>          {</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>            linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a5c94596720e70821dda70f423a422680">tolerance_type</a> = iter-&gt;second;</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>          }</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>        <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>          {</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>            AssertThrow(<span class="keyword">false</span>,</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>                        dealii::ExcMessage(<span class="stringliteral">&quot;Invalid tolerance type: &quot;</span> + type_string));</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>          }</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>        <span class="comment">// Set the tolerance value</span></div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>        linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a35d761b1365ce4b7104fcb9d2349cf76">tolerance</a> =</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>          parameter_handler.get_double(<span class="stringliteral">&quot;tolerance value&quot;</span>);</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>        <span class="comment">// Set the maximum number of iterations</span></div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>        linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a009eb184b311853eb752e173b2c7999c">max_iterations</a> =</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>          <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(parameter_handler.get_integer(<span class="stringliteral">&quot;max iterations&quot;</span>));</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span> </div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>        <span class="comment">// Set preconditioner type and related parameters</span></div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>        <span class="keyword">static</span> <span class="keyword">const</span> std::map&lt;std::string, PreconditionerType&gt; preconditioner_map = {</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>          {<span class="stringliteral">&quot;None&quot;</span>,      <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bac9d3e887722f2bc482bcca9d41c512af">None</a>     },</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>          {<span class="stringliteral">&quot;none&quot;</span>,      <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bac9d3e887722f2bc482bcca9d41c512af">None</a>     },</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>          {<span class="stringliteral">&quot;&quot;</span>,          <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bac9d3e887722f2bc482bcca9d41c512af">None</a>     },</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>          {<span class="stringliteral">&quot;Chebyshev&quot;</span>, <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700baa533459c08077e92f289693540d77e6a">Chebyshev</a>},</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>          {<span class="stringliteral">&quot;chebyshev&quot;</span>, <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700baa533459c08077e92f289693540d77e6a">Chebyshev</a>},</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>          {<span class="stringliteral">&quot;GMG&quot;</span>,       <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bae1fe899e8d7d383afcd7fddaf2399c53">GMG</a>      },</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>          {<span class="stringliteral">&quot;gmg&quot;</span>,       <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bae1fe899e8d7d383afcd7fddaf2399c53">GMG</a>      }</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>        };</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>        linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a7ce3a6e58fc1f327502450351cb1a986">preconditioner</a> =</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>          preconditioner_map.at(parameter_handler.get(<span class="stringliteral">&quot;preconditioner type&quot;</span>));</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;Chebyshev&quot;</span>);</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>        {</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a5fc96be612df55d4a3061a7715db3df2">chebyshev_parameters</a>.degree =</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>            <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(parameter_handler.get_integer(<span class="stringliteral">&quot;smoother degree&quot;</span>));</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a5fc96be612df55d4a3061a7715db3df2">chebyshev_parameters</a>.smoothing_range =</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>            parameter_handler.get_double(<span class="stringliteral">&quot;smoothing range&quot;</span>);</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a5fc96be612df55d4a3061a7715db3df2">chebyshev_parameters</a>.eig_cg_n_iterations =</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>            <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>              parameter_handler.get_integer(<span class="stringliteral">&quot;eigenvalue cg iterations&quot;</span>));</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>        }</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>        parameter_handler.leave_subsection();</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;Richardson&quot;</span>);</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>        {</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#ab9c8dea40aa9980414ad69d19b9d5c7b">richardson_parameters</a>.omega =</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>            parameter_handler.get_double(<span class="stringliteral">&quot;omega&quot;</span>);</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#ab9c8dea40aa9980414ad69d19b9d5c7b">richardson_parameters</a>.use_preconditioned_residual =</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>            parameter_handler.get_bool(<span class="stringliteral">&quot;use preconditioned residual&quot;</span>);</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>        }</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>        parameter_handler.leave_subsection();</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;BiCGStab&quot;</span>);</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>        {</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#aad1f05f97ed320cb77fb3cf0d67bd864">bicgstab_parameters</a>.exact_residual =</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>            parameter_handler.get_bool(<span class="stringliteral">&quot;exact residual&quot;</span>);</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#aad1f05f97ed320cb77fb3cf0d67bd864">bicgstab_parameters</a>.breakdown =</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>            parameter_handler.get_double(<span class="stringliteral">&quot;breakdown&quot;</span>);</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>        }</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>        parameter_handler.leave_subsection();</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;GMRES&quot;</span>);</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>        {</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>          <span class="keyword">using </span>OStrat = dealii::LinearAlgebra::OrthogonalizationStrategy;</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>          <span class="keyword">static</span> <span class="keyword">const</span> std::map&lt;std::string, OStrat&gt; orthogonalization_strategy_names = {</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>            {<span class="stringliteral">&quot;classical_gram_schmidt&quot;</span>,         OStrat::classical_gram_schmidt        },</div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>            {<span class="stringliteral">&quot;modified_gram_schmidt&quot;</span>,          OStrat::modified_gram_schmidt         },</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>            {<span class="stringliteral">&quot;delayed_classical_gram_schmidt&quot;</span>, OStrat::delayed_classical_gram_schmidt}</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>          };</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a4adc712bba3f460180a7942902cb00a4">gmres_parameters</a>.orthogonalization_strategy =</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>            orthogonalization_strategy_names.at(</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>              parameter_handler.get(<span class="stringliteral">&quot;orthogonalization strategy&quot;</span>));</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a4adc712bba3f460180a7942902cb00a4">gmres_parameters</a>.right_preconditioning =</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>            parameter_handler.get_bool(<span class="stringliteral">&quot;right preconditioning&quot;</span>);</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a4adc712bba3f460180a7942902cb00a4">gmres_parameters</a>.use_default_residual =</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>            parameter_handler.get_bool(<span class="stringliteral">&quot;use default residual&quot;</span>);</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a4adc712bba3f460180a7942902cb00a4">gmres_parameters</a>.force_re_orthogonalization =</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>            parameter_handler.get_bool(<span class="stringliteral">&quot;force re-orthogonalization&quot;</span>);</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a4adc712bba3f460180a7942902cb00a4">gmres_parameters</a>.batched_mode =</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>            parameter_handler.get_bool(<span class="stringliteral">&quot;batched mode&quot;</span>);</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>        }</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>        parameter_handler.leave_subsection();</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span> </div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>        linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a2bace2f96efd6f8d66ebd2f4204472a3">min_mg_level</a> =</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>          <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(parameter_handler.get_integer(<span class="stringliteral">&quot;min mg level&quot;</span>));</div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> solver_id : solver_ids)</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>          {</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>            <a class="code hl_variable" href="structLinearSolveParameters.html#a4b44ec09435ecabcb72b8660b25aa55f">linear_solvers</a>[<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(solver_id)] =</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>              linear_solver_parameters;</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>          }</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>      }</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>      parameter_handler.leave_subsection();</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    }</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>}</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>        <span class="comment">// Set the linear solver type</span></div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a8f5d5c47c7a548b36a51b510e47fc2aa">solver_type</a> = parameter_handler.get(<span class="stringliteral">&quot;solver type&quot;</span>);</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>        <span class="comment">// Set the tolerance type</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>        <span class="keyword">static</span> <span class="keyword">const</span> std::map&lt;std::string, SolverToleranceType&gt; tolerance_types = {</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>          {<span class="stringliteral">&quot;AbsoluteResidual&quot;</span>,   <a class="code hl_enumvalue" href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a8a7b4434d8968e3e5ee9910b43a1a4a0">AbsoluteResidual</a>  },</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>          {<span class="stringliteral">&quot;RMSEPerField&quot;</span>,       <a class="code hl_enumvalue" href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a429ddc9697410939181b58898469d8a9">RMSEPerField</a>      },</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>          {<span class="stringliteral">&quot;IntegratedPerField&quot;</span>, <a class="code hl_enumvalue" href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700ad78fca036136942a30423b5f23c53ac2">IntegratedPerField</a>},</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>          {<span class="stringliteral">&quot;RMSETotal&quot;</span>,          <a class="code hl_enumvalue" href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a97a89bb2ce90ae05d35fc96471c3d33c">RMSETotal</a>         },</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>          {<span class="stringliteral">&quot;IntegratedTotal&quot;</span>,    <a class="code hl_enumvalue" href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a4c2ac2bcb88e4a20e5a6310bbc39a294">IntegratedTotal</a>   },</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        };</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>        <span class="keyword">const</span> std::string type_string = parameter_handler.get(<span class="stringliteral">&quot;tolerance type&quot;</span>);</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>        <span class="keyword">const</span> <span class="keyword">auto</span>       &amp;iter        = tolerance_types.find(type_string);</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>        <span class="keywordflow">if</span> (iter != tolerance_types.end())</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>          {</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>            linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a5c94596720e70821dda70f423a422680">tolerance_type</a> = iter-&gt;second;</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>          }</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>        <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>          {</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>            AssertThrow(<span class="keyword">false</span>,</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>                        dealii::ExcMessage(<span class="stringliteral">&quot;Invalid tolerance type: &quot;</span> + type_string));</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>          }</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> </div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>        <span class="comment">// Set the tolerance value</span></div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>        linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a35d761b1365ce4b7104fcb9d2349cf76">tolerance</a> =</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>          parameter_handler.get_double(<span class="stringliteral">&quot;tolerance value&quot;</span>);</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span> </div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>        <span class="comment">// Set the maximum number of iterations</span></div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>        linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a009eb184b311853eb752e173b2c7999c">max_iterations</a> =</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>          <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(parameter_handler.get_integer(<span class="stringliteral">&quot;max iterations&quot;</span>));</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span> </div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>        <span class="comment">// Set preconditioner type and related parameters</span></div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>        <span class="keyword">static</span> <span class="keyword">const</span> std::map&lt;std::string, PreconditionerType&gt; preconditioner_map = {</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>          {<span class="stringliteral">&quot;None&quot;</span>,      <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bac9d3e887722f2bc482bcca9d41c512af">None</a>     },</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>          {<span class="stringliteral">&quot;none&quot;</span>,      <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bac9d3e887722f2bc482bcca9d41c512af">None</a>     },</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>          {<span class="stringliteral">&quot;&quot;</span>,          <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bac9d3e887722f2bc482bcca9d41c512af">None</a>     },</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>          {<span class="stringliteral">&quot;Chebyshev&quot;</span>, <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700baa533459c08077e92f289693540d77e6a">Chebyshev</a>},</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>          {<span class="stringliteral">&quot;chebyshev&quot;</span>, <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700baa533459c08077e92f289693540d77e6a">Chebyshev</a>},</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>          {<span class="stringliteral">&quot;GMG&quot;</span>,       <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bae1fe899e8d7d383afcd7fddaf2399c53">GMG</a>      },</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>          {<span class="stringliteral">&quot;gmg&quot;</span>,       <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bae1fe899e8d7d383afcd7fddaf2399c53">GMG</a>      },</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>          {<span class="stringliteral">&quot;MG&quot;</span>,        <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bae1fe899e8d7d383afcd7fddaf2399c53">GMG</a>      },</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>          {<span class="stringliteral">&quot;mg&quot;</span>,        <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bae1fe899e8d7d383afcd7fddaf2399c53">GMG</a>      },</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>          {<span class="stringliteral">&quot;multigrid&quot;</span>, <a class="code hl_enumvalue" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bae1fe899e8d7d383afcd7fddaf2399c53">GMG</a>      }</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>        };</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>        linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a7ce3a6e58fc1f327502450351cb1a986">preconditioner</a> =</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>          preconditioner_map.at(parameter_handler.get(<span class="stringliteral">&quot;preconditioner type&quot;</span>));</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;Chebyshev&quot;</span>);</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>        {</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a5fc96be612df55d4a3061a7715db3df2">chebyshev_parameters</a>.degree =</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>            <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(parameter_handler.get_integer(<span class="stringliteral">&quot;smoother degree&quot;</span>));</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span> </div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a5fc96be612df55d4a3061a7715db3df2">chebyshev_parameters</a>.smoothing_range =</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>            parameter_handler.get_double(<span class="stringliteral">&quot;smoothing range&quot;</span>);</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span> </div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a5fc96be612df55d4a3061a7715db3df2">chebyshev_parameters</a>.eig_cg_n_iterations =</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>            <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>              parameter_handler.get_integer(<span class="stringliteral">&quot;eigenvalue cg iterations&quot;</span>));</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>        }</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>        parameter_handler.leave_subsection();</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;Richardson&quot;</span>);</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>        {</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#ab9c8dea40aa9980414ad69d19b9d5c7b">richardson_parameters</a>.omega =</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>            parameter_handler.get_double(<span class="stringliteral">&quot;omega&quot;</span>);</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#ab9c8dea40aa9980414ad69d19b9d5c7b">richardson_parameters</a>.use_preconditioned_residual =</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>            parameter_handler.get_bool(<span class="stringliteral">&quot;use preconditioned residual&quot;</span>);</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>        }</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>        parameter_handler.leave_subsection();</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;BiCGStab&quot;</span>);</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>        {</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#aad1f05f97ed320cb77fb3cf0d67bd864">bicgstab_parameters</a>.exact_residual =</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>            parameter_handler.get_bool(<span class="stringliteral">&quot;exact residual&quot;</span>);</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#aad1f05f97ed320cb77fb3cf0d67bd864">bicgstab_parameters</a>.breakdown =</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>            parameter_handler.get_double(<span class="stringliteral">&quot;breakdown&quot;</span>);</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>        }</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>        parameter_handler.leave_subsection();</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>        parameter_handler.enter_subsection(<span class="stringliteral">&quot;GMRES&quot;</span>);</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>        {</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>          <span class="keyword">using </span>OStrat = dealii::LinearAlgebra::OrthogonalizationStrategy;</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>          <span class="keyword">static</span> <span class="keyword">const</span> std::map&lt;std::string, OStrat&gt; orthogonalization_strategy_names = {</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>            {<span class="stringliteral">&quot;classical_gram_schmidt&quot;</span>,         OStrat::classical_gram_schmidt        },</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>            {<span class="stringliteral">&quot;modified_gram_schmidt&quot;</span>,          OStrat::modified_gram_schmidt         },</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>            {<span class="stringliteral">&quot;delayed_classical_gram_schmidt&quot;</span>, OStrat::delayed_classical_gram_schmidt}</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>          };</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a4adc712bba3f460180a7942902cb00a4">gmres_parameters</a>.orthogonalization_strategy =</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>            orthogonalization_strategy_names.at(</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>              parameter_handler.get(<span class="stringliteral">&quot;orthogonalization strategy&quot;</span>));</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a4adc712bba3f460180a7942902cb00a4">gmres_parameters</a>.right_preconditioning =</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>            parameter_handler.get_bool(<span class="stringliteral">&quot;right preconditioning&quot;</span>);</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a4adc712bba3f460180a7942902cb00a4">gmres_parameters</a>.use_default_residual =</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>            parameter_handler.get_bool(<span class="stringliteral">&quot;use default residual&quot;</span>);</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a4adc712bba3f460180a7942902cb00a4">gmres_parameters</a>.force_re_orthogonalization =</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>            parameter_handler.get_bool(<span class="stringliteral">&quot;force re-orthogonalization&quot;</span>);</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>          linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#a4adc712bba3f460180a7942902cb00a4">gmres_parameters</a>.batched_mode =</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>            parameter_handler.get_bool(<span class="stringliteral">&quot;batched mode&quot;</span>);</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>        }</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>        parameter_handler.leave_subsection();</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>        linear_solver_parameters.<a class="code hl_variable" href="structLinearSolverParameters.html#ad5dab9c9ee42896193462d216ba65c5d">mg_depth</a> =</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>          <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(parameter_handler.get_integer(<span class="stringliteral">&quot;mg depth&quot;</span>));</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> solver_id : solver_ids)</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>          {</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>            <a class="code hl_variable" href="structLinearSolveParameters.html#a4b44ec09435ecabcb72b8660b25aa55f">linear_solvers</a>[<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(solver_id)] =</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>              linear_solver_parameters;</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>          }</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>      }</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>      parameter_handler.leave_subsection();</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    }</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>}</div>
 </div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span> </div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span> </div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassConditionalOStreams_html_a87641f73b77523eb7814a0a0397cfa94"><div class="ttname"><a href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:35</div></div>
 <div class="ttc" id="aconditional__ostreams_8h_html"><div class="ttname"><a href="conditional__ostreams_8h.html">conditional_ostreams.h</a></div></div>
 <div class="ttc" id="anamespaceDefaults_html_a4cf6f3f53f9733c155e9c2f5e083d83b"><div class="ttname"><a href="namespaceDefaults.html#a4cf6f3f53f9733c155e9c2f5e083d83b">Defaults::iterations</a></div><div class="ttdeci">static const unsigned int iterations</div><div class="ttdoc">Default iterations.</div><div class="ttdef"><b>Definition</b> types.h:67</div></div>
@@ -518,12 +524,11 @@ $(function(){initNavTree('linear__solve__parameters_8h_source.html',''); initRes
 <div class="ttc" id="astructLinearSolveParameters_html"><div class="ttname"><a href="structLinearSolveParameters.html">LinearSolveParameters</a></div><div class="ttdoc">Struct that holds linear solver parameters.</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:62</div></div>
 <div class="ttc" id="astructLinearSolveParameters_html_a1d5d938fc56fdfe107cbdc30fb0ec27c"><div class="ttname"><a href="structLinearSolveParameters.html#a1d5d938fc56fdfe107cbdc30fb0ec27c">LinearSolveParameters::validate</a></div><div class="ttdeci">void validate()</div><div class="ttdoc">Postprocess and validate parameters.</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:94</div></div>
 <div class="ttc" id="astructLinearSolveParameters_html_a4b44ec09435ecabcb72b8660b25aa55f"><div class="ttname"><a href="structLinearSolveParameters.html#a4b44ec09435ecabcb72b8660b25aa55f">LinearSolveParameters::linear_solvers</a></div><div class="ttdeci">std::map&lt; unsigned int, LinearSolverParameters &gt; linear_solvers</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:90</div></div>
-<div class="ttc" id="astructLinearSolveParameters_html_a60020933352c9ccb32b3bbf298f58a97"><div class="ttname"><a href="structLinearSolveParameters.html#a60020933352c9ccb32b3bbf298f58a97">LinearSolveParameters::assign_parameters</a></div><div class="ttdeci">void assign_parameters(dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5)</div><div class="ttdoc">Assign the parameters read from an input file to this object.</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:271</div></div>
+<div class="ttc" id="astructLinearSolveParameters_html_a60020933352c9ccb32b3bbf298f58a97"><div class="ttname"><a href="structLinearSolveParameters.html#a60020933352c9ccb32b3bbf298f58a97">LinearSolveParameters::assign_parameters</a></div><div class="ttdeci">void assign_parameters(dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5)</div><div class="ttdoc">Assign the parameters read from an input file to this object.</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:274</div></div>
 <div class="ttc" id="astructLinearSolveParameters_html_ab17d374849a9c2d5596de791fd8b25fb"><div class="ttname"><a href="structLinearSolveParameters.html#ab17d374849a9c2d5596de791fd8b25fb">LinearSolveParameters::print_parameter_summary</a></div><div class="ttdeci">void print_parameter_summary() const</div><div class="ttdoc">Print parameters to summary.log.</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:100</div></div>
 <div class="ttc" id="astructLinearSolveParameters_html_ab781f43157fc9b24c0c9b6e4904cfcba"><div class="ttname"><a href="structLinearSolveParameters.html#ab781f43157fc9b24c0c9b6e4904cfcba">LinearSolveParameters::declare_parameters</a></div><div class="ttdeci">void declare_parameters(dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5) const</div><div class="ttdoc">Declare the parameters to be read from an input file.</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:130</div></div>
 <div class="ttc" id="astructLinearSolverParameters_html"><div class="ttname"><a href="structLinearSolverParameters.html">LinearSolverParameters</a></div><div class="ttdoc">Struct that stores relevant linear solve information of a certain solve block.</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:25</div></div>
 <div class="ttc" id="astructLinearSolverParameters_html_a009eb184b311853eb752e173b2c7999c"><div class="ttname"><a href="structLinearSolverParameters.html#a009eb184b311853eb752e173b2c7999c">LinearSolverParameters::max_iterations</a></div><div class="ttdeci">unsigned int max_iterations</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:36</div></div>
-<div class="ttc" id="astructLinearSolverParameters_html_a2bace2f96efd6f8d66ebd2f4204472a3"><div class="ttname"><a href="structLinearSolverParameters.html#a2bace2f96efd6f8d66ebd2f4204472a3">LinearSolverParameters::min_mg_level</a></div><div class="ttdeci">unsigned int min_mg_level</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:55</div></div>
 <div class="ttc" id="astructLinearSolverParameters_html_a35d761b1365ce4b7104fcb9d2349cf76"><div class="ttname"><a href="structLinearSolverParameters.html#a35d761b1365ce4b7104fcb9d2349cf76">LinearSolverParameters::tolerance</a></div><div class="ttdeci">double tolerance</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:30</div></div>
 <div class="ttc" id="astructLinearSolverParameters_html_a4adc712bba3f460180a7942902cb00a4"><div class="ttname"><a href="structLinearSolverParameters.html#a4adc712bba3f460180a7942902cb00a4">LinearSolverParameters::gmres_parameters</a></div><div class="ttdeci">dealii::SolverGMRES ::AdditionalData gmres_parameters</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:45</div></div>
 <div class="ttc" id="astructLinearSolverParameters_html_a5c94596720e70821dda70f423a422680"><div class="ttname"><a href="structLinearSolverParameters.html#a5c94596720e70821dda70f423a422680">LinearSolverParameters::tolerance_type</a></div><div class="ttdeci">SolverToleranceType tolerance_type</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:33</div></div>
@@ -532,6 +537,7 @@ $(function(){initNavTree('linear__solve__parameters_8h_source.html',''); initRes
 <div class="ttc" id="astructLinearSolverParameters_html_a8f5d5c47c7a548b36a51b510e47fc2aa"><div class="ttname"><a href="structLinearSolverParameters.html#a8f5d5c47c7a548b36a51b510e47fc2aa">LinearSolverParameters::solver_type</a></div><div class="ttdeci">std::string solver_type</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:27</div></div>
 <div class="ttc" id="astructLinearSolverParameters_html_aad1f05f97ed320cb77fb3cf0d67bd864"><div class="ttname"><a href="structLinearSolverParameters.html#aad1f05f97ed320cb77fb3cf0d67bd864">LinearSolverParameters::bicgstab_parameters</a></div><div class="ttdeci">dealii::SolverBicgstab ::AdditionalData bicgstab_parameters</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:44</div></div>
 <div class="ttc" id="astructLinearSolverParameters_html_ab9c8dea40aa9980414ad69d19b9d5c7b"><div class="ttname"><a href="structLinearSolverParameters.html#ab9c8dea40aa9980414ad69d19b9d5c7b">LinearSolverParameters::richardson_parameters</a></div><div class="ttdeci">dealii::SolverRichardson ::AdditionalData richardson_parameters</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:43</div></div>
+<div class="ttc" id="astructLinearSolverParameters_html_ad5dab9c9ee42896193462d216ba65c5d"><div class="ttname"><a href="structLinearSolverParameters.html#ad5dab9c9ee42896193462d216ba65c5d">LinearSolverParameters::mg_depth</a></div><div class="ttdeci">unsigned int mg_depth</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:55</div></div>
 <div class="ttc" id="atype__enums_8h_html"><div class="ttname"><a href="type__enums_8h.html">type_enums.h</a></div></div>
 <div class="ttc" id="atype__enums_8h_html_a2658de27ec5c27a74fb176ec89d8c700"><div class="ttname"><a href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700">SolverToleranceType</a></div><div class="ttdeci">SolverToleranceType</div><div class="ttdoc">Solver tolerance type.</div><div class="ttdef"><b>Definition</b> type_enums.h:112</div></div>
 <div class="ttc" id="atype__enums_8h_html_a2658de27ec5c27a74fb176ec89d8c700a429ddc9697410939181b58898469d8a9"><div class="ttname"><a href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a429ddc9697410939181b58898469d8a9">RMSEPerField</a></div><div class="ttdeci">@ RMSEPerField</div><div class="ttdoc">The mean local error averaged over each field is lower than the tolerance.</div><div class="ttdef"><b>Definition</b> type_enums.h:124</div></div>

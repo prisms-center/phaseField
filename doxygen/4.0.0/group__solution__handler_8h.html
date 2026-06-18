@@ -121,8 +121,7 @@ $(function(){initNavTree('group__solution__handler_8h.html',''); initResizable(t
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle"><div class="title">group_solution_handler.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -131,9 +130,13 @@ $(function(){initNavTree('group__solution__handler_8h.html',''); initResizable(t
 <code>#include &lt;deal.II/lac/la_parallel_block_vector.h&gt;</code><br />
 <code>#include &lt;deal.II/lac/la_parallel_vector.h&gt;</code><br />
 <code>#include &lt;deal.II/matrix_free/matrix_free.h&gt;</code><br />
+<code>#include &lt;deal.II/multigrid/mg_transfer_global_coarsening.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="conditional__ostreams_8h_source.html">prismspf/core/conditional_ostreams.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="constraint__manager_8h_source.html">prismspf/core/constraint_manager.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="dependency__extents_8h_source.html">prismspf/core/dependency_extents.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="dof__manager_8h_source.html">prismspf/core/dof_manager.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="field__attributes_8h_source.html">prismspf/core/field_attributes.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="matrix__free__manager_8h_source.html">prismspf/core/matrix_free_manager.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="solve__block_8h_source.html">prismspf/core/solve_block.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="type__enums_8h_source.html">prismspf/core/type_enums.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="types_8h_source.html">prismspf/core/types.h</a>&gt;</code><br />
@@ -142,12 +145,12 @@ $(function(){initNavTree('group__solution__handler_8h.html',''); initResizable(t
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for group_solution_handler.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__solution__handler_8h__incl.svg" width="4720" height="780"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__solution__handler_8h__incl.svg" width="4779" height="872"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__solution__handler_8h__dep__incl.svg" width="1643" height="966"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__solution__handler_8h__dep__incl.svg" width="1494" height="966"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="group__solution__handler_8h_source.html">Go to the source code of this file.</a></p>
@@ -160,55 +163,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler&lt; dim, number &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class that manages solution initialization and swapping with old solutions.  <a href="classGroupSolutionHandler.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ac3c985dc29b3bf1104df7ebd51bc7c15" id="r_ac3c985dc29b3bf1104df7ebd51bc7c15"><td class="memTemplParams" colspan="2">template&lt;typename number&gt; </td></tr>
-<tr class="memitem:ac3c985dc29b3bf1104df7ebd51bc7c15"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a> = dealii::LinearAlgebra::distributed::BlockVector&lt;number&gt;</td></tr>
-<tr class="memdesc:ac3c985dc29b3bf1104df7ebd51bc7c15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typedef for solution block vector.  <br /></td></tr>
-<tr class="separator:ac3c985dc29b3bf1104df7ebd51bc7c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34eeef510d886fdd12be13504c2d932a" id="r_a34eeef510d886fdd12be13504c2d932a"><td class="memTemplParams" colspan="2">template&lt;typename number&gt; </td></tr>
-<tr class="memitem:a34eeef510d886fdd12be13504c2d932a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a> = typename <a class="el" href="#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt;::BlockType</td></tr>
-<tr class="memdesc:a34eeef510d886fdd12be13504c2d932a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typedef for solution vector.  <br /></td></tr>
-<tr class="separator:a34eeef510d886fdd12be13504c2d932a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="ac3c985dc29b3bf1104df7ebd51bc7c15" name="ac3c985dc29b3bf1104df7ebd51bc7c15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3c985dc29b3bf1104df7ebd51bc7c15">&#9670;&#160;</a></span>BlockVector</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename number&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a> = dealii::LinearAlgebra::distributed::BlockVector&lt;number&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Typedef for solution block vector. </p>
-
-</div>
-</div>
-<a id="a34eeef510d886fdd12be13504c2d932a" name="a34eeef510d886fdd12be13504c2d932a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34eeef510d886fdd12be13504c2d932a">&#9670;&#160;</a></span>SolutionVector</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename number&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a> = typename <a class="el" href="#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt;::BlockType</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Typedef for solution vector. </p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

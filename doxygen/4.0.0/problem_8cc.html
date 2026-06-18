@@ -121,6 +121,7 @@ $(function(){initNavTree('problem_8cc.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">problem.cc File Reference</div></div>
 </div><!--header-->
@@ -141,85 +142,36 @@ $(function(){initNavTree('problem_8cc.html',''); initResizable(true); });
 <code>#include &lt;<a class="el" href="linear__solve__parameters_8h_source.html">prismspf/user_inputs/linear_solve_parameters.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="temporal__discretization_8h_source.html">prismspf/user_inputs/temporal_discretization.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="user__input__parameters_8h_source.html">prismspf/user_inputs/user_input_parameters.h</a>&gt;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;filesystem&gt;</code><br />
 <code>#include &quot;core/problem.inst&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for problem.cc:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="problem_8cc__incl.svg" width="4568" height="1227"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="problem_8cc__incl.svg" width="4576" height="1210"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a8d4dad407df2092eb0cb751ee879200a" id="r_a8d4dad407df2092eb0cb751ee879200a"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, unsigned int degree, typename number&gt; </td></tr>
-<tr class="memitem:a8d4dad407df2092eb0cb751ee879200a"><td class="memTemplItemLeft" align="right" valign="top">PRISMS_PF_BEGIN_NAMESPACE std::vector&lt; std::shared_ptr&lt; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; dim, degree, number &gt; &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a8d4dad407df2092eb0cb751ee879200a">make_solvers</a> (const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;solve_blocks, const <a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt; &amp;solve_context)</td></tr>
-<tr class="separator:a8d4dad407df2092eb0cb751ee879200a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5bb230fd67a6b08af2cd88ee016b380" id="r_ac5bb230fd67a6b08af2cd88ee016b380"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d">DependencyMap</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5bb230fd67a6b08af2cd88ee016b380">get_all_dependency_sets</a> (const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;solve_blocks)</td></tr>
-<tr class="separator:ac5bb230fd67a6b08af2cd88ee016b380"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a436493d2c1825825fec356a3634ed9ae" id="r_a436493d2c1825825fec356a3634ed9ae"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, unsigned int degree, typename number&gt; </td></tr>
-<tr class="memitem:a436493d2c1825825fec356a3634ed9ae"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt; * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a436493d2c1825825fec356a3634ed9ae">get_solution_managers_from_solvers</a> (const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; dim, degree, number &gt; &gt; &gt; &amp;solvers)</td></tr>
-<tr class="separator:a436493d2c1825825fec356a3634ed9ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab982a006a8454dd8f42b631bd0ff9fb3" id="r_ab982a006a8454dd8f42b631bd0ff9fb3"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, unsigned int degree, typename number&gt; </td></tr>
+<tr class="memitem:ab982a006a8454dd8f42b631bd0ff9fb3"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; dim, degree, number &gt; &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html#ab982a006a8454dd8f42b631bd0ff9fb3">PRISMS_PF_BEGIN_NAMESPACE::make_solvers</a> (const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;solve_blocks, const <a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt; &amp;solve_context)</td></tr>
+<tr class="separator:ab982a006a8454dd8f42b631bd0ff9fb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bacdf6abaaa28d80ce6931a88b42570" id="r_a3bacdf6abaaa28d80ce6931a88b42570"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d">DependencyMap</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html#a3bacdf6abaaa28d80ce6931a88b42570">PRISMS_PF_BEGIN_NAMESPACE::get_all_dependency_sets</a> (const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;solve_blocks)</td></tr>
+<tr class="separator:a3bacdf6abaaa28d80ce6931a88b42570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2629e8709141b71d677e61415ab3aef6" id="r_a2629e8709141b71d677e61415ab3aef6"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html#a2629e8709141b71d677e61415ab3aef6">PRISMS_PF_BEGIN_NAMESPACE::get_all_solve_blocks</a> (const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;solve_blocks)</td></tr>
+<tr class="separator:a2629e8709141b71d677e61415ab3aef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a015d58a5af330c144eb2afa118cc716a" id="r_a015d58a5af330c144eb2afa118cc716a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html#a015d58a5af330c144eb2afa118cc716a">PRISMS_PF_BEGIN_NAMESPACE::has_multigrid</a> (const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;solve_blocks)</td></tr>
+<tr class="memdesc:a015d58a5af330c144eb2afa118cc716a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if any solve block uses multigrid.  <br /></td></tr>
+<tr class="separator:a015d58a5af330c144eb2afa118cc716a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c9368e1d387c46a49a402ed0ced1cfb" id="r_a9c9368e1d387c46a49a402ed0ced1cfb"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, unsigned int degree, typename number&gt; </td></tr>
+<tr class="memitem:a9c9368e1d387c46a49a402ed0ced1cfb"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt; * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html#a9c9368e1d387c46a49a402ed0ced1cfb">PRISMS_PF_BEGIN_NAMESPACE::get_solution_managers_from_solvers</a> (const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; dim, degree, number &gt; &gt; &gt; &amp;solvers)</td></tr>
+<tr class="separator:a9c9368e1d387c46a49a402ed0ced1cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="ac5bb230fd67a6b08af2cd88ee016b380" name="ac5bb230fd67a6b08af2cd88ee016b380"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5bb230fd67a6b08af2cd88ee016b380">&#9670;&#160;</a></span>get_all_dependency_sets()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::list&lt; <a class="el" href="dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d">DependencyMap</a> &gt; get_all_dependency_sets </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>solve_blocks</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a436493d2c1825825fec356a3634ed9ae" name="a436493d2c1825825fec356a3634ed9ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a436493d2c1825825fec356a3634ed9ae">&#9670;&#160;</a></span>get_solution_managers_from_solvers()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt; * &gt; get_solution_managers_from_solvers </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; dim, degree, number &gt; &gt; &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>solvers</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a8d4dad407df2092eb0cb751ee879200a" name="a8d4dad407df2092eb0cb751ee879200a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d4dad407df2092eb0cb751ee879200a">&#9670;&#160;</a></span>make_solvers()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE std::vector&lt; std::shared_ptr&lt; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; dim, degree, number &gt; &gt; &gt; make_solvers </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>solve_blocks</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>solve_context</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

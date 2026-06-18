@@ -121,7 +121,8 @@ $(function(){initNavTree('constraint__manager_8h.html',''); initResizable(true);
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">constraint_manager.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -129,6 +130,7 @@ $(function(){initNavTree('constraint__manager_8h.html',''); initResizable(true);
 <code>#include &lt;deal.II/dofs/dof_handler.h&gt;</code><br />
 <code>#include &lt;deal.II/fe/mapping.h&gt;</code><br />
 <code>#include &lt;deal.II/lac/affine_constraints.h&gt;</code><br />
+<code>#include &lt;deal.II/multigrid/mg_constrained_dofs.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="dof__manager_8h_source.html">prismspf/core/dof_manager.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="field__attributes_8h_source.html">prismspf/core/field_attributes.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="solve__block_8h_source.html">prismspf/core/solve_block.h</a>&gt;</code><br />
@@ -140,12 +142,12 @@ $(function(){initNavTree('constraint__manager_8h.html',''); initResizable(true);
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for constraint_manager.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="constraint__manager_8h__incl.svg" width="4620" height="687"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="constraint__manager_8h__incl.svg" width="4410" height="687"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="constraint__manager_8h__dep__incl.svg" width="1852" height="1058"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="constraint__manager_8h__dep__incl.svg" width="1574" height="1151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="constraint__manager_8h_source.html">Go to the source code of this file.</a></p>
@@ -155,7 +157,76 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintManager.html">ConstraintManager&lt; dim, degree, number &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The class handles the generation and application of boundary conditions based on the user-inputs.  <a href="classConstraintManager.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ad943f27f751cca70e05172da70bffcdc" id="r_ad943f27f751cca70e05172da70bffcdc"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, unsigned int degree, typename number&gt; </td></tr>
+<tr class="memitem:ad943f27f751cca70e05172da70bffcdc"><td class="memTemplItemLeft" align="right" valign="top">const std::array&lt; dealii::ComponentMask, dim &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ad943f27f751cca70e05172da70bffcdc">ConstraintManager&lt; dim, degree, number &gt;::vector_component_mask</a></td></tr>
+<tr class="separator:ad943f27f751cca70e05172da70bffcdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9297b6224919bdeda61235d0b62f5e4" id="r_ad9297b6224919bdeda61235d0b62f5e4"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, unsigned int degree, typename number&gt; </td></tr>
+<tr class="memitem:ad9297b6224919bdeda61235d0b62f5e4"><td class="memTemplItemLeft" align="right" valign="top">const dealii::ComponentMask&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ad9297b6224919bdeda61235d0b62f5e4">ConstraintManager&lt; dim, degree, number &gt;::scalar_empty_mask</a> {}</td></tr>
+<tr class="separator:ad9297b6224919bdeda61235d0b62f5e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ad9297b6224919bdeda61235d0b62f5e4" name="ad9297b6224919bdeda61235d0b62f5e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9297b6224919bdeda61235d0b62f5e4">&#9670;&#160;</a></span>ConstraintManager&lt; dim, degree, number &gt;::scalar_empty_mask</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const dealii::ComponentMask <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt;::scalar_empty_mask {}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad943f27f751cca70e05172da70bffcdc" name="ad943f27f751cca70e05172da70bffcdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad943f27f751cca70e05172da70bffcdc">&#9670;&#160;</a></span>ConstraintManager&lt; dim, degree, number &gt;::vector_component_mask</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::array&lt;dealii::ComponentMask, dim&gt; <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt;::vector_component_mask</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= []()</div>
+<div class="line">{</div>
+<div class="line">  std::array&lt;dealii::ComponentMask, dim&gt; masks {};</div>
+<div class="line">  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dim; ++i)</div>
+<div class="line">    {</div>
+<div class="line">      dealii::ComponentMask temp_mask(dim, <span class="keyword">false</span>);</div>
+<div class="line">      temp_mask.set(i, <span class="keyword">true</span>);</div>
+<div class="line">      masks.at(i) = temp_mask;</div>
+<div class="line">    }</div>
+<div class="line">  <span class="keywordflow">return</span> masks;</div>
+<div class="line">}()</div>
+</div><!-- fragment -->
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

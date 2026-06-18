@@ -146,83 +146,89 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad50a68cf09b69e8d9a7766e69bac59fd" id="r_ad50a68cf09b69e8d9a7766e69bac59fd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad50a68cf09b69e8d9a7766e69bac59fd">GroupSolutionHandler</a> (<a class="el" href="classSolveBlock.html">SolveBlock</a> _solve_block, const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;_attributes_list, const std::vector&lt; MatrixFree&lt; dim, number &gt; &gt; &amp;_matrix_free_levels)</td></tr>
-<tr class="memdesc:ad50a68cf09b69e8d9a7766e69bac59fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
-<tr class="separator:ad50a68cf09b69e8d9a7766e69bac59fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a967cbb2ba0c3f28838cc873bbf1d5f4a" id="r_a967cbb2ba0c3f28838cc873bbf1d5f4a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a967cbb2ba0c3f28838cc873bbf1d5f4a">get_solution_full_vector</a> (unsigned int relative_level=0)</td></tr>
-<tr class="memdesc:a967cbb2ba0c3f28838cc873bbf1d5f4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solution vector set. This contains all the normal fields and is typically used for output.  <br /></td></tr>
-<tr class="separator:a967cbb2ba0c3f28838cc873bbf1d5f4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05a0764d47d40aa1af009f448ad1cada" id="r_a05a0764d47d40aa1af009f448ad1cada"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05a0764d47d40aa1af009f448ad1cada">get_solution_full_vector</a> (unsigned int relative_level=0) const</td></tr>
-<tr class="memdesc:a05a0764d47d40aa1af009f448ad1cada"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the const solution vector set. This contains all the normal fields and is typically used for output.  <br /></td></tr>
-<tr class="separator:a05a0764d47d40aa1af009f448ad1cada"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36d7fa2f0da4704a31009f4c61b186a7" id="r_a36d7fa2f0da4704a31009f4c61b186a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a36d7fa2f0da4704a31009f4c61b186a7">get_solution_vector</a> (unsigned int global_index, unsigned int relative_level=0)</td></tr>
-<tr class="memdesc:a36d7fa2f0da4704a31009f4c61b186a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a solution vector of a given field index.  <br /></td></tr>
-<tr class="separator:a36d7fa2f0da4704a31009f4c61b186a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a724f0e259e34b7cf2a92b5579921a5e2" id="r_a724f0e259e34b7cf2a92b5579921a5e2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a724f0e259e34b7cf2a92b5579921a5e2">get_solution_vector</a> (unsigned int global_index, unsigned int relative_level=0) const</td></tr>
-<tr class="memdesc:a724f0e259e34b7cf2a92b5579921a5e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a solution vector of a given field index.  <br /></td></tr>
-<tr class="separator:a724f0e259e34b7cf2a92b5579921a5e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4172ea3dd08845b3a62bf2e63e8af835" id="r_a4172ea3dd08845b3a62bf2e63e8af835"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4172ea3dd08845b3a62bf2e63e8af835">get_old_solution_full_vector</a> (unsigned int age, unsigned int relative_level=0)</td></tr>
-<tr class="memdesc:a4172ea3dd08845b3a62bf2e63e8af835"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the old solution vector set at a given age.  <br /></td></tr>
-<tr class="separator:a4172ea3dd08845b3a62bf2e63e8af835"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbca41487e2885aa6a345d214683111d" id="r_acbca41487e2885aa6a345d214683111d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acbca41487e2885aa6a345d214683111d">get_old_solution_full_vector</a> (unsigned int age, unsigned int relative_level=0) const</td></tr>
-<tr class="memdesc:acbca41487e2885aa6a345d214683111d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the old solution vector set at a given age.  <br /></td></tr>
-<tr class="separator:acbca41487e2885aa6a345d214683111d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2acb677c3d453a7bfac9075154672c6" id="r_ac2acb677c3d453a7bfac9075154672c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2acb677c3d453a7bfac9075154672c6">get_old_solution_vector</a> (unsigned int age, unsigned int global_index, unsigned int relative_level=0)</td></tr>
-<tr class="memdesc:ac2acb677c3d453a7bfac9075154672c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a solution vector of a given field index at a given age.  <br /></td></tr>
-<tr class="separator:ac2acb677c3d453a7bfac9075154672c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a197e6c65ca98c718206d6a9a62249adb" id="r_a197e6c65ca98c718206d6a9a62249adb"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a197e6c65ca98c718206d6a9a62249adb">get_old_solution_vector</a> (unsigned int age, unsigned int global_index, unsigned int relative_level=0) const</td></tr>
-<tr class="memdesc:a197e6c65ca98c718206d6a9a62249adb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a solution vector of a given field index at a given age.  <br /></td></tr>
-<tr class="separator:a197e6c65ca98c718206d6a9a62249adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66c6298030784807804d12410d4a4ab7" id="r_a66c6298030784807804d12410d4a4ab7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a66c6298030784807804d12410d4a4ab7">get_solution_level</a> (unsigned int relative_level=0)</td></tr>
-<tr class="memdesc:a66c6298030784807804d12410d4a4ab7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solutions object at a level.  <br /></td></tr>
-<tr class="separator:a66c6298030784807804d12410d4a4ab7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31e90d44e2713a190fc00778b329f3c8" id="r_a31e90d44e2713a190fc00778b329f3c8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31e90d44e2713a190fc00778b329f3c8">get_solution_level</a> (unsigned int relative_level=0) const</td></tr>
-<tr class="memdesc:a31e90d44e2713a190fc00778b329f3c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solutions object at a level.  <br /></td></tr>
-<tr class="separator:a31e90d44e2713a190fc00778b329f3c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0e3c9292f8a76558add897770d42dd8" id="r_ad0e3c9292f8a76558add897770d42dd8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad0e3c9292f8a76558add897770d42dd8">GroupSolutionHandler</a> (<a class="el" href="classSolveBlock.html">SolveBlock</a> _solve_block, const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;_attributes_list, const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; &amp;_matrix_free_manager)</td></tr>
+<tr class="memdesc:ad0e3c9292f8a76558add897770d42dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
+<tr class="separator:ad0e3c9292f8a76558add897770d42dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8daede9ed1d401c2adae3d291a07e7c0" id="r_a8daede9ed1d401c2adae3d291a07e7c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8daede9ed1d401c2adae3d291a07e7c0">get_solution_full_vector</a> ()</td></tr>
+<tr class="memdesc:a8daede9ed1d401c2adae3d291a07e7c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solution vector set. This contains all the normal fields and is typically used for output.  <br /></td></tr>
+<tr class="separator:a8daede9ed1d401c2adae3d291a07e7c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf2974258005c3a070a8d155d829ee76" id="r_adf2974258005c3a070a8d155d829ee76"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf2974258005c3a070a8d155d829ee76">get_solution_full_vector</a> () const</td></tr>
+<tr class="memdesc:adf2974258005c3a070a8d155d829ee76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the const solution vector set. This contains all the normal fields and is typically used for output.  <br /></td></tr>
+<tr class="separator:adf2974258005c3a070a8d155d829ee76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1be5c959b244fd7a46a56c95b6787ddb" id="r_a1be5c959b244fd7a46a56c95b6787ddb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1be5c959b244fd7a46a56c95b6787ddb">get_solution_vector</a> (unsigned int global_index)</td></tr>
+<tr class="memdesc:a1be5c959b244fd7a46a56c95b6787ddb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a solution vector of a given field index.  <br /></td></tr>
+<tr class="separator:a1be5c959b244fd7a46a56c95b6787ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8975905970acdc1fadd5e2ca42983d6f" id="r_a8975905970acdc1fadd5e2ca42983d6f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8975905970acdc1fadd5e2ca42983d6f">get_solution_vector</a> (unsigned int global_index) const</td></tr>
+<tr class="memdesc:a8975905970acdc1fadd5e2ca42983d6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a solution vector of a given field index.  <br /></td></tr>
+<tr class="separator:a8975905970acdc1fadd5e2ca42983d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b350d73b7499f6ceb54b8191152afc7" id="r_a2b350d73b7499f6ceb54b8191152afc7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b350d73b7499f6ceb54b8191152afc7">get_old_solution_full_vector</a> (unsigned int age)</td></tr>
+<tr class="memdesc:a2b350d73b7499f6ceb54b8191152afc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the old solution vector set at a given age.  <br /></td></tr>
+<tr class="separator:a2b350d73b7499f6ceb54b8191152afc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7130555a45e186bcaf5cd319a877fe9" id="r_aa7130555a45e186bcaf5cd319a877fe9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7130555a45e186bcaf5cd319a877fe9">get_old_solution_full_vector</a> (unsigned int age) const</td></tr>
+<tr class="memdesc:aa7130555a45e186bcaf5cd319a877fe9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the old solution vector set at a given age.  <br /></td></tr>
+<tr class="separator:aa7130555a45e186bcaf5cd319a877fe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad51a9cf7683625e12b4f7ad198b9781d" id="r_ad51a9cf7683625e12b4f7ad198b9781d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad51a9cf7683625e12b4f7ad198b9781d">get_old_solution_vector</a> (unsigned int age, unsigned int global_index)</td></tr>
+<tr class="memdesc:ad51a9cf7683625e12b4f7ad198b9781d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a solution vector of a given field index at a given age.  <br /></td></tr>
+<tr class="separator:ad51a9cf7683625e12b4f7ad198b9781d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dd2c44a9438a5595ef02d30ab11ef34" id="r_a5dd2c44a9438a5595ef02d30ab11ef34"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5dd2c44a9438a5595ef02d30ab11ef34">get_old_solution_vector</a> (unsigned int age, unsigned int global_index) const</td></tr>
+<tr class="memdesc:a5dd2c44a9438a5595ef02d30ab11ef34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a solution vector of a given field index at a given age.  <br /></td></tr>
+<tr class="separator:a5dd2c44a9438a5595ef02d30ab11ef34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a093d263e02d61a39b41122d0c9c13c13" id="r_a093d263e02d61a39b41122d0c9c13c13"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a093d263e02d61a39b41122d0c9c13c13">get_primary_solutions</a> ()</td></tr>
+<tr class="memdesc:a093d263e02d61a39b41122d0c9c13c13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solutions object at a level.  <br /></td></tr>
+<tr class="separator:a093d263e02d61a39b41122d0c9c13c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af76bac7eac72bd92b76f4e0b1786b207" id="r_af76bac7eac72bd92b76f4e0b1786b207"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af76bac7eac72bd92b76f4e0b1786b207">get_primary_solutions</a> () const</td></tr>
+<tr class="memdesc:af76bac7eac72bd92b76f4e0b1786b207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solutions object at a level.  <br /></td></tr>
+<tr class="separator:af76bac7eac72bd92b76f4e0b1786b207"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29dc5367ff6e928113ea316d419f0f50" id="r_a29dc5367ff6e928113ea316d419f0f50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29dc5367ff6e928113ea316d419f0f50">get_solution_level</a> (unsigned int relative_level=-1)</td></tr>
+<tr class="memdesc:a29dc5367ff6e928113ea316d419f0f50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solutions object at a level.  <br /></td></tr>
+<tr class="separator:a29dc5367ff6e928113ea316d419f0f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd060e9b46a4c302ea37cdef72ccf17d" id="r_afd060e9b46a4c302ea37cdef72ccf17d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd060e9b46a4c302ea37cdef72ccf17d">get_solution_level</a> (unsigned int relative_level=-1) const</td></tr>
+<tr class="memdesc:afd060e9b46a4c302ea37cdef72ccf17d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solutions object at a level.  <br /></td></tr>
+<tr class="separator:afd060e9b46a4c302ea37cdef72ccf17d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80017ea8c86c834ae78e933d907141b7" id="r_a80017ea8c86c834ae78e933d907141b7"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; MatrixFree&lt; dim, number &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80017ea8c86c834ae78e933d907141b7">get_matrix_free_levels</a> () const</td></tr>
 <tr class="memdesc:a80017ea8c86c834ae78e933d907141b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the underlying matrix_free objects.  <br /></td></tr>
 <tr class="separator:a80017ea8c86c834ae78e933d907141b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0959621de3274cbaf56433f67fae7f9" id="r_af0959621de3274cbaf56433f67fae7f9"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0959621de3274cbaf56433f67fae7f9">get_block_index</a> (unsigned int global_index) const</td></tr>
 <tr class="memdesc:af0959621de3274cbaf56433f67fae7f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the block index from the global field index.  <br /></td></tr>
 <tr class="separator:af0959621de3274cbaf56433f67fae7f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a710ca7b9ecc6b65f3c69aaec96540f5d" id="r_a710ca7b9ecc6b65f3c69aaec96540f5d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSolveBlock.html">SolveBlock</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a710ca7b9ecc6b65f3c69aaec96540f5d">get_solve_block</a> () const</td></tr>
-<tr class="memdesc:a710ca7b9ecc6b65f3c69aaec96540f5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the underlying solve block object.  <br /></td></tr>
-<tr class="separator:a710ca7b9ecc6b65f3c69aaec96540f5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10085fd612636fd4d569f2db3d2ba288" id="r_a10085fd612636fd4d569f2db3d2ba288"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSolveBlock.html">SolveBlock</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a10085fd612636fd4d569f2db3d2ba288">get_solve_block</a> () const</td></tr>
+<tr class="memdesc:a10085fd612636fd4d569f2db3d2ba288"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the underlying solve block object.  <br /></td></tr>
+<tr class="separator:a10085fd612636fd4d569f2db3d2ba288"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae201c632cf3de029dcd6f175e45123b1" id="r_ae201c632cf3de029dcd6f175e45123b1"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; unsigned int &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae201c632cf3de029dcd6f175e45123b1">get_global_to_block_index</a> () const</td></tr>
 <tr class="memdesc:ae201c632cf3de029dcd6f175e45123b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the block index from the global index.  <br /></td></tr>
 <tr class="separator:ae201c632cf3de029dcd6f175e45123b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7df00460558844845b63e86bf716b221" id="r_a7df00460558844845b63e86bf716b221"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; unsigned int &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7df00460558844845b63e86bf716b221">get_block_to_global_index</a> () const</td></tr>
 <tr class="memdesc:a7df00460558844845b63e86bf716b221"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the global index from the block index.  <br /></td></tr>
 <tr class="separator:a7df00460558844845b63e86bf716b221"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0740fb13dd11234364a4bbbc9ef093ac" id="r_a0740fb13dd11234364a4bbbc9ef093ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0740fb13dd11234364a4bbbc9ef093ac">init</a> (unsigned int num_old_saved)</td></tr>
-<tr class="memdesc:a0740fb13dd11234364a4bbbc9ef093ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the solution set.  <br /></td></tr>
-<tr class="separator:a0740fb13dd11234364a4bbbc9ef093ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c4071fdce5b83de11587fbe05449025" id="r_a4c4071fdce5b83de11587fbe05449025"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c4071fdce5b83de11587fbe05449025">init</a> (const <a class="el" href="structNewDependencyExtents.html">NewDependencyExtents</a> &amp;extents)</td></tr>
+<tr class="memdesc:a4c4071fdce5b83de11587fbe05449025"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the solution set.  <br /></td></tr>
+<tr class="separator:a4c4071fdce5b83de11587fbe05449025"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d4f593868a98d0427a318e66e6fa00f" id="r_a4d4f593868a98d0427a318e66e6fa00f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d4f593868a98d0427a318e66e6fa00f">reinit</a> ()</td></tr>
 <tr class="memdesc:a4d4f593868a98d0427a318e66e6fa00f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize the solution set.  <br /></td></tr>
 <tr class="separator:a4d4f593868a98d0427a318e66e6fa00f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a717c138ec2317b4356aaf16b90b6dcdd" id="r_a717c138ec2317b4356aaf16b90b6dcdd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a717c138ec2317b4356aaf16b90b6dcdd">update_ghosts</a> (unsigned int relative_level=0) const</td></tr>
-<tr class="memdesc:a717c138ec2317b4356aaf16b90b6dcdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the ghost values.  <br /></td></tr>
-<tr class="separator:a717c138ec2317b4356aaf16b90b6dcdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a969c3eeed22dbe33613c92ec12400fdc" id="r_a969c3eeed22dbe33613c92ec12400fdc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a969c3eeed22dbe33613c92ec12400fdc">zero_out_ghosts</a> (unsigned int relative_level=0) const</td></tr>
-<tr class="memdesc:a969c3eeed22dbe33613c92ec12400fdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zero out the ghost values.  <br /></td></tr>
-<tr class="separator:a969c3eeed22dbe33613c92ec12400fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacb370c097f3e3aee4e49eaf47590ea4" id="r_aacb370c097f3e3aee4e49eaf47590ea4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aacb370c097f3e3aee4e49eaf47590ea4">apply_constraints</a> (unsigned int relative_level=0)</td></tr>
-<tr class="memdesc:aacb370c097f3e3aee4e49eaf47590ea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the constraints to the solution vector.  <br /></td></tr>
-<tr class="separator:aacb370c097f3e3aee4e49eaf47590ea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae54f3f990319fdee6d443cda201a8474" id="r_ae54f3f990319fdee6d443cda201a8474"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae54f3f990319fdee6d443cda201a8474">apply_constraints</a> (<a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;solution_vector, unsigned int relative_level=0)</td></tr>
-<tr class="memdesc:ae54f3f990319fdee6d443cda201a8474"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the constraints to another vector.  <br /></td></tr>
-<tr class="separator:ae54f3f990319fdee6d443cda201a8474"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cca78730bd60f5ae1aa506d911f9c58" id="r_a2cca78730bd60f5ae1aa506d911f9c58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2cca78730bd60f5ae1aa506d911f9c58">apply_constraints_to_all</a> (unsigned int relative_level)</td></tr>
-<tr class="memdesc:a2cca78730bd60f5ae1aa506d911f9c58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the given constraints to all the solution vectors, including old.  <br /></td></tr>
-<tr class="separator:a2cca78730bd60f5ae1aa506d911f9c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac606bab73c152df40d85cdfd81fe5f16" id="r_ac606bab73c152df40d85cdfd81fe5f16"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac606bab73c152df40d85cdfd81fe5f16">update_ghosts</a> () const</td></tr>
+<tr class="memdesc:ac606bab73c152df40d85cdfd81fe5f16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the ghost values.  <br /></td></tr>
+<tr class="separator:ac606bab73c152df40d85cdfd81fe5f16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbde226033b1b92dc63123c4fdf0f14b" id="r_abbde226033b1b92dc63123c4fdf0f14b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abbde226033b1b92dc63123c4fdf0f14b">zero_out_ghosts</a> () const</td></tr>
+<tr class="memdesc:abbde226033b1b92dc63123c4fdf0f14b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zero out the ghost values.  <br /></td></tr>
+<tr class="separator:abbde226033b1b92dc63123c4fdf0f14b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a695c2d6a7160f7db9799101c296776d8" id="r_a695c2d6a7160f7db9799101c296776d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a695c2d6a7160f7db9799101c296776d8">apply_constraints</a> ()</td></tr>
+<tr class="memdesc:a695c2d6a7160f7db9799101c296776d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the constraints to the solution vector.  <br /></td></tr>
+<tr class="separator:a695c2d6a7160f7db9799101c296776d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1569cac8baa50b33343a76de919cbbce" id="r_a1569cac8baa50b33343a76de919cbbce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1569cac8baa50b33343a76de919cbbce">apply_constraints</a> (<a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;solution_vectors)</td></tr>
+<tr class="memdesc:a1569cac8baa50b33343a76de919cbbce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the constraints to another vector.  <br /></td></tr>
+<tr class="separator:a1569cac8baa50b33343a76de919cbbce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c5ec82e8cb0d6c73beb5ef5b641d33d" id="r_a2c5ec82e8cb0d6c73beb5ef5b641d33d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c5ec82e8cb0d6c73beb5ef5b641d33d">apply_constraints_to_all</a> ()</td></tr>
+<tr class="memdesc:a2c5ec82e8cb0d6c73beb5ef5b641d33d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply the given constraints to all the solution vectors, including old.  <br /></td></tr>
+<tr class="separator:a2c5ec82e8cb0d6c73beb5ef5b641d33d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bdd92268192ca6f3790ec072aebc923" id="r_a8bdd92268192ca6f3790ec072aebc923"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8bdd92268192ca6f3790ec072aebc923">apply_initial_condition_for_old_fields</a> ()</td></tr>
 <tr class="memdesc:a8bdd92268192ca6f3790ec072aebc923"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply initial condition to the old fields. For now, this simply copies the values in the normal field to the old.  <br /></td></tr>
 <tr class="separator:a8bdd92268192ca6f3790ec072aebc923"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d5b8e388818074bdf30ed39a1528b63" id="r_a4d5b8e388818074bdf30ed39a1528b63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d5b8e388818074bdf30ed39a1528b63">update</a> (unsigned int relative_level=0)</td></tr>
-<tr class="memdesc:a4d5b8e388818074bdf30ed39a1528b63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update and propagate the old solutions.  <br /></td></tr>
-<tr class="separator:a4d5b8e388818074bdf30ed39a1528b63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ca433f8ea10e34fd33ae3053c457594" id="r_a1ca433f8ea10e34fd33ae3053c457594"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ca433f8ea10e34fd33ae3053c457594">update</a> ()</td></tr>
+<tr class="memdesc:a1ca433f8ea10e34fd33ae3053c457594"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update and propagate the old solutions.  <br /></td></tr>
+<tr class="separator:a1ca433f8ea10e34fd33ae3053c457594"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad59e8680a215f2a182a79cc4e014c82" id="r_aad59e8680a215f2a182a79cc4e014c82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad59e8680a215f2a182a79cc4e014c82">init_solution_transfer</a> ()</td></tr>
-<tr class="memdesc:aad59e8680a215f2a182a79cc4e014c82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinit the solution transfer objections.  <br /></td></tr>
+<tr class="memdesc:aad59e8680a215f2a182a79cc4e014c82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinit the solution transfer objects.  <br /></td></tr>
 <tr class="separator:aad59e8680a215f2a182a79cc4e014c82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7221007eaafaaf3931454c31019d554e" id="r_a7221007eaafaaf3931454c31019d554e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7221007eaafaaf3931454c31019d554e">prepare_for_solution_transfer</a> ()</td></tr>
 <tr class="memdesc:a7221007eaafaaf3931454c31019d554e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare for solution transfer.  <br /></td></tr>
@@ -230,9 +236,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aab67ca948ec1e0d3d0f53c645878a5ab" id="r_aab67ca948ec1e0d3d0f53c645878a5ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab67ca948ec1e0d3d0f53c645878a5ab">execute_solution_transfer</a> ()</td></tr>
 <tr class="memdesc:aab67ca948ec1e0d3d0f53c645878a5ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfer solutions.  <br /></td></tr>
 <tr class="separator:aab67ca948ec1e0d3d0f53c645878a5ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adaa154854df37ebe202ecea4635716c6" id="r_adaa154854df37ebe202ecea4635716c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adaa154854df37ebe202ecea4635716c6">print_solution_full_vector</a> (std::ostream &amp;out, unsigned int relative_level=0) const</td></tr>
-<tr class="memdesc:adaa154854df37ebe202ecea4635716c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the solution vector set.  <br /></td></tr>
-<tr class="separator:adaa154854df37ebe202ecea4635716c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a389d80e6e17857b696f037cf1f811de5" id="r_a389d80e6e17857b696f037cf1f811de5"><td class="memTemplParams" colspan="2">template&lt;unsigned int degree&gt; </td></tr>
+<tr class="memitem:a389d80e6e17857b696f037cf1f811de5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a389d80e6e17857b696f037cf1f811de5">reinit_mg_transfer</a> (const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;dof_manager)</td></tr>
+<tr class="memdesc:a389d80e6e17857b696f037cf1f811de5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinit the solution transfer objects.  <br /></td></tr>
+<tr class="separator:a389d80e6e17857b696f037cf1f811de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af390d05ecd28f0286f613a4b848682c3" id="r_af390d05ecd28f0286f613a4b848682c3"><td class="memTemplParams" colspan="2">template&lt;unsigned int degree&gt; </td></tr>
+<tr class="memitem:af390d05ecd28f0286f613a4b848682c3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af390d05ecd28f0286f613a4b848682c3">mg_transfer_down</a> (const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;dof_manager, unsigned int finest_level, bool transfer_old_solutions=false)</td></tr>
+<tr class="memdesc:af390d05ecd28f0286f613a4b848682c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transfer solutions to mg levels.  <br /></td></tr>
+<tr class="separator:af390d05ecd28f0286f613a4b848682c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a419a667bb0917c83a6e75cc3786b4c3f" id="r_a419a667bb0917c83a6e75cc3786b4c3f"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a419a667bb0917c83a6e75cc3786b4c3f">num_levels</a> ()</td></tr>
+<tr class="memdesc:a419a667bb0917c83a6e75cc3786b4c3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of refinement levels that will be tracked.  <br /></td></tr>
+<tr class="separator:a419a667bb0917c83a6e75cc3786b4c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e406e01178ea24a7ced712434150a8b" id="r_a6e406e01178ea24a7ced712434150a8b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e406e01178ea24a7ced712434150a8b">print_solution_full_vector</a> (std::ostream &amp;out) const</td></tr>
+<tr class="memdesc:a6e406e01178ea24a7ced712434150a8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the solution vector set.  <br /></td></tr>
+<tr class="separator:a6e406e01178ea24a7ced712434150a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -245,15 +262,24 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a68dea5783935e329402debc8893e85ee" id="r_a68dea5783935e329402debc8893e85ee"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68dea5783935e329402debc8893e85ee">global_to_block_index</a></td></tr>
 <tr class="memdesc:a68dea5783935e329402debc8893e85ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mapping from global field index to block index.  <br /></td></tr>
 <tr class="separator:a68dea5783935e329402debc8893e85ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c41eae75084feb9930f47c81710323b" id="r_a6c41eae75084feb9930f47c81710323b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c41eae75084feb9930f47c81710323b">primary_solutions</a></td></tr>
+<tr class="memdesc:a6c41eae75084feb9930f47c81710323b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primary solutions.  <br /></td></tr>
+<tr class="separator:a6c41eae75084feb9930f47c81710323b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52ce086db80558ad294ac80696972f98" id="r_a52ce086db80558ad294ac80696972f98"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a52ce086db80558ad294ac80696972f98">solution_levels</a></td></tr>
-<tr class="memdesc:a52ce086db80558ad294ac80696972f98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solutions of each level.  <br /></td></tr>
+<tr class="memdesc:a52ce086db80558ad294ac80696972f98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solutions projected to each mg level as dependencies.  <br /></td></tr>
 <tr class="separator:a52ce086db80558ad294ac80696972f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a26eb6584f326c85f8c1d6ef5146442" id="r_a0a26eb6584f326c85f8c1d6ef5146442"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; MatrixFree&lt; dim, number &gt; &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a26eb6584f326c85f8c1d6ef5146442">matrix_free_levels</a> = nullptr</td></tr>
-<tr class="memdesc:a0a26eb6584f326c85f8c1d6ef5146442"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to MatrixFree of each level.  <br /></td></tr>
-<tr class="separator:a0a26eb6584f326c85f8c1d6ef5146442"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4ceb6aae94d3dc3fcfc2d4cd7ade7bc" id="r_aa4ceb6aae94d3dc3fcfc2d4cd7ade7bc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa4ceb6aae94d3dc3fcfc2d4cd7ade7bc">matrix_free_manager</a> = nullptr</td></tr>
+<tr class="memdesc:aa4ceb6aae94d3dc3fcfc2d4cd7ade7bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to MatrixFree manager.  <br /></td></tr>
+<tr class="separator:aa4ceb6aae94d3dc3fcfc2d4cd7ade7bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adad09d50683e64463457688080c4f676" id="r_adad09d50683e64463457688080c4f676"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="#ac26fdde92556378f13ed857dbff31af6">SolutionTransfer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adad09d50683e64463457688080c4f676">block_solution_transfer</a></td></tr>
 <tr class="memdesc:adad09d50683e64463457688080c4f676"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility for solution transfer to different mesh (for AMR). Can only work on one block at a time.  <br /></td></tr>
 <tr class="separator:adad09d50683e64463457688080c4f676"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcf6c5e860e8858b6f75bed286b7d7a6" id="r_adcf6c5e860e8858b6f75bed286b7d7a6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; dealii::MGConstrainedDoFs &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adcf6c5e860e8858b6f75bed286b7d7a6">mg_constraints</a></td></tr>
+<tr class="memdesc:adcf6c5e860e8858b6f75bed286b7d7a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constraints needed for mg transfer object.  <br /></td></tr>
+<tr class="separator:adcf6c5e860e8858b6f75bed286b7d7a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abefa9c168f3c1f4d4429b768dbc3c309" id="r_abefa9c168f3c1f4d4429b768dbc3c309"><td class="memItemLeft" align="right" valign="top">std::vector&lt; dealii::MGTransferMatrixFree&lt; dim, number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abefa9c168f3c1f4d4429b768dbc3c309">mg_transfer</a></td></tr>
+<tr class="memdesc:abefa9c168f3c1f4d4429b768dbc3c309"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility object to transfer solutions between multigrid levels.  <br /></td></tr>
+<tr class="separator:abefa9c168f3c1f4d4429b768dbc3c309"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, typename number&gt;<br />
@@ -278,8 +304,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ad50a68cf09b69e8d9a7766e69bac59fd" name="ad50a68cf09b69e8d9a7766e69bac59fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad50a68cf09b69e8d9a7766e69bac59fd">&#9670;&#160;</a></span>GroupSolutionHandler()</h2>
+<a id="ad0e3c9292f8a76558add897770d42dd8" name="ad0e3c9292f8a76558add897770d42dd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0e3c9292f8a76558add897770d42dd8">&#9670;&#160;</a></span>GroupSolutionHandler()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -299,7 +325,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; MatrixFree&lt; dim, number &gt; &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>_matrix_free_levels</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>_matrix_free_manager</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -309,8 +335,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae54f3f990319fdee6d443cda201a8474" name="ae54f3f990319fdee6d443cda201a8474"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae54f3f990319fdee6d443cda201a8474">&#9670;&#160;</a></span>apply_constraints() <span class="overload">[1/2]</span></h2>
+<a id="a695c2d6a7160f7db9799101c296776d8" name="a695c2d6a7160f7db9799101c296776d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a695c2d6a7160f7db9799101c296776d8">&#9670;&#160;</a></span>apply_constraints() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -320,32 +346,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::apply_constraints </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>solution_vector</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Apply the constraints to another vector. </p>
-
-</div>
-</div>
-<a id="aacb370c097f3e3aee4e49eaf47590ea4" name="aacb370c097f3e3aee4e49eaf47590ea4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacb370c097f3e3aee4e49eaf47590ea4">&#9670;&#160;</a></span>apply_constraints() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, typename number&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::apply_constraints </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -355,8 +356,29 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a2cca78730bd60f5ae1aa506d911f9c58" name="a2cca78730bd60f5ae1aa506d911f9c58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2cca78730bd60f5ae1aa506d911f9c58">&#9670;&#160;</a></span>apply_constraints_to_all()</h2>
+<a id="a1569cac8baa50b33343a76de919cbbce" name="a1569cac8baa50b33343a76de919cbbce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1569cac8baa50b33343a76de919cbbce">&#9670;&#160;</a></span>apply_constraints() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::apply_constraints </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>solution_vectors</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Apply the constraints to another vector. </p>
+
+</div>
+</div>
+<a id="a2c5ec82e8cb0d6c73beb5ef5b641d33d" name="a2c5ec82e8cb0d6c73beb5ef5b641d33d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c5ec82e8cb0d6c73beb5ef5b641d33d">&#9670;&#160;</a></span>apply_constraints_to_all()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -366,7 +388,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::apply_constraints_to_all </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -526,8 +548,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a4172ea3dd08845b3a62bf2e63e8af835" name="a4172ea3dd08845b3a62bf2e63e8af835"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4172ea3dd08845b3a62bf2e63e8af835">&#9670;&#160;</a></span>get_old_solution_full_vector() <span class="overload">[1/2]</span></h2>
+<a id="a2b350d73b7499f6ceb54b8191152afc7" name="a2b350d73b7499f6ceb54b8191152afc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b350d73b7499f6ceb54b8191152afc7">&#9670;&#160;</a></span>get_old_solution_full_vector() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -540,12 +562,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">auto <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_old_solution_full_vector </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>age</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>age</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -559,8 +577,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="acbca41487e2885aa6a345d214683111d" name="acbca41487e2885aa6a345d214683111d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbca41487e2885aa6a345d214683111d">&#9670;&#160;</a></span>get_old_solution_full_vector() <span class="overload">[2/2]</span></h2>
+<a id="aa7130555a45e186bcaf5cd319a877fe9" name="aa7130555a45e186bcaf5cd319a877fe9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7130555a45e186bcaf5cd319a877fe9">&#9670;&#160;</a></span>get_old_solution_full_vector() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -573,12 +591,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">auto <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_old_solution_full_vector </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>age</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;) const</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>age</em></span></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -592,8 +606,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="ac2acb677c3d453a7bfac9075154672c6" name="ac2acb677c3d453a7bfac9075154672c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2acb677c3d453a7bfac9075154672c6">&#9670;&#160;</a></span>get_old_solution_vector() <span class="overload">[1/2]</span></h2>
+<a id="ad51a9cf7683625e12b4f7ad198b9781d" name="ad51a9cf7683625e12b4f7ad198b9781d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad51a9cf7683625e12b4f7ad198b9781d">&#9670;&#160;</a></span>get_old_solution_vector() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -611,12 +625,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>global_index</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>global_index</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -630,8 +639,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a197e6c65ca98c718206d6a9a62249adb" name="a197e6c65ca98c718206d6a9a62249adb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a197e6c65ca98c718206d6a9a62249adb">&#9670;&#160;</a></span>get_old_solution_vector() <span class="overload">[2/2]</span></h2>
+<a id="a5dd2c44a9438a5595ef02d30ab11ef34" name="a5dd2c44a9438a5595ef02d30ab11ef34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dd2c44a9438a5595ef02d30ab11ef34">&#9670;&#160;</a></span>get_old_solution_vector() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -649,12 +658,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>global_index</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;) const</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>global_index</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -668,8 +672,66 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a967cbb2ba0c3f28838cc873bbf1d5f4a" name="a967cbb2ba0c3f28838cc873bbf1d5f4a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a967cbb2ba0c3f28838cc873bbf1d5f4a">&#9670;&#160;</a></span>get_solution_full_vector() <span class="overload">[1/2]</span></h2>
+<a id="a093d263e02d61a39b41122d0c9c13c13" name="a093d263e02d61a39b41122d0c9c13c13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a093d263e02d61a39b41122d0c9c13c13">&#9670;&#160;</a></span>get_primary_solutions() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &amp; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_primary_solutions </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the solutions object at a level. </p>
+
+</div>
+</div>
+<a id="af76bac7eac72bd92b76f4e0b1786b207" name="af76bac7eac72bd92b76f4e0b1786b207"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af76bac7eac72bd92b76f4e0b1786b207">&#9670;&#160;</a></span>get_primary_solutions() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &amp; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_primary_solutions </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the solutions object at a level. </p>
+
+</div>
+</div>
+<a id="a8daede9ed1d401c2adae3d291a07e7c0" name="a8daede9ed1d401c2adae3d291a07e7c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8daede9ed1d401c2adae3d291a07e7c0">&#9670;&#160;</a></span>get_solution_full_vector() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -682,7 +744,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">auto <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_solution_full_vector </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -697,8 +759,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a05a0764d47d40aa1af009f448ad1cada" name="a05a0764d47d40aa1af009f448ad1cada"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05a0764d47d40aa1af009f448ad1cada">&#9670;&#160;</a></span>get_solution_full_vector() <span class="overload">[2/2]</span></h2>
+<a id="adf2974258005c3a070a8d155d829ee76" name="adf2974258005c3a070a8d155d829ee76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf2974258005c3a070a8d155d829ee76">&#9670;&#160;</a></span>get_solution_full_vector() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -711,7 +773,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">auto <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_solution_full_vector </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -726,8 +788,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a66c6298030784807804d12410d4a4ab7" name="a66c6298030784807804d12410d4a4ab7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66c6298030784807804d12410d4a4ab7">&#9670;&#160;</a></span>get_solution_level() <span class="overload">[1/2]</span></h2>
+<a id="a29dc5367ff6e928113ea316d419f0f50" name="a29dc5367ff6e928113ea316d419f0f50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29dc5367ff6e928113ea316d419f0f50">&#9670;&#160;</a></span>get_solution_level() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -740,7 +802,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &amp; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_solution_level </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span></td><td>)</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">-1</span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -755,8 +817,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a31e90d44e2713a190fc00778b329f3c8" name="a31e90d44e2713a190fc00778b329f3c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31e90d44e2713a190fc00778b329f3c8">&#9670;&#160;</a></span>get_solution_level() <span class="overload">[2/2]</span></h2>
+<a id="afd060e9b46a4c302ea37cdef72ccf17d" name="afd060e9b46a4c302ea37cdef72ccf17d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd060e9b46a4c302ea37cdef72ccf17d">&#9670;&#160;</a></span>get_solution_level() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -769,7 +831,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">const <a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &amp; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_solution_level </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span></td><td>)</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">-1</span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -784,8 +846,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a36d7fa2f0da4704a31009f4c61b186a7" name="a36d7fa2f0da4704a31009f4c61b186a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a36d7fa2f0da4704a31009f4c61b186a7">&#9670;&#160;</a></span>get_solution_vector() <span class="overload">[1/2]</span></h2>
+<a id="a1be5c959b244fd7a46a56c95b6787ddb" name="a1be5c959b244fd7a46a56c95b6787ddb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1be5c959b244fd7a46a56c95b6787ddb">&#9670;&#160;</a></span>get_solution_vector() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -798,12 +860,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">auto <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_solution_vector </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>global_index</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>global_index</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -817,8 +875,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a724f0e259e34b7cf2a92b5579921a5e2" name="a724f0e259e34b7cf2a92b5579921a5e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a724f0e259e34b7cf2a92b5579921a5e2">&#9670;&#160;</a></span>get_solution_vector() <span class="overload">[2/2]</span></h2>
+<a id="a8975905970acdc1fadd5e2ca42983d6f" name="a8975905970acdc1fadd5e2ca42983d6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8975905970acdc1fadd5e2ca42983d6f">&#9670;&#160;</a></span>get_solution_vector() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -831,12 +889,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">auto <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_solution_vector </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>global_index</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;) const</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>global_index</em></span></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -850,8 +904,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a710ca7b9ecc6b65f3c69aaec96540f5d" name="a710ca7b9ecc6b65f3c69aaec96540f5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a710ca7b9ecc6b65f3c69aaec96540f5d">&#9670;&#160;</a></span>get_solve_block()</h2>
+<a id="a10085fd612636fd4d569f2db3d2ba288" name="a10085fd612636fd4d569f2db3d2ba288"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10085fd612636fd4d569f2db3d2ba288">&#9670;&#160;</a></span>get_solve_block()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -862,7 +916,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_solve_block </td>
+          <td class="memname">const <a class="el" href="classSolveBlock.html">SolveBlock</a> &amp; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_solve_block </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -879,8 +933,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a0740fb13dd11234364a4bbbc9ef093ac" name="a0740fb13dd11234364a4bbbc9ef093ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0740fb13dd11234364a4bbbc9ef093ac">&#9670;&#160;</a></span>init()</h2>
+<a id="a4c4071fdce5b83de11587fbe05449025" name="a4c4071fdce5b83de11587fbe05449025"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c4071fdce5b83de11587fbe05449025">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -890,7 +944,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::init </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>num_old_saved</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="structNewDependencyExtents.html">NewDependencyExtents</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>extents</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -918,7 +972,76 @@ template&lt;unsigned int dim, typename number&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Reinit the solution transfer objections. </p>
+<p>Reinit the solution transfer objects. </p>
+
+</div>
+</div>
+<a id="af390d05ecd28f0286f613a4b848682c3" name="af390d05ecd28f0286f613a4b848682c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af390d05ecd28f0286f613a4b848682c3">&#9670;&#160;</a></span>mg_transfer_down()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<div class="memtemplate">
+template&lt;unsigned int degree&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::mg_transfer_down </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dof_manager</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>finest_level</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>transfer_old_solutions</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Transfer solutions to mg levels. </p>
+
+</div>
+</div>
+<a id="a419a667bb0917c83a6e75cc3786b4c3f" name="a419a667bb0917c83a6e75cc3786b4c3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a419a667bb0917c83a6e75cc3786b4c3f">&#9670;&#160;</a></span>num_levels()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::num_levels </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Number of refinement levels that will be tracked. </p>
 
 </div>
 </div>
@@ -943,8 +1066,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="adaa154854df37ebe202ecea4635716c6" name="adaa154854df37ebe202ecea4635716c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adaa154854df37ebe202ecea4635716c6">&#9670;&#160;</a></span>print_solution_full_vector()</h2>
+<a id="a6e406e01178ea24a7ced712434150a8b" name="a6e406e01178ea24a7ced712434150a8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e406e01178ea24a7ced712434150a8b">&#9670;&#160;</a></span>print_solution_full_vector()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -954,12 +1077,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::print_solution_full_vector </td>
           <td>(</td>
-          <td class="paramtype">std::ostream &amp;</td>          <td class="paramname"><span class="paramname"><em>out</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;) const</td>
+          <td class="paramtype">std::ostream &amp;</td>          <td class="paramname"><span class="paramname"><em>out</em></span></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -990,8 +1109,39 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a4d5b8e388818074bdf30ed39a1528b63" name="a4d5b8e388818074bdf30ed39a1528b63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d5b8e388818074bdf30ed39a1528b63">&#9670;&#160;</a></span>update()</h2>
+<a id="a389d80e6e17857b696f037cf1f811de5" name="a389d80e6e17857b696f037cf1f811de5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a389d80e6e17857b696f037cf1f811de5">&#9670;&#160;</a></span>reinit_mg_transfer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<div class="memtemplate">
+template&lt;unsigned int degree&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::reinit_mg_transfer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dof_manager</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reinit the solution transfer objects. </p>
+
+</div>
+</div>
+<a id="a1ca433f8ea10e34fd33ae3053c457594" name="a1ca433f8ea10e34fd33ae3053c457594"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ca433f8ea10e34fd33ae3053c457594">&#9670;&#160;</a></span>update()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1001,7 +1151,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::update </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1011,8 +1161,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a717c138ec2317b4356aaf16b90b6dcdd" name="a717c138ec2317b4356aaf16b90b6dcdd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a717c138ec2317b4356aaf16b90b6dcdd">&#9670;&#160;</a></span>update_ghosts()</h2>
+<a id="ac606bab73c152df40d85cdfd81fe5f16" name="ac606bab73c152df40d85cdfd81fe5f16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac606bab73c152df40d85cdfd81fe5f16">&#9670;&#160;</a></span>update_ghosts()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1022,7 +1172,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::update_ghosts </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -1032,8 +1182,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a969c3eeed22dbe33613c92ec12400fdc" name="a969c3eeed22dbe33613c92ec12400fdc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a969c3eeed22dbe33613c92ec12400fdc">&#9670;&#160;</a></span>zero_out_ghosts()</h2>
+<a id="abbde226033b1b92dc63123c4fdf0f14b" name="abbde226033b1b92dc63123c4fdf0f14b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbde226033b1b92dc63123c4fdf0f14b">&#9670;&#160;</a></span>zero_out_ghosts()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1043,7 +1193,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::zero_out_ghosts </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -1133,8 +1283,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a0a26eb6584f326c85f8c1d6ef5146442" name="a0a26eb6584f326c85f8c1d6ef5146442"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a26eb6584f326c85f8c1d6ef5146442">&#9670;&#160;</a></span>matrix_free_levels</h2>
+<a id="aa4ceb6aae94d3dc3fcfc2d4cd7ade7bc" name="aa4ceb6aae94d3dc3fcfc2d4cd7ade7bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4ceb6aae94d3dc3fcfc2d4cd7ade7bc">&#9670;&#160;</a></span>matrix_free_manager</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1145,7 +1295,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::vector&lt;MatrixFree&lt;dim, number&gt; &gt;* <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::matrix_free_levels = nullptr</td>
+          <td class="memname">const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt;dim, number&gt;* <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::matrix_free_manager = nullptr</td>
         </tr>
       </table>
   </td>
@@ -1155,7 +1305,85 @@ template&lt;unsigned int dim, typename number&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Pointer to MatrixFree of each level. </p>
+<p>Pointer to MatrixFree manager. </p>
+
+</div>
+</div>
+<a id="adcf6c5e860e8858b6f75bed286b7d7a6" name="adcf6c5e860e8858b6f75bed286b7d7a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcf6c5e860e8858b6f75bed286b7d7a6">&#9670;&#160;</a></span>mg_constraints</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;dealii::MGConstrainedDoFs&gt; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::mg_constraints</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constraints needed for mg transfer object. </p>
+
+</div>
+</div>
+<a id="abefa9c168f3c1f4d4429b768dbc3c309" name="abefa9c168f3c1f4d4429b768dbc3c309"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abefa9c168f3c1f4d4429b768dbc3c309">&#9670;&#160;</a></span>mg_transfer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;dealii::MGTransferMatrixFree&lt;dim, number&gt; &gt; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::mg_transfer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Utility object to transfer solutions between multigrid levels. </p>
+
+</div>
+</div>
+<a id="a6c41eae75084feb9930f47c81710323b" name="a6c41eae75084feb9930f47c81710323b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c41eae75084feb9930f47c81710323b">&#9670;&#160;</a></span>primary_solutions</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt;dim, number&gt; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::primary_solutions</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Primary solutions. </p>
 
 </div>
 </div>
@@ -1181,7 +1409,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Solutions of each level. </p>
+<p>Solutions projected to each mg level as dependencies. </p>
 
 </div>
 </div>

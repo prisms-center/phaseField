@@ -126,8 +126,9 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>MAGENTA&#160;:&#160;<a class="el" href="classTerminalColor.html#aa2f5fbfa839d050f30eb0ada7b7a0472">TerminalColor</a></li>
 <li>mapping&#160;:&#160;<a class="el" href="classSystemWide.html#a8c15962471d26784704650c907101fb4">SystemWide&lt; dim, degree &gt;</a></li>
 <li>marker_functions&#160;:&#160;<a class="el" href="classRefinementManager.html#afaa7f742a2854a1422534b5fec9f862e">RefinementManager&lt; dim, degree, number &gt;</a></li>
-<li>matrix_free_levels&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#a0a26eb6584f326c85f8c1d6ef5146442">GroupSolutionHandler&lt; dim, number &gt;</a></li>
-<li>matrix_free_manager&#160;:&#160;<a class="el" href="classMFOperator.html#ae1925b47f3e6b1de1494e7549a24edf7">MFOperator&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolveContext.html#ad1726bec16f92d11394760909745a64f">SolveContext&lt; dim, degree, number &gt;</a></li>
+<li>matrix_free_manager&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#aa4ceb6aae94d3dc3fcfc2d4cd7ade7bc">GroupSolutionHandler&lt; dim, number &gt;</a>, <a class="el" href="classMFOperator.html#ae1925b47f3e6b1de1494e7549a24edf7">MFOperator&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolveContext.html#ad1726bec16f92d11394760909745a64f">SolveContext&lt; dim, degree, number &gt;</a></li>
+<li>max_age&#160;:&#160;<a class="el" href="structNewDependencyExtents.html#afc3e613a69246fcfe9a6914aa7893309">NewDependencyExtents</a></li>
+<li>max_age_per_level&#160;:&#160;<a class="el" href="structNewDependencyExtents.html#a25a4ca77ec33f834f5f99c308ced9e54">NewDependencyExtents</a></li>
 <li>max_files&#160;:&#160;<a class="el" href="structLoadInitialConditionParameters.html#a62397adf9f751e01d411a983d9201e29">LoadInitialConditionParameters</a></li>
 <li>max_iterations&#160;:&#160;<a class="el" href="structLinearSolverParameters.html#a009eb184b311853eb752e173b2c7999c">LinearSolverParameters</a>, <a class="el" href="structNonlinearSolverParameters.html#ad9c2d85cf60c6d8ca722c1e44ebd5a6d">NonlinearSolverParameters</a></li>
 <li>max_mg_level&#160;:&#160;<a class="el" href="structDependencyExtents.html#a749c1fb016688a0dd43161d9da2f2796">DependencyExtents</a></li>
@@ -135,10 +136,28 @@ $(function(){initNavTree('functions_vars_m.html',''); initResizable(true); });
 <li>max_refinement&#160;:&#160;<a class="el" href="classRefinementManager.html#a4229c20a2c836bd27a5e17db51438c24">RefinementManager&lt; dim, degree, number &gt;</a>, <a class="el" href="structSpatialDiscretization.html#ac94c81900825941c185e9bbb91783699">SpatialDiscretization&lt; dim &gt;</a></li>
 <li>message&#160;:&#160;<a class="el" href="classExcNaN.html#a7c4a619034c6ef91a4b9a0a4ead2b27b">ExcNaN</a></li>
 <li>meta&#160;:&#160;<a class="el" href="structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a8efaf36c153055241611181ffc4c9655">PRISMS_PF_BEGIN_NAMESPACE::TimerStack</a></li>
-<li>min_mg_level&#160;:&#160;<a class="el" href="structLinearSolverParameters.html#a2bace2f96efd6f8d66ebd2f4204472a3">LinearSolverParameters</a></li>
+<li>mf_manager_ptr&#160;:&#160;<a class="el" href="classInvMManager.html#aa8edefcf5129e32ba9ecd67ee6bfadc5">InvMManager&lt; dim, degree, number &gt;</a></li>
+<li>mg_coarse_solver&#160;:&#160;<a class="el" href="classMGContext.html#a1d142163bd131612a5bdaeea944adf53">MGContext&lt; dim, degree, number &gt;</a></li>
+<li>mg_constraints&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#adcf6c5e860e8858b6f75bed286b7d7a6">GroupSolutionHandler&lt; dim, number &gt;</a>, <a class="el" href="classMGContext.html#a13501d15e99469e2146f2e682ee3838a">MGContext&lt; dim, degree, number &gt;</a></li>
+<li>mg_context&#160;:&#160;<a class="el" href="classLinearSolver.html#af0d337f985b5976655f5f1f34440d328">LinearSolver&lt; dim, degree, number &gt;</a></li>
+<li>mg_depth&#160;:&#160;<a class="el" href="structLinearSolverParameters.html#ad5dab9c9ee42896193462d216ba65c5d">LinearSolverParameters</a></li>
+<li>mg_field_constraints&#160;:&#160;<a class="el" href="classConstraintManager.html#a826a8a2a37a7047b32c81b05b6357e18">ConstraintManager&lt; dim, degree, number &gt;</a></li>
+<li>mg_generic_constraints&#160;:&#160;<a class="el" href="classConstraintManager.html#a61a2d00800839f8229dfba9a47e94393">ConstraintManager&lt; dim, degree, number &gt;</a></li>
+<li>mg_invm_scalar&#160;:&#160;<a class="el" href="classInvMManager.html#a2e696ab565378419d511b76589106022">InvMManager&lt; dim, degree, number &gt;</a></li>
+<li>mg_invm_sqrt_scalar&#160;:&#160;<a class="el" href="classInvMManager.html#ab4a4c7376f9d95a75c005051c27afcbc">InvMManager&lt; dim, degree, number &gt;</a></li>
+<li>mg_invm_sqrt_vector&#160;:&#160;<a class="el" href="classInvMManager.html#a5c983f0c2ab7b6d6e415c3cf3e2df637">InvMManager&lt; dim, degree, number &gt;</a></li>
+<li>mg_invm_vector&#160;:&#160;<a class="el" href="classInvMManager.html#a19d55fbd7a554b4ee462dc25eed37503">InvMManager&lt; dim, degree, number &gt;</a></li>
+<li>mg_jxw_scalar&#160;:&#160;<a class="el" href="classInvMManager.html#a65d48089029b19e939cb7a17405f7a07">InvMManager&lt; dim, degree, number &gt;</a></li>
+<li>mg_jxw_vector&#160;:&#160;<a class="el" href="classInvMManager.html#a41b276b77e8437933e88742c91f791d6">InvMManager&lt; dim, degree, number &gt;</a></li>
+<li>mg_lhs_operators&#160;:&#160;<a class="el" href="classMGContext.html#a77753947ea79cfa064a3ae9d2fbed4eb">MGContext&lt; dim, degree, number &gt;</a></li>
+<li>mg_matrix&#160;:&#160;<a class="el" href="classMGContext.html#a2986c1cb58d331757035ad722957d25d">MGContext&lt; dim, degree, number &gt;</a></li>
+<li>mg_smoother&#160;:&#160;<a class="el" href="classMGContext.html#a2e59ac9ecd9a3f8d692ff7a85b591f2b">MGContext&lt; dim, degree, number &gt;</a></li>
+<li>mg_transfer&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#abefa9c168f3c1f4d4429b768dbc3c309">GroupSolutionHandler&lt; dim, number &gt;</a>, <a class="el" href="classMGContext.html#a0696741c4547bde50da000c2c900d5d7">MGContext&lt; dim, degree, number &gt;</a></li>
 <li>min_refinement&#160;:&#160;<a class="el" href="classRefinementManager.html#a0a892370a0675b723b710cca2f09ec15">RefinementManager&lt; dim, degree, number &gt;</a>, <a class="el" href="structSpatialDiscretization.html#a158f04a989353c64db8eb0ce53ba8fcd">SpatialDiscretization&lt; dim &gt;</a></li>
 <li>misc_parameters&#160;:&#160;<a class="el" href="classUserInputParameters.html#a6f0fcf43c69787009be290550403e4ec">UserInputParameters&lt; dim &gt;</a></li>
 <li>model_constants&#160;:&#160;<a class="el" href="classUserConstants.html#a57cdd0e2ae29f6f27bc1f4cb3e370d21">UserConstants&lt; dim &gt;</a></li>
+<li>multigrid&#160;:&#160;<a class="el" href="classMGContext.html#a9e773d131029e93bfa8f7e66470c9aed">MGContext&lt; dim, degree, number &gt;</a></li>
+<li>multigrid_preconditioner&#160;:&#160;<a class="el" href="classLinearSolver.html#ab17deb0767566dfcf052e5d215cbdf79">LinearSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classMGContext.html#ab251afda634416949ef09848e360e9ea">MGContext&lt; dim, degree, number &gt;</a></li>
 <li>MY_BLUE&#160;:&#160;<a class="el" href="classTerminalColor.html#a34da6054aa0a0fedd8c6ec908bcaae40">TerminalColor</a></li>
 <li>MY_GRAY&#160;:&#160;<a class="el" href="classTerminalColor.html#a1486a91501b99e6ef224b0c3d137805d">TerminalColor</a></li>
 <li>MY_ORANGE&#160;:&#160;<a class="el" href="classTerminalColor.html#a0ba2ffebb602deedd6d3cca37e7333b4">TerminalColor</a></li>

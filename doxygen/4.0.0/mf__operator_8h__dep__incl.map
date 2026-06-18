@@ -1,23 +1,20 @@
 <map id="include/prismspf/solvers/mf_operator.h" name="include/prismspf/solvers/mf_operator.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="261,5,442,50"/>
-<area shape="rect" id="Node000002" href="$explicit__solver_8h.html" title=" " alt="" coords="465,191,646,235"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="371,62,396,102,429,141,465,167,503,188,501,192,462,172,426,145,392,106,367,65"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="197,5,378,50"/>
+<area shape="rect" id="Node000002" href="$explicit__solver_8h.html" title=" " alt="" coords="5,191,186,235"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,57,151,75,123,100,110,121,102,145,97,191,92,190,97,144,105,119,119,96,148,71,182,52"/>
 <area shape="rect" id="Node000006" href="$linear__solver_8h.html" title=" " alt="" coords="133,98,314,143"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="310,61,256,100,253,95,307,57"/>
-<area shape="rect" id="Node000007" href="$mg__solver_8h.html" title=" " alt="" coords="261,191,442,235"/>
-<area shape="poly" id="edge10_Node000001_Node000007" title=" " alt="" coords="354,66,354,190,349,190,349,66"/>
-<area shape="rect" id="Node000008" href="$newton__solver_8h.html" title=" " alt="" coords="5,191,186,235"/>
-<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="247,40,213,48,180,60,149,77,123,100,109,121,101,145,97,191,92,190,96,144,104,118,119,96,146,73,178,55,212,43,246,35"/>
-<area shape="rect" id="Node000009" href="$mf__operator_8cc.html" title=" " alt="" coords="439,106,632,134"/>
-<area shape="poly" id="edge12_Node000001_Node000009" title=" " alt="" coords="411,55,510,104,508,108,408,60"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="266,64,241,99,236,96,261,61"/>
+<area shape="rect" id="Node000007" href="$newton__solver_8h.html" title=" " alt="" coords="261,191,442,235"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="312,63,329,97,343,146,351,190,346,191,338,148,324,99,307,65"/>
+<area shape="rect" id="Node000008" href="$mf__operator_8cc.html" title=" " alt="" coords="389,106,581,134"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="350,54,457,104,455,108,347,59"/>
 <area shape="rect" id="Node000003" href="$solvers_8h.html" title=" " alt="" coords="133,283,314,328"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="462,242,304,285,302,280,461,237"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="140,242,194,281,191,285,137,247"/>
 <area shape="rect" id="Node000004" href="$problem_8cc.html" title=" " alt="" coords="60,376,208,404"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="191,341,150,377,147,373,187,337"/>
 <area shape="rect" id="Node000005" href="$solvers_8cc.html" title=" " alt="" coords="233,376,393,404"/>
 <area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="260,337,300,373,297,377,256,341"/>
-<area shape="poly" id="edge9_Node000006_Node000003" title=" " alt="" coords="226,158,226,283,221,283,221,158"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="226,158,226,283,221,283,221,158"/>
 <area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="268,150,322,188,319,192,265,154"/>
-<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="182,154,128,192,125,188,179,150"/>
-<area shape="poly" id="edge8_Node000008_Node000003" title=" " alt="" coords="140,242,194,281,191,285,137,247"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="310,247,256,285,253,281,307,242"/>
 </map>

@@ -12,7 +12,8 @@ var searchData=
   ['precond_5fchebyshev_9',['precond_chebyshev',['../classLinearSolver.html#a51a30a940050d9ba23c37be97a15be14',1,'LinearSolver']]],
   ['precond_5fdata_10',['precond_data',['../classLinearSolver.html#a58f4b26d4aa77d68f2deda2703587068',1,'LinearSolver']]],
   ['preconditioner_11',['preconditioner',['../structLinearSolverParameters.html#a7ce3a6e58fc1f327502450351cb1a986',1,'LinearSolverParameters']]],
-  ['print_5foutput_5fperiod_12',['print_output_period',['../structOutputParameters.html#a63099768759ac6a3eef5a08370ac7ade',1,'OutputParameters']]],
-  ['print_5ftiming_5fwith_5fcheckpoint_13',['print_timing_with_checkpoint',['../structCheckpointParameters.html#a2ed5640324834697451c9f1dab809740',1,'CheckpointParameters']]],
-  ['print_5ftiming_5fwith_5foutput_14',['print_timing_with_output',['../structOutputParameters.html#a0666fa7e06fc537f358e586953b76735',1,'OutputParameters']]]
+  ['primary_5fsolutions_12',['primary_solutions',['../classGroupSolutionHandler.html#a6c41eae75084feb9930f47c81710323b',1,'GroupSolutionHandler']]],
+  ['print_5foutput_5fperiod_13',['print_output_period',['../structOutputParameters.html#a63099768759ac6a3eef5a08370ac7ade',1,'OutputParameters']]],
+  ['print_5ftiming_5fwith_5fcheckpoint_14',['print_timing_with_checkpoint',['../structCheckpointParameters.html#a2ed5640324834697451c9f1dab809740',1,'CheckpointParameters']]],
+  ['print_5ftiming_5fwith_5foutput_15',['print_timing_with_output',['../structOutputParameters.html#a0666fa7e06fc537f358e586953b76735',1,'OutputParameters']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['data_0',['data',['../classInvMManager.html#ab7668aad729ce9147b7444f9338c018e',1,'InvMManager::data'],['../classReadBinary.html#a0dbc42c34fa79933645a46ef85149064',1,'ReadBinary::data'],['../classMFOperator.html#af447371f8d326e9a9a55b47ff527f12d',1,'MFOperator::data']]],
+  ['data_0',['data',['../classReadBinary.html#a0dbc42c34fa79933645a46ef85149064',1,'ReadBinary::data'],['../classMFOperator.html#af447371f8d326e9a9a55b47ff527f12d',1,'MFOperator::data']]],
   ['dataset_5fformat_1',['dataset_format',['../structInitialConditionFile.html#ac22979950186aee16fe98b2d06632262',1,'InitialConditionFile']]],
   ['default_2',['DEFAULT',['../classTerminalColor.html#a2f8c79b0d150d154e4d8a36a773745f6',1,'TerminalColor']]],
   ['default_5fmax_5fchecked_5fage_3',['default_max_checked_age',['../dependencies_8h.html#ae357b09033ff9072efd8e54943a635c2',1,'dependencies.h']]],

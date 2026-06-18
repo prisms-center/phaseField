@@ -1,7 +1,7 @@
 var searchData=
 [
   ['lastentry_0',['LastEntry',['../type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768aca29386a7f596e2321b3c9ed8d4c1745',1,'type_enums.h']]],
-  ['level_5fdof_5fhandlers_1',['level_dof_handlers',['../classDoFManager.html#aff5da4c060ccd5de1231c381c34d44bf',1,'DoFManager']]],
+  ['level_5fdof_5fhandlers_1',['level_dof_handlers',['../classDoFManager.html#abc8dd5aade16935c606fc70413bd632c',1,'DoFManager']]],
   ['lhs_2',['LHS',['../type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca3655ed459e56fd114a44b382f345de9b',1,'type_enums.h']]],
   ['lhs_5foperator_3',['lhs_operator',['../classLinearSolver.html#a647034c706ee70586a4554dca2b2c2e9',1,'LinearSolver']]],
   ['lin_5fparams_4',['lin_params',['../classLinearSolver.html#a3fce5f57903c375eaa685621790a494d',1,'LinearSolver']]],
@@ -10,11 +10,11 @@ var searchData=
   ['linear_5fsolve_5fparameters_7',['linear_solve_parameters',['../classUserInputParameters.html#a53fa02b5add7145a2dc3e02350222e4f',1,'UserInputParameters']]],
   ['linear_5fsolve_5fparameters_2eh_8',['linear_solve_parameters.h',['../linear__solve__parameters_8h.html',1,'']]],
   ['linear_5fsolver_2eh_9',['linear_solver.h',['../linear__solver_8h.html',1,'']]],
-  ['linear_5fsolver_5fcontrol_10',['linear_solver_control',['../classLinearSolver.html#ac9f7aa00bbccab9a806513417a940c28',1,'LinearSolver::linear_solver_control'],['../classMGSolver.html#adc361a961aa585a782d2131ffc1ce322',1,'MGSolver::linear_solver_control']]],
+  ['linear_5fsolver_5fcontrol_10',['linear_solver_control',['../classLinearSolver.html#ac9f7aa00bbccab9a806513417a940c28',1,'LinearSolver']]],
   ['linear_5fsolver_5fparameters_11',['linear_solver_parameters',['../classSolveBlock.html#a03ddf441a7044dab4e5ee7c589d5083c',1,'SolveBlock']]],
   ['linear_5fsolvers_12',['linear_solvers',['../structLinearSolveParameters.html#a4b44ec09435ecabcb72b8660b25aa55f',1,'LinearSolveParameters']]],
   ['linearsolveparameters_13',['LinearSolveParameters',['../structLinearSolveParameters.html',1,'']]],
-  ['linearsolver_14',['LinearSolver',['../classLinearSolver.html',1,'LinearSolver&lt; dim, degree, number &gt;'],['../classMGSolver.html#aa31a5ab34e8c785947bb10182bc12f71',1,'MGSolver::LinearSolver'],['../classLinearSolver.html#ae3b77af5f056e684117a2d707189f971',1,'LinearSolver::LinearSolver()']]],
+  ['linearsolver_14',['LinearSolver',['../classLinearSolver.html',1,'LinearSolver&lt; dim, degree, number &gt;'],['../classLinearSolver.html#ae3b77af5f056e684117a2d707189f971',1,'LinearSolver::LinearSolver()']]],
   ['linearsolverparameters_15',['LinearSolverParameters',['../structLinearSolverParameters.html',1,'']]],
   ['links_20contact_20info_16',['Helpful Links &amp; Contact Info',['../index.html#links_contact',1,'']]],
   ['list_17',['List',['../deprecated.html',1,'Deprecated List'],['../todo.html',1,'Todo List']]],

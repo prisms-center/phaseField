@@ -76,11 +76,11 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classInvMManager.html#ac015b58fd06c7872787f6e63ca43366a",
-"classSolutionOutput.html#a61e53abbe3c8bedebd2d5f88e5fae2b3",
-"contact.html",
-"pages.html",
-"structOutputParameters.html#a69327fa613975f3372d3e4c35a71ea6c"
+"classInvMManager.html#a4c40f0f1baaf9543b78f2f10a71b6eb6",
+"classRefinementManager.html#aa012e2fe0922d561b7e4e7ea6cf2ec6e",
+"classUserInputParameters.html#a59028c45078a54893a81bc5dcbb02f5e",
+"namespacePRISMS__PF__BEGIN__NAMESPACE.html",
+"structNonlinearSolverParameters.html#ad9c2d85cf60c6d8ca722c1e44ebd5a6d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

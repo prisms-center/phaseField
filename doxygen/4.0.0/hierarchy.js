@@ -39,10 +39,12 @@ var hierarchy =
     ] ],
     [ "MatrixFreeManager< dim, number >", "classMatrixFreeManager.html", null ],
     [ "PRISMS_PF_BEGIN_NAMESPACE::TimerStack::Meta", "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html", null ],
+    [ "MGContext< dim, degree, number >", "classMGContext.html", null ],
     [ "MiscellaneousParameters", "structMiscellaneousParameters.html", null ],
     [ "dealii::Utilities::MPI::MPI_InitFinalize", null, [
       [ "MPIInitFinalize", "classMPIInitFinalize.html", null ]
     ] ],
+    [ "NewDependencyExtents", "structNewDependencyExtents.html", null ],
     [ "NonlinearSolveParameterSet", "structNonlinearSolveParameterSet.html", null ],
     [ "NonlinearSolverParameters", "structNonlinearSolverParameters.html", null ],
     [ "NucleationManager< dim, degree, number >", "classNucleationManager.html", null ],
@@ -76,7 +78,6 @@ var hierarchy =
     [ "SolverBase< dim, degree, number >", "classSolverBase.html", [
       [ "ExplicitSolver< dim, degree, number >", "classExplicitSolver.html", null ],
       [ "LinearSolver< dim, degree, number >", "classLinearSolver.html", [
-        [ "MGSolver< dim, degree, number >", "classMGSolver.html", null ],
         [ "NewtonSolver< dim, degree, number >", "classNewtonSolver.html", null ]
       ] ]
     ] ],

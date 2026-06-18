@@ -150,17 +150,35 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a07b3da694a5331746c9591449a63fdb4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a07b3da694a5331746c9591449a63fdb4">reinit</a> (const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;dof_manager, const <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt; &amp;constraint_manager)</td></tr>
 <tr class="memdesc:a07b3da694a5331746c9591449a63fdb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinit.  <br /></td></tr>
 <tr class="separator:a07b3da694a5331746c9591449a63fdb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae24156404ea335ddd7fd87a6053f6f66" id="r_ae24156404ea335ddd7fd87a6053f6f66"><td class="memItemLeft" align="right" valign="top">const MatrixFree&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae24156404ea335ddd7fd87a6053f6f66">get_shared_matrix_free</a> () const</td></tr>
+<tr class="separator:ae24156404ea335ddd7fd87a6053f6f66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59a95d3d7aded3ae3fb72ebcbf323dbf" id="r_a59a95d3d7aded3ae3fb72ebcbf323dbf"><td class="memItemLeft" align="right" valign="top">const MatrixFree&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59a95d3d7aded3ae3fb72ebcbf323dbf">get_generic_matrix_free</a> () const</td></tr>
+<tr class="separator:a59a95d3d7aded3ae3fb72ebcbf323dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef18dfa0c77fd549d62231e081b75ec4" id="r_aef18dfa0c77fd549d62231e081b75ec4"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; MatrixFree&lt; dim, number &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef18dfa0c77fd549d62231e081b75ec4">get_shared_matrix_free_levels</a> () const</td></tr>
 <tr class="separator:aef18dfa0c77fd549d62231e081b75ec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76526bba35a7a8ad05b1a024f238e86a" id="r_a76526bba35a7a8ad05b1a024f238e86a"><td class="memItemLeft" align="right" valign="top">const MatrixFree&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a76526bba35a7a8ad05b1a024f238e86a">get_shared_matrix_free</a> (unsigned int relative_level) const</td></tr>
-<tr class="separator:a76526bba35a7a8ad05b1a024f238e86a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dd4c0850f6fbaf4dcbc4edf8a625c10" id="r_a9dd4c0850f6fbaf4dcbc4edf8a625c10"><td class="memItemLeft" align="right" valign="top">const MatrixFree&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9dd4c0850f6fbaf4dcbc4edf8a625c10">get_mg_shared_matrix_free</a> (unsigned int relative_level) const</td></tr>
+<tr class="separator:a9dd4c0850f6fbaf4dcbc4edf8a625c10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cb3d77b45d741c5d72225e0b89f87f0" id="r_a3cb3d77b45d741c5d72225e0b89f87f0"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; MatrixFree&lt; dim, number &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3cb3d77b45d741c5d72225e0b89f87f0">get_generic_matrix_free_levels</a> () const</td></tr>
 <tr class="separator:a3cb3d77b45d741c5d72225e0b89f87f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab26a4ed446d510635d2144a36768c9f3" id="r_ab26a4ed446d510635d2144a36768c9f3"><td class="memItemLeft" align="right" valign="top">const MatrixFree&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab26a4ed446d510635d2144a36768c9f3">get_generic_matrix_free</a> (unsigned int relative_level) const</td></tr>
-<tr class="separator:ab26a4ed446d510635d2144a36768c9f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8c43be7e9fe7e977c6d1697608cbc44" id="r_ae8c43be7e9fe7e977c6d1697608cbc44"><td class="memItemLeft" align="right" valign="top">const MatrixFree&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae8c43be7e9fe7e977c6d1697608cbc44">get_mg_generic_matrix_free</a> (unsigned int relative_level) const</td></tr>
+<tr class="separator:ae8c43be7e9fe7e977c6d1697608cbc44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada74d235863cca29ae06285dc5d1d1ac" id="r_ada74d235863cca29ae06285dc5d1d1ac"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; const dealii::Utilities::MPI::Partitioner &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada74d235863cca29ae06285dc5d1d1ac">get_block_partitioners</a> (const std::set&lt; unsigned int &gt; &amp;field_indices) const</td></tr>
+<tr class="separator:ada74d235863cca29ae06285dc5d1d1ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8df437a4aada3c3ea77395a4e358bb5f" id="r_a8df437a4aada3c3ea77395a4e358bb5f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; const dealii::Utilities::MPI::Partitioner &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8df437a4aada3c3ea77395a4e358bb5f">get_mg_block_partitioners</a> (const std::set&lt; unsigned int &gt; &amp;field_indices, unsigned int relative_level) const</td></tr>
+<tr class="separator:a8df437a4aada3c3ea77395a4e358bb5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30a5aad892079dd9cc0579dcb6c14ba9" id="r_a30a5aad892079dd9cc0579dcb6c14ba9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a30a5aad892079dd9cc0579dcb6c14ba9">initialize_block_vector</a> (<a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;vec, const std::set&lt; unsigned int &gt; &amp;field_indices) const</td></tr>
+<tr class="separator:a30a5aad892079dd9cc0579dcb6c14ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b9605889637e712964147cdb12b86e7" id="r_a4b9605889637e712964147cdb12b86e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4b9605889637e712964147cdb12b86e7">initialize_mg_block_vector</a> (<a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;vec, const std::set&lt; unsigned int &gt; &amp;field_indices, unsigned int relative_level) const</td></tr>
+<tr class="separator:a4b9605889637e712964147cdb12b86e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
+<tr class="memitem:af78012fe0a30b242361fda1a1f4ddf8d" id="r_af78012fe0a30b242361fda1a1f4ddf8d"><td class="memItemLeft" align="right" valign="top">MatrixFree&lt; dim, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af78012fe0a30b242361fda1a1f4ddf8d">shared_matrix_free</a></td></tr>
+<tr class="memdesc:af78012fe0a30b242361fda1a1f4ddf8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">MatrixFree object for every field.  <br /></td></tr>
+<tr class="separator:af78012fe0a30b242361fda1a1f4ddf8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc334777d293bb5fcaefe728eea87e32" id="r_acc334777d293bb5fcaefe728eea87e32"><td class="memItemLeft" align="right" valign="top">MatrixFree&lt; dim, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc334777d293bb5fcaefe728eea87e32">generic_matrix_free</a></td></tr>
+<tr class="memdesc:acc334777d293bb5fcaefe728eea87e32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generic Matrix-free object with a scalar and vector entry.  <br /></td></tr>
+<tr class="separator:acc334777d293bb5fcaefe728eea87e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ea52f37b92389299738ffc0f609530b" id="r_a4ea52f37b92389299738ffc0f609530b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; MatrixFree&lt; dim, number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ea52f37b92389299738ffc0f609530b">shared_matrix_free_levels</a></td></tr>
 <tr class="memdesc:a4ea52f37b92389299738ffc0f609530b"><td class="mdescLeft">&#160;</td><td class="mdescRight">MatrixFree object on each level for every field.  <br /></td></tr>
 <tr class="separator:a4ea52f37b92389299738ffc0f609530b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -235,8 +253,35 @@ template&lt;unsigned int dim, typename number&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab26a4ed446d510635d2144a36768c9f3" name="ab26a4ed446d510635d2144a36768c9f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab26a4ed446d510635d2144a36768c9f3">&#9670;&#160;</a></span>get_generic_matrix_free()</h2>
+<a id="ada74d235863cca29ae06285dc5d1d1ac" name="ada74d235863cca29ae06285dc5d1d1ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada74d235863cca29ae06285dc5d1d1ac">&#9670;&#160;</a></span>get_block_partitioners()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::shared_ptr&lt; const dealii::Utilities::MPI::Partitioner &gt; &gt; <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt;::get_block_partitioners </td>
+          <td>(</td>
+          <td class="paramtype">const std::set&lt; unsigned int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>field_indices</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a59a95d3d7aded3ae3fb72ebcbf323dbf" name="a59a95d3d7aded3ae3fb72ebcbf323dbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59a95d3d7aded3ae3fb72ebcbf323dbf">&#9670;&#160;</a></span>get_generic_matrix_free()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -249,7 +294,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">const MatrixFree&lt; dim, number &gt; &amp; <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt;::get_generic_matrix_free </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -289,8 +334,93 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a76526bba35a7a8ad05b1a024f238e86a" name="a76526bba35a7a8ad05b1a024f238e86a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76526bba35a7a8ad05b1a024f238e86a">&#9670;&#160;</a></span>get_shared_matrix_free()</h2>
+<a id="a8df437a4aada3c3ea77395a4e358bb5f" name="a8df437a4aada3c3ea77395a4e358bb5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8df437a4aada3c3ea77395a4e358bb5f">&#9670;&#160;</a></span>get_mg_block_partitioners()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::shared_ptr&lt; const dealii::Utilities::MPI::Partitioner &gt; &gt; <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt;::get_mg_block_partitioners </td>
+          <td>(</td>
+          <td class="paramtype">const std::set&lt; unsigned int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>field_indices</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae8c43be7e9fe7e977c6d1697608cbc44" name="ae8c43be7e9fe7e977c6d1697608cbc44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8c43be7e9fe7e977c6d1697608cbc44">&#9670;&#160;</a></span>get_mg_generic_matrix_free()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const MatrixFree&lt; dim, number &gt; &amp; <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt;::get_mg_generic_matrix_free </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9dd4c0850f6fbaf4dcbc4edf8a625c10" name="a9dd4c0850f6fbaf4dcbc4edf8a625c10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dd4c0850f6fbaf4dcbc4edf8a625c10">&#9670;&#160;</a></span>get_mg_shared_matrix_free()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const MatrixFree&lt; dim, number &gt; &amp; <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt;::get_mg_shared_matrix_free </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae24156404ea335ddd7fd87a6053f6f66" name="ae24156404ea335ddd7fd87a6053f6f66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae24156404ea335ddd7fd87a6053f6f66">&#9670;&#160;</a></span>get_shared_matrix_free()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -303,7 +433,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="memname">const MatrixFree&lt; dim, number &gt; &amp; <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt;::get_shared_matrix_free </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -343,6 +473,57 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
+<a id="a30a5aad892079dd9cc0579dcb6c14ba9" name="a30a5aad892079dd9cc0579dcb6c14ba9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30a5aad892079dd9cc0579dcb6c14ba9">&#9670;&#160;</a></span>initialize_block_vector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt;::initialize_block_vector </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>vec</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::set&lt; unsigned int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>field_indices</em></span>&#160;) const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4b9605889637e712964147cdb12b86e7" name="a4b9605889637e712964147cdb12b86e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b9605889637e712964147cdb12b86e7">&#9670;&#160;</a></span>initialize_mg_block_vector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt;::initialize_mg_block_vector </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="matrix__free__manager_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>vec</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::set&lt; unsigned int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>field_indices</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span>&#160;) const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a07b3da694a5331746c9591449a63fdb4" name="a07b3da694a5331746c9591449a63fdb4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07b3da694a5331746c9591449a63fdb4">&#9670;&#160;</a></span>reinit()</h2>
 
@@ -372,6 +553,32 @@ template&lt;unsigned int degree&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="acc334777d293bb5fcaefe728eea87e32" name="acc334777d293bb5fcaefe728eea87e32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc334777d293bb5fcaefe728eea87e32">&#9670;&#160;</a></span>generic_matrix_free</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">MatrixFree&lt;dim, number&gt; <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt;::generic_matrix_free</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Generic Matrix-free object with a scalar and vector entry. </p>
+
+</div>
+</div>
 <a id="afa27eff58a37bf30e4511fbad5196709" name="afa27eff58a37bf30e4511fbad5196709"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afa27eff58a37bf30e4511fbad5196709">&#9670;&#160;</a></span>generic_matrix_free_levels</h2>
 
@@ -395,6 +602,32 @@ template&lt;unsigned int dim, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Generic Matrix-free object with a scalar and vector entry on each level. </p>
+
+</div>
+</div>
+<a id="af78012fe0a30b242361fda1a1f4ddf8d" name="af78012fe0a30b242361fda1a1f4ddf8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af78012fe0a30b242361fda1a1f4ddf8d">&#9670;&#160;</a></span>shared_matrix_free</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">MatrixFree&lt;dim, number&gt; <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt;::shared_matrix_free</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>MatrixFree object for every field. </p>
 
 </div>
 </div>

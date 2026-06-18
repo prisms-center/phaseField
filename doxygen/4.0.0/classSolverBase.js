@@ -8,7 +8,7 @@ var classSolverBase =
     [ "get_solution_manager", "classSolverBase.html#af789046f2f978e521d32c8406bd573d8", null ],
     [ "get_solution_manager", "classSolverBase.html#a3b68531259b2341d346ce576e3679b65", null ],
     [ "get_solve_block", "classSolverBase.html#a2f12aec653c061a5bdc2e3f5bdde048b", null ],
-    [ "init", "classSolverBase.html#a9096e85006aaa8a2faf963eb5b6ec405", null ],
+    [ "init", "classSolverBase.html#a241912622484936ad4601a3bd14ff869", null ],
     [ "operator=", "classSolverBase.html#ae815598882fb5248c6a2c8892ea52231", null ],
     [ "operator=", "classSolverBase.html#a974a20bc684247f729de953d6b077154", null ],
     [ "prepare_for_solution_transfer", "classSolverBase.html#a48d1c39930199ac1f32aaba5ed296afe", null ],

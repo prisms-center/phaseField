@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['update_0',['update',['../classGroupSolutionHandler.html#a4d5b8e388818074bdf30ed39a1528b63',1,'GroupSolutionHandler::update()'],['../classSolverBase.html#a32666c58a2da7c1da51f5e5dab6fa4be',1,'SolverBase::update()']]],
-  ['update_5fghosts_1',['update_ghosts',['../classGroupSolutionHandler.html#a717c138ec2317b4356aaf16b90b6dcdd',1,'GroupSolutionHandler::update_ghosts()'],['../classSolverBase.html#aea9076dd7e2cbcc6df6c19e0ac2ee0dd',1,'SolverBase::update_ghosts()']]],
+  ['update_0',['update',['../classGroupSolutionHandler.html#a1ca433f8ea10e34fd33ae3053c457594',1,'GroupSolutionHandler::update()'],['../classSolverBase.html#a32666c58a2da7c1da51f5e5dab6fa4be',1,'SolverBase::update()']]],
+  ['update_5fghosts_1',['update_ghosts',['../classGroupSolutionHandler.html#ac606bab73c152df40d85cdfd81fe5f16',1,'GroupSolutionHandler::update_ghosts()'],['../classSolverBase.html#aea9076dd7e2cbcc6df6c19e0ac2ee0dd',1,'SolverBase::update_ghosts()']]],
   ['update_5ftime_5fdependent_5fconstraints_2',['update_time_dependent_constraints',['../classConstraintManager.html#a0b8f4b72311aa20bdd080ede6f7b37a1',1,'ConstraintManager']]],
   ['userinputparameters_3',['UserInputParameters',['../classUserInputParameters.html#af1a6cb34c8ad976c6e99eec85cf963c9',1,'UserInputParameters::UserInputParameters()=default'],['../classUserInputParameters.html#a59028c45078a54893a81bc5dcbb02f5e',1,'UserInputParameters::UserInputParameters(const std::string &amp;file_name, unsigned int max_criteria=default_max_criteria)']]]
 ];

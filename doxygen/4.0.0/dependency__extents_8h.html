@@ -127,17 +127,19 @@ $(function(){initNavTree('dependency__extents_8h.html',''); initResizable(true);
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="dependencies_8h_source.html">prismspf/core/dependencies.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="solve__block_8h_source.html">prismspf/core/solve_block.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="types_8h_source.html">prismspf/core/types.h</a>&gt;</code><br />
 <code>#include &lt;prismspf/config.h&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for dependency_extents.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="dependency__extents_8h__incl.svg" width="1150" height="486"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="dependency__extents_8h__incl.svg" width="2127" height="595"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="dependency__extents_8h__dep__incl.svg" width="1054" height="595"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="dependency__extents_8h__dep__incl.svg" width="1556" height="1058"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="dependency__extents_8h_source.html">Go to the source code of this file.</a></p>
@@ -147,11 +149,15 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structDependencyExtents.html">DependencyExtents</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Information about what fields need to be held onto. This will likely get refactored to be an oldest age at each level instead of something global like this.  <a href="structDependencyExtents.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNewDependencyExtents.html">NewDependencyExtents</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a9d31823aacb9340967eb0d036454eb89" id="r_a9d31823aacb9340967eb0d036454eb89"><td class="memItemLeft" align="right" valign="top">PRISMS_PF_BEGIN_NAMESPACE unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d31823aacb9340967eb0d036454eb89">oldest</a> (<a class="el" href="structDependency.html">Dependency</a> dependencies)</td></tr>
 <tr class="separator:a9d31823aacb9340967eb0d036454eb89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f40d3fcbf314f9d38b8058131168322" id="r_a8f40d3fcbf314f9d38b8058131168322"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f40d3fcbf314f9d38b8058131168322">oldest2</a> (<a class="el" href="structDependency.html">Dependency</a> dependencies)</td></tr>
+<tr class="separator:a8f40d3fcbf314f9d38b8058131168322"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a9d31823aacb9340967eb0d036454eb89" name="a9d31823aacb9340967eb0d036454eb89"></a>
@@ -165,6 +171,31 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">PRISMS_PF_BEGIN_NAMESPACE unsigned int oldest </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structDependency.html">Dependency</a></td>          <td class="paramname"><span class="paramname"><em>dependencies</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8f40d3fcbf314f9d38b8058131168322" name="a8f40d3fcbf314f9d38b8058131168322"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f40d3fcbf314f9d38b8058131168322">&#9670;&#160;</a></span>oldest2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int oldest2 </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structDependency.html">Dependency</a></td>          <td class="paramname"><span class="paramname"><em>dependencies</em></span></td><td>)</td>
           <td></td>
