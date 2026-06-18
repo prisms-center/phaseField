@@ -4,9 +4,7 @@
 #pragma once
 
 #include <deal.II/distributed/tria.h>
-#include <deal.II/grid/grid_tools_geometry.h>
 #include <deal.II/grid/tria.h>
-#include <deal.II/multigrid/mg_transfer_global_coarsening.h>
 
 #include <prismspf/user_inputs/constraint_parameters.h>
 #include <prismspf/user_inputs/spatial_discretization.h>
@@ -28,41 +26,41 @@ public:
   /**
    * @brief Constructor.
    */
-  explicit TriangulationManager(bool _has_multigrid = false);
-
-  explicit TriangulationManager(const SpatialDiscretization<dim> &discretization_params,
-                                bool                              _has_multigrid = false)
-    : TriangulationManager(_has_multigrid)
-  {
-    generate_mesh(discretization_params);
-    reinit();
-  }
+  explicit TriangulationManager();
 
   /**
-   * @brief Set whether multigrid triangulations will be generated.
+   * @brief Initialize the multigrid triangulations.
    */
   void
-  set_using_multigrid(bool _has_multigrid)
-  {
-    has_multigrid = _has_multigrid;
-  }
+  init_mg();
 
   /**
-   * @brief Reinitialize the triangulation handler.
-   * This is used for AMR with multigrid so the coarsened meshes can be reinitialized.
+   * @brief Remove the multigrid triangulations.
    */
   void
-  reinit();
+  clear_mg();
 
   /**
-   * @brief Getter function for triangulation (constant reference).
+   * @brief Check if the multigrid triangulations are initialized.
+   */
+  [[nodiscard]] bool
+  has_mg() const;
+
+  /**
+   * @brief Get the number of levels in the multigrid.
+   */
+  [[nodiscard]] unsigned int
+  num_levels() const;
+
+  /**
+   * @brief Getter function for triangulation.
    */
   [[nodiscard]] const Triangulation<dim> &
   get_triangulation() const;
 
   /**
-   * @brief Getter function for a level in the globally coarsening multigrid triangulation
-   * (constant reference).
+   * @brief Getter function for a relative level in the globally coarsening multigrid
+   * triangulation.
    */
   [[nodiscard]] const dealii::Triangulation<dim> &
   get_triangulation(unsigned int relative_level) const;
@@ -75,7 +73,7 @@ public:
   get_periodic_face_pairs() const;
 
   /**
-   * @brief Get the vector of periodic face pairs
+   * @brief Get the volume of the triangulation.
    */
   [[nodiscard]] double
   get_volume() const;
@@ -122,11 +120,6 @@ public:
 
 private:
   /**
-   * @brief Whether we have multigrid.
-   */
-  bool has_multigrid = false;
-
-  /**
    * @brief Main triangulation.
    */
   Triangulation<dim> triangulation;
@@ -144,7 +137,7 @@ private:
     periodicity_vector;
 
   /**
-   * @brief Periodic face pairs on the coarsest mesh if they exist
+   * @brief Volume of the triangulation.
    */
   double volume = 0;
 };

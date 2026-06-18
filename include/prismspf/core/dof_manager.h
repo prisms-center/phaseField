@@ -30,11 +30,6 @@ public:
   DoFManager() = default;
 
   /**
-   * @brief Constructor. calls reinit
-   */
-  DoFManager(const std::vector<FieldAttributes> &field_attributes,
-             const TriangulationManager<dim>    &triangulation_manager);
-  /**
    * @brief Disable copying.
    */
   DoFManager(const DoFManager &)  = delete;
@@ -50,19 +45,13 @@ public:
   ~DoFManager() = default;
 
   /**
-   * @brief Resize the DoFHandlers set.
-   * @note May invalidate existing DoFHandler pointers.
-   */
-  void
-  init(unsigned int num_levels);
-
-  /**
    * @brief Reinitialize the DoFHandlers
+   * @param triangulation_manager The triangulation manager.
+   * @param init_mg Whether to initialize the multigrid DoFHandlers.
    * @pre init() must have been called with the correct number of levels.
-   * @note May invalidate existing DoFHandler pointers if number of levels changes.
    */
   void
-  reinit(const TriangulationManager<dim> &triangulation_manager);
+  reinit(const TriangulationManager<dim> &triangulation_manager, bool init_mg = false);
 
   /**
    * @brief Reinitialize the DoFHandlers
@@ -72,43 +61,49 @@ public:
   reinit_mapping(const std::vector<FieldAttributes> &field_attributes);
 
   /**
-   * @brief Getter function for all the DoFHandlers.
-   * @pre reinit_mapping() must have been called.
-   */
-  [[nodiscard]] const std::vector<std::vector<const dealii::DoFHandler<dim> *>> &
-  get_field_dof_handlers_levels() const;
-
-  /**
    * @brief Getter function for all the DoFHandlers on a level.
    * @pre reinit_mapping() must have been called.
    */
   [[nodiscard]] const std::vector<const dealii::DoFHandler<dim> *> &
-  get_field_dof_handlers(unsigned int relative_level = 0) const;
+  get_field_dof_handlers() const;
 
   /**
    * @brief Getter function for the DoFHandler (reference).
    * @pre reinit_mapping() must have been called.
    */
   [[nodiscard]] const dealii::DoFHandler<dim> &
-  get_field_dof_handler(Types::Index field_index, unsigned int relative_level = 0) const;
+  get_field_dof_handler(Types::Index field_index) const;
 
   /**
-   * @brief Getter function for the scalar and vector DoFHandlers.
+   * @brief Getter the DoFHandlers for a block of fields.
+   * @pre reinit_mapping() must have been called.
    */
-  [[nodiscard]] const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &
-  get_dof_handlers_levels() const;
+  [[nodiscard]] std::vector<const dealii::DoFHandler<dim> *>
+  get_block_dof_handlers(const std::set<unsigned int> &field_indices) const;
 
   /**
    * @brief Getter function for the scalar and vector DoFHandlers on a level.
    */
   [[nodiscard]] const std::array<dealii::DoFHandler<dim>, 2> &
-  get_dof_handlers(unsigned int relative_level = 0) const;
+  get_dof_handlers() const;
 
   /**
    * @brief Getter function for a specific scalar or vector DoFHandler.
    */
   [[nodiscard]] const dealii::DoFHandler<dim> &
-  get_dof_handler(const unsigned int &rank, unsigned int relative_level = 0) const;
+  get_dof_handler(const unsigned int &rank) const;
+
+  /**
+   * @brief Has distribute_mg_dofs() been called?
+   */
+  [[nodiscard]] bool
+  has_mg() const;
+
+  /**
+   * @brief Get the total number of levels in the triangulation.
+   */
+  [[nodiscard]] unsigned int
+  num_levels() const;
 
   /**
    * @brief Get the total DoFs excluding multigrid DoFs.
@@ -120,14 +115,14 @@ public:
 private:
   /**
    * @brief Pointers to the dof handlers for each field on every mg level.
-   * Outer vector is indexed by relative mg level. Inner vector is indexed by field index.
+   * Vector is indexed by field index.
    */
-  std::vector<std::vector<const dealii::DoFHandler<dim> *>> field_dof_handlers;
+  std::vector<const dealii::DoFHandler<dim> *> field_dof_handlers;
 
   /**
-   * @brief A scalar and a vector dof handler for each level
+   * @brief A scalar and a vector dof handler
    */
-  std::vector<std::array<dealii::DoFHandler<dim>, 2>> level_dof_handlers;
+  std::array<dealii::DoFHandler<dim>, 2> level_dof_handlers;
 };
 
 PRISMS_PF_END_NAMESPACE

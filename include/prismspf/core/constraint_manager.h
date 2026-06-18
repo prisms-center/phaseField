@@ -7,6 +7,7 @@
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/mapping.h>
 #include <deal.II/lac/affine_constraints.h>
+#include <deal.II/multigrid/mg_constrained_dofs.h>
 
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
@@ -52,47 +53,78 @@ public:
   /**
    * @brief Constructor.
    */
-  ConstraintManager(const std::vector<FieldAttributes>         &field_attributes,
-                    const BoundaryParameters<dim>              &_boundary_parameters,
-                    const SpatialDiscretization<dim>           &_spatial_discretization,
-                    const DoFManager<dim, degree>              &_dof_manager,
-                    const PDEOperatorBase<dim, degree, number> &_pde_operator);
+  ConstraintManager() = default;
 
   /**
-   * @brief Getter function for a selection of the constraints.
+   * @brief Initialize the constraint manager.
    */
-  [[nodiscard]] const std::vector<std::vector<dealii::AffineConstraints<number>>> &
-  get_field_constraints_levels() const;
+  void
+  init(const BoundaryParameters<dim>              &_boundary_parameters,
+       const SpatialDiscretization<dim>           &_spatial_discretization,
+       const DoFManager<dim, degree>              &_dof_manager,
+       const PDEOperatorBase<dim, degree, number> &_pde_operator);
 
   /**
    * @brief Getter function for the constraints.
    */
   [[nodiscard]] std::vector<const dealii::AffineConstraints<number> *>
-  get_field_constraints(unsigned int relative_level = 0) const;
+  get_field_constraints() const;
 
   /**
-   * @brief Getter function for the constraint of an index (constant reference).
+   * @brief Getter function for the constraint of an index.
    */
   [[nodiscard]] const dealii::AffineConstraints<number> &
-  get_constraint(Types::Index index, unsigned int relative_level = 0) const;
-
-  /**
-   * @brief Getter function for the constraints.
-   */
-  [[nodiscard]] const std::vector<std::array<dealii::AffineConstraints<number>, 2>> &
-  get_generic_constraints_levels() const;
+  get_field_constraint(Types::Index index) const;
 
   /**
    * @brief Getter function for the constraints.
    */
   [[nodiscard]] const std::array<dealii::AffineConstraints<number>, 2> &
-  get_generic_constraints(unsigned int relative_level = 0) const;
+  get_generic_constraints() const;
+
+  /**
+   * @brief Getter function for the constraint of an index.
+   */
+  [[nodiscard]] const dealii::AffineConstraints<number> &
+  get_generic_constraint(unsigned int rank) const;
+
+  //-------------------------------------------------------------------------------------
+
+  /**
+   * @brief Getter function for a selection of the constraints.
+   */
+  [[nodiscard]] const std::vector<std::vector<dealii::AffineConstraints<number>>> &
+  get_mg_field_constraints_levels() const;
+
+  /**
+   * @brief Getter function for the constraints.
+   */
+  [[nodiscard]] std::vector<const dealii::AffineConstraints<number> *>
+  get_mg_field_constraints(unsigned int relative_level) const;
 
   /**
    * @brief Getter function for the constraint of an index (constant reference).
    */
   [[nodiscard]] const dealii::AffineConstraints<number> &
-  get_generic_constraint(unsigned int rank, unsigned int relative_level = 0) const;
+  get_mg_field_constraint(Types::Index index, unsigned int relative_level) const;
+
+  /**
+   * @brief Getter function for the constraints.
+   */
+  [[nodiscard]] const std::vector<std::array<dealii::AffineConstraints<number>, 2>> &
+  get_mg_generic_constraints_levels() const;
+
+  /**
+   * @brief Getter function for the constraints.
+   */
+  [[nodiscard]] const std::array<dealii::AffineConstraints<number>, 2> &
+  get_mg_generic_constraints(unsigned int relative_level) const;
+
+  /**
+   * @brief Getter function for the constraint of an index (constant reference).
+   */
+  [[nodiscard]] const dealii::AffineConstraints<number> &
+  get_mg_generic_constraint(unsigned int rank, unsigned int relative_level) const;
 
   /**
    * @brief Make constraints based on the inputs of the constructor.
@@ -107,13 +139,13 @@ public:
   void
   update_time_dependent_constraints(const std::vector<FieldAttributes> &field_attributes);
 
-private:
   /**
    * @brief Create a component mask.
    */
   static const std::array<dealii::ComponentMask, dim> vector_component_mask;
   static const dealii::ComponentMask                  scalar_empty_mask;
 
+private:
   /**
    * @brief Construct constraints for a single field based on the boundary conditions.
    */
@@ -122,7 +154,8 @@ private:
                                     const dealii::DoFHandler<dim>     &dof_handler,
                                     const FieldConstraints<dim>       &_field_constraints,
                                     TensorRank                         tensor_rank,
-                                    Types::Index                       field_index);
+                                    Types::Index                       field_index,
+                                    unsigned int relative_level = -1);
 
   /**
    * @brief Add boundary conditions to a single constraint.
@@ -176,33 +209,61 @@ private:
   /**
    * @brief User-inputs constraint parameters.
    */
-  const BoundaryParameters<dim> *boundary_parameters;
+  const BoundaryParameters<dim> *boundary_parameters = nullptr;
 
   /**
    * @brief User-inputs discretization.
    */
-  const SpatialDiscretization<dim> *spatial_discretization;
+  const SpatialDiscretization<dim> *spatial_discretization = nullptr;
 
   /**
    * @brief Dof manager pointer.
    */
-  const DoFManager<dim, degree> *dof_manager;
+  const DoFManager<dim, degree> *dof_manager = nullptr;
 
   /**
    * @brief PDE operator.
    */
-  const PDEOperatorBase<dim, degree, number> *pde_operator;
+  const PDEOperatorBase<dim, degree, number> *pde_operator = nullptr;
+
+  /**
+   * @brief Constraints. Outer vector is indexed by field index.
+   */
+  std::vector<dealii::AffineConstraints<number>> field_constraints;
+
+  /**
+   * @brief Constraints not specific to any field. We need this for invm
+   */
+  std::array<dealii::AffineConstraints<number>, 2> generic_constraints;
 
   /**
    * @brief Constraints. Outer vector is indexed by field index. Inner vector is indexed
    * by relative mg level.
    */
-  std::vector<std::vector<dealii::AffineConstraints<number>>> field_constraints;
+  std::vector<std::vector<dealii::AffineConstraints<number>>> mg_field_constraints;
 
   /**
    * @brief Constraints not specific to any field. We need this for invm
    */
-  std::vector<std::array<dealii::AffineConstraints<number>, 2>> generic_constraints;
+  std::vector<std::array<dealii::AffineConstraints<number>, 2>> mg_generic_constraints;
 };
+
+template <unsigned int dim, unsigned int degree, typename number>
+inline const std::array<dealii::ComponentMask, dim>
+  ConstraintManager<dim, degree, number>::vector_component_mask = []()
+{
+  std::array<dealii::ComponentMask, dim> masks {};
+  for (unsigned int i = 0; i < dim; ++i)
+    {
+      dealii::ComponentMask temp_mask(dim, false);
+      temp_mask.set(i, true);
+      masks.at(i) = temp_mask;
+    }
+  return masks;
+}();
+
+template <unsigned int dim, unsigned int degree, typename number>
+inline const dealii::ComponentMask
+  ConstraintManager<dim, degree, number>::scalar_empty_mask {};
 
 PRISMS_PF_END_NAMESPACE

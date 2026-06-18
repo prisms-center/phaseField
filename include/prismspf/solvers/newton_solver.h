@@ -50,10 +50,10 @@ public:
    * @brief Initialize the solver.
    */
   void
-  init(const std::list<DependencyMap> &all_dependeny_sets) override
+  init(const std::list<SolveBlock> &all_solve_blocks) override
   {
-    LinearSolver<dim, degree, number>::init(all_dependeny_sets);
-    newton_update.reinit(solutions.get_solution_full_vector(0));
+    LinearSolver<dim, degree, number>::init(all_solve_blocks);
+    newton_update.reinit(solutions.get_solution_full_vector());
   }
 
   /**
@@ -63,7 +63,7 @@ public:
   reinit() override
   {
     LinearSolver<dim, degree, number>::reinit();
-    newton_update.reinit(solutions.get_solution_full_vector(0));
+    newton_update.reinit(solutions.get_solution_full_vector());
   }
 
   /**
@@ -82,10 +82,9 @@ public:
     MFOperator<dim, degree, number> &lhs_op          = lhs_operator;
     // TODO: setup initial guess for solution vector. Maybe use old_solution if
     // available.
-    if (!solutions.get_solution_level(0).old_solutions.empty())
+    if (!solutions.get_primary_solutions().old_solutions.empty())
       {
-        solutions.get_solution_full_vector(0) =
-          solutions.get_old_solution_full_vector(0, 0);
+        solutions.get_solution_full_vector() = solutions.get_old_solution_full_vector(0);
       }
 
     // Newton iteration loop.
@@ -96,8 +95,8 @@ public:
     while (newton_unconverged && iter < newton_max_iterations)
       {
         // Apply constraints to solution vector
-        solutions.apply_constraints(0);
-        solutions.update_ghosts(0);
+        solutions.apply_constraints();
+        solutions.update_ghosts();
 
         // Solve for Newton-residual (r)
         Timer::start_section("Zero ghosts");
@@ -115,18 +114,25 @@ public:
           }
 
         // Solve for Newton update. (-dr/du|Du)
+        if (solutions.num_levels() > 1)
+          {
+            solutions.mg_transfer_down(
+              solve_context->get_dof_manager(),
+              solve_context->get_user_inputs().spatial_discretization.global_refinement,
+              false);
+          }
         total_lin_iters += do_linear_solve(newton_residual, lhs_op, newton_update);
         newton_update.update_ghost_values();
 
         // Zero out the ghosts
-        solutions.get_solution_full_vector(0).zero_out_ghost_values();
+        solutions.get_solution_full_vector().zero_out_ghost_values();
 
         // Perform Newton update.
-        solutions.get_solution_full_vector(0).add(newton_step_length, newton_update);
+        solutions.get_solution_full_vector().add(newton_step_length, newton_update);
 
         // Update the ghosts
         Timer::start_section("Update ghosts");
-        solutions.update_ghosts(0);
+        solutions.update_ghosts();
         Timer::end_section("Update ghosts");
 
         iter++;

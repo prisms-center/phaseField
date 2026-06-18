@@ -50,12 +50,9 @@ public:
     , constraint_manager(&_constraint_manager)
     , matrix_free_manager()
     , solution_indexer(&_solution_indexer)
-    , invm_manager(*dof_manager, *constraint_manager, true, true)
+    , invm_manager()
     , sim_timer(user_inputs->temporal_discretization.dt)
-    , pde_operator(&_pde_operator)
-  {
-    matrix_free_manager.reinit(*dof_manager, *constraint_manager);
-  };
+    , pde_operator(&_pde_operator) {};
 
   /**
    * @brief Get the field attributes.
