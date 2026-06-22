@@ -314,6 +314,9 @@ public:
     // Set up rhs vector
     rhs_operator.compute_operator(rhs_vector);
 
+    // Set inhomogeneous Dirichlet values. TODO: only update if time-dependent
+    solutions.apply_constraints(inhomogeneous_values);
+
     // Note 1. Use the previous result of the linear solve without nonzero dirichlet
     // as the initial guess in the next increment. See Note 2. `inhomogeneous_rhs` is
     // not actually what it is being used as here, we just don't want to allocate a
