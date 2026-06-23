@@ -16,6 +16,7 @@ permissions: read-all
 
 jobs:
   CI:
+    if: github.repository == 'prisms-center/phaseField' # Don't run on forks
     strategy:
       matrix:
         include:

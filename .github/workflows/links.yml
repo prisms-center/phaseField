@@ -9,6 +9,7 @@ on:
 
 jobs:
   link-checker:
+    if: github.repository == 'prisms-center/phaseField' # Don't run on forks
     runs-on: ubuntu-latest
     strategy:
       matrix:
