@@ -5,6 +5,7 @@
 
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/distributed/tria.h>
+#include <deal.II/dofs/dof_handler.h>
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/grid/tria.h>
@@ -30,11 +31,96 @@ enum TriangulationType : std::uint8_t
   Custom
 };
 
+/**
+ * @brief Triangulation base class.
+ */
 template <unsigned int dim>
-using Triangulation =
-  std::conditional_t<dim == 1,
-                     dealii::Triangulation<dim>,
-                     dealii::parallel::distributed::Triangulation<dim>>;
+struct Mesh
+{
+  using Triangulation =
+    std::conditional_t<dim == 1,
+                       dealii::Triangulation<dim>,
+                       dealii::parallel::distributed::Triangulation<dim>>;
+
+  /**
+   * @brief Constructor.
+   */
+  Mesh() = default;
+
+  /**
+   * @brief Generate the mesh.
+   */
+  virtual void
+  generate_mesh(Triangulation &triangulation) const = 0;
+
+  /**
+   * @brief Mark the boundaries of the mesh.
+   */
+  virtual void
+  mark_boundaries(Triangulation &triangulation) const;
+
+  /**
+   * @brief Mark the periodic faces of the mesh.
+   */
+  template <typename MeshType>
+  void
+  mark_periodic(const MeshType &mesh)
+  {
+    if constexpr (std::is_same_v<MeshType, Triangulation>)
+      {
+        for (const auto &val : periodicity_set)
+          {
+            dealii::GridTools::collect_periodic_faces(mesh,
+                                                      std::get<0>(val),
+                                                      std::get<1>(val),
+                                                      std::get<2>(val),
+                                                      triangulation_periodiciy_vector);
+          }
+      }
+    else if constexpr (std::is_same_v<MeshType, dealii::DoFHandler<dim>>)
+      {
+        for (const auto &val : periodicity_set)
+          {
+            dealii::GridTools::collect_periodic_faces(mesh,
+                                                      std::get<0>(val),
+                                                      std::get<1>(val),
+                                                      std::get<2>(val),
+                                                      dof_handler_periodiciy_vector);
+          }
+      }
+  };
+
+  /**
+   * @brief Validate.
+   */
+  virtual void
+  validate() const = 0;
+
+  /**
+   * @brief Periodicity set.
+   *
+   * This set contains all the information about periodicity for the system. Each entry
+   * contain tuple with three entries: the first boundary id, the second boundary id, and
+   * the direction.
+   *
+   * For example, (0,1,0) would link the 0th and 1st boundaries with periodicity in the
+   * x-direction.
+   */
+  std::set<std::tuple<unsigned int, unsigned int, unsigned int>> periodicity_set;
+
+  /**
+   * @brief Triangulation periodicity vector.
+   */
+  std::vector<dealii::GridTools::PeriodicFacePair<typename Triangulation::cell_iterator>>
+    triangulation_periodiciy_vector;
+
+  /**
+   * @brief DoFHandler periodicity vector.
+   */
+  std::vector<
+    dealii::GridTools::PeriodicFacePair<typename dealii::DoFHandler<dim>::cell_iterator>>
+    dof_handler_periodiciy_vector;
+};
 
 /**
  * @brief Class for rectangular mesh parameters.
