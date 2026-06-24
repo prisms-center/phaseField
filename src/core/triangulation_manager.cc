@@ -33,7 +33,7 @@ TriangulationManager<1U>::TriangulationManager()
 template <unsigned int dim>
 TriangulationManager<dim>::TriangulationManager()
   : triangulation(MPI_COMM_WORLD,
-                  Triangulation<dim>::limit_level_difference_at_vertices,
+                  Triangulation<dim>::smoothing_on_refinement,
                   Triangulation<dim>::construct_multigrid_hierarchy)
 {}
 
