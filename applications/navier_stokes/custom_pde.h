@@ -62,11 +62,11 @@ public:
   {
     if (solve_block_id == 1)
       {
-        const auto u_old     = variable_list.template get_value<Vector, OldOne>(0);
-        const auto u_old_2   = variable_list.template get_value<Vector, OldTwo>(0);
-        const auto p_old     = variable_list.template get_value<Scalar, OldOne>(2);
-        const auto phi_old   = variable_list.template get_value<Scalar, OldOne>(4);
-        const auto phi_old_2 = variable_list.template get_value<Scalar, OldTwo>(4);
+        const auto u_old     = variable_list.template get_value<Vector, Current>(0);
+        const auto u_old_2   = variable_list.template get_value<Vector, OldOne>(0);
+        const auto p_old     = variable_list.template get_value<Scalar, Current>(2);
+        const auto phi_old   = variable_list.template get_value<Scalar, Current>(4);
+        const auto phi_old_2 = variable_list.template get_value<Scalar, OldOne>(4);
 
         variable_list.set_value_term(1, 2.0 * u_old - u_old_2);
         variable_list.set_value_term(3,
@@ -76,7 +76,7 @@ public:
       {
         const auto u_old       = variable_list.template get_value<Vector, OldOne>(0);
         const auto u_old_2     = variable_list.template get_value<Vector, OldTwo>(0);
-        const auto grad_p_star = variable_list.template get_gradient<Scalar, Current>(3);
+        const auto grad_p_star = variable_list.template get_gradient<Scalar, OldOne>(3);
         const auto tau         = sim_timer.get_timestep();
 
         const auto timestep_term = (2.0 * u_old - 0.5 * u_old_2) / tau;
@@ -108,8 +108,8 @@ public:
       {
         const auto u          = variable_list.template get_value<Vector, LHS>(0);
         const auto grad_u     = variable_list.template get_gradient<Vector, LHS>(0);
-        const auto u_star     = variable_list.template get_value<Vector, Current>(1);
-        const auto div_u_star = variable_list.template get_divergence<Vector, Current>(1);
+        const auto u_star     = variable_list.template get_value<Vector, OldOne>(1);
+        const auto div_u_star = variable_list.template get_divergence<Vector, OldOne>(1);
         const auto tau        = sim_timer.get_timestep();
 
         const auto timestep_term = 1.5 * u / tau; // TODO: Clean this up
