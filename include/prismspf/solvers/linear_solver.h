@@ -185,8 +185,10 @@ public:
       solve_context.get_user_inputs().boundary_parameters.boundary_condition_list;
     const std::vector<FieldAttributes> &field_attributes =
       solve_context.get_field_attributes();
-    for (unsigned int field_index : solve_block.field_indices)
+    for (unsigned int block_index = 0; block_index < solve_block.field_indices.size();
+         block_index++)
       {
+        unsigned int field_index     = solutions.get_block_to_global_index()[block_index];
         const FieldAttributes &field = field_attributes[field_index];
         unsigned int num_comps       = (field.field_type == TensorRank::Vector) ? dim : 1;
         for (unsigned int comp = 0; comp < num_comps; comp++)
