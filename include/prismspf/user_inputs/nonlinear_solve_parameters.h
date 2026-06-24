@@ -31,7 +31,7 @@ struct NonlinearSolverParameters
 /**
  * @brief Struct that holds nonlinear solver parameters.
  */
-struct NonlinearSolveParameterSet
+struct NonlinearSolveParameters
 {
   /**
    * @brief Validate parameters.

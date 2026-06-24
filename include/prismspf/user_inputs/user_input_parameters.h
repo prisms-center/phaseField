@@ -153,8 +153,9 @@ public:
   SpatialDiscretization<dim> spatial_discretization;
   TemporalDiscretization     temporal_discretization;
 
-  LinearSolveParameters          linear_solve_parameters;
-  NonlinearSolveParameterSet     nonlinear_solve_parameters;
+  LinearSolveParameters linear_solve_parameters; // Needs cleaned
+
+  NonlinearSolveParameters       nonlinear_solve_parameters;
   OutputParameters               output_parameters;
   CheckpointParameters           checkpoint_parameters;
   BoundaryParameters<dim>        boundary_parameters;

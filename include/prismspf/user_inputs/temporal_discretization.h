@@ -42,18 +42,6 @@ public:
    * @brief Declare the parameters to be read from file.
    */
   void
-  predeclare(dealii::ParameterHandler &parameter_handler) const override {};
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  void
-  preassign(dealii::ParameterHandler &parameter_handler) override {};
-
-  /**
-   * @brief Declare the parameters to be read from file.
-   */
-  void
   declare(dealii::ParameterHandler &parameter_handler,
           unsigned int max_criteria = Numbers::max_subsections) const override
   {
@@ -140,18 +128,6 @@ public:
                 dealii::ExcMessage("You seem to be taking more than 4 billion "
                                    "timesteps... That doesn't seem right. Right?"));
   };
-
-  /**
-   * @brief Declare the parameters to be read from an input file.
-   */
-  void
-  declare_parameters(dealii::ParameterHandler &parameter_handler) const;
-
-  /**
-   * @brief Assign the parameters read from an input file to this object.
-   */
-  void
-  assign_parameters(dealii::ParameterHandler &parameter_handler);
 
   // Timestep
   double dt = 1.0;
