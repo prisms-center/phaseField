@@ -62,12 +62,6 @@ public:
   postprocess_and_validate();
 
   /**
-   * @brief Print parameters to summary.log
-   */
-  void
-  print_parameter_summary() const;
-
-  /**
    * @brief Clear the initial condition parameters.
    */
   void
@@ -161,46 +155,6 @@ LoadInitialConditionParameters::postprocess_and_validate()
 
   // TODO (landinjm): Check that there are no duplicate field names so we don't double
   // assign.
-}
-
-inline void
-LoadInitialConditionParameters::print_parameter_summary() const
-{
-  if (read_initial_conditions_from_file)
-    {
-      ConditionalOStreams::pout_summary()
-        << "================================================\n"
-        << "  Load IC Parameters\n"
-        << "================================================\n";
-
-      for (const auto &ic_file : ic_files)
-        {
-          ConditionalOStreams::pout_summary()
-            << "File name: " << ic_file.filename << "\n"
-            << "Dataset format: " << to_string(ic_file.dataset_format) << "\n"
-            << "File variable names: ";
-          for (const auto &file_variable_name : ic_file.file_variable_names)
-            {
-              ConditionalOStreams::pout_summary() << file_variable_name << " ";
-            }
-          ConditionalOStreams::pout_summary() << "\n"
-                                              << "Simulation variable names: ";
-          for (const auto &simulation_variable_name : ic_file.simulation_variable_names)
-            {
-              ConditionalOStreams::pout_summary() << simulation_variable_name << " ";
-            }
-          if (ic_file.dataset_format == FlatBinary)
-            {
-              ConditionalOStreams::pout_summary() << "\n Data points in each direction: ";
-              for (const auto &n_data_points : ic_file.n_data_points)
-                {
-                  ConditionalOStreams::pout_summary() << n_data_points << " ";
-                }
-            }
-        }
-
-      ConditionalOStreams::pout_summary() << "\n" << std::flush;
-    }
 }
 
 inline void

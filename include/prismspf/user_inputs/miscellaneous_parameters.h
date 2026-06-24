@@ -32,12 +32,6 @@ public:
   postprocess_and_validate();
 
   /**
-   * @brief Print parameters to summary.log
-   */
-  void
-  print_parameter_summary() const;
-
-  /**
    * @brief Set the random seed and initialize the RNG.
    */
   void
@@ -67,17 +61,6 @@ public:
 inline void
 MiscellaneousParameters::postprocess_and_validate()
 {}
-
-inline void
-MiscellaneousParameters::print_parameter_summary() const
-{
-  ConditionalOStreams::pout_summary()
-    << "================================================\n"
-    << "  Miscellaneous Parameters\n"
-    << "================================================\n"
-    << "Random seed: " << random_seed << "\n"
-    << std::flush;
-}
 
 inline void
 MiscellaneousParameters::declare_parameters(

@@ -39,12 +39,6 @@ struct OutputParameters
   validate();
 
   /**
-   * @brief Print parameters to summary.log
-   */
-  void
-  print_parameter_summary() const;
-
-  /**
    * @brief Set the user output list
    */
   template <typename ListType>
@@ -185,28 +179,6 @@ OutputParameters::should_output(unsigned int increment) const
 inline void
 OutputParameters::validate()
 {}
-
-inline void
-OutputParameters::print_parameter_summary() const
-{
-  ConditionalOStreams::pout_summary()
-    << "================================================\n"
-    << "  Output Parameters\n"
-    << "================================================\n"
-    << "Output file type: " << file_type << "\n"
-    << "Output file name: " << file_name << "\n"
-    << "Output subdivisions: " << patch_subdivisions << "\n"
-    << "Print output period: " << print_output_period << "\n"
-    << "Number of outputs: " << get_num_outputs() << "\n"
-    << "Print timing info: " << bool_to_string(print_timing_with_output) << "\n";
-
-  ConditionalOStreams::pout_summary() << "Output increment list: ";
-  for (const auto &iteration : output_list)
-    {
-      ConditionalOStreams::pout_summary() << iteration << " ";
-    }
-  ConditionalOStreams::pout_summary() << "\n\n" << std::flush;
-}
 
 inline void
 OutputParameters::declare_parameters(dealii::ParameterHandler &parameter_handler) const

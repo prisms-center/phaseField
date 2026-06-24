@@ -40,12 +40,6 @@ struct NonlinearSolveParameterSet
   validate();
 
   /**
-   * @brief Print parameters to summary.log
-   */
-  void
-  print_parameter_summary() const;
-
-  /**
    * @brief Declare the parameters to be read from an input file.
    */
   void
@@ -76,28 +70,6 @@ NonlinearSolveParameterSet::validate()
 
       AssertThrow(nonlinear_solver_parameters.tolerance_value > 0,
                   dealii::ExcMessage("Tolerance must be greater than 0.0"));
-    }
-}
-
-inline void
-NonlinearSolveParameterSet::print_parameter_summary() const
-{
-  if (!newton_solvers.empty())
-    {
-      ConditionalOStreams::pout_summary()
-        << "================================================\n"
-        << "  Nonlinear Solve Parameters\n"
-        << "================================================\n";
-
-      for (const auto &[index, nonlinear_solver_parameters] : newton_solvers)
-        {
-          ConditionalOStreams::pout_summary()
-            << "Index: " << index << "\n"
-            << "  Max iterations: " << nonlinear_solver_parameters.max_iterations << "\n"
-            << "  Step length: " << nonlinear_solver_parameters.step_length << "\n";
-        }
-
-      ConditionalOStreams::pout_summary() << "\n" << std::flush;
     }
 }
 

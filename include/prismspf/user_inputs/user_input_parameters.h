@@ -22,119 +22,146 @@
 
 #include <prismspf/config.h>
 
+#include "prismspf/core/types.h"
+
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+/**
+ * Helper function for declaring multiple aliases
+ */
+void
+declare_aliases(dealii::ParameterHandler       &parameter_handler,
+                const std::string              &existing_entry_name,
+                const std::vector<std::string> &aliases)
+{
+  for (const auto &alias : aliases)
+    {
+      parameter_handler.declare_alias(existing_entry_name, alias);
+    }
+}
+
+/**
+ * @brief Virtual base class for parameter groups.
+ *
+ * This virtual base class ensures that we always have the following execution order.
+ * 1. predeclare
+ * 2. preassign
+ * 3. declare
+ * 4. assign
+ * 5. validate
+ */
+struct ParameterBase
+{
+  virtual ~ParameterBase() = default;
+
+  /**
+   * @brief Declare the parameters to be read from file.
+   *
+   * Unlike `declare` this step comes first so that we can read certain parameters and
+   * things easier later on. For example, there's the mesh type parameter. We must first
+   * read the value of this parameter before we generate the corresponding mesh object and
+   * its parameters.
+   */
+  virtual void
+  predeclare(dealii::ParameterHandler &parameter_handler) const = 0;
+
+  /**
+   * @brief Assign the parameters from file.
+   */
+  virtual void
+  preassign(dealii::ParameterHandler &parameter_handler) = 0;
+
+  /**
+   * @brief Declare the parameters to be read from file.
+   */
+  virtual void
+  declare(dealii::ParameterHandler &parameter_handler,
+          unsigned int              max_criteria = Numbers::max_subsections) const = 0;
+
+  /**
+   * @brief Assign the parameters from file.
+   */
+  virtual void
+  assign(dealii::ParameterHandler &parameter_handler,
+         unsigned int              max_criteria = Numbers::max_subsections) = 0;
+
+  /**
+   * @brief Validate.
+   */
+  virtual void
+  validate(const std::vector<FieldAttributes> &field_attributes,
+           const std::vector<SolveBlock>      &solve_blocks) const = 0;
+};
+
 template <unsigned int dim>
-struct UserInputParameters
+struct UserInputParameters : public ParameterBase
 {
 public:
   /**
-   * @brief Number of subsections to declare for certain field and solver parameters.
-   */
-  constexpr static unsigned int default_max_criteria = 5;
-
-  /**
-   * @brief Default Constructor.
+   * @brief Constructor.
    */
   UserInputParameters() = default;
 
   /**
-   * @brief Constructor. Reads in user input parameters from file and loads them into
-   * member variables.
+   * @brief Constructor.
+   *
+   * Read in user input parameters from file and load them into member variables.
    */
   explicit UserInputParameters(const std::string &file_name,
-                               unsigned int       max_criteria = default_max_criteria);
+                               unsigned int max_criteria = Numbers::max_subsections) {};
 
   /**
-   * @brief Tell parameter handler to expect the parameters by declaring them.
+   * @brief Declare the parameters to be read from file.
    */
   void
-  declare_parameters(dealii::ParameterHandler &parameter_handler,
-                     unsigned int              max_criteria = default_max_criteria) const;
+  predeclare(dealii::ParameterHandler &parameter_handler) const override {};
 
   /**
-   * @brief Read the parameters from the parameter handler and assign them to the
-   * appropriate member variables.
+   * @brief Assign the parameters from file.
    */
   void
-  assign_parameters(dealii::ParameterHandler &parameter_handler,
-                    unsigned int              max_criteria = default_max_criteria);
+  preassign(dealii::ParameterHandler &parameter_handler) override {};
+
+  /**
+   * @brief Declare the parameters to be read from file.
+   */
+  void
+  declare(dealii::ParameterHandler &parameter_handler,
+          unsigned int max_criteria = Numbers::max_subsections) const override {};
+
+  /**
+   * @brief Assign the parameters from file.
+   */
+  void
+  assign(dealii::ParameterHandler &parameter_handler,
+         unsigned int              max_criteria = Numbers::max_subsections) override {};
 
   /**
    * @brief Ensure that the parameters are compatible with a set of fields and solvers.
+   *
+   * This is an optional step.
    */
   void
   validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks)
+           const std::vector<SolveBlock>      &solve_blocks) const override
   {
-    // Perform and postprocessing of user inputs and run checks
-    spatial_discretization.validate();
-    temporal_discretization.validate();
-    linear_solve_parameters.validate();
-    nonlinear_solve_parameters.validate();
-    output_parameters.validate();
-    checkpoint_parameters.validate();
-    boundary_parameters.validate();
-    nucleation_parameters.validate();
-    misc_parameters.postprocess_and_validate();
-    load_ic_parameters.postprocess_and_validate();
+    spatial_discretization.validate(field_attributes, solve_blocks);
   }
 
-  /**
-   * @brief Ensure that the parameters are compatible with a set of fields and solvers.
-   */
-  std::string
-  parameter_summary()
-  {
-    // Print all the parameters to summary.log
-    spatial_discretization.print_parameter_summary();
-    temporal_discretization.print_parameter_summary();
-    linear_solve_parameters.print_parameter_summary();
-    nonlinear_solve_parameters.print_parameter_summary();
-    output_parameters.print_parameter_summary();
-    checkpoint_parameters.print_parameter_summary();
-    boundary_parameters.print_parameter_summary();
-    load_ic_parameters.print_parameter_summary();
-    nucleation_parameters.print_parameter_summary();
-    misc_parameters.print_parameter_summary();
-    user_constants.print();
-    return "";
-  }
-
-  // Spatial discretization parameters
   SpatialDiscretization<dim> spatial_discretization;
+  TemporalDiscretization     temporal_discretization;
 
-  // Temporal discretization parameters
-  TemporalDiscretization temporal_discretization;
-
-  // Linear solve parameters
-  LinearSolveParameters linear_solve_parameters;
-
-  // Nonlinear solve parameters
-  NonlinearSolveParameterSet nonlinear_solve_parameters;
-
-  // Output parameters
-  OutputParameters output_parameters;
-
-  // Checkpoint parameters
-  CheckpointParameters checkpoint_parameters;
-
-  // Boundary parameters
-  BoundaryParameters<dim> boundary_parameters;
-
-  // Load IC parameters
+  LinearSolveParameters          linear_solve_parameters;
+  NonlinearSolveParameterSet     nonlinear_solve_parameters;
+  OutputParameters               output_parameters;
+  CheckpointParameters           checkpoint_parameters;
+  BoundaryParameters<dim>        boundary_parameters;
   LoadInitialConditionParameters load_ic_parameters;
-
-  // Nucleation parameters
-  NucleationParameters nucleation_parameters;
-
-  // Miscellaneous parameters
-  MiscellaneousParameters misc_parameters;
-
-  // User constants
-  UserConstants<dim> user_constants;
+  NucleationParameters           nucleation_parameters;
+  MiscellaneousParameters        misc_parameters;
+  UserConstants<dim>             user_constants;
 };
 
 template <unsigned int dim>
@@ -148,44 +175,6 @@ inline UserInputParameters<dim>::UserInputParameters(const std::string &file_nam
   declare_parameters(parameter_handler, max_criteria);
   parameter_handler.parse_input(file_name);
   assign_parameters(parameter_handler, max_criteria);
-}
-
-template <unsigned int dim>
-inline void
-UserInputParameters<dim>::declare_parameters(dealii::ParameterHandler &parameter_handler,
-                                             unsigned int              max_criteria) const
-{
-  // Perform and postprocessing of user inputs and run checks
-  spatial_discretization.declare_parameters(parameter_handler, max_criteria);
-  temporal_discretization.declare_parameters(parameter_handler);
-  linear_solve_parameters.declare_parameters(parameter_handler, max_criteria);
-  nonlinear_solve_parameters.declare_parameters(parameter_handler, max_criteria);
-  output_parameters.declare_parameters(parameter_handler);
-  checkpoint_parameters.declare_parameters(parameter_handler);
-  boundary_parameters.declare_parameters(parameter_handler, max_criteria);
-  nucleation_parameters.declare_parameters(parameter_handler);
-  misc_parameters.declare_parameters(parameter_handler);
-  load_ic_parameters.declare_parameters(parameter_handler, max_criteria);
-  user_constants.declare_parameters(parameter_handler);
-}
-
-template <unsigned int dim>
-inline void
-UserInputParameters<dim>::assign_parameters(dealii::ParameterHandler &parameter_handler,
-                                            unsigned int              max_criteria)
-{
-  // Perform and postprocessing of user inputs and run checks
-  spatial_discretization.assign_parameters(parameter_handler, max_criteria);
-  temporal_discretization.assign_parameters(parameter_handler);
-  linear_solve_parameters.assign_parameters(parameter_handler, max_criteria);
-  nonlinear_solve_parameters.assign_parameters(parameter_handler, max_criteria);
-  output_parameters.assign_parameters(parameter_handler, temporal_discretization);
-  checkpoint_parameters.assign_parameters(parameter_handler, temporal_discretization);
-  boundary_parameters.assign_parameters(parameter_handler, max_criteria);
-  nucleation_parameters.assign_parameters(parameter_handler);
-  misc_parameters.assign_parameters(parameter_handler);
-  load_ic_parameters.assign_parameters(parameter_handler, max_criteria);
-  user_constants.assign_parameters(parameter_handler);
 }
 
 PRISMS_PF_END_NAMESPACE

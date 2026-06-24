@@ -41,12 +41,6 @@ public:
   validate() const;
 
   /**
-   * @brief Print parameters to summary.log
-   */
-  void
-  print_parameter_summary() const;
-
-  /**
    * @brief Set the print nucleation period
    */
   void
@@ -231,18 +225,6 @@ NucleationParameters::validate() const
   // Check if the nucleation period is valid
   AssertThrow(nucleation_period > 0,
               dealii::ExcMessage("Nucleation period must be positive."));
-}
-
-inline void
-NucleationParameters::print_parameter_summary() const
-{
-  ConditionalOStreams::pout_summary()
-    << "================================================\n"
-    << "  Nucleation Parameters\n"
-    << "================================================\n"
-    << "Nucleation period: " << nucleation_period << "\n"
-    << "\n\n"
-    << std::flush;
 }
 
 inline void

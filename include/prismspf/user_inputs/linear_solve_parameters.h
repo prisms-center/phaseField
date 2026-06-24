@@ -67,12 +67,6 @@ struct LinearSolveParameters
   validate();
 
   /**
-   * @brief Print parameters to summary.log
-   */
-  void
-  print_parameter_summary() const;
-
-  /**
    * @brief Declare the parameters to be read from an input file.
    */
   void
@@ -94,36 +88,6 @@ inline void
 LinearSolveParameters::validate()
 {
   // Nothing to do here for now
-}
-
-inline void
-LinearSolveParameters::print_parameter_summary() const
-{
-  if (!linear_solvers.empty())
-    {
-      ConditionalOStreams::pout_summary()
-        << "================================================\n"
-        << "  Linear Solve Parameters\n"
-        << "================================================\n";
-
-      for (const auto &[index, linear_solver_parameters] : linear_solvers)
-        {
-          ConditionalOStreams::pout_summary()
-            << "Index: " << index << "\n"
-            << "  Tolerance: " << linear_solver_parameters.tolerance << "\n"
-            << "  Type: " << to_string(linear_solver_parameters.tolerance_type) << "\n"
-            << "  Max iterations: " << linear_solver_parameters.max_iterations << "\n"
-            << "  Preconditioner: " << to_string(linear_solver_parameters.preconditioner)
-            << "\n";
-
-          if (linear_solver_parameters.preconditioner == PreconditionerType::GMG)
-            {
-              // ConditionalOStreams::pout_summary();
-            }
-        }
-
-      ConditionalOStreams::pout_summary() << "\n" << std::flush;
-    }
 }
 
 inline void

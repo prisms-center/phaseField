@@ -130,10 +130,10 @@ struct ComponentConditions
     return std::any_of(conditions.begin(),
                        conditions.end(),
                        [](const auto &dir_cond)
-                       {
-                         return dir_cond.second == Condition::TimeDependentDirichlet ||
-                                dir_cond.second == Condition::TimeDependentNeumann;
-                       });
+                         {
+                           return dir_cond.second == Condition::TimeDependentDirichlet ||
+                                  dir_cond.second == Condition::TimeDependentNeumann;
+                         });
   }
 };
 
@@ -148,9 +148,9 @@ struct FieldConstraints
     return std::any_of(component_constraints.begin(),
                        component_constraints.end(),
                        [](const ComponentConditions &comp)
-                       {
-                         return comp.has_time_dependent_bcs();
-                       });
+                         {
+                           return comp.has_time_dependent_bcs();
+                         });
   }
 };
 
@@ -166,12 +166,6 @@ public:
    */
   void
   validate();
-
-  /**
-   * @brief Print parameters to summary.log
-   */
-  void
-  print_parameter_summary() const;
 
   /**
    * @brief Whether there are time-dependent boundary conditions.
@@ -204,23 +198,6 @@ template <unsigned int dim>
 inline void
 BoundaryParameters<dim>::validate()
 { // todo
-}
-
-template <unsigned int dim>
-inline void
-BoundaryParameters<dim>::print_parameter_summary() const
-{
-  ConditionalOStreams::pout_summary()
-    << "================================================\n"
-    << "  Boundary Parameters\n"
-    << "================================================\n";
-
-  for (const auto &[index, component_map] : boundary_condition_list)
-    {
-      // Todo
-    }
-
-  ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 template <unsigned int dim>

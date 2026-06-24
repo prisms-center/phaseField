@@ -246,19 +246,6 @@ public:
     return parameters;
   }
 
-  /**
-   * @brief Print parameters to summary.log
-   */
-  void
-  print_parameter_summary() const override
-  {
-    ConditionalOStreams::pout_summary()
-      << "================================================\n"
-      << "  Field Output Parameter Class\n"
-      << "================================================\n"
-      << std::flush;
-  }
-
 private:
   void
   fill_out_output_list(unsigned int n_increments)

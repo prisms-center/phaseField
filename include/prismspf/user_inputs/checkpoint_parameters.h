@@ -43,12 +43,6 @@ struct CheckpointParameters
   }
 
   /**
-   * @brief Print parameters to summary.log
-   */
-  void
-  print_parameter_summary() const;
-
-  /**
    * @brief Set the user checkpoint list
    */
   template <typename ListType>
@@ -163,25 +157,6 @@ struct CheckpointParameters
   // List of increments that checkpoint the solution to file
   std::set<unsigned int> checkpoint_list;
 };
-
-inline void
-CheckpointParameters::print_parameter_summary() const
-{
-  ConditionalOStreams::pout_summary()
-    << "================================================\n"
-    << "  Checkpoint Parameters\n"
-    << "================================================\n"
-    << "Checkpoint file name: " << file_name << "\n"
-    << "Number of checkpoints: " << get_num_checkpoints() << "\n"
-    << "Print timing info: " << bool_to_string(print_timing_with_checkpoint) << "\n";
-
-  ConditionalOStreams::pout_summary() << "Checkpoint increment list: ";
-  for (const auto &iteration : checkpoint_list)
-    {
-      ConditionalOStreams::pout_summary() << iteration << " ";
-    }
-  ConditionalOStreams::pout_summary() << "\n\n" << std::flush;
-}
 
 inline void
 CheckpointParameters::declare_parameters(
