@@ -32,24 +32,16 @@ main(int argc, char *argv[])
                                          FieldAttributes("p_star"),
                                          FieldAttributes("phi")};
 
-  SolveBlock extrapolation;
-  extrapolation.id            = 1;
-  extrapolation.field_indices = {1, 3}; // u_star & p_star
-  extrapolation.solve_type    = Explicit;
-  extrapolation.solve_timing  = Uninitialized;
-  extrapolation.dependencies_rhs =
-    make_dependency_set(fields,
-                        {"old_1(u)", "old_2(u)", "old_1(p)", "old_1(phi)", "old_2(phi)"});
-
   SolveBlock diffusion;
   diffusion.id            = 2;
   diffusion.field_indices = {0}; // u
   diffusion.solve_type    = Linear;
-  diffusion.solve_timing  = Uninitialized;
+  diffusion.solve_timing  = Initialized;
   diffusion.dependencies_rhs =
-    make_dependency_set(fields, {"old_1(u)", "old_2(u)", "grad(p_star)"});
-  diffusion.dependencies_lhs =
-    make_dependency_set(fields, {"lhs(u)", "grad(lhs(u))", "u_star", "grad(u_star)"});
+    make_dependency_set(fields, {"old_1(u)", "old_2(u)", "grad(old_1(p_star))"});
+  diffusion.dependencies_lhs = make_dependency_set(
+    fields,
+    {"lhs(u)", "grad(lhs(u))", "old_1(u_star)", "grad(old_1(u_star))"});
 
   SolveBlock projection;
   projection.id               = 3;
@@ -63,20 +55,28 @@ main(int argc, char *argv[])
   pressure_correction.id               = 4;
   pressure_correction.field_indices    = {2}; // p
   pressure_correction.solve_type       = Explicit;
-  pressure_correction.solve_timing     = Uninitialized;
+  pressure_correction.solve_timing     = Initialized;
   pressure_correction.dependencies_rhs = make_dependency_set(fields, {"old_1(p)", "phi"});
 
+  SolveBlock extrapolation;
+  extrapolation.id            = 1;
+  extrapolation.field_indices = {1, 3}; // u_star & p_star
+  extrapolation.solve_type    = Explicit;
+  extrapolation.solve_timing  = Uninitialized;
+  extrapolation.dependencies_rhs =
+    make_dependency_set(fields, {"u", "old_1(u)", "p", "phi", "old_1(phi)"});
+
   std::vector<SolveBlock> solve_blocks(
-    {extrapolation, diffusion, projection, pressure_correction});
+    {diffusion, projection, pressure_correction, extrapolation});
 
   UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
   Problem<dim, degree, double>   problem(fields,
-                                         solve_blocks,
-                                         user_inputs,
-                                         pf_tools,
-                                         pde_operator);
+                                       solve_blocks,
+                                       user_inputs,
+                                       pf_tools,
+                                       pde_operator);
   problem.solve();
 
   return 0;
