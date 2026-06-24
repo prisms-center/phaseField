@@ -2,6 +2,7 @@ subsection Rectangular mesh
   set x size = 25.0
   set y size = 4.1
   set z size = 1.0
+  set x subdivisions = 6
 end
 
 set global refinement = 3
@@ -14,6 +15,7 @@ subsection output
   set number = 100
 end
 
+# velocity: u
 subsection linear solver parameters: 0
   set solver_ids               = 2
 
@@ -23,6 +25,7 @@ subsection linear solver parameters: 0
   set preconditioner = Chebyshev
 end
 
+# projection: phi
 subsection linear solver parameters: 1
   set solver_ids               = 3
 
@@ -30,7 +33,7 @@ subsection linear solver parameters: 1
   set tolerance type           = RMSEPerField
   set tolerance value          = 1e-10
   set preconditioner = GMG
-	set mg depth = 1
+	set mg depth = 2
 end
 
 subsection boundary conditions: 0
