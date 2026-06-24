@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"classRefinementManager.html#aa012e2fe0922d561b7e4e7ea6cf2ec6e":[7,0,52,1],
 "classRefinementManager.html#aa0f82ad24167e5e40f5ff9bccb167786":[7,0,52,4],
 "classRefinementManager.html#ac03d052ebd6138099a5313290248d26a":[7,0,52,8],
 "classRefinementManager.html#ad09c4dc590452fac3ce2dfa0c1313a3c":[7,0,52,7],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "classUserInputParameters.html#a2509560c58bb1b3f3a0e7a9348d4a4da":[7,0,69,2],
 "classUserInputParameters.html#a32392f9e393662e2ef58d08f08b80788":[7,0,69,12],
 "classUserInputParameters.html#a4b2a407ff52df5eaee2c188f0f7b9aad":[7,0,69,4],
-"classUserInputParameters.html#a53fa02b5add7145a2dc3e02350222e4f":[7,0,69,9]
+"classUserInputParameters.html#a53fa02b5add7145a2dc3e02350222e4f":[7,0,69,9],
+"classUserInputParameters.html#a59028c45078a54893a81bc5dcbb02f5e":[7,0,69,1]
 };

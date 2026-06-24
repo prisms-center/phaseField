@@ -7,7 +7,7 @@ var searchData=
   ['make_5fconstraints_5ffor_5fsingle_5ffield_4',['make_constraints_for_single_field',['../classConstraintManager.html#afb3ad5a11b0ab128c819d4f5482f42dc',1,'ConstraintManager']]],
   ['make_5fdependency_5fset_5',['make_dependency_set',['../dependencies_8h.html#a8ee155eab2c56d1d5418eed94e41a238',1,'dependencies.h']]],
   ['make_5fdirichlet_5fconstraints_6',['make_dirichlet_constraints',['../classConstraintManager.html#a5bfc7442d158e82646c8a0e35b8778d7',1,'ConstraintManager']]],
-  ['make_5fmg_5fconstraints_7',['make_mg_constraints',['../classMGContext.html#ac5684b18c2ae906999396e9c16573a86',1,'MGContext::make_mg_constraints()'],['../classLinearSolver.html#aa336391217dd8b4889aa191fad21dd1d',1,'LinearSolver::make_mg_constraints()']]],
+  ['make_5fmg_5fconstraints_7',['make_mg_constraints',['../classMGContext.html#ac5684b18c2ae906999396e9c16573a86',1,'MGContext']]],
   ['make_5fnatural_5fconstraints_8',['make_natural_constraints',['../classConstraintManager.html#a88966ca25a3ce2101f6a071a6a8338ed',1,'ConstraintManager']]],
   ['make_5fone_5fboundary_5fconstraint_9',['make_one_boundary_constraint',['../classConstraintManager.html#a5d0d27d70067a7e0a39ec4039c806353',1,'ConstraintManager']]],
   ['make_5fperiodic_5fconstraints_10',['make_periodic_constraints',['../classConstraintManager.html#a576440ff12a5e701e56948d5a1b9b2f2',1,'ConstraintManager']]],
