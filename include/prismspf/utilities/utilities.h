@@ -381,63 +381,6 @@ stabilization_parameter(const T                         &element_volume,
   return T(1) / sqrt(term_adv);
 }
 
-/**
- * @brief Remove whitespace from strings
- */
-inline std::string
-strip_whitespace(const std::string &_text)
-{
-  std::string text = _text;
-  boost::range::remove_erase_if(text, ::isspace);
-  return text;
-}
-
-/**
- * @brief Convert bool to string.
- */
-inline const char *
-bool_to_string(bool boolean)
-{
-  return boolean ? "true" : "false";
-}
-
-/**
- * @brief Convert evaluation flags to string.
- */
-inline std::string
-eval_flags_to_string(dealii::EvaluationFlags::EvaluationFlags flag)
-{
-  std::string result;
-
-  if ((flag & dealii::EvaluationFlags::EvaluationFlags::values) != 0U)
-    {
-      result += "values";
-    }
-  if ((flag & dealii::EvaluationFlags::EvaluationFlags::gradients) != 0U)
-    {
-      if (!result.empty())
-        {
-          result += " | ";
-        }
-      result += "gradients";
-    }
-  if ((flag & dealii::EvaluationFlags::EvaluationFlags::hessians) != 0U)
-    {
-      if (!result.empty())
-        {
-          result += " | ";
-        }
-      result += "hessians";
-    }
-
-  if (result.empty())
-    {
-      return "nothing";
-    }
-
-  return result;
-}
-
 template <unsigned int dim, typename number>
 inline DEAL_II_ALWAYS_INLINE std::vector<number>
 dealii_point_to_vector(const dealii::Point<dim, number> &point)
