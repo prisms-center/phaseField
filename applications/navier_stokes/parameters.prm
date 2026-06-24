@@ -15,12 +15,22 @@ subsection output
 end
 
 subsection linear solver parameters: 0
-  set solver_ids               = 2,3
+  set solver_ids               = 2
 
   set max iterations           = 1000
   set tolerance type           = RMSEPerField
   set tolerance value          = 1e-10
   set preconditioner = Chebyshev
+end
+
+subsection linear solver parameters: 1
+  set solver_ids               = 3
+
+  set max iterations           = 1000
+  set tolerance type           = RMSEPerField
+  set tolerance value          = 1e-10
+  set preconditioner = GMG
+	set mg depth = 1
 end
 
 subsection boundary conditions: 0
@@ -31,5 +41,4 @@ end
 subsection boundary conditions: 1
   set variables = phi
   set conditions = Natural, Dirichlet, Natural, Natural 
-
 end
