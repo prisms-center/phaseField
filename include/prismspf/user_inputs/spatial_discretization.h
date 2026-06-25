@@ -495,7 +495,7 @@ struct SpatialDiscretization : public ParameterBase
           parameter_handler.declare_entry(
             "variables",
             "",
-            dealii::Patterns::Anything(),
+            dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
             "The names of the fields that will use this refinement criterion.");
           parameter_handler.declare_entry(
             "type",

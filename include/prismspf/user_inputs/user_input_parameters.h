@@ -152,16 +152,15 @@ public:
 
   SpatialDiscretization<dim> spatial_discretization;
   TemporalDiscretization     temporal_discretization;
+  LinearSolveParameters      linear_solve_parameters;
+  NonlinearSolveParameters   nonlinear_solve_parameters;
+  MiscellaneousParameters    misc_parameters;
+  BoundaryParameters<dim>    boundary_parameters;
 
-  LinearSolveParameters linear_solve_parameters; // Needs cleaned
-
-  NonlinearSolveParameters       nonlinear_solve_parameters;
   OutputParameters               output_parameters;
   CheckpointParameters           checkpoint_parameters;
-  BoundaryParameters<dim>        boundary_parameters;
   LoadInitialConditionParameters load_ic_parameters;
   NucleationParameters           nucleation_parameters;
-  MiscellaneousParameters        misc_parameters;
   UserConstants<dim>             user_constants;
 };
 
@@ -173,9 +172,9 @@ inline UserInputParameters<dim>::UserInputParameters(const std::string &file_nam
   // before we declare the parameters.
   user_constants.file_name = file_name;
   dealii::ParameterHandler parameter_handler;
-  declare_parameters(parameter_handler, max_criteria);
+  declare(parameter_handler, max_criteria);
   parameter_handler.parse_input(file_name);
-  assign_parameters(parameter_handler, max_criteria);
+  assign(parameter_handler, max_criteria);
 }
 
 PRISMS_PF_END_NAMESPACE
