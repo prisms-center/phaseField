@@ -224,37 +224,44 @@ $(function(){initNavTree('dependency__extents_8h_source.html',''); initResizable
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>              <span class="keywordflow">if</span> (dep_pair_it != solve_block.dependencies_rhs.end())</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                {</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> age = <a class="code hl_function" href="dependency__extents_8h.html#a8f40d3fcbf314f9d38b8058131168322">oldest2</a>(dep_pair_it-&gt;second);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                  <a class="code hl_variable" href="structNewDependencyExtents.html#afc3e613a69246fcfe9a6914aa7893309">max_age</a>          = std::max(<a class="code hl_variable" href="structNewDependencyExtents.html#afc3e613a69246fcfe9a6914aa7893309">max_age</a>, age);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                  <span class="comment">// ignore mg_dependencies for rhs</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                }</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            }</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            {</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>              <span class="keyword">const</span> <span class="keyword">auto</span> &amp;dep_pair_it = solve_block.dependencies_lhs.find(field_index);</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>              <span class="keywordflow">if</span> (dep_pair_it != solve_block.dependencies_lhs.end())</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                {</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> age = <a class="code hl_function" href="dependency__extents_8h.html#a8f40d3fcbf314f9d38b8058131168322">oldest2</a>(dep_pair_it-&gt;second);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                  <a class="code hl_variable" href="structNewDependencyExtents.html#afc3e613a69246fcfe9a6914aa7893309">max_age</a>          = std::max(<a class="code hl_variable" href="structNewDependencyExtents.html#afc3e613a69246fcfe9a6914aa7893309">max_age</a>, age);</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                  <span class="comment">// mg dependencies</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                  <span class="keywordflow">if</span> (num_levels &gt; <a class="code hl_variable" href="structNewDependencyExtents.html#a25a4ca77ec33f834f5f99c308ced9e54">max_age_per_level</a>.size())</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                    {</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                      <a class="code hl_variable" href="structNewDependencyExtents.html#a25a4ca77ec33f834f5f99c308ced9e54">max_age_per_level</a>.resize(num_levels, 0);</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                    }</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> relative_level = 0; relative_level &lt; num_levels;</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                       ++relative_level)</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                    {</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                      <a class="code hl_variable" href="structNewDependencyExtents.html#a25a4ca77ec33f834f5f99c308ced9e54">max_age_per_level</a>[relative_level] =</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                        std::max(<a class="code hl_variable" href="structNewDependencyExtents.html#a25a4ca77ec33f834f5f99c308ced9e54">max_age_per_level</a>[relative_level], age);</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                    }</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>                }</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>            }</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>          }</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>      }</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  }</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                  <span class="keywordflow">if</span> (age != -1)</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                    {</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                      <a class="code hl_variable" href="structNewDependencyExtents.html#afc3e613a69246fcfe9a6914aa7893309">max_age</a> = std::max(<a class="code hl_variable" href="structNewDependencyExtents.html#afc3e613a69246fcfe9a6914aa7893309">max_age</a>, age);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                    }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                  <span class="comment">// ignore mg_dependencies for rhs</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                }</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            {</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>              <span class="keyword">const</span> <span class="keyword">auto</span> &amp;dep_pair_it = solve_block.dependencies_lhs.find(field_index);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>              <span class="keywordflow">if</span> (dep_pair_it != solve_block.dependencies_lhs.end())</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                {</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                  <span class="comment">// mg dependencies TODO: when issue #1182 is closed, move this inside</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                  <span class="comment">// the other if-statement</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                  <span class="keywordflow">if</span> (num_levels &gt; <a class="code hl_variable" href="structNewDependencyExtents.html#a25a4ca77ec33f834f5f99c308ced9e54">max_age_per_level</a>.size())</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                    {</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                      <a class="code hl_variable" href="structNewDependencyExtents.html#a25a4ca77ec33f834f5f99c308ced9e54">max_age_per_level</a>.resize(num_levels, 0);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                    }</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> age = <a class="code hl_function" href="dependency__extents_8h.html#a8f40d3fcbf314f9d38b8058131168322">oldest2</a>(dep_pair_it-&gt;second);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                  <span class="keywordflow">if</span> (age != -1)</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                    {</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                      <a class="code hl_variable" href="structNewDependencyExtents.html#afc3e613a69246fcfe9a6914aa7893309">max_age</a> = std::max(<a class="code hl_variable" href="structNewDependencyExtents.html#afc3e613a69246fcfe9a6914aa7893309">max_age</a>, age);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>                      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> relative_level = 0; relative_level &lt; num_levels;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                           ++relative_level)</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                        {</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                          <a class="code hl_variable" href="structNewDependencyExtents.html#a25a4ca77ec33f834f5f99c308ced9e54">max_age_per_level</a>[relative_level] =</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                            std::max(<a class="code hl_variable" href="structNewDependencyExtents.html#a25a4ca77ec33f834f5f99c308ced9e54">max_age_per_level</a>[relative_level], age);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                        }</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                    }</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                }</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            }</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>          }</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>      }</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  }</div>
 </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>};</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>};</div>
 </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassSolveBlock_html"><div class="ttname"><a href="classSolveBlock.html">SolveBlock</a></div><div class="ttdoc">Structure to hold the attributes of a solve-block.</div><div class="ttdef"><b>Definition</b> solve_block.h:59</div></div>
 <div class="ttc" id="adependencies_8h_html"><div class="ttname"><a href="dependencies_8h.html">dependencies.h</a></div></div>
 <div class="ttc" id="adependencies_8h_html_aafb41d5a064cbd9406420e91178ff01d"><div class="ttname"><a href="dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d">DependencyMap</a></div><div class="ttdeci">std::map&lt; Types::Index, Dependency &gt; DependencyMap</div><div class="ttdef"><b>Definition</b> dependencies.h:129</div></div>
