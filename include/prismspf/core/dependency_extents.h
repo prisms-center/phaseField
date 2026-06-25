@@ -93,11 +93,7 @@ struct NewDependencyExtents
               if (dep_pair_it != solve_block.dependencies_rhs.end())
                 {
                   unsigned int age = oldest2(dep_pair_it->second);
-                  if (age == -1)
-                    {
-                      continue;
-                    }
-                  max_age = std::max(max_age, age);
+                  max_age          = std::max(max_age, age);
                   // ignore mg_dependencies for rhs
                 }
             }
@@ -106,11 +102,7 @@ struct NewDependencyExtents
               if (dep_pair_it != solve_block.dependencies_lhs.end())
                 {
                   unsigned int age = oldest2(dep_pair_it->second);
-                  if (age == -1)
-                    {
-                      continue;
-                    }
-                  max_age = std::max(max_age, age);
+                  max_age          = std::max(max_age, age);
                   // mg dependencies
                   if (num_levels > max_age_per_level.size())
                     {
