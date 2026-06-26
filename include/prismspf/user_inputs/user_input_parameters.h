@@ -157,8 +157,6 @@ public:
   MiscellaneousParameters    misc_parameters;
   BoundaryParameters<dim>    boundary_parameters;
 
-  OutputParameters               output_parameters;
-  CheckpointParameters           checkpoint_parameters;
   LoadInitialConditionParameters load_ic_parameters;
   NucleationParameters           nucleation_parameters;
   UserConstants<dim>             user_constants;

@@ -8,6 +8,8 @@
 #include <deal.II/base/patterns.h>
 #include <deal.II/base/utilities.h>
 
+#include <boost/serialization/vector.hpp>
+
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
@@ -347,6 +349,147 @@ struct FieldOutputParameters : public ParameterBase
    * order parameters we save lots of disk space because we go from n fields to 1.
    */
   std::set<std::string> output_fields;
+};
+
+/**
+ * @brief Simple struct for restart output.
+ */
+struct RestartOutputParameters : public ParameterBase
+{
+  /**
+   * @brief Declare the parameters to be read from file.
+   */
+  void
+  declare(dealii::ParameterHandler &parameter_handler,
+          unsigned int max_criteria = Numbers::max_subsections) const override
+  {
+    parameter_handler.enter_subsection("checkpoints");
+    {
+      parameter_handler.declare_entry(
+        "load from checkpoint",
+        "false",
+        dealii::Patterns::Bool(),
+        "Whether to load from a checkpoint created during a previous simulation.");
+
+      parameter_handler.declare_entry("directory",
+                                      "outputs",
+                                      dealii::Patterns::Anything(),
+                                      "The name of the output directory.");
+      parameter_handler.declare_alias("directory", "folder name");
+
+      parameter_handler.declare_entry("file name",
+                                      "solution",
+                                      dealii::Patterns::Anything(),
+                                      "The prefix of the output files, before the "
+                                      "time step and processor info are added.");
+
+      parameter_handler.declare_entry(
+        "condition",
+        "EQUAL_SPACING",
+        dealii::Patterns::Selection("EQUAL_SPACING|LOG_SPACING|N_PER_DECADE|LIST"),
+        "The spacing type for outputting the solution fields.");
+      parameter_handler.declare_entry(
+        "list",
+        "0",
+        dealii::Patterns::List(dealii::Patterns::Integer(0, INT_MAX), 0, INT_MAX, ","),
+        "The list of time steps to output. Used for the LIST type only and must be comma "
+        "delimited.");
+      parameter_handler.declare_entry("number",
+                                      "10",
+                                      dealii::Patterns::Integer(0, INT_MAX),
+                                      "The number of outputs (or number of outputs "
+                                      "per decade for the N_PER_DECADE type).");
+    }
+    parameter_handler.leave_subsection();
+  };
+
+  /**
+   * @brief Assign the parameters from file.
+   */
+  void
+  assign(dealii::ParameterHandler &parameter_handler,
+         unsigned int              n_increments,
+         unsigned int              max_criteria = Numbers::max_subsections)
+  {
+    parameter_handler.enter_subsection("output");
+    {
+      load_from_checkpoint = parameter_handler.get_bool("load from checkpoint");
+      folder               = parameter_handler.get("directory");
+      file_name            = parameter_handler.get("file name");
+
+      std::string  condition = parameter_handler.get("condition");
+      unsigned int n_outputs = (unsigned int) (parameter_handler.get_integer("number"));
+
+      if (condition == "EQUAL_SPACING")
+        {
+          add_equal_spacing_outputs(n_outputs, n_increments, output_list);
+        }
+      else if (condition == "LOG_SPACING")
+        {
+          add_log_spacing_outputs(n_outputs, n_increments, output_list);
+        }
+      else if (condition == "N_PER_DECADE")
+        {
+          add_n_per_decade_outputs(n_outputs, n_increments, output_list);
+        }
+      else
+        {
+          add_list_outputs(dealii::Utilities::string_to_int(
+                             dealii::Utilities::split_string_list(
+                               parameter_handler.get("list"))),
+                           output_list);
+        }
+    }
+    parameter_handler.leave_subsection();
+  };
+
+  /**
+   * @brief Validate.
+   */
+  void
+  validate(const std::vector<FieldAttributes> &field_attributes,
+           const std::vector<SolveBlock>      &solve_blocks) const override {
+    // TODO: Do this later
+  };
+
+  /**
+   * @brief Whether a given increment should be outputted.
+   */
+  [[nodiscard]] bool
+  should_output(unsigned int increment) const
+  {
+    return output_list.contains(increment);
+  };
+
+  /**
+   * @brief Whether to load from a checkpoint
+   *
+   * TODO: This doesn't really belong here
+   */
+  bool load_from_checkpoint = false;
+
+  /**
+   * @brief Folder for checkpoint output.
+   *
+   * Choosing this will give you your results like outputs/solution-*.vtu
+   */
+  std::string folder = "outputs";
+
+  /**
+   * @brief Base filename for checkpoint output.
+   *
+   * This is the base filename for the outputs. For example, solution-*.vtu or
+   * file_name-*.vtu
+   */
+  std::string file_name = "checkpoint";
+
+  /**
+   * @brief A list of output steps.
+   *
+   * This is determined by a combination of the number of outputs and the total number of
+   * steps. When we reach a step contained in the list, we output.
+   */
+  std::set<unsigned int> output_list = {0};
 };
 
 PRISMS_PF_END_NAMESPACE
