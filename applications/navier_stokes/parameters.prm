@@ -1,0 +1,47 @@
+subsection Rectangular mesh
+  set x size = 25.0
+  set y size = 4.1
+  set z size = 1.0
+  set x subdivisions = 6
+end
+
+set global refinement = 3
+
+set timestep = 5.0e-3
+set end time = 10.0
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 100
+end
+
+# velocity: u
+subsection linear solver parameters: 0
+  set solver_ids               = 2
+
+  set max iterations           = 1000
+  set tolerance type           = RMSEPerField
+  set tolerance value          = 1e-10
+  set preconditioner = Chebyshev
+end
+
+# projection: phi
+subsection linear solver parameters: 1
+  set solver_ids               = 3
+
+  set max iterations           = 1000
+  set tolerance type           = RMSEPerField
+  set tolerance value          = 1e-10
+  set preconditioner = GMG
+	set mg depth = 2
+end
+
+subsection boundary conditions: 0
+  set variables = u
+  set conditions = Dirichlet, Natural, Dirichlet, Dirichlet
+end
+
+subsection boundary conditions: 1
+  set variables = phi
+  set conditions = Natural, Dirichlet, Natural, Natural 
+end
