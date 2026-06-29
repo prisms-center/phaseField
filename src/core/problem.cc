@@ -59,6 +59,7 @@ namespace
               solvers.emplace_back(
                 std::make_shared<ConstantSolver<dim, degree, number>>(solve_block,
                                                                       solve_context));
+              break;
             case SolveType::CustomSolver:
               {
                 using FactoryFunc =
@@ -71,7 +72,6 @@ namespace
                 solvers.emplace_back(factory(solve_block, solve_context));
                 break;
               }
-              break;
             default:
               AssertThrow(false, dealii::ExcMessage("Unknown solver type"));
           }
