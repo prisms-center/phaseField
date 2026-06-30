@@ -3,7 +3,6 @@ set(_sources user_input_parameters.cc)
 
 set(
   _headers
-  ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/checkpoint_parameters.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/load_initial_condition_parameters.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/spatial_discretization.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/constraint_parameters.h
@@ -15,7 +14,6 @@ set(
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/nucleation_parameters.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/user_input_parameters.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/linear_solve_parameters.h
-  ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/output_parameters.h
 )
 
 set(_inst_bases user_input_parameters)

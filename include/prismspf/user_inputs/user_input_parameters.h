@@ -8,14 +8,12 @@
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/solve_block.h>
 
-#include <prismspf/user_inputs/checkpoint_parameters.h>
 #include <prismspf/user_inputs/constraint_parameters.h>
 #include <prismspf/user_inputs/linear_solve_parameters.h>
 #include <prismspf/user_inputs/load_initial_condition_parameters.h>
 #include <prismspf/user_inputs/miscellaneous_parameters.h>
 #include <prismspf/user_inputs/nonlinear_solve_parameters.h>
 #include <prismspf/user_inputs/nucleation_parameters.h>
-#include <prismspf/user_inputs/output_parameters.h>
 #include <prismspf/user_inputs/spatial_discretization.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_constants.h>
@@ -27,73 +25,6 @@
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
-
-/**
- * Helper function for declaring multiple aliases
- */
-void
-declare_aliases(dealii::ParameterHandler       &parameter_handler,
-                const std::string              &existing_entry_name,
-                const std::vector<std::string> &aliases)
-{
-  for (const auto &alias : aliases)
-    {
-      parameter_handler.declare_alias(existing_entry_name, alias);
-    }
-}
-
-/**
- * @brief Virtual base class for parameter groups.
- *
- * This virtual base class ensures that we always have the following execution order.
- * 1. predeclare
- * 2. preassign
- * 3. declare
- * 4. assign
- * 5. validate
- */
-struct ParameterBase
-{
-  virtual ~ParameterBase() = default;
-
-  /**
-   * @brief Declare the parameters to be read from file.
-   *
-   * Unlike `declare` this step comes first so that we can read certain parameters and
-   * things easier later on. For example, there's the mesh type parameter. We must first
-   * read the value of this parameter before we generate the corresponding mesh object and
-   * its parameters.
-   */
-  virtual void
-  predeclare(dealii::ParameterHandler &parameter_handler) const = 0;
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  virtual void
-  preassign(dealii::ParameterHandler &parameter_handler) = 0;
-
-  /**
-   * @brief Declare the parameters to be read from file.
-   */
-  virtual void
-  declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int              max_criteria = Numbers::max_subsections) const = 0;
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  virtual void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) = 0;
-
-  /**
-   * @brief Validate.
-   */
-  virtual void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const = 0;
-};
 
 template <unsigned int dim>
 struct UserInputParameters : public ParameterBase
