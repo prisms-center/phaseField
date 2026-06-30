@@ -17,7 +17,7 @@
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
-#include <prismspf/user_inputs/user_input_parameters.h>
+#include <prismspf/user_inputs/parameter_base.h>
 
 #include <prismspf/config.h>
 
@@ -103,11 +103,10 @@ struct ComponentConditions
     return std::any_of(conditions.begin(),
                        conditions.end(),
                        [](const auto &_condition)
-                         {
-                           return _condition.second ==
-                                    Condition::TimeDependentDirichlet ||
-                                  _condition.second == Condition::TimeDependentNeumann;
-                         });
+                       {
+                         return _condition.second == Condition::TimeDependentDirichlet ||
+                                _condition.second == Condition::TimeDependentNeumann;
+                       });
   }
 };
 
@@ -122,9 +121,9 @@ struct FieldConstraints
     return std::any_of(component_constraints.begin(),
                        component_constraints.end(),
                        [](const ComponentConditions &component)
-                         {
-                           return component.has_time_dependent_bcs();
-                         });
+                       {
+                         return component.has_time_dependent_bcs();
+                       });
   }
 };
 
@@ -169,8 +168,6 @@ struct BoundaryParameters : public ParameterBase
   assign(dealii::ParameterHandler &parameter_handler,
          unsigned int              max_criteria = Numbers::max_subsections) override
   {
-    // TODO: This is used in other places. Refactor
-    static const std::vector<std::string> axis_labels = {"x", "y", "z"};
     for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
       {
         std::string subsection_text =

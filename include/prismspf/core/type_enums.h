@@ -146,15 +146,4 @@ enum PreconditionerType : std::uint8_t
   GMG
 };
 
-/**
- * @brief Data formats for input initial conditions.
- * LastEntry is used for loop bounds.
- */
-enum DataFormatType : std::uint8_t
-{
-  VTKUnstructuredGrid,
-  FlatBinary,
-  LastEntry
-};
-
 PRISMS_PF_END_NAMESPACE

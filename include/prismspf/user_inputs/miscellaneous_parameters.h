@@ -9,7 +9,7 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 
-#include <prismspf/user_inputs/user_input_parameters.h>
+#include <prismspf/user_inputs/parameter_base.h>
 
 #include <prismspf/utilities/utilities.h>
 

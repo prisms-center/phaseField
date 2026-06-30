@@ -8,10 +8,9 @@
 #include <prismspf/core/types.h>
 
 #include <prismspf/user_inputs/linear_solve_parameters.h>
+#include <prismspf/user_inputs/parameter_base.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/user_inputs/user_input_parameters.h"
 
 PRISMS_PF_BEGIN_NAMESPACE
 

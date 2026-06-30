@@ -20,8 +20,6 @@
 
 #include <prismspf/config.h>
 
-#include "prismspf/core/types.h"
-
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE

@@ -15,7 +15,7 @@
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
-#include <prismspf/user_inputs/user_input_parameters.h>
+#include <prismspf/user_inputs/parameter_base.h>
 
 #include <prismspf/utilities/utilities.h>
 
@@ -363,7 +363,7 @@ struct RestartOutputParameters : public ParameterBase
   declare(dealii::ParameterHandler &parameter_handler,
           unsigned int max_criteria = Numbers::max_subsections) const override
   {
-    parameter_handler.enter_subsection("checkpoints");
+    parameter_handler.enter_subsection("checkpoint");
     {
       parameter_handler.declare_entry(
         "load from checkpoint",
@@ -411,7 +411,7 @@ struct RestartOutputParameters : public ParameterBase
          unsigned int              n_increments,
          unsigned int              max_criteria = Numbers::max_subsections)
   {
-    parameter_handler.enter_subsection("output");
+    parameter_handler.enter_subsection("checkpoint");
     {
       load_from_checkpoint = parameter_handler.get_bool("load from checkpoint");
       folder               = parameter_handler.get("directory");
@@ -464,7 +464,10 @@ struct RestartOutputParameters : public ParameterBase
   /**
    * @brief Whether to load from a checkpoint
    *
-   * TODO: This doesn't really belong here
+   * TODO: This doesn't really belong here. Maybe it does? With loading from restart it
+   * overrides any other input conditions so it might not fit super well in the input
+   * section either. I don't see a good place to put it and it somewhat fits here so
+   * leaving it.
    */
   bool load_from_checkpoint = false;
 
@@ -490,6 +493,83 @@ struct RestartOutputParameters : public ParameterBase
    * steps. When we reach a step contained in the list, we output.
    */
   std::set<unsigned int> output_list = {0};
+};
+
+/**
+ * @brief Initial condition file
+ */
+struct InitialConditionFile
+{
+  /**
+   * @brief Data formats for input initial conditions.
+   * LastEntry is used for loop bounds.
+   */
+  enum DataFormatType : std::uint8_t
+  {
+    FlatBinary,
+    VTKUnstructuredGrid,
+    VTKXMLUnstructuredGrid,
+    VTKPXMLUnstructuredGrid,
+    VTKXMLImageData,
+    LastEntry
+  };
+
+  // File name
+  std::string file_name;
+
+  // Data format
+  DataFormatType format;
+
+  // File variable names
+  std::vector<std::string> file_variable_names;
+
+  // Simulation variable names
+  std::vector<std::string> simulation_variable_names;
+
+  // Number of data points in each direction
+  std::array<unsigned int, 3> n_data_points = {
+    {0, 0, 0}
+  };
+};
+
+/**
+ * @brief Simple struct for field input.
+ */
+struct FieldInputParameters : public ParameterBase
+{
+  /**
+   * @brief Declare the parameters to be read from file.
+   */
+  void
+  declare(dealii::ParameterHandler &parameter_handler,
+          unsigned int max_criteria = Numbers::max_subsections) const override
+  {
+    parameter_handler.enter_subsection("input");
+    {}
+    parameter_handler.leave_subsection();
+  };
+
+  /**
+   * @brief Assign the parameters from file.
+   */
+  void
+  assign(dealii::ParameterHandler &parameter_handler,
+         unsigned int              n_increments,
+         unsigned int              max_criteria = Numbers::max_subsections)
+  {
+    parameter_handler.enter_subsection("input");
+    {}
+    parameter_handler.leave_subsection();
+  };
+
+  /**
+   * @brief Validate.
+   */
+  void
+  validate(const std::vector<FieldAttributes> &field_attributes,
+           const std::vector<SolveBlock>      &solve_blocks) const override {
+    // TODO: Do this later
+  };
 };
 
 PRISMS_PF_END_NAMESPACE

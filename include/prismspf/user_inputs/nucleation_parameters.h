@@ -11,8 +11,8 @@
 
 #include <prismspf/nucleation/nucleus.h>
 
+#include <prismspf/user_inputs/parameter_base.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
-#include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/utilities/utilities.h>
 

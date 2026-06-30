@@ -16,139 +16,139 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-namespace Parameters
+/**
+ * @brief Cartesian axis labels
+ */
+static constexpr std::array<std::string_view, 3> axis_labels {"x", "y", "z"};
+
+/**
+ * Declare multiple aliases for a parameter name.
+ */
+template <std::ranges::input_range Range>
+requires std::convertible_to<std::ranges::range_reference_t<Range>, std::string_view>
+static void
+declare_aliases(dealii::ParameterHandler &parameter_handler,
+                const std::string        &existing_entry_name,
+                const Range              &aliases)
 {
-  /**
-   * Declare multiple aliases for a parameter name.
-   */
-  template <std::ranges::input_range Range>
-  requires std::convertible_to<std::ranges::range_reference_t<Range>, std::string_view>
-  inline void
-  declare_aliases(dealii::ParameterHandler &parameter_handler,
-                  const std::string        &existing_entry_name,
-                  const Range              &aliases)
-  {
-    for (const auto &alias : aliases)
-      {
-        parameter_handler.declare_alias(existing_entry_name, alias);
-      }
-  }
+  for (const auto &alias : aliases)
+    {
+      parameter_handler.declare_alias(existing_entry_name, alias);
+    }
+}
 
-  /**
-   * Generate common aliases for a parameter name.
-   *
-   * Given "user inputs", generates:
-   *   - "user_inputs"
-   *   - "User Inputs"
-   *   - "User_Inputs"
-   *   - "UserInputs"
-   */
-  [[nodiscard]] inline std::array<std::string, 4>
-  generate_aliases(std::string_view name)
-  {
-    std::string snake;
-    std::string title;
-    std::string title_snake;
-    std::string pascal;
-    snake.reserve(name.size());
-    title.reserve(name.size());
-    title_snake.reserve(name.size());
-    pascal.reserve(name.size());
+/**
+ * Generate common aliases for a parameter name.
+ *
+ * Given "user inputs", generates:
+ *   - "user_inputs"
+ *   - "User Inputs"
+ *   - "User_Inputs"
+ *   - "UserInputs"
+ */
+[[nodiscard]] static std::array<std::string, 4>
+generate_aliases(std::string_view name)
+{
+  std::string snake;
+  std::string title;
+  std::string title_snake;
+  std::string pascal;
+  snake.reserve(name.size());
+  title.reserve(name.size());
+  title_snake.reserve(name.size());
+  pascal.reserve(name.size());
 
-    bool start_of_word = true;
-    for (char character : name)
-      {
-        if (character == ' ')
-          {
-            snake += '_';
-            title += ' ';
-            title_snake += '_';
-            start_of_word = true;
-            continue;
-          }
+  bool start_of_word = true;
+  for (char character : name)
+    {
+      if (character == ' ')
+        {
+          snake += '_';
+          title += ' ';
+          title_snake += '_';
+          start_of_word = true;
+          continue;
+        }
 
-        const char lower = (char) std::tolower((unsigned char) character);
-        const char upper = (char) std::toupper((unsigned char) character);
+      const char lower = (char) std::tolower((unsigned char) character);
+      const char upper = (char) std::toupper((unsigned char) character);
 
-        snake += lower;
-        title += start_of_word ? upper : lower;
-        title_snake += start_of_word ? upper : lower;
-        pascal += start_of_word ? upper : lower;
+      snake += lower;
+      title += start_of_word ? upper : lower;
+      title_snake += start_of_word ? upper : lower;
+      pascal += start_of_word ? upper : lower;
 
-        start_of_word = false;
-      }
+      start_of_word = false;
+    }
 
-    return {
-      std::move(snake),
-      std::move(title),
-      std::move(title_snake),
-      std::move(pascal),
-
-    };
-  }
-
-  /**
-   * @brief Virtual base class for parameter groups.
-   *
-   * This virtual base class ensures that we always have the following execution order.
-   * 1. predeclare
-   * 2. preassign
-   * 3. declare
-   * 4. assign
-   * 5. validate
-   */
-  struct ParameterBase
-  {
-    ParameterBase()          = default;
-    virtual ~ParameterBase() = default;
-
-    ParameterBase(const ParameterBase &) = default;
-    ParameterBase(ParameterBase &&)      = default;
-
-    ParameterBase &
-    operator=(const ParameterBase &) = default;
-    ParameterBase &
-    operator=(ParameterBase &&) = default;
-
-    /**
-     * @brief Declare the parameters to be read from file.
-     *
-     * Unlike `declare` this step comes first so that we can read certain parameters and
-     * things easier later on. For example, there's the mesh type parameter. We must first
-     * read the value of this parameter before we generate the corresponding mesh object
-     * and its parameters.
-     */
-    virtual void
-    predeclare(dealii::ParameterHandler &parameter_handler) const = 0;
-
-    /**
-     * @brief Assign the parameters from file.
-     */
-    virtual void
-    preassign(dealii::ParameterHandler &parameter_handler) = 0;
-
-    /**
-     * @brief Declare the parameters to be read from file.
-     */
-    virtual void
-    declare(dealii::ParameterHandler &parameter_handler,
-            unsigned int              max_criteria = Numbers::max_subsections) const = 0;
-
-    /**
-     * @brief Assign the parameters from file.
-     */
-    virtual void
-    assign(dealii::ParameterHandler &parameter_handler,
-           unsigned int              max_criteria = Numbers::max_subsections) = 0;
-
-    /**
-     * @brief Validate.
-     */
-    virtual void
-    validate(const std::vector<FieldAttributes> &field_attributes,
-             const std::vector<SolveBlock>      &solve_blocks) const = 0;
+  return {
+    std::move(snake),
+    std::move(title),
+    std::move(title_snake),
+    std::move(pascal),
   };
+}
 
-} // namespace Parameters
+/**
+ * @brief Virtual base class for parameter groups.
+ *
+ * This virtual base class ensures that we always have the following execution order.
+ * 1. predeclare
+ * 2. preassign
+ * 3. declare
+ * 4. assign
+ * 5. validate
+ */
+struct ParameterBase
+{
+  ParameterBase()          = default;
+  virtual ~ParameterBase() = default;
+
+  ParameterBase(const ParameterBase &) = default;
+  ParameterBase(ParameterBase &&)      = default;
+
+  ParameterBase &
+  operator=(const ParameterBase &) = default;
+  ParameterBase &
+  operator=(ParameterBase &&) = default;
+
+  /**
+   * @brief Declare the parameters to be read from file.
+   *
+   * Unlike `declare` this step comes first so that we can read certain parameters and
+   * things easier later on. For example, there's the mesh type parameter. We must first
+   * read the value of this parameter before we generate the corresponding mesh object
+   * and its parameters.
+   */
+  virtual void
+  predeclare(dealii::ParameterHandler &parameter_handler) const = 0;
+
+  /**
+   * @brief Assign the parameters from file.
+   */
+  virtual void
+  preassign(dealii::ParameterHandler &parameter_handler) = 0;
+
+  /**
+   * @brief Declare the parameters to be read from file.
+   */
+  virtual void
+  declare(dealii::ParameterHandler &parameter_handler,
+          unsigned int              max_criteria = Numbers::max_subsections) const = 0;
+
+  /**
+   * @brief Assign the parameters from file.
+   */
+  virtual void
+  assign(dealii::ParameterHandler &parameter_handler,
+         unsigned int              max_criteria = Numbers::max_subsections) = 0;
+
+  /**
+   * @brief Validate.
+   */
+  virtual void
+  validate(const std::vector<FieldAttributes> &field_attributes,
+           const std::vector<SolveBlock>      &solve_blocks) const = 0;
+};
 
 PRISMS_PF_END_NAMESPACE

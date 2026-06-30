@@ -1,8 +1,14 @@
 # Manually specify files to be included
-set(_sources user_input_parameters.cc)
+set(
+  _sources
+  spatial_discretization.cc
+  temporal_discretization.cc
+  user_input_parameters.cc
+)
 
 set(
   _headers
+  ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/parameter_base.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/load_initial_condition_parameters.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/spatial_discretization.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/constraint_parameters.h

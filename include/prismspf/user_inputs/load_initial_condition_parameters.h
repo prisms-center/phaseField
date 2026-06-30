@@ -22,39 +22,11 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * @brief Struct that store the read-in information for a single file
- */
-struct InitialConditionFile
-{
-  // File name
-  std::string filename;
-
-  // Grid type
-  DataFormatType dataset_format;
-
-  // File variable names
-  std::vector<std::string> file_variable_names;
-
-  // Simulation variable names
-  std::vector<std::string> simulation_variable_names;
-
-  // Number of data points in each direction
-  std::array<dealii::types::global_dof_index, 3> n_data_points = {
-    {0, 0, 0}
-  };
-};
-
-/**
  * @brief Struct that stores relevant load initial condition information
  */
 struct LoadInitialConditionParameters
 {
 public:
-  /**
-   * @brief Maximum number of initial condition files
-   */
-  static constexpr unsigned int max_files = 8;
-
   /**
    * @brief Postprocess and validate parameters.
    */
@@ -216,9 +188,7 @@ LoadInitialConditionParameters::assign_parameters(
 {
   set_read_initial_conditions_from_file(
     parameter_handler.get_bool("read initial conditions from file"));
-  static std::array<std::string, 3> axis_labels = {
-    {"x", "y", "z"}
-  };
+
   for (unsigned int i = 0; i < max_criteria; i++)
     {
       parameter_handler.enter_subsection("initial condition file " + std::to_string(i));

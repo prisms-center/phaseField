@@ -13,8 +13,6 @@
 
 #include <prismspf/utilities/utilities.h>
 
-#include "prismspf/core/conditional_ostreams.h"
-
 #include <bit>
 #include <fstream>
 #include <iostream>
