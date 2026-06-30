@@ -21,6 +21,7 @@
 
 #include <prismspf/config.h>
 
+#include <cmath>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -195,8 +196,7 @@ stabilization_parameter(const T                         &timestep,
   using std::cbrt;
   using std::sqrt;
 
-  constexpr auto degree_modifier  = T(1) / T(degree);
-  constexpr auto inv_pi           = T(1) / T(M_PI);
+  constexpr auto degree_modifier  = (float) 1 / (float) degree;
   const auto     velocity_l2_norm = velocity.norm_square() + T(1e-12);
 
   auto element_size = T(0);
@@ -206,11 +206,11 @@ stabilization_parameter(const T                         &timestep,
     }
   else if constexpr (dim == 2)
     {
-      element_size = T(2) * sqrt(element_volume * inv_pi);
+      element_size = T(2) * sqrt(element_volume * T(M_1_PI));
     }
   else if constexpr (dim == 3)
     {
-      element_size = cbrt(T(6) * element_volume * inv_pi);
+      element_size = cbrt(T(6) * element_volume * T(M_1_PI));
     }
   else
     {
@@ -247,8 +247,7 @@ stabilization_parameter(const T                         &element_volume,
   using std::cbrt;
   using std::sqrt;
 
-  constexpr auto degree_modifier  = T(1) / T(degree);
-  constexpr auto inv_pi           = T(1) / T(M_PI);
+  constexpr auto degree_modifier  = (float) 1 / (float) degree;
   const auto     velocity_l2_norm = velocity.norm_square() + T(1e-12);
 
   auto element_size = T(0);
@@ -258,11 +257,11 @@ stabilization_parameter(const T                         &element_volume,
     }
   else if constexpr (dim == 2)
     {
-      element_size = T(2) * sqrt(element_volume * inv_pi);
+      element_size = T(2) * sqrt(element_volume * T(M_1_PI));
     }
   else if constexpr (dim == 3)
     {
-      element_size = cbrt(T(6) * element_volume * inv_pi);
+      element_size = cbrt(T(6) * element_volume * T(M_1_PI));
     }
   else
     {
@@ -298,8 +297,7 @@ stabilization_parameter(const T                         &timestep,
   using std::cbrt;
   using std::sqrt;
 
-  constexpr auto degree_modifier  = T(1) / T(degree);
-  constexpr auto inv_pi           = T(1) / T(M_PI);
+  constexpr auto degree_modifier  = (float) 1 / (float) degree;
   const auto     velocity_l2_norm = velocity.norm_square() + T(1e-12);
 
   auto element_size = T(0);
@@ -309,11 +307,11 @@ stabilization_parameter(const T                         &timestep,
     }
   else if constexpr (dim == 2)
     {
-      element_size = T(2) * sqrt(element_volume * inv_pi);
+      element_size = T(2) * sqrt(element_volume * T(M_1_PI));
     }
   else if constexpr (dim == 3)
     {
-      element_size = cbrt(T(6) * element_volume * inv_pi);
+      element_size = cbrt(T(6) * element_volume * T(M_1_PI));
     }
   else
     {
@@ -348,8 +346,7 @@ stabilization_parameter(const T                         &element_volume,
   using std::cbrt;
   using std::sqrt;
 
-  constexpr auto degree_modifier  = T(1) / T(degree);
-  constexpr auto inv_pi           = T(1) / T(M_PI);
+  constexpr auto degree_modifier  = (float) 1 / (float) degree;
   const auto     velocity_l2_norm = velocity.norm_square() + T(1e-12);
 
   auto element_size = T(0);
@@ -359,11 +356,11 @@ stabilization_parameter(const T                         &element_volume,
     }
   else if constexpr (dim == 2)
     {
-      element_size = T(2) * sqrt(element_volume * inv_pi);
+      element_size = T(2) * sqrt(element_volume * T(M_1_PI));
     }
   else if constexpr (dim == 3)
     {
-      element_size = cbrt(T(6) * element_volume * inv_pi);
+      element_size = cbrt(T(6) * element_volume * T(M_1_PI));
     }
   else
     {
