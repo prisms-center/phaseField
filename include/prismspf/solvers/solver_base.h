@@ -132,9 +132,11 @@ public:
       {
         // Set the initial condition
         set_initial_condition();
-        return;
       }
-    this->solve_impl();
+    else
+      {
+        this->solve_impl();
+      }
     if (solve_context->get_simulation_timer().get_increment() == 0)
       {
         solutions.apply_initial_condition_for_old_fields();
