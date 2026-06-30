@@ -17,6 +17,7 @@
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/matrix_free_manager.h>
 #include <prismspf/core/solve_block.h>
+#include <prismspf/core/timer.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
@@ -357,6 +358,7 @@ GroupSolutionHandler<dim, number>::mg_transfer_down(
   unsigned int                   finest_level,
   bool                           transfer_old_solutions)
 {
+  Timer::start_section("MG Transfer LHS Dependencies");
   const unsigned int num_blocks = solve_block.field_indices.size();
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
@@ -380,10 +382,14 @@ GroupSolutionHandler<dim, number>::mg_transfer_down(
           solution_levels[relative_level]
             .solutions.block(block_index)
             .swap(temp_mg_solutions[level]);
+          Timer::start_section("MG LHS Dependencies Update Ghosts");
+          solution_levels[relative_level].solutions.update_ghost_values();
+          Timer::end_section("MG LHS Dependencies Update Ghosts");
         }
 
       if (!transfer_old_solutions)
         {
+          Timer::end_section("MG Transfer LHS Dependencies");
           return;
         }
       // Transfer old solutions
@@ -405,10 +411,16 @@ GroupSolutionHandler<dim, number>::mg_transfer_down(
                     .old_solutions[age_index]
                     .block(block_index)
                     .swap(temp_mg_solutions[level]);
+                  Timer::start_section("MG LHS Dependencies Update Ghosts");
+                  solution_levels[relative_level]
+                    .old_solutions[age_index]
+                    .update_ghost_values();
+                  Timer::end_section("MG LHS Dependencies Update Ghosts");
                 }
             }
         }
     }
+  Timer::end_section("MG Transfer LHS Dependencies");
 }
 
 PRISMS_PF_END_NAMESPACE

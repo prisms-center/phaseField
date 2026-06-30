@@ -89,7 +89,7 @@ public:
     // Apply constraints.
     solutions.apply_constraints();
 
-    if (solutions.num_levels() > 1)
+    if (solutions.num_levels() > 0)
       {
         solutions.reinit_mg_transfer(solve_context->get_dof_manager());
       }
@@ -104,7 +104,7 @@ public:
     // Apply constraints.
     solutions.reinit();
     solutions.apply_constraints();
-    if (solutions.num_levels() > 1)
+    if (solutions.num_levels() > 0)
       {
         solutions.reinit_mg_transfer(solve_context->get_dof_manager());
         solutions.mg_transfer_down(
