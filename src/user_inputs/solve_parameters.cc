@@ -5,18 +5,6 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-LinearSolverParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-LinearSolverParameters::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
 LinearSolverParameters::declare(dealii::ParameterHandler &parameter_handler,
                                 unsigned int              max_criteria) const
 {
@@ -295,18 +283,6 @@ LinearSolverParameters::assign_gmres(dealii::ParameterHandler &parameter_handler
 }
 
 void
-LinearSolveParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-LinearSolveParameters::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
 LinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
                                unsigned int              max_criteria) const
 {
@@ -372,14 +348,6 @@ LinearSolveParameters::validate(const std::vector<FieldAttributes> &field_attrib
       linear_solver.validate(field_attributes, solve_blocks);
     }
 }
-
-void
-NonlinearSolverParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
-{}
-
-void
-NonlinearSolverParameters::preassign(dealii::ParameterHandler &parameter_handler)
-{}
 
 void
 NonlinearSolverParameters::declare(dealii::ParameterHandler &parameter_handler,

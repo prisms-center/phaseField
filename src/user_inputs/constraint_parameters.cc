@@ -10,10 +10,10 @@ ComponentConditions::has_time_dependent_bcs() const
   return std::any_of(conditions.begin(),
                      conditions.end(),
                      [](const auto &_condition)
-                       {
-                         return _condition.second == Condition::TimeDependentDirichlet ||
-                                _condition.second == Condition::TimeDependentNeumann;
-                       });
+                     {
+                       return _condition.second == Condition::TimeDependentDirichlet ||
+                              _condition.second == Condition::TimeDependentNeumann;
+                     });
 }
 
 template <unsigned int dim>
@@ -23,9 +23,9 @@ FieldConstraints<dim>::has_time_dependent_bcs() const
   return std::any_of(component_constraints.begin(),
                      component_constraints.end(),
                      [](const ComponentConditions &component)
-                       {
-                         return component.has_time_dependent_bcs();
-                       });
+                     {
+                       return component.has_time_dependent_bcs();
+                     });
 }
 
 template <unsigned int dim>
