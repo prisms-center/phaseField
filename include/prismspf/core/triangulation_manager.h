@@ -23,6 +23,8 @@ template <unsigned int dim>
 class TriangulationManager
 {
 public:
+  using Triangulation = typename Mesh<dim>::Triangulation;
+
   /**
    * @brief Constructor.
    */
@@ -55,7 +57,7 @@ public:
   /**
    * @brief Getter function for triangulation.
    */
-  [[nodiscard]] const Triangulation<dim> &
+  [[nodiscard]] const Triangulation &
   get_triangulation() const;
 
   /**
@@ -64,13 +66,6 @@ public:
    */
   [[nodiscard]] const dealii::Triangulation<dim> &
   get_triangulation(unsigned int relative_level) const;
-
-  /**
-   * @brief Get the vector of periodic face pairs
-   */
-  [[nodiscard]] const std::vector<dealii::GridTools::PeriodicFacePair<
-    typename dealii::Triangulation<dim>::cell_iterator>> &
-  get_periodic_face_pairs() const;
 
   /**
    * @brief Get the volume of the triangulation.
@@ -122,19 +117,12 @@ private:
   /**
    * @brief Main triangulation.
    */
-  Triangulation<dim> triangulation;
+  Triangulation triangulation;
 
   /**
    * @brief Coarsened triangulations for multigrid.
    */
   std::vector<std::shared_ptr<const dealii::Triangulation<dim>>> coarsened_triangulations;
-
-  /**
-   * @brief Periodic face pairs on the coarsest mesh if they exist
-   */
-  std::vector<dealii::GridTools::PeriodicFacePair<
-    typename dealii::Triangulation<dim>::cell_iterator>>
-    periodicity_vector;
 
   /**
    * @brief Volume of the triangulation.

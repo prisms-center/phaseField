@@ -205,10 +205,10 @@ public:
 
         // First, try to find this variable in IC files
         const auto &initial_condition_parameters =
-          solve_context->get_user_inputs().load_ic_parameters;
+          solve_context->get_user_inputs().input_parameters;
 
         for (const auto &initial_condition_file :
-             initial_condition_parameters.get_initial_condition_files())
+             initial_condition_parameters.initial_condition_files)
           {
             auto name_it =
               std::find(initial_condition_file.simulation_variable_names.begin(),

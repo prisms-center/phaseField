@@ -27,7 +27,7 @@
 #include <string>
 #include <vector>
 
-// TODO add checks for things being initialized properly.
+// TODO: add checks for things being initialized properly.
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -80,8 +80,6 @@ ConstraintManager<dim, degree, number>::get_generic_constraint(unsigned int rank
 {
   return generic_constraints.at(rank);
 }
-
-//--------------------------------------------------------------------------------
 
 template <unsigned int dim, unsigned int degree, typename number>
 const std::vector<std::vector<dealii::AffineConstraints<number>>> &
@@ -163,17 +161,8 @@ ConstraintManager<dim, degree, number>::reinit(
                                   dealii::DoFTools::extract_locally_relevant_dofs(
                                     dof_handler));
         // periodicity
-        if (spatial_discretization->type == TriangulationType::Rectangular)
-          {
-            std::vector<dealii::GridTools::PeriodicFacePair<
-              typename dealii::DoFHandler<dim>::cell_iterator>>
-              periodicity_vector;
-            spatial_discretization->rectangular_mesh
-              .collect_periodic_faces(dof_handler, periodicity_vector);
-            dealii::DoFTools::make_periodicity_constraints<dim, dim, number>(
-              periodicity_vector,
-              generic_constraint);
-          }
+        spatial_discretization->mesh->mark_periodic(dof_handler, generic_constraint);
+
         // hanging node
         // dealii::DoFTools::make_hanging_node_constraints(dof_handler,
         //                                                generic_constraint);
@@ -195,17 +184,8 @@ ConstraintManager<dim, degree, number>::reinit(
             dof_handler.locally_owned_mg_dofs(level),
             dealii::DoFTools::extract_locally_relevant_level_dofs(dof_handler, level));
           // periodicity
-          if (spatial_discretization->type == TriangulationType::Rectangular)
-            {
-              std::vector<dealii::GridTools::PeriodicFacePair<
-                typename dealii::DoFHandler<dim>::cell_iterator>>
-                periodicity_vector;
-              spatial_discretization->rectangular_mesh
-                .collect_periodic_faces(dof_handler, periodicity_vector);
-              dealii::DoFTools::make_periodicity_constraints<dim, dim, number>(
-                periodicity_vector,
-                generic_constraint);
-            }
+          spatial_discretization->mesh->mark_periodic(dof_handler, generic_constraint);
+
           // hanging node
           // dealii::DoFTools::make_hanging_node_constraints(dof_handler,
           //                                                generic_constraint);
@@ -302,16 +282,7 @@ ConstraintManager<dim, degree, number>::make_constraints_for_single_field(
   // triangulation and the constraints. Adding periodicity to the triangulation alone
   // doesn't actually affect the DoF numbering, but does tell the DofHandler to make the
   // right ghosts. The constraints have to be applied separately.
-  if (spatial_discretization->type == TriangulationType::Rectangular)
-    {
-      std::vector<dealii::GridTools::PeriodicFacePair<
-        typename dealii::DoFHandler<dim>::cell_iterator>>
-        periodicity_vector;
-      spatial_discretization->rectangular_mesh.collect_periodic_faces(dof_handler,
-                                                                      periodicity_vector);
-      dealii::DoFTools::make_periodicity_constraints<dim, dim, number>(periodicity_vector,
-                                                                       constraint);
-    }
+  spatial_discretization->mesh->mark_periodic(dof_handler, constraint);
 
   // 2. Make hanging node constraints
   // note: dealii step-37 doesn't add hanging node constraints. (probably because a single
@@ -470,13 +441,6 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-ConstraintManager<dim, degree, number>::make_natural_constraints() const
-{
-  // Do nothing because they are naturally enforced.
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
 ConstraintManager<dim, degree, number>::make_dirichlet_constraints(
   dealii::AffineConstraints<number> &_constraints,
   const dealii::DoFHandler<dim>     &dof_handler,
@@ -495,36 +459,6 @@ ConstraintManager<dim, degree, number>::make_dirichlet_constraints(
                                              is_vector_field ? dim : 1),
     _constraints,
     mask);
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-ConstraintManager<dim, degree, number>::make_periodic_constraints(
-  dealii::AffineConstraints<number> &_constraints,
-  const dealii::DoFHandler<dim>     &dof_handler,
-  const unsigned int                &boundary_id,
-  const dealii::ComponentMask       &mask) const
-{
-  // Create a vector of matched pairs that we fill and enforce upon the
-  // constraints
-  std::vector<
-    dealii::GridTools::PeriodicFacePair<typename dealii::DoFHandler<dim>::cell_iterator>>
-    periodicity_vector;
-
-  // Determine the direction
-  const unsigned int direction = boundary_id / 2;
-
-  // Collect the matched pairs on the coarsest level of the mesh
-  dealii::GridTools::collect_periodic_faces(dof_handler,
-                                            boundary_id,
-                                            boundary_id + 1,
-                                            direction,
-                                            periodicity_vector);
-
-  // Set constraints
-  dealii::DoFTools::make_periodicity_constraints<dim, dim, number>(periodicity_vector,
-                                                                   _constraints,
-                                                                   mask);
 }
 
 #include "core/constraint_manager.inst"

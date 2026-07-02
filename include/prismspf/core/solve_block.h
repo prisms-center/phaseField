@@ -10,8 +10,7 @@
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
-#include <prismspf/user_inputs/linear_solve_parameters.h>
-#include <prismspf/user_inputs/nonlinear_solve_parameters.h>
+#include <prismspf/user_inputs/solve_parameters.h>
 
 #include <prismspf/config.h>
 

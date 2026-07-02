@@ -18,7 +18,7 @@
 #include <prismspf/solvers/mf_operator.h>
 #include <prismspf/solvers/solver_base.h>
 
-#include <prismspf/user_inputs/linear_solve_parameters.h>
+#include <prismspf/user_inputs/solve_parameters.h>
 
 #include <prismspf/config.h>
 
