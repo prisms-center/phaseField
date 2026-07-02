@@ -6,7 +6,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 void
 LinearSolverParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                unsigned int              max_criteria) const
+                                unsigned int              n_subsections) const
 {
   parameter_handler.declare_entry(
     "solver type",
@@ -82,7 +82,7 @@ LinearSolverParameters::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 LinearSolverParameters::assign(dealii::ParameterHandler &parameter_handler,
-                               unsigned int              max_criteria)
+                               unsigned int              n_subsections)
 {
   // Set the linear solver type
   solver_type = parameter_handler.get("solver type");
@@ -284,9 +284,9 @@ LinearSolverParameters::assign_gmres(dealii::ParameterHandler &parameter_handler
 
 void
 LinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
-                               unsigned int              max_criteria) const
+                               unsigned int              n_subsections) const
 {
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text =
         "linear solver parameters: " + std::to_string(criterion_id);
@@ -315,9 +315,9 @@ LinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 LinearSolveParameters::assign(dealii::ParameterHandler &parameter_handler,
-                              unsigned int              max_criteria)
+                              unsigned int              n_subsections)
 {
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       // For linear solves
       std::string subsection_text =
@@ -351,7 +351,7 @@ LinearSolveParameters::validate(const std::vector<FieldAttributes> &field_attrib
 
 void
 NonlinearSolverParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                   unsigned int              max_criteria) const
+                                   unsigned int              n_subsections) const
 {
   parameter_handler.declare_entry("max iterations",
                                   "100",
@@ -401,7 +401,7 @@ NonlinearSolverParameters::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 NonlinearSolverParameters::assign(dealii::ParameterHandler &parameter_handler,
-                                  unsigned int              max_criteria)
+                                  unsigned int              n_subsections)
 {
   max_iterations = (unsigned int) (parameter_handler.get_integer("max iterations"));
 
@@ -419,9 +419,9 @@ NonlinearSolverParameters::validate(const std::vector<FieldAttributes> &field_at
 
 void
 NonlinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                  unsigned int              max_criteria) const
+                                  unsigned int              n_subsections) const
 {
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text =
         "newton solver parameters: " + std::to_string(criterion_id);
@@ -449,9 +449,9 @@ NonlinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 NonlinearSolveParameters::assign(dealii::ParameterHandler &parameter_handler,
-                                 unsigned int              max_criteria)
+                                 unsigned int              n_subsections)
 {
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text =
         "newton solver parameters: " + std::to_string(criterion_id);

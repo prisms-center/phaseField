@@ -311,7 +311,7 @@ SphericalMesh<dim>::validate() const
 template <unsigned int dim>
 void
 SpatialDiscretization<dim>::declare(dealii::ParameterHandler &parameter_handler,
-                                    unsigned int              max_criteria) const
+                                    unsigned int              n_subsections) const
 {
   parameter_handler.declare_entry("mesh type",
                                   "rectangular",
@@ -346,7 +346,7 @@ SpatialDiscretization<dim>::declare(dealii::ParameterHandler &parameter_handler,
     dealii::Patterns::Integer(1, INT_MAX),
     "The number of time steps between mesh refinement operations.");
 
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text =
         "refinement criterion: " + std::to_string(criterion_id);
@@ -390,7 +390,7 @@ SpatialDiscretization<dim>::declare(dealii::ParameterHandler &parameter_handler,
 template <unsigned int dim>
 void
 SpatialDiscretization<dim>::assign(dealii::ParameterHandler &parameter_handler,
-                                   unsigned int              max_criteria)
+                                   unsigned int              n_subsections)
 {
   rectangular_mesh.assign_parameters(parameter_handler);
   spherical_mesh.assign_parameters(parameter_handler);
@@ -408,7 +408,7 @@ SpatialDiscretization<dim>::assign(dealii::ParameterHandler &parameter_handler,
   min_refinement =
     (static_cast<unsigned int>(parameter_handler.get_integer("min refinement")));
 
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text =
         "refinement criterion: " + std::to_string(criterion_id);

@@ -277,14 +277,14 @@ public:
    */
   void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int max_criteria = Numbers::max_subsections) const override;
+          unsigned int n_subsections = Numbers::default_subsections) const override;
 
   /**
    * @brief Assign the parameters from file.
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections) override;
 
   /**
    * @brief Validate.

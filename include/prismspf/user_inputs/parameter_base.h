@@ -116,14 +116,14 @@ struct ParameterBase
    */
   virtual void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int              max_criteria = Numbers::max_subsections) const = 0;
+          unsigned int n_subsections = Numbers::default_subsections) const = 0;
 
   /**
    * @brief Assign the parameters from file.
    */
   virtual void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) = 0;
+         unsigned int              n_subsections = Numbers::default_subsections) = 0;
 
   /**
    * @brief Validate.

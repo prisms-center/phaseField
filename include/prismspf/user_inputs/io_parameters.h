@@ -126,7 +126,7 @@ struct FieldOutputParameters : public ParameterBase
    */
   void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int max_criteria = Numbers::max_subsections) const override;
+          unsigned int n_subsections = Numbers::default_subsections) const override;
 
   /**
    * @brief Assign the parameters from file.
@@ -135,7 +135,7 @@ struct FieldOutputParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections) override;
 
   /**
    * @brief Assign the parameters from file.
@@ -143,7 +143,7 @@ struct FieldOutputParameters : public ParameterBase
   void
   assign(dealii::ParameterHandler &parameter_handler,
          unsigned int              n_increments,
-         unsigned int              max_criteria = Numbers::max_subsections);
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
@@ -247,7 +247,7 @@ struct RestartOutputParameters : public ParameterBase
    */
   void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int max_criteria = Numbers::max_subsections) const override;
+          unsigned int n_subsections = Numbers::default_subsections) const override;
 
   /**
    * @brief Assign the parameters from file.
@@ -256,7 +256,7 @@ struct RestartOutputParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections) override;
 
   /**
    * @brief Assign the parameters from file.
@@ -264,7 +264,7 @@ struct RestartOutputParameters : public ParameterBase
   void
   assign(dealii::ParameterHandler &parameter_handler,
          unsigned int              n_increments,
-         unsigned int              max_criteria = Numbers::max_subsections);
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
@@ -358,14 +358,14 @@ struct FieldInputParameters : public ParameterBase
    */
   void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int max_criteria = Numbers::max_subsections) const override;
+          unsigned int n_subsections = Numbers::default_subsections) const override;
 
   /**
    * @brief Assign the parameters from file.
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections) override;
 
   /**
    * @brief Validate.

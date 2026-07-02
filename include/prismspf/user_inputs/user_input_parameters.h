@@ -37,7 +37,7 @@ struct UserInputParameters : public ParameterBase
    * Read in user input parameters from file and load them into member variables.
    */
   explicit UserInputParameters(const std::string &file_name,
-                               unsigned int       max_criteria = Numbers::max_subsections)
+                               unsigned int n_subsections = Numbers::default_subsections)
   {
     // user_constants is a special little princess that needs to know the file contents
     // before we declare the parameters.
@@ -47,9 +47,9 @@ struct UserInputParameters : public ParameterBase
 
     // Now, parse the rest. Again, we must skip undefined so deal.II doesn't throw an
     // error since some entries are only used in the "pre" parse.
-    declare(parameter_handler, max_criteria);
+    declare(parameter_handler, n_subsections);
     parameter_handler.parse_input(file_name, "", true);
-    assign(parameter_handler, max_criteria);
+    assign(parameter_handler, n_subsections);
   };
 
   /**
@@ -57,21 +57,21 @@ struct UserInputParameters : public ParameterBase
    */
   void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int max_criteria = Numbers::max_subsections) const override
+          unsigned int n_subsections = Numbers::default_subsections) const override
   {
-    spatial_discretization.declare(parameter_handler, max_criteria);
-    temporal_discretization.declare(parameter_handler, max_criteria);
-    boundary_parameters.declare(parameter_handler, max_criteria);
+    spatial_discretization.declare(parameter_handler, n_subsections);
+    temporal_discretization.declare(parameter_handler, n_subsections);
+    boundary_parameters.declare(parameter_handler, n_subsections);
 
-    linear_solve_parameters.declare(parameter_handler, max_criteria);
-    nonlinear_solve_parameters.declare(parameter_handler, max_criteria);
+    linear_solve_parameters.declare(parameter_handler, n_subsections);
+    nonlinear_solve_parameters.declare(parameter_handler, n_subsections);
 
-    output_parameters.declare(parameter_handler, max_criteria);
-    restart_parameters.declare(parameter_handler, max_criteria);
-    input_parameters.declare(parameter_handler, max_criteria);
+    output_parameters.declare(parameter_handler, n_subsections);
+    restart_parameters.declare(parameter_handler, n_subsections);
+    input_parameters.declare(parameter_handler, n_subsections);
 
-    misc_parameters.declare(parameter_handler, max_criteria);
-    nucleation_parameters.declare(parameter_handler, max_criteria);
+    misc_parameters.declare(parameter_handler, n_subsections);
+    nucleation_parameters.declare(parameter_handler, n_subsections);
 
     user_constants.declare_parameters(parameter_handler);
   };
@@ -81,23 +81,23 @@ struct UserInputParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) override
+         unsigned int              n_subsections = Numbers::default_subsections) override
   {
-    spatial_discretization.assign(parameter_handler, max_criteria);
-    temporal_discretization.assign(parameter_handler, max_criteria);
-    boundary_parameters.assign(parameter_handler, max_criteria);
+    spatial_discretization.assign(parameter_handler, n_subsections);
+    temporal_discretization.assign(parameter_handler, n_subsections);
+    boundary_parameters.assign(parameter_handler, n_subsections);
 
-    linear_solve_parameters.assign(parameter_handler, max_criteria);
-    nonlinear_solve_parameters.assign(parameter_handler, max_criteria);
+    linear_solve_parameters.assign(parameter_handler, n_subsections);
+    nonlinear_solve_parameters.assign(parameter_handler, n_subsections);
 
     const auto n_increments = temporal_discretization.n_increments;
 
-    output_parameters.assign(parameter_handler, n_increments, max_criteria);
-    restart_parameters.assign(parameter_handler, n_increments, max_criteria);
-    input_parameters.assign(parameter_handler, max_criteria);
+    output_parameters.assign(parameter_handler, n_increments, n_subsections);
+    restart_parameters.assign(parameter_handler, n_increments, n_subsections);
+    input_parameters.assign(parameter_handler, n_subsections);
 
-    misc_parameters.assign(parameter_handler, max_criteria);
-    nucleation_parameters.assign(parameter_handler, max_criteria);
+    misc_parameters.assign(parameter_handler, n_subsections);
+    nucleation_parameters.assign(parameter_handler, n_subsections);
 
     user_constants.assign_parameters(parameter_handler);
   };
