@@ -82,8 +82,29 @@ struct Mesh
    * @brief Calculation the distance between two points considering periodic boundaries.
    */
   virtual double
-  distance(const dealii::Point<dim> &point_1,
-           const dealii::Point<dim> &point_2) const = 0;
+  distance(const dealii::Point<dim, double> &point_1,
+           const dealii::Point<dim, double> &point_2) const = 0;
+
+  /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  virtual float
+  distance(const dealii::Point<dim, float> &point_1,
+           const dealii::Point<dim, float> &point_2) const = 0;
+
+  /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  virtual dealii::VectorizedArray<double>
+  distance(const dealii::Point<dim, dealii::VectorizedArray<double>> &point_1,
+           const dealii::Point<dim, dealii::VectorizedArray<double>> &point_2) const = 0;
+
+  /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  virtual dealii::VectorizedArray<float>
+  distance(const dealii::Point<dim, dealii::VectorizedArray<float>> &point_1,
+           const dealii::Point<dim, dealii::VectorizedArray<float>> &point_2) const = 0;
 
   /**
    * @brief Declare the parameters to be read from an input file.
@@ -165,8 +186,31 @@ struct RectangularMesh : public Mesh<dim>
    * @brief Calculation the distance between two points considering periodic boundaries.
    */
   double
-  distance(const dealii::Point<dim> &point_1,
-           const dealii::Point<dim> &point_2) const override;
+  distance(const dealii::Point<dim, double> &point_1,
+           const dealii::Point<dim, double> &point_2) const override;
+
+  /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  float
+  distance(const dealii::Point<dim, float> &point_1,
+           const dealii::Point<dim, float> &point_2) const override;
+
+  /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  dealii::VectorizedArray<double>
+  distance(
+    const dealii::Point<dim, dealii::VectorizedArray<double>> &point_1,
+    const dealii::Point<dim, dealii::VectorizedArray<double>> &point_2) const override;
+
+  /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  dealii::VectorizedArray<float>
+  distance(
+    const dealii::Point<dim, dealii::VectorizedArray<float>> &point_1,
+    const dealii::Point<dim, dealii::VectorizedArray<float>> &point_2) const override;
 
   /**
    * @brief Declare the parameters to be read from an input file.
@@ -238,6 +282,29 @@ struct SphericalMesh : public Mesh<dim>
   double
   distance(const dealii::Point<dim> &point_1,
            const dealii::Point<dim> &point_2) const override;
+
+  /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  float
+  distance(const dealii::Point<dim, float> &point_1,
+           const dealii::Point<dim, float> &point_2) const override;
+
+  /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  dealii::VectorizedArray<double>
+  distance(
+    const dealii::Point<dim, dealii::VectorizedArray<double>> &point_1,
+    const dealii::Point<dim, dealii::VectorizedArray<double>> &point_2) const override;
+
+  /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  dealii::VectorizedArray<float>
+  distance(
+    const dealii::Point<dim, dealii::VectorizedArray<float>> &point_1,
+    const dealii::Point<dim, dealii::VectorizedArray<float>> &point_2) const override;
 
   /**
    * @brief Declare the parameters to be read from an input file.

@@ -89,35 +89,89 @@ RectangularMesh<dim>::mark_boundaries(
   // z=max -> 5
 }
 
-template <unsigned int dim>
-double
-RectangularMesh<dim>::distance(const dealii::Point<dim> &point_1,
-                               const dealii::Point<dim> &point_2) const
+template <unsigned int dim, typename number>
+inline number
+rectangular_periodic_distance(
+  const dealii::Point<dim, number>                                     &point_1,
+  const dealii::Point<dim, number>                                     &point_2,
+  const std::set<std::tuple<unsigned int, unsigned int, unsigned int>> &periodicity_set,
+  const dealii::Tensor<1, dim, double>                                 &upper_bound,
+  const dealii::Tensor<1, dim, double>                                 &lower_bound)
 {
   using std::sqrt;
 
-  if (this->periodicity_set.empty())
+  if (periodicity_set.empty())
     {
       return point_1.distance(point_2);
     }
 
-  double dist = 0.0;
+  number dist = 0.0;
   for (unsigned int d = 0; d < dim; ++d)
     {
-      double delta = point_2[d] - point_2[d];
+      number delta = point_2[d] - point_2[d];
       // TODO: This is poorly optimized
-      for (const auto [b_id_1, b_id_2, dir] : this->periodicity_set)
+      for (const auto [b_id_1, b_id_2, dir] : periodicity_set)
         {
           if (dir == d)
             {
-              const double length      = upper_bound[d] - lower_bound[d];
-              const double half_length = length / 2.0;
+              const number length      = upper_bound[d] - lower_bound[d];
+              const number half_length = length / 2.0;
               delta                    = pmod(delta - half_length, length) - half_length;
             }
         }
       dist += delta * delta;
     }
   return std::sqrt(dist);
+}
+
+template <unsigned int dim>
+double
+RectangularMesh<dim>::distance(const dealii::Point<dim, double> &point_1,
+                               const dealii::Point<dim, double> &point_2) const
+{
+  return rectangular_periodic_distance<dim>(point_1,
+                                            point_2,
+                                            this->periodicity_set,
+                                            upper_bound,
+                                            lower_bound);
+}
+
+template <unsigned int dim>
+float
+RectangularMesh<dim>::distance(const dealii::Point<dim, float> &point_1,
+                               const dealii::Point<dim, float> &point_2) const
+{
+  return rectangular_periodic_distance<dim>(point_1,
+                                            point_2,
+                                            this->periodicity_set,
+                                            upper_bound,
+                                            lower_bound);
+}
+
+template <unsigned int dim>
+dealii::VectorizedArray<double>
+RectangularMesh<dim>::distance(
+  const dealii::Point<dim, dealii::VectorizedArray<double>> &point_1,
+  const dealii::Point<dim, dealii::VectorizedArray<double>> &point_2) const
+{
+  return rectangular_periodic_distance<dim>(point_1,
+                                            point_2,
+                                            this->periodicity_set,
+                                            upper_bound,
+                                            lower_bound);
+}
+
+template <unsigned int dim>
+dealii::VectorizedArray<float>
+RectangularMesh<dim>::distance(
+  const dealii::Point<dim, dealii::VectorizedArray<float>> &point_1,
+  const dealii::Point<dim, dealii::VectorizedArray<float>> &point_2) const
+{
+  return rectangular_periodic_distance<dim>(point_1,
+                                            point_2,
+                                            this->periodicity_set,
+                                            upper_bound,
+                                            lower_bound);
 }
 
 template <unsigned int dim>
@@ -239,13 +293,47 @@ SphericalMesh<dim>::mark_boundaries(
   // There's only 1 boundary on a sphere
 }
 
-template <unsigned int dim>
-double
-SphericalMesh<dim>::distance(const dealii::Point<dim> &point_1,
-                             const dealii::Point<dim> &point_2) const
+template <unsigned int dim, typename number>
+inline number
+spherical_periodic_distance(const dealii::Point<dim, number> &point_1,
+                            const dealii::Point<dim, number> &point_2)
 {
   // No periodicity allowed in spherical meshes, so it behaves like normal distance
   return point_1.distance(point_2);
+}
+
+template <unsigned int dim>
+double
+SphericalMesh<dim>::distance(const dealii::Point<dim, double> &point_1,
+                             const dealii::Point<dim, double> &point_2) const
+{
+  return spherical_periodic_distance<dim>(point_1, point_2);
+}
+
+template <unsigned int dim>
+float
+SphericalMesh<dim>::distance(const dealii::Point<dim, float> &point_1,
+                             const dealii::Point<dim, float> &point_2) const
+{
+  return spherical_periodic_distance<dim>(point_1, point_2);
+}
+
+template <unsigned int dim>
+dealii::VectorizedArray<double>
+SphericalMesh<dim>::distance(
+  const dealii::Point<dim, dealii::VectorizedArray<double>> &point_1,
+  const dealii::Point<dim, dealii::VectorizedArray<double>> &point_2) const
+{
+  return spherical_periodic_distance<dim>(point_1, point_2);
+}
+
+template <unsigned int dim>
+dealii::VectorizedArray<float>
+SphericalMesh<dim>::distance(
+  const dealii::Point<dim, dealii::VectorizedArray<float>> &point_1,
+  const dealii::Point<dim, dealii::VectorizedArray<float>> &point_2) const
+{
+  return spherical_periodic_distance<dim>(point_1, point_2);
 }
 
 template <unsigned int dim>
