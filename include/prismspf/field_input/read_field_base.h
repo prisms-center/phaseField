@@ -9,7 +9,6 @@
 
 #include <prismspf/core/types.h>
 
-#include <prismspf/user_inputs/load_initial_condition_parameters.h>
 #include <prismspf/user_inputs/spatial_discretization.h>
 
 #include <prismspf/utilities/utilities.h>

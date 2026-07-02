@@ -10,7 +10,6 @@
 #include <prismspf/field_input/read_binary.h>
 #include <prismspf/field_input/read_field_base.h>
 
-#include <prismspf/user_inputs/load_initial_condition_parameters.h>
 #include <prismspf/user_inputs/spatial_discretization.h>
 
 #include <prismspf/utilities/utilities.h>

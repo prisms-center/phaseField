@@ -98,16 +98,7 @@ struct ComponentConditions
   std::map<unsigned int, Condition> conditions;
 
   [[nodiscard]] bool
-  has_time_dependent_bcs() const
-  {
-    return std::any_of(conditions.begin(),
-                       conditions.end(),
-                       [](const auto &_condition)
-                       {
-                         return _condition.second == Condition::TimeDependentDirichlet ||
-                                _condition.second == Condition::TimeDependentNeumann;
-                       });
-  }
+  has_time_dependent_bcs() const;
 };
 
 template <unsigned int dim>
@@ -116,15 +107,7 @@ struct FieldConstraints
   std::array<ComponentConditions, dim> component_constraints;
 
   [[nodiscard]] bool
-  has_time_dependent_bcs() const
-  {
-    return std::any_of(component_constraints.begin(),
-                       component_constraints.end(),
-                       [](const ComponentConditions &component)
-                       {
-                         return component.has_time_dependent_bcs();
-                       });
-  }
+  has_time_dependent_bcs() const;
 };
 
 /**
@@ -138,107 +121,21 @@ struct BoundaryParameters : public ParameterBase
    */
   void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int max_criteria = Numbers::max_subsections) const override
-  {
-    for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
-      {
-        std::string subsection_text =
-          "boundary conditions: " + std::to_string(criterion_id);
-        parameter_handler.enter_subsection(subsection_text);
-        {
-          parameter_handler.declare_entry(
-            "variables",
-            "",
-            dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
-            "The names of the fields that will use these constraints.");
-          parameter_handler.declare_entry(
-            "conditions",
-            "",
-            dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
-            "List of conditions.");
-        }
-        parameter_handler.leave_subsection();
-      }
-  };
+          unsigned int max_criteria = Numbers::max_subsections) const override;
 
   /**
    * @brief Assign the parameters from file.
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) override
-  {
-    for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
-      {
-        std::string subsection_text =
-          "boundary conditions: " + std::to_string(criterion_id);
-        parameter_handler.enter_subsection(subsection_text);
-        {
-          std::vector<std::string> field_names =
-            dealii::Utilities::split_string_list(parameter_handler.get("variables"));
-          std::vector<std::string> conditions_strings =
-            dealii::Utilities::split_string_list(parameter_handler.get("conditions"));
-
-          ComponentConditions component_conditions;
-          for (unsigned int boundary_id = 0; boundary_id < conditions_strings.size();
-               boundary_id++)
-            {
-              component_conditions.conditions[boundary_id] =
-                condition_from_string(conditions_strings[boundary_id]);
-            }
-
-          // Attach conditions to fields
-          for (const auto &field_comp_name : field_names)
-            {
-              int                    pos = field_comp_name.length() - 2;
-              const std::string      end = field_comp_name.substr(pos > 0 ? pos : 0);
-              std::string            field_name;
-              std::set<unsigned int> comps;
-              if (end == ":x")
-                {
-                  comps      = {0};
-                  field_name = field_comp_name.substr(0, pos);
-                }
-              else if (end == ":y")
-                {
-                  comps      = {1};
-                  field_name = field_comp_name.substr(0, pos);
-                }
-              else if (end == ":z")
-                {
-                  comps      = {2};
-                  field_name = field_comp_name.substr(0, pos);
-                }
-              else
-                {
-                  for (unsigned int comp = 0; comp < dim; ++comp)
-                    {
-                      comps.insert(comp);
-                    }
-                  field_name = field_comp_name;
-                }
-              for (unsigned int component : comps)
-                {
-                  if (component < dim)
-                    {
-                      boundary_condition_list[field_name].component_constraints.at(
-                        component) = component_conditions;
-                    }
-                }
-            }
-        }
-        parameter_handler.leave_subsection();
-      }
-  };
+         unsigned int              max_criteria = Numbers::max_subsections) override;
 
   /**
    * @brief Validate.
    */
   void
   validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override {
-    // TODO: Do this later
-  };
+           const std::vector<SolveBlock>      &solve_blocks) const override;
 
   // Map of boundary conditions. The first key is the field index.
   std::unordered_map<std::string, FieldConstraints<dim>> boundary_condition_list;

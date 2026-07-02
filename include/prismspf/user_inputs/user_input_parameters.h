@@ -9,11 +9,10 @@
 #include <prismspf/core/solve_block.h>
 
 #include <prismspf/user_inputs/constraint_parameters.h>
-#include <prismspf/user_inputs/linear_solve_parameters.h>
-#include <prismspf/user_inputs/load_initial_condition_parameters.h>
+#include <prismspf/user_inputs/io_parameters.h>
 #include <prismspf/user_inputs/miscellaneous_parameters.h>
-#include <prismspf/user_inputs/nonlinear_solve_parameters.h>
 #include <prismspf/user_inputs/nucleation_parameters.h>
+#include <prismspf/user_inputs/solve_parameters.h>
 #include <prismspf/user_inputs/spatial_discretization.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_constants.h>
@@ -81,14 +80,19 @@ public:
 
   SpatialDiscretization<dim> spatial_discretization;
   TemporalDiscretization     temporal_discretization;
-  LinearSolveParameters      linear_solve_parameters;
-  NonlinearSolveParameters   nonlinear_solve_parameters;
-  MiscellaneousParameters    misc_parameters;
   BoundaryParameters<dim>    boundary_parameters;
 
-  LoadInitialConditionParameters load_ic_parameters;
-  NucleationParameters           nucleation_parameters;
-  UserConstants<dim>             user_constants;
+  LinearSolveParameters    linear_solve_parameters;
+  NonlinearSolveParameters nonlinear_solve_parameters;
+
+  FieldOutputParameters   output_parameters;
+  RestartOutputParameters restart_parameters;
+  FieldInputParameters    input_parameters;
+
+  MiscellaneousParameters misc_parameters;
+
+  NucleationParameters nucleation_parameters;
+  UserConstants<dim>   user_constants;
 };
 
 template <unsigned int dim>

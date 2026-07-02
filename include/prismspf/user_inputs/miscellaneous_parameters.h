@@ -33,43 +33,20 @@ public:
    */
   void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int max_criteria = Numbers::max_subsections) const override
-  {
-    parameter_handler.enter_subsection("miscellaneous");
-    {
-      parameter_handler.declare_entry(
-        "random seed",
-        "2025",
-        dealii::Patterns::Integer(0, INT_MAX),
-        "The random seed for the simulation. "
-        "This is used to initialize the random number generator.");
-    }
-    parameter_handler.leave_subsection();
-  };
-
+          unsigned int max_criteria = Numbers::max_subsections) const override;
   /**
    * @brief Assign the parameters from file.
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) override
-  {
-    parameter_handler.enter_subsection("miscellaneous");
-    {
-      set_random_seed((unsigned int) (parameter_handler.get_integer("random seed")));
-    }
-    parameter_handler.leave_subsection();
-  };
+         unsigned int              max_criteria = Numbers::max_subsections) override;
 
   /**
    * @brief Validate.
    */
   void
   validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override {
-    // TODO: Do this later
-  };
-
+           const std::vector<SolveBlock>      &solve_blocks) const override;
   /**
    * @brief Set the random seed and initialize the RNG.
    *
@@ -81,11 +58,7 @@ public:
    * If you would like to change the default behavior you can override the rng manually.
    */
   void
-  set_random_seed(const unsigned int &_random_seed)
-  {
-    random_seed = _random_seed;
-    rng.seed(random_seed + dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD));
-  }
+  set_random_seed(const unsigned int &_random_seed);
 
   // Random seed
   unsigned int random_seed = 2025;

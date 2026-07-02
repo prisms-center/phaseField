@@ -3,7 +3,6 @@
 #include <deal.II/base/parameter_handler.h>
 
 #include <prismspf/core/field_attributes.h>
-#include <prismspf/core/solve_block.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
@@ -15,6 +14,8 @@
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+class SolveBlock;
 
 /**
  * @brief Cartesian axis labels

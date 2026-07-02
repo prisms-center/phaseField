@@ -11,7 +11,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
 void
-Mesh<dim>::mark_periodic(typename Mesh<dim>::Triangulation &triangulation)
+Mesh<dim>::mark_periodic(typename Mesh<dim>::Triangulation &triangulation) const
 {
   // Loop over provided periodicity set and add to the periodicity vector
   for (const auto &[id_1, id_2, direction] : periodicity_set)
@@ -29,8 +29,8 @@ Mesh<dim>::mark_periodic(typename Mesh<dim>::Triangulation &triangulation)
 template <unsigned int dim>
 template <typename number>
 void
-Mesh<dim>::mark_periodic(dealii::DoFHandler<dim>           &dof_handler,
-                         dealii::AffineConstraints<number> &constraints)
+Mesh<dim>::mark_periodic(const dealii::DoFHandler<dim>     &dof_handler,
+                         dealii::AffineConstraints<number> &constraints) const
 {
   // Loop over provided periodicity set and add to the periodicity vector
   for (const auto &[id_1, id_2, direction] : periodicity_set)

@@ -502,7 +502,6 @@ struct InitialConditionFile
 {
   /**
    * @brief Data formats for input initial conditions.
-   * LastEntry is used for loop bounds.
    */
   enum DataFormatType : std::uint8_t
   {
@@ -510,8 +509,7 @@ struct InitialConditionFile
     VTKUnstructuredGrid,
     VTKXMLUnstructuredGrid,
     VTKPXMLUnstructuredGrid,
-    VTKXMLImageData,
-    LastEntry
+    VTKXMLImageData
   };
 
   // File name
@@ -544,9 +542,50 @@ struct FieldInputParameters : public ParameterBase
   declare(dealii::ParameterHandler &parameter_handler,
           unsigned int max_criteria = Numbers::max_subsections) const override
   {
-    parameter_handler.enter_subsection("input");
-    {}
-    parameter_handler.leave_subsection();
+    for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+      {
+        std::string subsection_text = "input file: " + std::to_string(criterion_id);
+        parameter_handler.enter_subsection(subsection_text);
+        {
+          parameter_handler.declare_entry(
+            "file name",
+            "",
+            dealii::Patterns::Anything(),
+            "The file name to load from for each variable.");
+          parameter_handler.declare_entry("format",
+                                          "vtu",
+                                          dealii::Patterns::Selection(
+                                            "vtk|vtu|vti|pvtu|binary"),
+                                          "The type of grid in the file.");
+          parameter_handler.declare_entry(
+            "file variables",
+            "",
+            dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
+            "The names of the fields in the file.");
+          parameter_handler.declare_entry(
+            "simulation variables",
+            "",
+            dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
+            "The correspond names of the fields in the simulation.");
+
+          for (const auto &dir : axis_labels)
+            {
+              const std::string axis {dir};
+
+              parameter_handler.declare_entry(axis + " data points",
+                                              "0",
+                                              dealii::Patterns::Integer(0, INT_MAX),
+                                              "The number of data points in the " + axis +
+                                                "-direction.");
+            }
+        }
+        parameter_handler.leave_subsection();
+      }
+
+    parameter_handler.declare_entry("read initial conditions from file",
+                                    "false",
+                                    dealii::Patterns::Bool(),
+                                    "Whether to read any initial conditions from file.");
   };
 
   /**
@@ -557,9 +596,59 @@ struct FieldInputParameters : public ParameterBase
          unsigned int              n_increments,
          unsigned int              max_criteria = Numbers::max_subsections)
   {
-    parameter_handler.enter_subsection("input");
-    {}
-    parameter_handler.leave_subsection();
+    for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+      {
+        std::string subsection_text = "input file: " + std::to_string(criterion_id);
+        parameter_handler.enter_subsection(subsection_text);
+        {
+          // Check if the file is specified
+          if (!parameter_handler.get("file name").empty())
+            {
+              InitialConditionFile ic_file;
+              ic_file.file_name           = parameter_handler.get("file name");
+              ic_file.file_variable_names = dealii::Utilities::split_string_list(
+                parameter_handler.get("file variables"));
+              ic_file.simulation_variable_names = dealii::Utilities::split_string_list(
+                parameter_handler.get("simulation variables"));
+
+              const std::string format = parameter_handler.get("format");
+              if (format == "vtu")
+                {
+                  ic_file.format =
+                    InitialConditionFile::DataFormatType::VTKXMLUnstructuredGrid;
+                }
+              else if (format == "vtk")
+                {
+                  ic_file.format =
+                    InitialConditionFile::DataFormatType::VTKUnstructuredGrid;
+                }
+              else if (format == "vti")
+                {
+                  ic_file.format = InitialConditionFile::DataFormatType::VTKXMLImageData;
+                }
+              else if (format == "pvtu")
+                {
+                  ic_file.format =
+                    InitialConditionFile::DataFormatType::VTKPXMLUnstructuredGrid;
+                }
+              else
+                {
+                  ic_file.format = InitialConditionFile::DataFormatType::FlatBinary;
+                }
+
+              for (unsigned int k = 0; k < 3; ++k)
+                {
+                  ic_file.n_data_points.at(k) = static_cast<unsigned int>(
+                    parameter_handler.get_integer(axis_labels.at(k) + " data points"));
+                }
+
+              initial_condition_files.push_back(ic_file);
+            }
+        }
+        parameter_handler.leave_subsection();
+      }
+
+    load_from_file = parameter_handler.get_bool("read initial conditions from file");
   };
 
   /**
@@ -570,6 +659,14 @@ struct FieldInputParameters : public ParameterBase
            const std::vector<SolveBlock>      &solve_blocks) const override {
     // TODO: Do this later
   };
+
+  /**
+   * @brief Whether to load initial conditions from file
+   */
+  bool load_from_file = false;
+
+  // Collection of initial condition files
+  std::vector<InitialConditionFile> initial_condition_files;
 };
 
 PRISMS_PF_END_NAMESPACE

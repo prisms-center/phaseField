@@ -68,15 +68,15 @@ struct Mesh
    * @brief Mark the periodic faces of the mesh.
    */
   void
-  mark_periodic(Triangulation &triangulation);
+  mark_periodic(Triangulation &triangulation) const;
 
   /**
    * @brief Mark the periodic faces of the mesh.
    */
   template <typename number>
   void
-  mark_periodic(dealii::DoFHandler<dim>           &dof_handler,
-                dealii::AffineConstraints<number> &constraints);
+  mark_periodic(const dealii::DoFHandler<dim>     &dof_handler,
+                dealii::AffineConstraints<number> &constraints) const;
 
   /**
    * @brief Declare the parameters to be read from an input file.

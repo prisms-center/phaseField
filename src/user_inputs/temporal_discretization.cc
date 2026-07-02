@@ -26,30 +26,32 @@ TemporalDiscretization::declare(dealii::ParameterHandler &parameter_handler,
                                   "The final increment for the simulation.");
   declare_aliases(parameter_handler,
                   "final increment",
-                  {"number steps",
-                   "number of steps",
-                   "num steps",
-                   "n steps",
-                   "last increment",
-                   "end increment",
-                   "final_increment",
-                   "number_steps",
-                   "number_of_steps",
-                   "num_steps",
-                   "n_steps",
-                   "last_increment",
-                   "end_increment",
-                   "steps",
-                   "iterations",
-                   "final iteration",
-                   "max iteration",
-                   "increments"});
+                  std::vector {"number steps",
+                               "number of steps",
+                               "num steps",
+                               "n steps",
+                               "last increment",
+                               "end increment",
+                               "final_increment",
+                               "number_steps",
+                               "number_of_steps",
+                               "num_steps",
+                               "n_steps",
+                               "last_increment",
+                               "end_increment",
+                               "steps",
+                               "iterations",
+                               "final iteration",
+                               "max iteration",
+                               "increments"});
 
   parameter_handler.declare_entry("time step",
                                   "0.0",
                                   dealii::Patterns::Double(0.0, DBL_MAX),
                                   "The time step size for the simulation.");
-  declare_aliases(parameter_handler, "time step", {"timestep", "time_step", "dt"});
+  declare_aliases(parameter_handler,
+                  "time step",
+                  std::vector {"timestep", "time_step", "dt"});
 
   parameter_handler.declare_entry("start time",
                                   "0.0",
@@ -58,7 +60,7 @@ TemporalDiscretization::declare(dealii::ParameterHandler &parameter_handler,
                                   "begins.");
   declare_aliases(parameter_handler,
                   "start time",
-                  {"start_time", "t_0", "t0", "begin time", "begin_time"});
+                  std::vector {"start_time", "t_0", "t0", "begin time", "begin_time"});
 
   parameter_handler.declare_entry("end time",
                                   "0.0",
@@ -67,7 +69,7 @@ TemporalDiscretization::declare(dealii::ParameterHandler &parameter_handler,
                                   "ends. Overrides final increment if greater than 0.");
   declare_aliases(parameter_handler,
                   "end time",
-                  {"end_time", "t_f", "tf", "final time", "final_time"});
+                  std::vector {"end_time", "t_f", "tf", "final time", "final_time"});
 }
 
 void

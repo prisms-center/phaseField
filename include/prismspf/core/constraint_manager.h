@@ -180,12 +180,6 @@ private:
                                Types::Index                       field_index) const;
 
   /**
-   * @brief Apply natural constraints.
-   */
-  void
-  make_natural_constraints() const;
-
-  /**
    * @brief Make dirichlet constraints.
    */
   void
@@ -195,16 +189,6 @@ private:
                              const unsigned int                &field_index,
                              const bool                        &is_vector_field,
                              const dealii::ComponentMask       &mask) const;
-
-  /**
-   * @deprecated We apply periodic conditions to the mesh itself
-   * @brief make periodic constraints.
-   */
-  void
-  make_periodic_constraints(dealii::AffineConstraints<number> &_constraints,
-                            const dealii::DoFHandler<dim>     &dof_handler,
-                            const unsigned int                &boundary_id,
-                            const dealii::ComponentMask       &mask) const;
 
   /**
    * @brief User-inputs constraint parameters.
@@ -251,16 +235,16 @@ private:
 template <unsigned int dim, unsigned int degree, typename number>
 inline const std::array<dealii::ComponentMask, dim>
   ConstraintManager<dim, degree, number>::vector_component_mask = []()
-{
-  std::array<dealii::ComponentMask, dim> masks {};
-  for (unsigned int i = 0; i < dim; ++i)
-    {
-      dealii::ComponentMask temp_mask(dim, false);
-      temp_mask.set(i, true);
-      masks.at(i) = temp_mask;
-    }
-  return masks;
-}();
+  {
+    std::array<dealii::ComponentMask, dim> masks {};
+    for (unsigned int i = 0; i < dim; ++i)
+      {
+        dealii::ComponentMask temp_mask(dim, false);
+        temp_mask.set(i, true);
+        masks.at(i) = temp_mask;
+      }
+    return masks;
+  }();
 
 template <unsigned int dim, unsigned int degree, typename number>
 inline const dealii::ComponentMask
