@@ -17,18 +17,6 @@ TemporalDiscretization::TemporalDiscretization(double _dt,
 {}
 
 void
-TemporalDiscretization::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-TemporalDiscretization::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
 TemporalDiscretization::declare(dealii::ParameterHandler &parameter_handler,
                                 unsigned int              max_criteria) const
 {

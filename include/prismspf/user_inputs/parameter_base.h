@@ -94,11 +94,9 @@ generate_aliases(std::string_view name)
  * @brief Virtual base class for parameter groups.
  *
  * This virtual base class ensures that we always have the following execution order.
- * 1. predeclare
- * 2. preassign
- * 3. declare
- * 4. assign
- * 5. validate
+ * 1. declare
+ * 2. assign
+ * 3. validate
  */
 struct ParameterBase
 {
@@ -112,23 +110,6 @@ struct ParameterBase
   operator=(const ParameterBase &) = default;
   ParameterBase &
   operator=(ParameterBase &&) = default;
-
-  /**
-   * @brief Declare the parameters to be read from file.
-   *
-   * Unlike `declare` this step comes first so that we can read certain parameters and
-   * things easier later on. For example, there's the mesh type parameter. We must first
-   * read the value of this parameter before we generate the corresponding mesh object
-   * and its parameters.
-   */
-  virtual void
-  predeclare(dealii::ParameterHandler &parameter_handler) const = 0;
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  virtual void
-  preassign(dealii::ParameterHandler &parameter_handler) = 0;
 
   /**
    * @brief Declare the parameters to be read from file.

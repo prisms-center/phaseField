@@ -30,20 +30,6 @@ FieldConstraints<dim>::has_time_dependent_bcs() const
 
 template <unsigned int dim>
 void
-BoundaryParameters<dim>::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-template <unsigned int dim>
-void
-BoundaryParameters<dim>::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-template <unsigned int dim>
-void
 BoundaryParameters<dim>::declare(dealii::ParameterHandler &parameter_handler,
                                  unsigned int              max_criteria) const
 {

@@ -28,18 +28,6 @@ struct LinearSolverParameters : public ParameterBase
    * @brief Declare the parameters to be read from file.
    */
   void
-  predeclare(dealii::ParameterHandler &parameter_handler) const override;
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  void
-  preassign(dealii::ParameterHandler &parameter_handler) override;
-
-  /**
-   * @brief Declare the parameters to be read from file.
-   */
-  void
   declare(dealii::ParameterHandler &parameter_handler,
           unsigned int max_criteria = Numbers::max_subsections) const override;
 
@@ -126,18 +114,6 @@ struct LinearSolveParameters : public ParameterBase
    * @brief Declare the parameters to be read from file.
    */
   void
-  predeclare(dealii::ParameterHandler &parameter_handler) const override;
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  void
-  preassign(dealii::ParameterHandler &parameter_handler) override;
-
-  /**
-   * @brief Declare the parameters to be read from file.
-   */
-  void
   declare(dealii::ParameterHandler &parameter_handler,
           unsigned int max_criteria = Numbers::max_subsections) const override;
 
@@ -164,18 +140,6 @@ struct LinearSolveParameters : public ParameterBase
  */
 struct NonlinearSolverParameters : public ParameterBase
 {
-  /**
-   * @brief Declare the parameters to be read from file.
-   */
-  void
-  predeclare(dealii::ParameterHandler &parameter_handler) const override;
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  void
-  preassign(dealii::ParameterHandler &parameter_handler) override;
-
   /**
    * @brief Declare the parameters to be read from file.
    */
@@ -212,18 +176,6 @@ struct NonlinearSolverParameters : public ParameterBase
  */
 struct NonlinearSolveParameters : public ParameterBase
 {
-  /**
-   * @brief Declare the parameters to be read from file.
-   */
-  void
-  predeclare(dealii::ParameterHandler &parameter_handler) const override;
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  void
-  preassign(dealii::ParameterHandler &parameter_handler) override;
-
   /**
    * @brief Declare the parameters to be read from file.
    */

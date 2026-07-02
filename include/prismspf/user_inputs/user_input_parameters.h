@@ -45,38 +45,11 @@ struct UserInputParameters : public ParameterBase
 
     dealii::ParameterHandler parameter_handler;
 
-    // Partially parse the parameter file for some things to setup for the second pass. We
-    // must skip undefined entries so deal.II doesn't throw an error. Hopefully our own
-    // validation is sufficient to catch everything.
-    predeclare(parameter_handler);
-    parameter_handler.parse_input(file_name, "", true);
-    preassign(parameter_handler);
-
-    parameter_handler.clear();
-
     // Now, parse the rest. Again, we must skip undefined so deal.II doesn't throw an
     // error since some entries are only used in the "pre" parse.
     declare(parameter_handler, max_criteria);
     parameter_handler.parse_input(file_name, "", true);
     assign(parameter_handler, max_criteria);
-  };
-
-  /**
-   * @brief Declare the parameters to be read from file.
-   */
-  void
-  predeclare(dealii::ParameterHandler &parameter_handler) const override
-  {
-    spatial_discretization.predeclare(parameter_handler);
-  };
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  void
-  preassign(dealii::ParameterHandler &parameter_handler) override
-  {
-    spatial_discretization.preassign(parameter_handler);
   };
 
   /**

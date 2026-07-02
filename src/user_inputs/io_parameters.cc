@@ -7,18 +7,6 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-FieldOutputParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-FieldOutputParameters::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
 FieldOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
                                unsigned int              max_criteria) const
 {
@@ -166,18 +154,6 @@ FieldOutputParameters::should_output(unsigned int increment) const
 }
 
 void
-RestartOutputParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-RestartOutputParameters::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
 RestartOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
                                  unsigned int              max_criteria) const
 {
@@ -276,18 +252,6 @@ bool
 RestartOutputParameters::should_output(unsigned int increment) const
 {
   return output_list.contains(increment);
-}
-
-void
-FieldInputParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-FieldInputParameters::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
 }
 
 void

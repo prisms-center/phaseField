@@ -370,7 +370,8 @@ SphericalMesh<dim>::validate() const
 
 template <unsigned int dim>
 void
-SpatialDiscretization<dim>::predeclare(dealii::ParameterHandler &parameter_handler) const
+SpatialDiscretization<dim>::declare(dealii::ParameterHandler &parameter_handler,
+                                    unsigned int              max_criteria) const
 {
   parameter_handler.declare_entry("mesh type",
                                   "rectangular",
@@ -378,34 +379,6 @@ SpatialDiscretization<dim>::predeclare(dealii::ParameterHandler &parameter_handl
                                     "rectangular|spherical|custom"),
                                   "The type of mesh to use.",
                                   true);
-}
-
-template <unsigned int dim>
-void
-SpatialDiscretization<dim>::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  const std::string mesh_type = parameter_handler.get("mesh type");
-
-  if (mesh_type == "rectangular")
-    {
-      mesh = std::make_unique<RectangularMesh<dim>>();
-    }
-  else if (mesh_type == "spherical")
-    {
-      mesh = std::make_unique<SphericalMesh<dim>>();
-    }
-  else
-    {
-      // If custom, it's up to the user to define the class and create the pointer.
-    }
-}
-
-template <unsigned int dim>
-void
-SpatialDiscretization<dim>::declare(dealii::ParameterHandler &parameter_handler,
-                                    unsigned int              max_criteria) const
-{
-  mesh->declare_parameters(parameter_handler);
 
   parameter_handler.declare_entry("global refinement",
                                   "0",
