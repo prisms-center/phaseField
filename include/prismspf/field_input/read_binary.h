@@ -124,9 +124,9 @@ inline ReadBinary<dim, number>::ReadBinary(
               dealii::ExcMessage("Only one field can be read in from a binary file"));
 
   // Make sure we have a rectangular domain
-  AssertThrow(
-    typeid(*_spatial_discretization.mesh) == typeid(prismspf::RectangularMesh<dim>),
-    dealii::ExcMessage("Only rectangular domains are supported for binary input files"));
+  AssertThrow(_spatial_discretization.mesh_type == TriangulationType::Rectangular,
+              dealii::ExcMessage(
+                "Only rectangular domains are supported for binary input files"));
 
   // Compute the total number of points in the binary file
   for (unsigned int d : std::views::iota(0U, dim))
@@ -235,8 +235,10 @@ ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
   dealii::Vector<number> value(n_components);
 
   // Get the mesh
-  const auto &mesh =
-    dynamic_cast<const RectangularMesh<dim> &>(*this->spatial_discretization.mesh);
+  AssertThrow(this->spatial_discretization.mesh_type == TriangulationType::Rectangular,
+              dealii::ExcMessage(
+                "Only rectangular domains are supported for binary input files"));
+  const RectangularMesh<dim> &mesh = this->spatial_discretization.rectangular_mesh;
 
   // Compute the spacing in each direction
   std::array<number, dim> spacing;

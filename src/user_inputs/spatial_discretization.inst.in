@@ -8,5 +8,5 @@ for ( dimension : SPACE_DIMENSIONS)
 
 for ( dimension : SPACE_DIMENSIONS; number : REAL_SCALARS)
   {
-    template void Mesh<dimension>::mark_periodic(const dealii::DoFHandler<dimension> &dof_handler, dealii::AffineConstraints<number> &constraints);
+    template void Mesh<dimension>::mark_periodic(const dealii::DoFHandler<dimension> &dof_handler, dealii::AffineConstraints<number> &constraints) const;
   }
