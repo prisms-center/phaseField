@@ -5,6 +5,18 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
+NucleationParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
+{
+  AssertThrow(false, dealii::ExcNotImplemented());
+}
+
+void
+NucleationParameters::preassign(dealii::ParameterHandler &parameter_handler)
+{
+  AssertThrow(false, dealii::ExcNotImplemented());
+}
+
+void
 NucleationParameters::declare(dealii::ParameterHandler &parameter_handler,
                               unsigned int              max_criteria) const
 {

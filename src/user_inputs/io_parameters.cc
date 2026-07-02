@@ -1,8 +1,22 @@
+#include <deal.II/base/exceptions.h>
+
 #include <prismspf/user_inputs/io_parameters.h>
 
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+void
+FieldOutputParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
+{
+  AssertThrow(false, dealii::ExcNotImplemented());
+}
+
+void
+FieldOutputParameters::preassign(dealii::ParameterHandler &parameter_handler)
+{
+  AssertThrow(false, dealii::ExcNotImplemented());
+}
 
 void
 FieldOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
@@ -68,6 +82,13 @@ FieldOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
       "`set variables = n1, old_1(n1), lhs(n1)`.");
   }
   parameter_handler.leave_subsection();
+}
+
+void
+FieldOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
+                              unsigned int              max_criteria)
+{
+  AssertThrow(false, dealii::ExcNotImplemented());
 }
 
 void
@@ -145,6 +166,18 @@ FieldOutputParameters::should_output(unsigned int increment) const
 }
 
 void
+RestartOutputParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
+{
+  AssertThrow(false, dealii::ExcNotImplemented());
+}
+
+void
+RestartOutputParameters::preassign(dealii::ParameterHandler &parameter_handler)
+{
+  AssertThrow(false, dealii::ExcNotImplemented());
+}
+
+void
 RestartOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
                                  unsigned int              max_criteria) const
 {
@@ -186,6 +219,13 @@ RestartOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
                                     "per decade for the N_PER_DECADE type).");
   }
   parameter_handler.leave_subsection();
+}
+
+void
+RestartOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
+                                unsigned int              max_criteria)
+{
+  AssertThrow(false, dealii::ExcNotImplemented());
 }
 
 void
@@ -236,6 +276,18 @@ bool
 RestartOutputParameters::should_output(unsigned int increment) const
 {
   return output_list.contains(increment);
+}
+
+void
+FieldInputParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
+{
+  AssertThrow(false, dealii::ExcNotImplemented());
+}
+
+void
+FieldInputParameters::preassign(dealii::ParameterHandler &parameter_handler)
+{
+  AssertThrow(false, dealii::ExcNotImplemented());
 }
 
 void
@@ -334,8 +386,10 @@ FieldInputParameters::assign(dealii::ParameterHandler &parameter_handler,
 
             for (unsigned int k = 0; k < 3; ++k)
               {
+                const std::string axis {axis_labels.at(k)};
+
                 ic_file.n_data_points.at(k) = static_cast<unsigned int>(
-                  parameter_handler.get_integer(axis_labels.at(k) + " data points"));
+                  parameter_handler.get_integer(axis + " data points"));
               }
 
             initial_condition_files.push_back(ic_file);

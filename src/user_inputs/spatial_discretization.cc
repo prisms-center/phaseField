@@ -16,14 +16,14 @@ Mesh<dim>::mark_periodic(typename Mesh<dim>::Triangulation &triangulation) const
   // Loop over provided periodicity set and add to the periodicity vector
   for (const auto &[id_1, id_2, direction] : periodicity_set)
     {
-      dealii::GridTools::collect_periodic_faces(tria,
+      dealii::GridTools::collect_periodic_faces(triangulation,
                                                 id_1,
                                                 id_2,
                                                 direction,
                                                 triangulation_periodicity_vector);
     }
   // Pass periodicity vector to triangulation
-  tria.add_periodicity(triangulation_periodicity_vector);
+  triangulation.add_periodicity(triangulation_periodicity_vector);
 }
 
 template <unsigned int dim>
@@ -86,6 +86,37 @@ RectangularMesh<dim>::mark_boundaries(
   // y=max -> 3
   // z=0 -> 4
   // z=max -> 5
+}
+
+template <unsigned int dim>
+double
+RectangularMesh<dim>::distance(const dealii::Point<dim> &point_1,
+                               const dealii::Point<dim> &point_2) const
+{
+  using std::sqrt;
+
+  if (this->periodicity_set.empty())
+    {
+      return point_1.distance(point_2);
+    }
+
+  double dist = 0.0;
+  for (unsigned int d = 0; d < dim; ++d)
+    {
+      double delta = point_2[d] - point_2[d];
+      // TODO: This is poorly optimized
+      for (const auto [b_id_1, b_id_2, dir] : this->periodicity_set)
+        {
+          if (dir == d)
+            {
+              const double length      = upper_bound[d] - lower_bound[d];
+              const double half_length = length / 2.0;
+              delta                    = pmod(delta - half_length, length) - half_length;
+            }
+        }
+      dist += delta * delta;
+    }
+  return std::sqrt(dist);
 }
 
 template <unsigned int dim>
@@ -205,6 +236,15 @@ SphericalMesh<dim>::mark_boundaries(
   typename SphericalMesh<dim>::Triangulation &triangulation) const
 {
   // There's only 1 boundary on a sphere
+}
+
+template <unsigned int dim>
+double
+SphericalMesh<dim>::distance(const dealii::Point<dim> &point_1,
+                             const dealii::Point<dim> &point_2) const
+{
+  // No periodicity allowed in spherical meshes, so it behaves like normal distance
+  return point_1.distance(point_2);
 }
 
 template <unsigned int dim>

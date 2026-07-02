@@ -36,9 +36,9 @@ std::shared_ptr<ReadFieldBase<dim, number>>
 create_reader(const InitialConditionFile       &ic_file,
               const SpatialDiscretization<dim> &spatial_discretization)
 {
-  switch (ic_file.dataset_format)
+  switch (ic_file.format)
     {
-      case DataFormatType::VTKUnstructuredGrid:
+      case InitialConditionFile::DataFormatType::VTKUnstructuredGrid:
 #ifdef PRISMS_PF_WITH_VTK
         return std::make_shared<ReadUnstructuredVTK<dim, number>>(ic_file,
                                                                   spatial_discretization);
@@ -49,7 +49,7 @@ create_reader(const InitialConditionFile       &ic_file,
                       "was not built with VTK. Please reconfig PRISMS-PF with VTK using "
                       "-D PRISMS_PF_WITH_VTK=ON"));
 #endif
-      case DataFormatType::FlatBinary:
+      case InitialConditionFile::DataFormatType::FlatBinary:
         return std::make_shared<ReadBinary<dim, number>>(ic_file, spatial_discretization);
       default:
         AssertThrow(false, UnreachableCode());

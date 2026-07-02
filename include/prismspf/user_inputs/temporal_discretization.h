@@ -22,7 +22,6 @@ PRISMS_PF_BEGIN_NAMESPACE
  */
 struct TemporalDiscretization : public ParameterBase
 {
-public:
   /**
    * @brief Constructor.
    */
@@ -32,6 +31,18 @@ public:
    * @brief Constructor.
    */
   TemporalDiscretization(double _dt, double _initial_time, double _final_time);
+
+  /**
+   * @brief Declare the parameters to be read from file.
+   */
+  void
+  predeclare(dealii::ParameterHandler &parameter_handler) const override;
+
+  /**
+   * @brief Assign the parameters from file.
+   */
+  void
+  preassign(dealii::ParameterHandler &parameter_handler) override;
 
   /**
    * @brief Declare the parameters to be read from file.

@@ -79,6 +79,13 @@ struct Mesh
                 dealii::AffineConstraints<number> &constraints) const;
 
   /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  virtual double
+  distance(const dealii::Point<dim> &point_1,
+           const dealii::Point<dim> &point_2) const = 0;
+
+  /**
    * @brief Declare the parameters to be read from an input file.
    */
   virtual void
@@ -155,6 +162,13 @@ struct RectangularMesh : public Mesh<dim>
   mark_boundaries(Triangulation &triangulation) const override;
 
   /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  double
+  distance(const dealii::Point<dim> &point_1,
+           const dealii::Point<dim> &point_2) const override;
+
+  /**
    * @brief Declare the parameters to be read from an input file.
    */
   void
@@ -217,6 +231,13 @@ struct SphericalMesh : public Mesh<dim>
    */
   void
   mark_boundaries(Triangulation &triangulation) const override;
+
+  /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  double
+  distance(const dealii::Point<dim> &point_1,
+           const dealii::Point<dim> &point_2) const override;
 
   /**
    * @brief Declare the parameters to be read from an input file.

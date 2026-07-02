@@ -27,7 +27,18 @@ using RNGEngine = std::mt19937;
  */
 struct MiscellaneousParameters : public ParameterBase
 {
-public:
+  /**
+   * @brief Declare the parameters to be read from file.
+   */
+  void
+  predeclare(dealii::ParameterHandler &parameter_handler) const override;
+
+  /**
+   * @brief Assign the parameters from file.
+   */
+  void
+  preassign(dealii::ParameterHandler &parameter_handler) override;
+
   /**
    * @brief Declare the parameters to be read from file.
    */

@@ -30,6 +30,20 @@ FieldConstraints<dim>::has_time_dependent_bcs() const
 
 template <unsigned int dim>
 void
+BoundaryParameters<dim>::predeclare(dealii::ParameterHandler &parameter_handler) const
+{
+  AssertThrow(false, dealii::ExcNotImplemented());
+}
+
+template <unsigned int dim>
+void
+BoundaryParameters<dim>::preassign(dealii::ParameterHandler &parameter_handler)
+{
+  AssertThrow(false, dealii::ExcNotImplemented());
+}
+
+template <unsigned int dim>
+void
 BoundaryParameters<dim>::declare(dealii::ParameterHandler &parameter_handler,
                                  unsigned int              max_criteria) const
 {
@@ -124,8 +138,8 @@ BoundaryParameters<dim>::assign(dealii::ParameterHandler &parameter_handler,
 
 template <unsigned int dim>
 void
-FieldConstraints<dim>::validate(const std::vector<FieldAttributes> &field_attributes,
-                                const std::vector<SolveBlock>      &solve_blocks) const
+BoundaryParameters<dim>::validate(const std::vector<FieldAttributes> &field_attributes,
+                                  const std::vector<SolveBlock>      &solve_blocks) const
 {
   // TODO: Do this later
 }

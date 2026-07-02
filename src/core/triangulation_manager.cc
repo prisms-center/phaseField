@@ -27,14 +27,15 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <>
 TriangulationManager<1U>::TriangulationManager()
-  : triangulation(Triangulation<1U>::limit_level_difference_at_vertices)
+  : triangulation(
+      TriangulationManager<1U>::Triangulation::limit_level_difference_at_vertices)
 {}
 
 template <unsigned int dim>
 TriangulationManager<dim>::TriangulationManager()
   : triangulation(MPI_COMM_WORLD,
-                  Triangulation<dim>::smoothing_on_refinement,
-                  Triangulation<dim>::construct_multigrid_hierarchy)
+                  TriangulationManager<dim>::Triangulation::smoothing_on_refinement,
+                  TriangulationManager<dim>::Triangulation::construct_multigrid_hierarchy)
 {}
 
 template <unsigned int dim>

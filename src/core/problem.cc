@@ -17,7 +17,7 @@
 #include <prismspf/solvers/solver_base.h>
 #include <prismspf/solvers/solvers.h>
 
-#include <prismspf/user_inputs/linear_solve_parameters.h>
+#include <prismspf/user_inputs/solve_parameters.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
@@ -152,7 +152,7 @@ Problem<dim, degree, number>::Problem(
   std::map<unsigned int, LinearSolverParameters> linear_solver_parameters_copy =
     _user_inputs.linear_solve_parameters.linear_solvers;
   std::map<unsigned int, NonlinearSolverParameters> nonlinear_solver_parameters_copy =
-    _user_inputs.nonlinear_solve_parameters.newton_solvers;
+    _user_inputs.nonlinear_solve_parameters.nonlinear_solvers;
   for (auto &solve_block : solve_blocks)
     {
       solve_block.validate();
@@ -316,7 +316,7 @@ Problem<dim, degree, number>::solve()
   SimulationTimer                &sim_timer   = solve_context.get_simulation_timer();
   // Main time-stepping loop
   int exit_status = 0;
-  while (sim_timer.get_increment() <= time_info.num_increments && exit_status == 0)
+  while (sim_timer.get_increment() <= time_info.n_increments && exit_status == 0)
     {
       // Solve a single increment
       // Includes nucleation, refinement, constraints, solve, output, and update
@@ -460,7 +460,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   if (is_output_increment || force_output)
     {
       std::filesystem::path output_prefix =
-        std::filesystem::path(user_inputs.output_parameters.directory) /
+        std::filesystem::path(user_inputs.output_parameters.folder) /
         user_inputs.output_parameters.file_name;
       std::filesystem::path output_path = output_prefix;
       output_path.remove_filename();

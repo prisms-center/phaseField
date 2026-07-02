@@ -26,7 +26,6 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim>
 struct UserInputParameters : public ParameterBase
 {
-public:
   /**
    * @brief Constructor.
    */
@@ -109,8 +108,10 @@ public:
     linear_solve_parameters.assign(parameter_handler, max_criteria);
     nonlinear_solve_parameters.assign(parameter_handler, max_criteria);
 
-    output_parameters.assign(parameter_handler, max_criteria);
-    restart_parameters.assign(parameter_handler, max_criteria);
+    const auto n_increments = temporal_discretization.n_increments;
+
+    output_parameters.assign(parameter_handler, n_increments, max_criteria);
+    restart_parameters.assign(parameter_handler, n_increments, max_criteria);
     input_parameters.assign(parameter_handler, max_criteria);
 
     misc_parameters.assign(parameter_handler, max_criteria);
