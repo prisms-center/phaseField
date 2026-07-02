@@ -244,8 +244,8 @@ ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
   std::array<number, dim> spacing;
   for (unsigned int d : std::views::iota(0U, dim))
     {
-      spacing[d] = (mesh.upper_bound[d] - mesh.lower_bound[d]) /
-                   static_cast<number>(this->ic_file.n_data_points[d] - 1);
+      spacing[d] =
+        (mesh.size[d]) / static_cast<number>(this->ic_file.n_data_points[d] - 1);
     }
 
   // Compute the indices of the lower corner of the cell containing the point

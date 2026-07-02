@@ -77,10 +77,10 @@ Mesh<dim>::mark_periodic(const dealii::DoFHandler<dim>     &dof_handler,
 }
 
 template <unsigned int dim>
-RectangularMesh<dim>::RectangularMesh(dealii::Tensor<1, dim, double> _upper_bound,
+RectangularMesh<dim>::RectangularMesh(dealii::Tensor<1, dim, double> _size,
                                       dealii::Tensor<1, dim, double> _lower_bound,
                                       std::vector<unsigned int>      _subdivisions)
-  : upper_bound(_upper_bound)
+  : size(_size)
   , lower_bound(_lower_bound)
   , subdivisions(_subdivisions)
 {}
@@ -94,7 +94,8 @@ RectangularMesh<dim>::generate_mesh(
   dealii::GridGenerator::subdivided_hyper_rectangle(triangulation,
                                                     subdivisions,
                                                     dealii::Point<dim>(lower_bound),
-                                                    dealii::Point<dim>(upper_bound),
+                                                    dealii::Point<dim>(lower_bound +
+                                                                       size),
                                                     true);
 }
 
@@ -153,7 +154,7 @@ RectangularMesh<dim>::distance(const dealii::Point<dim> &point_1,
         {
           if (periodic_pair.direction == d)
             {
-              const double length      = upper_bound[d] - lower_bound[d];
+              const double length      = size[d];
               const double half_length = length / 2.0;
               delta                    = pmod(delta - half_length, length) - half_length;
             }
@@ -173,13 +174,12 @@ RectangularMesh<dim>::declare_parameters(dealii::ParameterHandler &parameter_han
       {
         const std::string axis {dir};
 
-        parameter_handler.declare_entry(axis + " upper bound",
+        parameter_handler.declare_entry(axis + " size",
                                         "0.0",
                                         dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                        "The upper bound of the domain in the " + axis +
+                                        "The size of the domain in the " + axis +
                                           "-direction.");
-        parameter_handler.declare_alias(axis + " upper bound", axis + " size", true);
-        parameter_handler.declare_alias(axis + " upper bound", "upper bound" + axis);
+        parameter_handler.declare_alias(axis + " size", "size" + axis);
 
         parameter_handler.declare_entry(axis + " lower bound",
                                         "0.0",
@@ -215,7 +215,7 @@ RectangularMesh<dim>::assign_parameters(dealii::ParameterHandler &parameter_hand
     for (unsigned int i = 0; i < dim; ++i)
       {
         const std::string axis {axis_labels.at(i)};
-        upper_bound[i]  = parameter_handler.get_double(axis + " upper bound");
+        size[i]         = parameter_handler.get_double(axis + " size");
         lower_bound[i]  = parameter_handler.get_double(axis + " lower bound");
         subdivisions[i] = parameter_handler.get_integer(axis + " subdivisions");
         if (parameter_handler.get_bool(axis + " periodic"))
@@ -231,10 +231,7 @@ template <unsigned int dim>
 void
 RectangularMesh<dim>::validate() const
 {
-  AssertThrow(
-    (upper_bound - lower_bound).norm() != 0.0,
-    dealii::ExcMessage(
-      "Upper and lower bound for the mesh are the same point (total size is 0)."));
+  AssertThrow(size.norm() != 0.0, dealii::ExcMessage("Size of the mesh is zero."));
   // These next two asserts should be caught earlier if users are using the parameters
   // file. This is mostly for users that are using the lower level structures.
   Assert(subdivisions.size() == dim,

@@ -136,7 +136,7 @@ struct RectangularMesh : public Mesh<dim>
   /**
    * @brief Constructor.
    */
-  RectangularMesh(dealii::Tensor<1, dim, double> _upper_bound,
+  RectangularMesh(dealii::Tensor<1, dim, double> _size,
                   dealii::Tensor<1, dim, double> _lower_bound,
                   std::vector<unsigned int>      _subdivisions);
 
@@ -190,7 +190,7 @@ struct RectangularMesh : public Mesh<dim>
   /**
    * @brief Upper bound point.
    */
-  dealii::Tensor<1, dim, double> upper_bound;
+  dealii::Tensor<1, dim, double> size;
 
   /**
    * @brief Lower bound point.
