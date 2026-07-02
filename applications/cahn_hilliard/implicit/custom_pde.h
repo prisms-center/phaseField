@@ -43,8 +43,12 @@ private:
                         [[maybe_unused]] number                   &scalar_value,
                         [[maybe_unused]] number &vector_component_value) const override
   {
-    const dealii::Tensor<1, dim> &mesh_size =
-      get_user_inputs().spatial_discretization.rectangular_mesh.size;
+    // TODO: Should probably have an assertion here or something
+    const auto &mesh = dynamic_cast<const RectangularMesh<dim> &>(
+      *get_user_inputs().spatial_discretization.mesh);
+
+    const dealii::Tensor<1, dim> &mesh_size = mesh.upper_bound - mesh.lower_bound;
+
     if (index == 0) // redundant
       {
         if (ic_type == 0)
