@@ -25,7 +25,13 @@ set(
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/user_input_parameters.h
 )
 
-set(_inst_bases user_input_parameters)
+set(
+  _inst_bases
+  constraint_parameters
+  nucleation_parameters
+  spatial_discretization
+  user_input_parameters
+)
 
 prisms_pf_target_sources(
   "${PRISMS_PF_TARGETS}"

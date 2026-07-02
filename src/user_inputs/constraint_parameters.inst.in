@@ -1,0 +1,5 @@
+for ( dimension : SPACE_DIMENSIONS)
+  {
+    template class FieldConstraints<dimension>;
+    template class BoundaryParameters<dimension>;
+  }

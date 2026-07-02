@@ -62,13 +62,13 @@ struct Mesh
    * @brief Mark the boundaries of the mesh.
    */
   virtual void
-  mark_boundaries(Triangulation &triangulation) const;
+  mark_boundaries(Triangulation &triangulation) const = 0;
 
   /**
    * @brief Mark the periodic faces of the mesh.
    */
   void
-  mark_periodic(Triangulation &triangulation) const;
+  mark_periodic(Triangulation &triangulation);
 
   /**
    * @brief Mark the periodic faces of the mesh.
@@ -76,7 +76,7 @@ struct Mesh
   template <typename number>
   void
   mark_periodic(const dealii::DoFHandler<dim>     &dof_handler,
-                dealii::AffineConstraints<number> &constraints) const;
+                dealii::AffineConstraints<number> &constraints);
 
   /**
    * @brief Calculation the distance between two points considering periodic boundaries.
@@ -147,7 +147,7 @@ struct RectangularMesh : public Mesh<dim>
    */
   RectangularMesh(dealii::Tensor<1, dim, double> _upper_bound,
                   dealii::Tensor<1, dim, double> _lower_bound,
-                  std::array<unsigned int, dim>  _subdivisions);
+                  std::vector<unsigned int>      _subdivisions);
 
   /**
    * @brief Generate the mesh.

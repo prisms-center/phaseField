@@ -131,4 +131,6 @@ NucleationParameters::check_active(const Nucleus<dim>    &nucleus,
           time_info.get_time() - nucleus.seed_time < seeding_time);
 }
 
+#include "user_inputs/nucleation_parameters.inst"
+
 PRISMS_PF_END_NAMESPACE

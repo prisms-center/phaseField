@@ -11,7 +11,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
 void
-Mesh<dim>::mark_periodic(typename Mesh<dim>::Triangulation &triangulation) const
+Mesh<dim>::mark_periodic(typename Mesh<dim>::Triangulation &triangulation)
 {
   // Loop over provided periodicity set and add to the periodicity vector
   for (const auto &[id_1, id_2, direction] : periodicity_set)
@@ -30,7 +30,7 @@ template <unsigned int dim>
 template <typename number>
 void
 Mesh<dim>::mark_periodic(const dealii::DoFHandler<dim>     &dof_handler,
-                         dealii::AffineConstraints<number> &constraints) const
+                         dealii::AffineConstraints<number> &constraints)
 {
   // Loop over provided periodicity set and add to the periodicity vector
   for (const auto &[id_1, id_2, direction] : periodicity_set)
@@ -39,20 +39,21 @@ Mesh<dim>::mark_periodic(const dealii::DoFHandler<dim>     &dof_handler,
                                                 id_1,
                                                 id_2,
                                                 direction,
-                                                dof_handler);
+                                                dof_handler_periodicity_vector);
     }
 
   // Pass periodicity vector to constraints
   // NOTE: We may want to add a mask here. If we're dealing with vector fields, this
   // will enforce periodicity constraints for all components on a given face.
-  dealii::DoFTools::make_periodicity_constraints(dof_handler_periodicity_vector,
-                                                 constraints);
+  dealii::DoFTools::make_periodicity_constraints<dim, dim, number>(
+    dof_handler_periodicity_vector,
+    constraints);
 }
 
 template <unsigned int dim>
 RectangularMesh<dim>::RectangularMesh(dealii::Tensor<1, dim, double> _upper_bound,
                                       dealii::Tensor<1, dim, double> _lower_bound,
-                                      std::array<unsigned int, dim>  _subdivisions)
+                                      std::vector<unsigned int>      _subdivisions)
   : upper_bound(_upper_bound)
   , lower_bound(_lower_bound)
   , subdivisions(_subdivisions)
@@ -472,5 +473,7 @@ SpatialDiscretization<dim>::should_refine_mesh(unsigned int increment) const
 {
   return increment % remeshing_period == 0;
 }
+
+#include "user_inputs/spatial_discretization.inst"
 
 PRISMS_PF_END_NAMESPACE

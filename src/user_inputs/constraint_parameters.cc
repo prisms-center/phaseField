@@ -144,4 +144,6 @@ BoundaryParameters<dim>::validate(const std::vector<FieldAttributes> &field_attr
   // TODO: Do this later
 }
 
+#include "user_inputs/constraint_parameters.inst"
+
 PRISMS_PF_END_NAMESPACE

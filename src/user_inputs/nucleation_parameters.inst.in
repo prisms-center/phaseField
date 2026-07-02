@@ -1,0 +1,4 @@
+for ( dimension : SPACE_DIMENSIONS)
+  {
+    template bool NucleationParameters::check_active<dimension>(const Nucleus<dimension> &nucleus, const SimulationTimer &time_info) const;
+  }
