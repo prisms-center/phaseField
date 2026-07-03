@@ -156,10 +156,11 @@ LinearSolverParameters::validate(const std::vector<FieldAttributes> &field_attri
 void
 LinearSolverParameters::declare_chebyshev(dealii::ParameterHandler &parameter_handler)
 {
-  parameter_handler.declare_entry("smoothing range",
-                                  "15.0",
-                                  dealii::Patterns::Double(DBL_MIN, DBL_MAX),
-                                  "The smoothing range for eigenvalues.");
+  parameter_handler.declare_entry(
+    "smoothing range",
+    "15.0",
+    dealii::Patterns::Double(DBL_MIN, DBL_MAX),
+    "The smoothing range for eigenvalues. Try λ_max / λ_min.");
   parameter_handler.declare_entry("smoother degree",
                                   "5",
                                   dealii::Patterns::Integer(1, INT_MAX),
