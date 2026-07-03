@@ -8,7 +8,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 void
 FieldOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
-                               unsigned int              n_subsections) const
+                               unsigned int              n_subsections)
 {
   parameter_handler.enter_subsection("output");
   {
@@ -155,7 +155,7 @@ FieldOutputParameters::should_output(unsigned int increment) const
 
 void
 RestartOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                 unsigned int              n_subsections) const
+                                 unsigned int              n_subsections)
 {
   parameter_handler.enter_subsection("checkpoint");
   {
@@ -256,7 +256,7 @@ RestartOutputParameters::should_output(unsigned int increment) const
 
 void
 FieldInputParameters::declare(dealii::ParameterHandler &parameter_handler,
-                              unsigned int              n_subsections) const
+                              unsigned int              n_subsections)
 {
   for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {

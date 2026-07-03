@@ -112,13 +112,6 @@ struct ParameterBase
   operator=(ParameterBase &&) = default;
 
   /**
-   * @brief Declare the parameters to be read from file.
-   */
-  virtual void
-  declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int n_subsections = Numbers::default_subsections) const = 0;
-
-  /**
    * @brief Assign the parameters from file.
    */
   virtual void

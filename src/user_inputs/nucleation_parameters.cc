@@ -6,7 +6,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 void
 NucleationParameters::declare(dealii::ParameterHandler &parameter_handler,
-                              unsigned int              n_subsections) const
+                              unsigned int              n_subsections)
 {
   parameter_handler.enter_subsection("nucleation");
   {

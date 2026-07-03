@@ -31,7 +31,7 @@ FieldConstraints<dim>::has_time_dependent_bcs() const
 template <unsigned int dim>
 void
 BoundaryParameters<dim>::declare(dealii::ParameterHandler &parameter_handler,
-                                 unsigned int              n_subsections) const
+                                 unsigned int              n_subsections)
 {
   for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {

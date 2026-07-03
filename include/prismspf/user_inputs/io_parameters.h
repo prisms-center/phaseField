@@ -124,9 +124,9 @@ struct FieldOutputParameters : public ParameterBase
   /**
    * @brief Declare the parameters to be read from file.
    */
-  void
+  static void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int n_subsections = Numbers::default_subsections) const override;
+          unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Assign the parameters from file.
@@ -245,9 +245,9 @@ struct RestartOutputParameters : public ParameterBase
   /**
    * @brief Declare the parameters to be read from file.
    */
-  void
+  static void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int n_subsections = Numbers::default_subsections) const override;
+          unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Assign the parameters from file.
@@ -356,9 +356,9 @@ struct FieldInputParameters : public ParameterBase
   /**
    * @brief Declare the parameters to be read from file.
    */
-  void
+  static void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int n_subsections = Numbers::default_subsections) const override;
+          unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Assign the parameters from file.

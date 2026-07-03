@@ -18,7 +18,7 @@ TemporalDiscretization::TemporalDiscretization(double _dt,
 
 void
 TemporalDiscretization::declare(dealii::ParameterHandler &parameter_handler,
-                                unsigned int              n_subsections) const
+                                unsigned int              n_subsections)
 {
   parameter_handler.declare_entry("final increment",
                                   "0",

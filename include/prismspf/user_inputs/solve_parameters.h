@@ -27,9 +27,9 @@ struct LinearSolverParameters : public ParameterBase
   /**
    * @brief Declare the parameters to be read from file.
    */
-  void
+  static void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int n_subsections = Numbers::default_subsections) const override;
+          unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Assign the parameters from file.
@@ -66,32 +66,32 @@ struct LinearSolverParameters : public ParameterBase
   // Solver AdditionalData structures
   dealii::PreconditionChebyshev<>::AdditionalData chebyshev_parameters;
 
-  void
-  declare_chebyshev(dealii::ParameterHandler &parameter_handler) const;
+  static void
+  declare_chebyshev(dealii::ParameterHandler &parameter_handler);
 
   void
   assign_chebyshev(dealii::ParameterHandler &parameter_handler);
 
   dealii::SolverRichardson<>::AdditionalData richardson_parameters;
 
-  void
-  declare_richardson(dealii::ParameterHandler &parameter_handler) const;
+  static void
+  declare_richardson(dealii::ParameterHandler &parameter_handler);
 
   void
   assign_richardson(dealii::ParameterHandler &parameter_handler);
 
   dealii::SolverBicgstab<>::AdditionalData bicgstab_parameters;
 
-  void
-  declare_bicgstab(dealii::ParameterHandler &parameter_handler) const;
+  static void
+  declare_bicgstab(dealii::ParameterHandler &parameter_handler);
 
   void
   assign_bicgstab(dealii::ParameterHandler &parameter_handler);
 
   dealii::SolverGMRES<>::AdditionalData gmres_parameters;
 
-  void
-  declare_gmres(dealii::ParameterHandler &parameter_handler) const;
+  static void
+  declare_gmres(dealii::ParameterHandler &parameter_handler);
 
   void
   assign_gmres(dealii::ParameterHandler &parameter_handler);
@@ -113,9 +113,9 @@ struct LinearSolveParameters : public ParameterBase
   /**
    * @brief Declare the parameters to be read from file.
    */
-  void
+  static void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int n_subsections = Numbers::default_subsections) const override;
+          unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Assign the parameters from file.
@@ -143,9 +143,9 @@ struct NonlinearSolverParameters : public ParameterBase
   /**
    * @brief Declare the parameters to be read from file.
    */
-  void
+  static void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int n_subsections = Numbers::default_subsections) const override;
+          unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Assign the parameters from file.
@@ -179,9 +179,9 @@ struct NonlinearSolveParameters : public ParameterBase
   /**
    * @brief Declare the parameters to be read from file.
    */
-  void
+  static void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int n_subsections = Numbers::default_subsections) const override;
+          unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Assign the parameters from file.

@@ -6,7 +6,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 void
 LinearSolverParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                unsigned int              n_subsections) const
+                                unsigned int              n_subsections)
 {
   parameter_handler.declare_entry(
     "solver type",
@@ -154,8 +154,7 @@ LinearSolverParameters::validate(const std::vector<FieldAttributes> &field_attri
 }
 
 void
-LinearSolverParameters::declare_chebyshev(
-  dealii::ParameterHandler &parameter_handler) const
+LinearSolverParameters::declare_chebyshev(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.declare_entry("smoothing range",
                                   "15.0",
@@ -185,8 +184,7 @@ LinearSolverParameters::assign_chebyshev(dealii::ParameterHandler &parameter_han
 }
 
 void
-LinearSolverParameters::declare_richardson(
-  dealii::ParameterHandler &parameter_handler) const
+LinearSolverParameters::declare_richardson(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.declare_entry("omega",
                                   "1.0",
@@ -208,8 +206,7 @@ LinearSolverParameters::assign_richardson(dealii::ParameterHandler &parameter_ha
 }
 
 void
-LinearSolverParameters::declare_bicgstab(
-  dealii::ParameterHandler &parameter_handler) const
+LinearSolverParameters::declare_bicgstab(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.declare_entry("exact residual",
                                   "true",
@@ -229,7 +226,7 @@ LinearSolverParameters::assign_bicgstab(dealii::ParameterHandler &parameter_hand
 }
 
 void
-LinearSolverParameters::declare_gmres(dealii::ParameterHandler &parameter_handler) const
+LinearSolverParameters::declare_gmres(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.declare_entry(
     "max basis size",
@@ -284,7 +281,7 @@ LinearSolverParameters::assign_gmres(dealii::ParameterHandler &parameter_handler
 
 void
 LinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
-                               unsigned int              n_subsections) const
+                               unsigned int              n_subsections)
 {
   for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
@@ -305,9 +302,7 @@ LinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
                                      "solve block ids",
                                      "solve_block_ids",
                                      "solver ids"});
-
-        LinearSolverParameters linear_solver;
-        linear_solver.declare(parameter_handler);
+        LinearSolverParameters::declare(parameter_handler);
       }
       parameter_handler.leave_subsection();
     }
@@ -351,7 +346,7 @@ LinearSolveParameters::validate(const std::vector<FieldAttributes> &field_attrib
 
 void
 NonlinearSolverParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                   unsigned int              n_subsections) const
+                                   unsigned int              n_subsections)
 {
   parameter_handler.declare_entry("max iterations",
                                   "100",
@@ -419,7 +414,7 @@ NonlinearSolverParameters::validate(const std::vector<FieldAttributes> &field_at
 
 void
 NonlinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                  unsigned int              n_subsections) const
+                                  unsigned int              n_subsections)
 {
   for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
@@ -439,9 +434,7 @@ NonlinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
                                      "solve block ids",
                                      "solve_block_ids",
                                      "solver ids"});
-
-        NonlinearSolverParameters nonlinear_solver;
-        nonlinear_solver.declare(parameter_handler);
+        NonlinearSolverParameters::declare(parameter_handler);
       }
       parameter_handler.leave_subsection();
     }

@@ -57,21 +57,21 @@ struct UserInputParameters : public ParameterBase
    */
   void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int n_subsections = Numbers::default_subsections) const override
+          unsigned int              n_subsections = Numbers::default_subsections) const
   {
-    spatial_discretization.declare(parameter_handler, n_subsections);
-    temporal_discretization.declare(parameter_handler, n_subsections);
-    boundary_parameters.declare(parameter_handler, n_subsections);
+    SpatialDiscretization<dim>::declare(parameter_handler, n_subsections);
+    TemporalDiscretization::declare(parameter_handler, n_subsections);
+    BoundaryParameters<dim>::declare(parameter_handler, n_subsections);
 
-    linear_solve_parameters.declare(parameter_handler, n_subsections);
-    nonlinear_solve_parameters.declare(parameter_handler, n_subsections);
+    LinearSolveParameters::declare(parameter_handler, n_subsections);
+    NonlinearSolveParameters::declare(parameter_handler, n_subsections);
 
-    output_parameters.declare(parameter_handler, n_subsections);
-    restart_parameters.declare(parameter_handler, n_subsections);
-    input_parameters.declare(parameter_handler, n_subsections);
+    FieldOutputParameters::declare(parameter_handler, n_subsections);
+    RestartOutputParameters::declare(parameter_handler, n_subsections);
+    FieldInputParameters::declare(parameter_handler, n_subsections);
 
-    misc_parameters.declare(parameter_handler, n_subsections);
-    nucleation_parameters.declare(parameter_handler, n_subsections);
+    MiscellaneousParameters::declare(parameter_handler, n_subsections);
+    NucleationParameters::declare(parameter_handler, n_subsections);
 
     user_constants.declare_parameters(parameter_handler);
   };

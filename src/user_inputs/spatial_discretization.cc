@@ -308,7 +308,7 @@ SphericalMesh<dim>::validate() const
 template <unsigned int dim>
 void
 SpatialDiscretization<dim>::declare(dealii::ParameterHandler &parameter_handler,
-                                    unsigned int              n_subsections) const
+                                    unsigned int              n_subsections)
 {
   parameter_handler.declare_entry("mesh type",
                                   "rectangular",
