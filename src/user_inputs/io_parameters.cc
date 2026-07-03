@@ -32,7 +32,7 @@ FieldOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
                                     "The compression level for output.");
 
     parameter_handler.declare_entry("directory",
-                                    "outputs",
+                                    "solutions",
                                     dealii::Patterns::Anything(),
                                     "The name of the output directory.");
     parameter_handler.declare_alias("directory", "folder name");
@@ -166,7 +166,7 @@ RestartOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
       "Whether to load from a checkpoint created during a previous simulation.");
 
     parameter_handler.declare_entry("directory",
-                                    "outputs",
+                                    "solutions",
                                     dealii::Patterns::Anything(),
                                     "The name of the output directory.");
     parameter_handler.declare_alias("directory", "folder name");

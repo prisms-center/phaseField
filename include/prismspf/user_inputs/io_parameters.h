@@ -202,9 +202,9 @@ struct FieldOutputParameters : public ParameterBase
   /**
    * @brief Folder for field output.
    *
-   * Choosing this will give you your results like outputs/solution-*.vtu
+   * Choosing this will give you your results like solutions/solution-*.vtu
    */
-  std::string folder = "outputs";
+  std::string folder = "solutions";
 
   /**
    * @brief Base filename for field output.
@@ -292,9 +292,9 @@ struct RestartOutputParameters : public ParameterBase
   /**
    * @brief Folder for checkpoint output.
    *
-   * Choosing this will give you your results like outputs/solution-*.vtu
+   * Choosing this will give you your results like solutions/solution-*.vtu
    */
-  std::string folder = "outputs";
+  std::string folder = "solutions";
 
   /**
    * @brief Base filename for checkpoint output.
