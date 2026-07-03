@@ -30,7 +30,14 @@ struct TemporalDiscretization : public ParameterBase
   /**
    * @brief Constructor.
    */
-  TemporalDiscretization(double _dt, double _initial_time, double _final_time);
+  TemporalDiscretization(double       _dt,
+                         unsigned int _n_increments,
+                         double       _initial_time = 0.0);
+
+  /**
+   * @brief Constructor.
+   */
+  TemporalDiscretization(double _dt, double _final_time, double _initial_time = 0.0);
 
   /**
    * @brief Declare the parameters to be read from file.
@@ -59,11 +66,8 @@ struct TemporalDiscretization : public ParameterBase
   // Initial time
   double initial_time = 0.0;
 
-  // Final time
-  double final_time = 1.0;
-
   // Total number of increments
-  unsigned int n_increments = 1;
+  unsigned int n_increments = 0;
 };
 
 PRISMS_PF_END_NAMESPACE

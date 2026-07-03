@@ -14,8 +14,9 @@ class SimulationTimer
 public:
   SimulationTimer() = default;
 
-  explicit SimulationTimer(double step_size)
+  explicit SimulationTimer(double step_size, double start_time = 0.0)
     : time_step_size(step_size)
+    , current_time(start_time)
   {}
 
   [[nodiscard]] unsigned int
