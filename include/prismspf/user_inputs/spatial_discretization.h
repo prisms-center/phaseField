@@ -5,6 +5,7 @@
 
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/patterns.h>
+#include <deal.II/base/vectorization.h>
 #include <deal.II/distributed/tria.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
@@ -87,6 +88,20 @@ struct Mesh
    */
   virtual double
   distance(const dealii::Point<dim> &point_1, const dealii::Point<dim> &point_2) const;
+  /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  template <typename real1, typename real2>
+  double
+  distance(const dealii::Point<dim, real1> &point_1,
+           const dealii::Point<dim, real2> &point_2) const;
+  /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  template <typename real1>
+  dealii::VectorizedArray<real1>
+  distance(const dealii::Point<dim, dealii::VectorizedArray<real1>> &point_1,
+           const dealii::Point<dim, dealii::VectorizedArray<real1>> &point_2) const;
 
   /**
    * @brief Validate.
@@ -323,6 +338,7 @@ public:
            const dealii::Point<dim> &point_2) const override;
 
   using Mesh<dim>::mark_periodic;
+  using Mesh<dim>::distance;
 
   /**
    * @brief Get the mesh object.

@@ -18,6 +18,46 @@ Mesh<dim>::distance(const dealii::Point<dim> &point_1,
 }
 
 template <unsigned int dim>
+template <typename real1, typename real2>
+double
+Mesh<dim>::distance(const dealii::Point<dim, real1> &point_1,
+                    const dealii::Point<dim, real2> &point_2) const
+{
+  dealii::Point<dim> p1;
+  dealii::Point<dim> p2;
+  for (unsigned int d = 0; d < dim; ++d)
+    {
+      p1[d] = point_1[d];
+      p2[d] = point_2[d];
+    }
+  return distance(p1, p2);
+}
+
+template <unsigned int dim>
+template <typename real1>
+dealii::VectorizedArray<real1>
+Mesh<dim>::distance(
+  const dealii::Point<dim, dealii::VectorizedArray<real1>> &point_1,
+  const dealii::Point<dim, dealii::VectorizedArray<real1>> &point_2) const
+{
+  constexpr unsigned int         size = dealii::VectorizedArray<real1>::size();
+  dealii::VectorizedArray<real1> out;
+  for (unsigned int i = 0; i < size; ++i)
+    {
+      dealii::Point<dim> p1;
+      dealii::Point<dim> p2;
+      for (unsigned int d = 0; d < dim; ++d)
+        {
+          p1[d] = point_1[d][i];
+          p2[d] = point_2[d][i];
+        }
+      const double dist = distance(p1, p2);
+      out[i]            = dist;
+    }
+  return out;
+}
+
+template <unsigned int dim>
 std::list<PeriodicPair<dim>>
 Mesh<dim>::periodicity_set() const
 {
