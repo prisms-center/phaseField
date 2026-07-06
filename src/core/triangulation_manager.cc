@@ -108,12 +108,9 @@ void
 TriangulationManager<dim>::generate_mesh(
   const SpatialDiscretization<dim> &discretization_params)
 {
-  Assert(discretization_params.mesh != nullptr,
-         dealii::ExcMessage("Mesh is uninitialized"));
-
-  discretization_params.mesh->generate_mesh(triangulation);
-  discretization_params.mesh->mark_boundaries(triangulation);
-  discretization_params.mesh->mark_periodic(triangulation);
+  discretization_params.generate_mesh(triangulation);
+  discretization_params.mark_boundaries(triangulation);
+  discretization_params.mark_periodic(triangulation);
 
   // TODO: Once we move to a pattern of manual initialization after default construction,
   // call this separately using the user_inputs output directory.

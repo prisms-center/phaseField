@@ -161,7 +161,7 @@ ConstraintManager<dim, degree, number>::reinit(
                                   dealii::DoFTools::extract_locally_relevant_dofs(
                                     dof_handler));
         // periodicity
-        spatial_discretization->mesh->mark_periodic(dof_handler, generic_constraint);
+        spatial_discretization->mark_periodic(dof_handler, generic_constraint);
 
         // hanging node
         // dealii::DoFTools::make_hanging_node_constraints(dof_handler,
@@ -184,7 +184,7 @@ ConstraintManager<dim, degree, number>::reinit(
             dof_handler.locally_owned_mg_dofs(level),
             dealii::DoFTools::extract_locally_relevant_level_dofs(dof_handler, level));
           // periodicity
-          spatial_discretization->mesh->mark_periodic(dof_handler, generic_constraint);
+          spatial_discretization->mark_periodic(dof_handler, generic_constraint);
 
           // hanging node
           // dealii::DoFTools::make_hanging_node_constraints(dof_handler,
@@ -282,7 +282,7 @@ ConstraintManager<dim, degree, number>::make_constraints_for_single_field(
   // triangulation and the constraints. Adding periodicity to the triangulation alone
   // doesn't actually affect the DoF numbering, but does tell the DofHandler to make the
   // right ghosts. The constraints have to be applied separately.
-  spatial_discretization->mesh->mark_periodic(dof_handler, constraint);
+  spatial_discretization->mark_periodic(dof_handler, constraint);
 
   // 2. Make hanging node constraints
   // note: dealii step-37 doesn't add hanging node constraints. (probably because a single

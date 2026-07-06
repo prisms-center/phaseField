@@ -5,20 +5,8 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-MiscellaneousParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-MiscellaneousParameters::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
 MiscellaneousParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                 unsigned int              max_criteria) const
+                                 unsigned int              n_subsections)
 {
   parameter_handler.enter_subsection("miscellaneous");
   {
@@ -34,7 +22,7 @@ MiscellaneousParameters::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 MiscellaneousParameters::assign(dealii::ParameterHandler &parameter_handler,
-                                unsigned int              max_criteria)
+                                unsigned int              n_subsections)
 {
   parameter_handler.enter_subsection("miscellaneous");
   {

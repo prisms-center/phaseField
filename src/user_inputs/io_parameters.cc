@@ -7,20 +7,8 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-FieldOutputParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-FieldOutputParameters::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
 FieldOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
-                               unsigned int              max_criteria) const
+                               unsigned int              n_subsections)
 {
   parameter_handler.enter_subsection("output");
   {
@@ -44,7 +32,7 @@ FieldOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
                                     "The compression level for output.");
 
     parameter_handler.declare_entry("directory",
-                                    "outputs",
+                                    "solutions",
                                     dealii::Patterns::Anything(),
                                     "The name of the output directory.");
     parameter_handler.declare_alias("directory", "folder name");
@@ -86,7 +74,7 @@ FieldOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 FieldOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
-                              unsigned int              max_criteria)
+                              unsigned int              n_subsections)
 {
   AssertThrow(false, dealii::ExcNotImplemented());
 }
@@ -94,7 +82,7 @@ FieldOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
 void
 FieldOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
                               unsigned int              n_increments,
-                              unsigned int              max_criteria)
+                              unsigned int              n_subsections)
 {
   const static std::unordered_map<std::string, FieldOutputParameters::OutputType>
     output_type_table = {
@@ -166,20 +154,8 @@ FieldOutputParameters::should_output(unsigned int increment) const
 }
 
 void
-RestartOutputParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-RestartOutputParameters::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
 RestartOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                 unsigned int              max_criteria) const
+                                 unsigned int              n_subsections)
 {
   parameter_handler.enter_subsection("checkpoint");
   {
@@ -190,7 +166,7 @@ RestartOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
       "Whether to load from a checkpoint created during a previous simulation.");
 
     parameter_handler.declare_entry("directory",
-                                    "outputs",
+                                    "solutions",
                                     dealii::Patterns::Anything(),
                                     "The name of the output directory.");
     parameter_handler.declare_alias("directory", "folder name");
@@ -223,7 +199,7 @@ RestartOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 RestartOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
-                                unsigned int              max_criteria)
+                                unsigned int              n_subsections)
 {
   AssertThrow(false, dealii::ExcNotImplemented());
 }
@@ -231,7 +207,7 @@ RestartOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
 void
 RestartOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
                                 unsigned int              n_increments,
-                                unsigned int              max_criteria)
+                                unsigned int              n_subsections)
 {
   parameter_handler.enter_subsection("checkpoint");
   {
@@ -279,22 +255,10 @@ RestartOutputParameters::should_output(unsigned int increment) const
 }
 
 void
-FieldInputParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-FieldInputParameters::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
 FieldInputParameters::declare(dealii::ParameterHandler &parameter_handler,
-                              unsigned int              max_criteria) const
+                              unsigned int              n_subsections)
 {
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text = "input file: " + std::to_string(criterion_id);
       parameter_handler.enter_subsection(subsection_text);
@@ -341,9 +305,9 @@ FieldInputParameters::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 FieldInputParameters::assign(dealii::ParameterHandler &parameter_handler,
-                             unsigned int              max_criteria)
+                             unsigned int              n_subsections)
 {
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text = "input file: " + std::to_string(criterion_id);
       parameter_handler.enter_subsection(subsection_text);

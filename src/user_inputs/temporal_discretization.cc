@@ -7,30 +7,31 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-TemporalDiscretization::TemporalDiscretization(double _dt,
-                                               double _initial_time,
-                                               double _final_time)
+TemporalDiscretization::TemporalDiscretization(double       _dt,
+                                               unsigned int _n_increments,
+                                               double       _initial_time)
   : dt(_dt)
   , initial_time(_initial_time)
-  , final_time(_final_time)
-  , n_increments(std::ceil(_final_time / _dt))
+  , n_increments(_n_increments)
 {}
 
-void
-TemporalDiscretization::predeclare(dealii::ParameterHandler &parameter_handler) const
+TemporalDiscretization::TemporalDiscretization(double _dt,
+                                               double _final_time,
+                                               double _initial_time)
+  : dt(_dt)
+  , initial_time(_initial_time)
+  , n_increments(_final_time == _initial_time
+                   ? 0
+                   : (unsigned int) std::ceil((_final_time - _initial_time) / _dt))
 {
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-TemporalDiscretization::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
+  AssertThrow(initial_time <= _final_time,
+              dealii::ExcMessage(
+                "Initial time must be less than or equal to final time."));
 }
 
 void
 TemporalDiscretization::declare(dealii::ParameterHandler &parameter_handler,
-                                unsigned int              max_criteria) const
+                                unsigned int              n_subsections)
 {
   parameter_handler.declare_entry("final increment",
                                   "0",
@@ -86,15 +87,18 @@ TemporalDiscretization::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 TemporalDiscretization::assign(dealii::ParameterHandler &parameter_handler,
-                               unsigned int              max_criteria)
+                               unsigned int              n_subsections)
 {
-  n_increments = (unsigned int) (parameter_handler.get_integer("final increment"));
-  dt           = parameter_handler.get_double("time step");
-  initial_time = parameter_handler.get_double("start time");
-  final_time   = parameter_handler.get_double("end time");
+  n_increments      = (unsigned int) parameter_handler.get_integer("final increment");
+  dt                = parameter_handler.get_double("time step");
+  initial_time      = parameter_handler.get_double("start time");
+  double final_time = parameter_handler.get_double("end time");
 
   if (final_time > 0.0)
     {
+      AssertThrow(initial_time <= final_time,
+                  dealii::ExcMessage(
+                    "Initial time must be less than or equal to final time."));
       n_increments = std::ceil((final_time - initial_time) / dt);
     }
 }
@@ -104,13 +108,9 @@ TemporalDiscretization::validate(
   [[maybe_unused]] const std::vector<FieldAttributes> &field_attributes,
   [[maybe_unused]] const std::vector<SolveBlock>      &solve_blocks) const
 {
-  double time_span = final_time - initial_time;
-
-  AssertThrow(time_span > 0.0,
-              dealii::ExcMessage("Final time must be greater than initial time."));
-  AssertThrow(time_span / dt <= std::numeric_limits<unsigned int>::max(),
-              dealii::ExcMessage("You seem to be taking more than 4 billion "
-                                 "timesteps... That doesn't seem right. Right?"));
+  AssertThrow(n_increments == 0 || dt > 0.0,
+              dealii::ExcMessage(
+                "Time step must be greater than 0 for transient problems."));
 }
 
 PRISMS_PF_END_NAMESPACE

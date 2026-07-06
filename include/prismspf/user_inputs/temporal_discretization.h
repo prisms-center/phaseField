@@ -30,33 +30,28 @@ struct TemporalDiscretization : public ParameterBase
   /**
    * @brief Constructor.
    */
-  TemporalDiscretization(double _dt, double _initial_time, double _final_time);
+  TemporalDiscretization(double       _dt,
+                         unsigned int _n_increments,
+                         double       _initial_time = 0.0);
+
+  /**
+   * @brief Constructor.
+   */
+  TemporalDiscretization(double _dt, double _final_time, double _initial_time = 0.0);
 
   /**
    * @brief Declare the parameters to be read from file.
    */
-  void
-  predeclare(dealii::ParameterHandler &parameter_handler) const override;
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  void
-  preassign(dealii::ParameterHandler &parameter_handler) override;
-
-  /**
-   * @brief Declare the parameters to be read from file.
-   */
-  void
+  static void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int max_criteria = Numbers::max_subsections) const override;
+          unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Assign the parameters from file.
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections) override;
 
   /**
    * @brief Validate.
@@ -71,11 +66,8 @@ struct TemporalDiscretization : public ParameterBase
   // Initial time
   double initial_time = 0.0;
 
-  // Final time
-  double final_time = 1.0;
-
   // Total number of increments
-  unsigned int n_increments = 1;
+  unsigned int n_increments = 0;
 };
 
 PRISMS_PF_END_NAMESPACE

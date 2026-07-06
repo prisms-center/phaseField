@@ -5,6 +5,7 @@
 
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/patterns.h>
+#include <deal.II/base/vectorization.h>
 #include <deal.II/distributed/tria.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
@@ -12,6 +13,7 @@
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/lac/affine_constraints.h>
+#include <deal.II/lac/full_matrix.h>
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
@@ -34,6 +36,22 @@ enum TriangulationType : std::uint8_t
   Rectangular,
   Spherical,
   Custom
+};
+
+/**
+ * @brief Periodicity face pair.
+ *
+ * For example, (0,1,0) would link the 0th and 1st boundaries with periodicity in the
+ * x-direction.
+ */
+template <unsigned int dim>
+struct PeriodicPair
+{
+  unsigned int               boundary_id_1 = -1;
+  unsigned int               boundary_id_2 = -1;
+  unsigned int               direction     = -1;
+  dealii::Tensor<1, dim>     translation_vector;
+  dealii::FullMatrix<double> rotation_matrix;
 };
 
 /**
@@ -62,67 +80,35 @@ struct Mesh
    * @brief Mark the boundaries of the mesh.
    */
   virtual void
-  mark_boundaries(Triangulation &triangulation) const = 0;
-
-  /**
-   * @brief Mark the periodic faces of the mesh.
-   */
-  void
-  mark_periodic(Triangulation &triangulation);
-
-  /**
-   * @brief Mark the periodic faces of the mesh.
-   */
-  template <typename number>
-  void
-  mark_periodic(const dealii::DoFHandler<dim>     &dof_handler,
-                dealii::AffineConstraints<number> &constraints);
+  mark_boundaries(Triangulation &triangulation) const
+  {}
 
   /**
    * @brief Calculation the distance between two points considering periodic boundaries.
    */
   virtual double
-  distance(const dealii::Point<dim, double> &point_1,
-           const dealii::Point<dim, double> &point_2) const = 0;
-
+  distance(const dealii::Point<dim> &point_1, const dealii::Point<dim> &point_2) const;
   /**
    * @brief Calculation the distance between two points considering periodic boundaries.
    */
-  virtual float
-  distance(const dealii::Point<dim, float> &point_1,
-           const dealii::Point<dim, float> &point_2) const = 0;
-
+  template <typename real1, typename real2>
+  double
+  distance(const dealii::Point<dim, real1> &point_1,
+           const dealii::Point<dim, real2> &point_2) const;
   /**
    * @brief Calculation the distance between two points considering periodic boundaries.
    */
-  virtual dealii::VectorizedArray<double>
-  distance(const dealii::Point<dim, dealii::VectorizedArray<double>> &point_1,
-           const dealii::Point<dim, dealii::VectorizedArray<double>> &point_2) const = 0;
-
-  /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
-   */
-  virtual dealii::VectorizedArray<float>
-  distance(const dealii::Point<dim, dealii::VectorizedArray<float>> &point_1,
-           const dealii::Point<dim, dealii::VectorizedArray<float>> &point_2) const = 0;
-
-  /**
-   * @brief Declare the parameters to be read from an input file.
-   */
-  virtual void
-  declare_parameters(dealii::ParameterHandler &parameter_handler) const = 0;
-
-  /**
-   * @brief Assign the parameters read from an input file to this object.
-   */
-  virtual void
-  assign_parameters(dealii::ParameterHandler &parameter_handler) = 0;
+  template <typename real1>
+  dealii::VectorizedArray<real1>
+  distance(const dealii::Point<dim, dealii::VectorizedArray<real1>> &point_1,
+           const dealii::Point<dim, dealii::VectorizedArray<real1>> &point_2) const;
 
   /**
    * @brief Validate.
    */
   virtual void
-  validate() const = 0;
+  validate() const
+  {}
 
   /**
    * @brief Periodicity set.
@@ -130,24 +116,23 @@ struct Mesh
    * This set contains all the information about periodicity for the system. Each entry
    * contain tuple with three entries: the first boundary id, the second boundary id,
    * and the direction.
-   *
-   * For example, (0,1,0) would link the 0th and 1st boundaries with periodicity in the
-   * x-direction.
    */
-  std::set<std::tuple<unsigned int, unsigned int, unsigned int>> periodicity_set;
+  virtual std::list<PeriodicPair<dim>>
+  periodicity_set() const;
 
   /**
-   * @brief Triangulation periodicity vector.
+   * @brief Mark the periodic faces of the mesh.
    */
-  std::vector<dealii::GridTools::PeriodicFacePair<typename Triangulation::cell_iterator>>
-    triangulation_periodicity_vector;
+  void
+  mark_periodic(Triangulation &triangulation) const;
 
   /**
-   * @brief DoFHandler periodicity vector.
+   * @brief Mark the periodic faces of the mesh.
    */
-  std::vector<
-    dealii::GridTools::PeriodicFacePair<typename dealii::DoFHandler<dim>::cell_iterator>>
-    dof_handler_periodicity_vector;
+  template <typename number>
+  void
+  mark_periodic(const dealii::DoFHandler<dim>     &dof_handler,
+                dealii::AffineConstraints<number> &constraints) const;
 };
 
 /**
@@ -166,7 +151,7 @@ struct RectangularMesh : public Mesh<dim>
   /**
    * @brief Constructor.
    */
-  RectangularMesh(dealii::Tensor<1, dim, double> _upper_bound,
+  RectangularMesh(dealii::Tensor<1, dim, double> _size,
                   dealii::Tensor<1, dim, double> _lower_bound,
                   std::vector<unsigned int>      _subdivisions);
 
@@ -183,46 +168,33 @@ struct RectangularMesh : public Mesh<dim>
   mark_boundaries(Triangulation &triangulation) const override;
 
   /**
+   * @brief Periodicity set.
+   *
+   * This set contains all the information about periodicity for the system. Each entry
+   * contain tuple with three entries: the first boundary id, the second boundary id,
+   * and the direction.
+   */
+  std::list<PeriodicPair<dim>>
+  periodicity_set() const override;
+
+  /**
    * @brief Calculation the distance between two points considering periodic boundaries.
    */
   double
-  distance(const dealii::Point<dim, double> &point_1,
-           const dealii::Point<dim, double> &point_2) const override;
-
-  /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
-   */
-  float
-  distance(const dealii::Point<dim, float> &point_1,
-           const dealii::Point<dim, float> &point_2) const override;
-
-  /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
-   */
-  dealii::VectorizedArray<double>
-  distance(
-    const dealii::Point<dim, dealii::VectorizedArray<double>> &point_1,
-    const dealii::Point<dim, dealii::VectorizedArray<double>> &point_2) const override;
-
-  /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
-   */
-  dealii::VectorizedArray<float>
-  distance(
-    const dealii::Point<dim, dealii::VectorizedArray<float>> &point_1,
-    const dealii::Point<dim, dealii::VectorizedArray<float>> &point_2) const override;
+  distance(const dealii::Point<dim> &point_1,
+           const dealii::Point<dim> &point_2) const override;
 
   /**
    * @brief Declare the parameters to be read from an input file.
    */
-  void
-  declare_parameters(dealii::ParameterHandler &parameter_handler) const override;
+  static void
+  declare_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Assign the parameters read from an input file to this object.
    */
   void
-  assign_parameters(dealii::ParameterHandler &parameter_handler) override;
+  assign_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Validate
@@ -233,7 +205,7 @@ struct RectangularMesh : public Mesh<dim>
   /**
    * @brief Upper bound point.
    */
-  dealii::Tensor<1, dim, double> upper_bound;
+  dealii::Tensor<1, dim, double> size;
 
   /**
    * @brief Lower bound point.
@@ -244,6 +216,11 @@ struct RectangularMesh : public Mesh<dim>
    * @brief Mesh subdivisions in each cartesian direction.
    */
   std::vector<unsigned int> subdivisions = std::vector<unsigned int>(dim, 1);
+
+  /**
+   * @brief Which directions have periodic conditions
+   */
+  std::set<unsigned int> periodic_directions;
 };
 
 /**
@@ -268,7 +245,7 @@ struct SphericalMesh : public Mesh<dim>
    * @brief Generate the mesh.
    */
   void
-  generate_mesh(Triangulation &triangulation) const;
+  generate_mesh(Triangulation &triangulation) const override;
 
   /**
    * @brief Mark the boundaries of the mesh.
@@ -277,46 +254,16 @@ struct SphericalMesh : public Mesh<dim>
   mark_boundaries(Triangulation &triangulation) const override;
 
   /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
-   */
-  double
-  distance(const dealii::Point<dim> &point_1,
-           const dealii::Point<dim> &point_2) const override;
-
-  /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
-   */
-  float
-  distance(const dealii::Point<dim, float> &point_1,
-           const dealii::Point<dim, float> &point_2) const override;
-
-  /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
-   */
-  dealii::VectorizedArray<double>
-  distance(
-    const dealii::Point<dim, dealii::VectorizedArray<double>> &point_1,
-    const dealii::Point<dim, dealii::VectorizedArray<double>> &point_2) const override;
-
-  /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
-   */
-  dealii::VectorizedArray<float>
-  distance(
-    const dealii::Point<dim, dealii::VectorizedArray<float>> &point_1,
-    const dealii::Point<dim, dealii::VectorizedArray<float>> &point_2) const override;
-
-  /**
    * @brief Declare the parameters to be read from an input file.
    */
-  void
-  declare_parameters(dealii::ParameterHandler &parameter_handler) const override;
+  static void
+  declare_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Assign the parameters read from an input file to this object.
    */
   void
-  assign_parameters(dealii::ParameterHandler &parameter_handler) override;
+  assign_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Validate
@@ -334,33 +281,25 @@ struct SphericalMesh : public Mesh<dim>
  * @brief Struct that holds spatial discretization parameters.
  */
 template <unsigned int dim>
-struct SpatialDiscretization : public ParameterBase
+class SpatialDiscretization
+  : public ParameterBase
+  , private Mesh<dim>
 {
+public:
+  using Triangulation = typename Mesh<dim>::Triangulation;
   /**
    * @brief Declare the parameters to be read from file.
    */
-  void
-  predeclare(dealii::ParameterHandler &parameter_handler) const override;
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  void
-  preassign(dealii::ParameterHandler &parameter_handler) override;
-
-  /**
-   * @brief Declare the parameters to be read from file.
-   */
-  void
+  static void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int max_criteria = Numbers::max_subsections) const override;
+          unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Assign the parameters from file.
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections) override;
 
   /**
    * @brief Validate.
@@ -370,13 +309,66 @@ struct SpatialDiscretization : public ParameterBase
            const std::vector<SolveBlock>      &solve_blocks) const override;
 
   /**
+   * @brief Generate the mesh.
+   */
+  void
+  generate_mesh(Triangulation &triangulation) const override;
+
+  /**
+   * @brief Mark the boundaries of the mesh.
+   */
+  void
+  mark_boundaries(Triangulation &triangulation) const override;
+
+  /**
+   * @brief Periodicity set.
+   *
+   * This set contains all the information about periodicity for the system. Each entry
+   * contain tuple with three entries: the first boundary id, the second boundary id,
+   * and the direction.
+   */
+  std::list<PeriodicPair<dim>>
+  periodicity_set() const override;
+
+  /**
+   * @brief Calculation the distance between two points considering periodic boundaries.
+   */
+  double
+  distance(const dealii::Point<dim> &point_1,
+           const dealii::Point<dim> &point_2) const override;
+
+  using Mesh<dim>::mark_periodic;
+  using Mesh<dim>::distance;
+
+  /**
+   * @brief Get the mesh object.
+   */
+  const Mesh<dim> &
+  get_mesh() const;
+
+  /**
+   * @brief Get the mesh object.
+   */
+  Mesh<dim> &
+  get_mesh();
+
+  /**
    * @brief Whether the provided increment is a valid grid refinement step.
    */
   [[nodiscard]] bool
   should_refine_mesh(unsigned int increment) const;
 
-  // Mesh object
-  std::unique_ptr<Mesh<dim>> mesh;
+  // Triangulation type
+  TriangulationType mesh_type = TriangulationType::Rectangular;
+
+  // Rectangular mesh parameters
+  RectangularMesh<dim> rectangular_mesh;
+
+  // Spherical mesh parameters
+  SphericalMesh<dim> spherical_mesh;
+
+  // Custom mesh parameters
+  Mesh<dim> *custom_mesh = nullptr;
 
   // Global refinement of mesh
   unsigned int global_refinement = 0;

@@ -5,20 +5,8 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-LinearSolverParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-LinearSolverParameters::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
 LinearSolverParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                unsigned int              max_criteria) const
+                                unsigned int              n_subsections)
 {
   parameter_handler.declare_entry(
     "solver type",
@@ -94,7 +82,7 @@ LinearSolverParameters::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 LinearSolverParameters::assign(dealii::ParameterHandler &parameter_handler,
-                               unsigned int              max_criteria)
+                               unsigned int              n_subsections)
 {
   // Set the linear solver type
   solver_type = parameter_handler.get("solver type");
@@ -166,13 +154,13 @@ LinearSolverParameters::validate(const std::vector<FieldAttributes> &field_attri
 }
 
 void
-LinearSolverParameters::declare_chebyshev(
-  dealii::ParameterHandler &parameter_handler) const
+LinearSolverParameters::declare_chebyshev(dealii::ParameterHandler &parameter_handler)
 {
-  parameter_handler.declare_entry("smoothing range",
-                                  "15.0",
-                                  dealii::Patterns::Double(DBL_MIN, DBL_MAX),
-                                  "The smoothing range for eigenvalues.");
+  parameter_handler.declare_entry(
+    "smoothing range",
+    "15.0",
+    dealii::Patterns::Double(DBL_MIN, DBL_MAX),
+    "The smoothing range for eigenvalues. Try λ_max / λ_min.");
   parameter_handler.declare_entry("smoother degree",
                                   "5",
                                   dealii::Patterns::Integer(1, INT_MAX),
@@ -197,8 +185,7 @@ LinearSolverParameters::assign_chebyshev(dealii::ParameterHandler &parameter_han
 }
 
 void
-LinearSolverParameters::declare_richardson(
-  dealii::ParameterHandler &parameter_handler) const
+LinearSolverParameters::declare_richardson(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.declare_entry("omega",
                                   "1.0",
@@ -220,8 +207,7 @@ LinearSolverParameters::assign_richardson(dealii::ParameterHandler &parameter_ha
 }
 
 void
-LinearSolverParameters::declare_bicgstab(
-  dealii::ParameterHandler &parameter_handler) const
+LinearSolverParameters::declare_bicgstab(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.declare_entry("exact residual",
                                   "true",
@@ -241,7 +227,7 @@ LinearSolverParameters::assign_bicgstab(dealii::ParameterHandler &parameter_hand
 }
 
 void
-LinearSolverParameters::declare_gmres(dealii::ParameterHandler &parameter_handler) const
+LinearSolverParameters::declare_gmres(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.declare_entry(
     "max basis size",
@@ -295,22 +281,10 @@ LinearSolverParameters::assign_gmres(dealii::ParameterHandler &parameter_handler
 }
 
 void
-LinearSolveParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-LinearSolveParameters::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
 LinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
-                               unsigned int              max_criteria) const
+                               unsigned int              n_subsections)
 {
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text =
         "linear solver parameters: " + std::to_string(criterion_id);
@@ -329,9 +303,7 @@ LinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
                                      "solve block ids",
                                      "solve_block_ids",
                                      "solver ids"});
-
-        LinearSolverParameters linear_solver;
-        linear_solver.declare(parameter_handler);
+        LinearSolverParameters::declare(parameter_handler);
       }
       parameter_handler.leave_subsection();
     }
@@ -339,9 +311,9 @@ LinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 LinearSolveParameters::assign(dealii::ParameterHandler &parameter_handler,
-                              unsigned int              max_criteria)
+                              unsigned int              n_subsections)
 {
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       // For linear solves
       std::string subsection_text =
@@ -374,20 +346,8 @@ LinearSolveParameters::validate(const std::vector<FieldAttributes> &field_attrib
 }
 
 void
-NonlinearSolverParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-NonlinearSolverParameters::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
 NonlinearSolverParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                   unsigned int              max_criteria) const
+                                   unsigned int              n_subsections)
 {
   parameter_handler.declare_entry("max iterations",
                                   "100",
@@ -437,7 +397,7 @@ NonlinearSolverParameters::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 NonlinearSolverParameters::assign(dealii::ParameterHandler &parameter_handler,
-                                  unsigned int              max_criteria)
+                                  unsigned int              n_subsections)
 {
   max_iterations = (unsigned int) (parameter_handler.get_integer("max iterations"));
 
@@ -454,22 +414,10 @@ NonlinearSolverParameters::validate(const std::vector<FieldAttributes> &field_at
 }
 
 void
-NonlinearSolveParameters::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-NonlinearSolveParameters::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
 NonlinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                  unsigned int              max_criteria) const
+                                  unsigned int              n_subsections)
 {
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text =
         "newton solver parameters: " + std::to_string(criterion_id);
@@ -487,9 +435,7 @@ NonlinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
                                      "solve block ids",
                                      "solve_block_ids",
                                      "solver ids"});
-
-        NonlinearSolverParameters nonlinear_solver;
-        nonlinear_solver.declare(parameter_handler);
+        NonlinearSolverParameters::declare(parameter_handler);
       }
       parameter_handler.leave_subsection();
     }
@@ -497,9 +443,9 @@ NonlinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 NonlinearSolveParameters::assign(dealii::ParameterHandler &parameter_handler,
-                                 unsigned int              max_criteria)
+                                 unsigned int              n_subsections)
 {
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text =
         "newton solver parameters: " + std::to_string(criterion_id);

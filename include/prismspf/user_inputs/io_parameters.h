@@ -124,21 +124,9 @@ struct FieldOutputParameters : public ParameterBase
   /**
    * @brief Declare the parameters to be read from file.
    */
-  void
-  predeclare(dealii::ParameterHandler &parameter_handler) const override;
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  void
-  preassign(dealii::ParameterHandler &parameter_handler) override;
-
-  /**
-   * @brief Declare the parameters to be read from file.
-   */
-  void
+  static void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int max_criteria = Numbers::max_subsections) const override;
+          unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Assign the parameters from file.
@@ -147,7 +135,7 @@ struct FieldOutputParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections) override;
 
   /**
    * @brief Assign the parameters from file.
@@ -155,7 +143,7 @@ struct FieldOutputParameters : public ParameterBase
   void
   assign(dealii::ParameterHandler &parameter_handler,
          unsigned int              n_increments,
-         unsigned int              max_criteria = Numbers::max_subsections);
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
@@ -214,9 +202,9 @@ struct FieldOutputParameters : public ParameterBase
   /**
    * @brief Folder for field output.
    *
-   * Choosing this will give you your results like outputs/solution-*.vtu
+   * Choosing this will give you your results like solutions/solution-*.vtu
    */
-  std::string folder = "outputs";
+  std::string folder = "solutions";
 
   /**
    * @brief Base filename for field output.
@@ -257,21 +245,9 @@ struct RestartOutputParameters : public ParameterBase
   /**
    * @brief Declare the parameters to be read from file.
    */
-  void
-  predeclare(dealii::ParameterHandler &parameter_handler) const override;
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  void
-  preassign(dealii::ParameterHandler &parameter_handler) override;
-
-  /**
-   * @brief Declare the parameters to be read from file.
-   */
-  void
+  static void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int max_criteria = Numbers::max_subsections) const override;
+          unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Assign the parameters from file.
@@ -280,7 +256,7 @@ struct RestartOutputParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections) override;
 
   /**
    * @brief Assign the parameters from file.
@@ -288,7 +264,7 @@ struct RestartOutputParameters : public ParameterBase
   void
   assign(dealii::ParameterHandler &parameter_handler,
          unsigned int              n_increments,
-         unsigned int              max_criteria = Numbers::max_subsections);
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
@@ -316,9 +292,9 @@ struct RestartOutputParameters : public ParameterBase
   /**
    * @brief Folder for checkpoint output.
    *
-   * Choosing this will give you your results like outputs/solution-*.vtu
+   * Choosing this will give you your results like solutions/solution-*.vtu
    */
-  std::string folder = "outputs";
+  std::string folder = "solutions";
 
   /**
    * @brief Base filename for checkpoint output.
@@ -380,28 +356,16 @@ struct FieldInputParameters : public ParameterBase
   /**
    * @brief Declare the parameters to be read from file.
    */
-  void
-  predeclare(dealii::ParameterHandler &parameter_handler) const override;
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  void
-  preassign(dealii::ParameterHandler &parameter_handler) override;
-
-  /**
-   * @brief Declare the parameters to be read from file.
-   */
-  void
+  static void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int max_criteria = Numbers::max_subsections) const override;
+          unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Assign the parameters from file.
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections) override;
 
   /**
    * @brief Validate.

@@ -30,7 +30,7 @@ namespace Numbers
   /**
    * @brief Max number of subsections.
    */
-  static constexpr unsigned int max_subsections = 16;
+  static constexpr unsigned int default_subsections = 5;
 
 } // namespace Numbers
 

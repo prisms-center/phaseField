@@ -30,24 +30,10 @@ FieldConstraints<dim>::has_time_dependent_bcs() const
 
 template <unsigned int dim>
 void
-BoundaryParameters<dim>::predeclare(dealii::ParameterHandler &parameter_handler) const
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-template <unsigned int dim>
-void
-BoundaryParameters<dim>::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-template <unsigned int dim>
-void
 BoundaryParameters<dim>::declare(dealii::ParameterHandler &parameter_handler,
-                                 unsigned int              max_criteria) const
+                                 unsigned int              n_subsections)
 {
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text =
         "boundary conditions: " + std::to_string(criterion_id);
@@ -71,9 +57,9 @@ BoundaryParameters<dim>::declare(dealii::ParameterHandler &parameter_handler,
 template <unsigned int dim>
 void
 BoundaryParameters<dim>::assign(dealii::ParameterHandler &parameter_handler,
-                                unsigned int              max_criteria)
+                                unsigned int              n_subsections)
 {
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text =
         "boundary conditions: " + std::to_string(criterion_id);

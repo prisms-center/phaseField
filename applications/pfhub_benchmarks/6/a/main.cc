@@ -59,12 +59,8 @@ main(int argc, char *argv[])
   std::vector<SolveBlock> solve_blocks({c_block, mu_block, Phi_block, pp_block});
 
   UserInputParameters<2> user_inputs(parameters_filename);
-
-  RectangularMesh<2> mesh;
-  mesh.upper_bound = dealii::Tensor<1, 2>({0.0, 0.0});
-  mesh.upper_bound = dealii::Tensor<1, 2>({100.0, 100.0});
-
-  user_inputs.spatial_discretization.mesh = std::make_unique<RectangularMesh<2>>(mesh);
+  user_inputs.spatial_discretization.rectangular_mesh.size =
+    dealii::Tensor<1, 2>({100.0, 100.0});
 
   FieldConstraints<2> &Phi_bcs =
     user_inputs.boundary_parameters.boundary_condition_list["Phi"];

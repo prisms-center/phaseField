@@ -10,17 +10,77 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-void
-Mesh<dim>::mark_periodic(typename Mesh<dim>::Triangulation &triangulation)
+double
+Mesh<dim>::distance(const dealii::Point<dim> &point_1,
+                    const dealii::Point<dim> &point_2) const
 {
+  return point_1.distance(point_2);
+}
+
+template <unsigned int dim>
+template <typename real1, typename real2>
+double
+Mesh<dim>::distance(const dealii::Point<dim, real1> &point_1,
+                    const dealii::Point<dim, real2> &point_2) const
+{
+  dealii::Point<dim> p1;
+  dealii::Point<dim> p2;
+  for (unsigned int d = 0; d < dim; ++d)
+    {
+      p1[d] = point_1[d];
+      p2[d] = point_2[d];
+    }
+  return distance(p1, p2);
+}
+
+template <unsigned int dim>
+template <typename real1>
+dealii::VectorizedArray<real1>
+Mesh<dim>::distance(
+  const dealii::Point<dim, dealii::VectorizedArray<real1>> &point_1,
+  const dealii::Point<dim, dealii::VectorizedArray<real1>> &point_2) const
+{
+  constexpr unsigned int         size = dealii::VectorizedArray<real1>::size();
+  dealii::VectorizedArray<real1> out;
+  for (unsigned int i = 0; i < size; ++i)
+    {
+      dealii::Point<dim> p1;
+      dealii::Point<dim> p2;
+      for (unsigned int d = 0; d < dim; ++d)
+        {
+          p1[d] = point_1[d][i];
+          p2[d] = point_2[d][i];
+        }
+      const double dist = distance(p1, p2);
+      out[i]            = dist;
+    }
+  return out;
+}
+
+template <unsigned int dim>
+std::list<PeriodicPair<dim>>
+Mesh<dim>::periodicity_set() const
+{
+  return {};
+}
+
+template <unsigned int dim>
+void
+Mesh<dim>::mark_periodic(typename Mesh<dim>::Triangulation &triangulation) const
+{
+  // Triangulation periodicity vector.
+  std::vector<dealii::GridTools::PeriodicFacePair<typename Triangulation::cell_iterator>>
+    triangulation_periodicity_vector;
   // Loop over provided periodicity set and add to the periodicity vector
-  for (const auto &[id_1, id_2, direction] : periodicity_set)
+  for (const auto &periodic_pair : this->periodicity_set())
     {
       dealii::GridTools::collect_periodic_faces(triangulation,
-                                                id_1,
-                                                id_2,
-                                                direction,
-                                                triangulation_periodicity_vector);
+                                                periodic_pair.boundary_id_1,
+                                                periodic_pair.boundary_id_2,
+                                                periodic_pair.direction,
+                                                triangulation_periodicity_vector,
+                                                periodic_pair.translation_vector,
+                                                periodic_pair.rotation_matrix);
     }
   // Pass periodicity vector to triangulation
   triangulation.add_periodicity(triangulation_periodicity_vector);
@@ -30,16 +90,22 @@ template <unsigned int dim>
 template <typename number>
 void
 Mesh<dim>::mark_periodic(const dealii::DoFHandler<dim>     &dof_handler,
-                         dealii::AffineConstraints<number> &constraints)
+                         dealii::AffineConstraints<number> &constraints) const
 {
+  // DoFHandler periodicity vector.
+  std::vector<
+    dealii::GridTools::PeriodicFacePair<typename dealii::DoFHandler<dim>::cell_iterator>>
+    dof_handler_periodicity_vector;
   // Loop over provided periodicity set and add to the periodicity vector
-  for (const auto &[id_1, id_2, direction] : periodicity_set)
+  for (const auto &periodic_pair : this->periodicity_set())
     {
       dealii::GridTools::collect_periodic_faces(dof_handler,
-                                                id_1,
-                                                id_2,
-                                                direction,
-                                                dof_handler_periodicity_vector);
+                                                periodic_pair.boundary_id_1,
+                                                periodic_pair.boundary_id_2,
+                                                periodic_pair.direction,
+                                                dof_handler_periodicity_vector,
+                                                periodic_pair.translation_vector,
+                                                periodic_pair.rotation_matrix);
     }
 
   // Pass periodicity vector to constraints
@@ -51,10 +117,10 @@ Mesh<dim>::mark_periodic(const dealii::DoFHandler<dim>     &dof_handler,
 }
 
 template <unsigned int dim>
-RectangularMesh<dim>::RectangularMesh(dealii::Tensor<1, dim, double> _upper_bound,
+RectangularMesh<dim>::RectangularMesh(dealii::Tensor<1, dim, double> _size,
                                       dealii::Tensor<1, dim, double> _lower_bound,
                                       std::vector<unsigned int>      _subdivisions)
-  : upper_bound(_upper_bound)
+  : size(_size)
   , lower_bound(_lower_bound)
   , subdivisions(_subdivisions)
 {}
@@ -68,7 +134,8 @@ RectangularMesh<dim>::generate_mesh(
   dealii::GridGenerator::subdivided_hyper_rectangle(triangulation,
                                                     subdivisions,
                                                     dealii::Point<dim>(lower_bound),
-                                                    dealii::Point<dim>(upper_bound),
+                                                    dealii::Point<dim>(lower_bound +
+                                                                       size),
                                                     true);
 }
 
@@ -77,7 +144,8 @@ void
 RectangularMesh<dim>::mark_boundaries(
   typename RectangularMesh<dim>::Triangulation &triangulation) const
 {
-  // The colorize option above does this for us.
+  // The colorize option in `dealii::GridGenerator::subdivided_hyper_rectangle` does this
+  // for us.
   //
   // Here are the mappings for reference,
   //
@@ -89,33 +157,45 @@ RectangularMesh<dim>::mark_boundaries(
   // z=max -> 5
 }
 
-template <unsigned int dim, typename number>
-inline number
-rectangular_periodic_distance(
-  const dealii::Point<dim, number>                                     &point_1,
-  const dealii::Point<dim, number>                                     &point_2,
-  const std::set<std::tuple<unsigned int, unsigned int, unsigned int>> &periodicity_set,
-  const dealii::Tensor<1, dim, double>                                 &upper_bound,
-  const dealii::Tensor<1, dim, double>                                 &lower_bound)
+template <unsigned int dim>
+std::list<PeriodicPair<dim>>
+RectangularMesh<dim>::periodicity_set() const
+{
+  std::list<PeriodicPair<dim>> p_set;
+  for (const auto &dir : periodic_directions)
+    {
+      PeriodicPair<dim> p_pair;
+      p_pair.boundary_id_1 = 2 * dir;
+      p_pair.boundary_id_2 = 2 * dir + 1;
+      p_pair.direction     = dir;
+      p_set.push_back(p_pair);
+    }
+  return p_set;
+}
+
+template <unsigned int dim>
+double
+RectangularMesh<dim>::distance(const dealii::Point<dim> &point_1,
+                               const dealii::Point<dim> &point_2) const
 {
   using std::sqrt;
-
-  if (periodicity_set.empty())
+  const std::list<PeriodicPair<dim>> &pair_set = periodicity_set();
+  if (pair_set.empty())
     {
       return point_1.distance(point_2);
     }
 
-  number dist = 0.0;
+  double dist = 0.0;
   for (unsigned int d = 0; d < dim; ++d)
     {
-      number delta = point_2[d] - point_2[d];
+      double delta = point_2[d] - point_2[d];
       // TODO: This is poorly optimized
-      for (const auto [b_id_1, b_id_2, dir] : periodicity_set)
+      for (const auto &periodic_pair : pair_set)
         {
-          if (dir == d)
+          if (periodic_pair.direction == d)
             {
-              const number length      = upper_bound[d] - lower_bound[d];
-              const number half_length = length / 2.0;
+              const double length      = size[d];
+              const double half_length = length / 2.0;
               delta                    = pmod(delta - half_length, length) - half_length;
             }
         }
@@ -125,59 +205,8 @@ rectangular_periodic_distance(
 }
 
 template <unsigned int dim>
-double
-RectangularMesh<dim>::distance(const dealii::Point<dim, double> &point_1,
-                               const dealii::Point<dim, double> &point_2) const
-{
-  return rectangular_periodic_distance<dim>(point_1,
-                                            point_2,
-                                            this->periodicity_set,
-                                            upper_bound,
-                                            lower_bound);
-}
-
-template <unsigned int dim>
-float
-RectangularMesh<dim>::distance(const dealii::Point<dim, float> &point_1,
-                               const dealii::Point<dim, float> &point_2) const
-{
-  return rectangular_periodic_distance<dim>(point_1,
-                                            point_2,
-                                            this->periodicity_set,
-                                            upper_bound,
-                                            lower_bound);
-}
-
-template <unsigned int dim>
-dealii::VectorizedArray<double>
-RectangularMesh<dim>::distance(
-  const dealii::Point<dim, dealii::VectorizedArray<double>> &point_1,
-  const dealii::Point<dim, dealii::VectorizedArray<double>> &point_2) const
-{
-  return rectangular_periodic_distance<dim>(point_1,
-                                            point_2,
-                                            this->periodicity_set,
-                                            upper_bound,
-                                            lower_bound);
-}
-
-template <unsigned int dim>
-dealii::VectorizedArray<float>
-RectangularMesh<dim>::distance(
-  const dealii::Point<dim, dealii::VectorizedArray<float>> &point_1,
-  const dealii::Point<dim, dealii::VectorizedArray<float>> &point_2) const
-{
-  return rectangular_periodic_distance<dim>(point_1,
-                                            point_2,
-                                            this->periodicity_set,
-                                            upper_bound,
-                                            lower_bound);
-}
-
-template <unsigned int dim>
 void
-RectangularMesh<dim>::declare_parameters(
-  dealii::ParameterHandler &parameter_handler) const
+RectangularMesh<dim>::declare_parameters(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.enter_subsection("Rectangular mesh");
   {
@@ -185,13 +214,12 @@ RectangularMesh<dim>::declare_parameters(
       {
         const std::string axis {dir};
 
-        parameter_handler.declare_entry(axis + " upper bound",
+        parameter_handler.declare_entry(axis + " size",
                                         "0.0",
                                         dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                        "The upper bound of the domain in the " + axis +
+                                        "The size of the domain in the " + axis +
                                           "-direction.");
-        parameter_handler.declare_alias(axis + " upper bound", axis + " size", true);
-        parameter_handler.declare_alias(axis + " upper bound", "upper bound" + axis);
+        parameter_handler.declare_alias(axis + " size", "size" + axis);
 
         parameter_handler.declare_entry(axis + " lower bound",
                                         "0.0",
@@ -227,17 +255,12 @@ RectangularMesh<dim>::assign_parameters(dealii::ParameterHandler &parameter_hand
     for (unsigned int i = 0; i < dim; ++i)
       {
         const std::string axis {axis_labels.at(i)};
-
-        upper_bound[i] = parameter_handler.get_double(axis + " upper bound");
-
-        lower_bound[i] = parameter_handler.get_double(axis + " lower bound");
-
-        subdivisions[i] = static_cast<unsigned int>(
-          parameter_handler.get_integer(axis + " subdivisions"));
-
+        size[i]         = parameter_handler.get_double(axis + " size");
+        lower_bound[i]  = parameter_handler.get_double(axis + " lower bound");
+        subdivisions[i] = parameter_handler.get_integer(axis + " subdivisions");
         if (parameter_handler.get_bool(axis + " periodic"))
           {
-            this->periodicity_set.insert({2 * i, 2 * i + 1, i});
+            periodic_directions.insert(i);
           }
       }
   }
@@ -248,10 +271,7 @@ template <unsigned int dim>
 void
 RectangularMesh<dim>::validate() const
 {
-  AssertThrow(
-    (upper_bound - lower_bound).norm() != 0.0,
-    dealii::ExcMessage(
-      "Upper and lower bound for the mesh are the same point (total size is 0)."));
+  AssertThrow(size.norm() != 0.0, dealii::ExcMessage("Size of the mesh is zero."));
   // These next two asserts should be caught earlier if users are using the parameters
   // file. This is mostly for users that are using the lower level structures.
   Assert(subdivisions.size() == dim,
@@ -293,52 +313,9 @@ SphericalMesh<dim>::mark_boundaries(
   // There's only 1 boundary on a sphere
 }
 
-template <unsigned int dim, typename number>
-inline number
-spherical_periodic_distance(const dealii::Point<dim, number> &point_1,
-                            const dealii::Point<dim, number> &point_2)
-{
-  // No periodicity allowed in spherical meshes, so it behaves like normal distance
-  return point_1.distance(point_2);
-}
-
-template <unsigned int dim>
-double
-SphericalMesh<dim>::distance(const dealii::Point<dim, double> &point_1,
-                             const dealii::Point<dim, double> &point_2) const
-{
-  return spherical_periodic_distance<dim>(point_1, point_2);
-}
-
-template <unsigned int dim>
-float
-SphericalMesh<dim>::distance(const dealii::Point<dim, float> &point_1,
-                             const dealii::Point<dim, float> &point_2) const
-{
-  return spherical_periodic_distance<dim>(point_1, point_2);
-}
-
-template <unsigned int dim>
-dealii::VectorizedArray<double>
-SphericalMesh<dim>::distance(
-  const dealii::Point<dim, dealii::VectorizedArray<double>> &point_1,
-  const dealii::Point<dim, dealii::VectorizedArray<double>> &point_2) const
-{
-  return spherical_periodic_distance<dim>(point_1, point_2);
-}
-
-template <unsigned int dim>
-dealii::VectorizedArray<float>
-SphericalMesh<dim>::distance(
-  const dealii::Point<dim, dealii::VectorizedArray<float>> &point_1,
-  const dealii::Point<dim, dealii::VectorizedArray<float>> &point_2) const
-{
-  return spherical_periodic_distance<dim>(point_1, point_2);
-}
-
 template <unsigned int dim>
 void
-SphericalMesh<dim>::declare_parameters(dealii::ParameterHandler &parameter_handler) const
+SphericalMesh<dim>::declare_parameters(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.enter_subsection("Spherical mesh");
   {
@@ -370,7 +347,8 @@ SphericalMesh<dim>::validate() const
 
 template <unsigned int dim>
 void
-SpatialDiscretization<dim>::predeclare(dealii::ParameterHandler &parameter_handler) const
+SpatialDiscretization<dim>::declare(dealii::ParameterHandler &parameter_handler,
+                                    unsigned int              n_subsections)
 {
   parameter_handler.declare_entry("mesh type",
                                   "rectangular",
@@ -378,34 +356,8 @@ SpatialDiscretization<dim>::predeclare(dealii::ParameterHandler &parameter_handl
                                     "rectangular|spherical|custom"),
                                   "The type of mesh to use.",
                                   true);
-}
-
-template <unsigned int dim>
-void
-SpatialDiscretization<dim>::preassign(dealii::ParameterHandler &parameter_handler)
-{
-  const std::string mesh_type = parameter_handler.get("mesh type");
-
-  if (mesh_type == "rectangular")
-    {
-      mesh = std::make_unique<RectangularMesh<dim>>();
-    }
-  else if (mesh_type == "spherical")
-    {
-      mesh = std::make_unique<SphericalMesh<dim>>();
-    }
-  else
-    {
-      // If custom, it's up to the user to define the class and create the pointer.
-    }
-}
-
-template <unsigned int dim>
-void
-SpatialDiscretization<dim>::declare(dealii::ParameterHandler &parameter_handler,
-                                    unsigned int              max_criteria) const
-{
-  mesh->declare_parameters(parameter_handler);
+  SphericalMesh<dim>::declare_parameters(parameter_handler);
+  RectangularMesh<dim>::declare_parameters(parameter_handler);
 
   parameter_handler.declare_entry("global refinement",
                                   "0",
@@ -431,7 +383,7 @@ SpatialDiscretization<dim>::declare(dealii::ParameterHandler &parameter_handler,
     dealii::Patterns::Integer(1, INT_MAX),
     "The number of time steps between mesh refinement operations.");
 
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text =
         "refinement criterion: " + std::to_string(criterion_id);
@@ -475,9 +427,10 @@ SpatialDiscretization<dim>::declare(dealii::ParameterHandler &parameter_handler,
 template <unsigned int dim>
 void
 SpatialDiscretization<dim>::assign(dealii::ParameterHandler &parameter_handler,
-                                   unsigned int              max_criteria)
+                                   unsigned int              n_subsections)
 {
-  mesh->assign_parameters(parameter_handler);
+  rectangular_mesh.assign_parameters(parameter_handler);
+  spherical_mesh.assign_parameters(parameter_handler);
 
   global_refinement =
     (static_cast<unsigned int>(parameter_handler.get_integer("global refinement")));
@@ -492,7 +445,7 @@ SpatialDiscretization<dim>::assign(dealii::ParameterHandler &parameter_handler,
   min_refinement =
     (static_cast<unsigned int>(parameter_handler.get_integer("min refinement")));
 
-  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text =
         "refinement criterion: " + std::to_string(criterion_id);
@@ -528,7 +481,7 @@ SpatialDiscretization<dim>::validate(
   [[maybe_unused]] const std::vector<FieldAttributes> &field_attributes,
   [[maybe_unused]] const std::vector<SolveBlock>      &solve_blocks) const
 {
-  mesh->validate();
+  get_mesh().validate();
 
   // Check that AMR is not enabled for 1D
   AssertThrow(
@@ -553,6 +506,85 @@ SpatialDiscretization<dim>::validate(
                     "The maximum refinement level must be greater than or equal to the "
                     "minimum refinement level."));
     }
+}
+
+template <unsigned int dim>
+const Mesh<dim> &
+SpatialDiscretization<dim>::get_mesh() const
+{
+  if (mesh_type == TriangulationType::Rectangular)
+    {
+      return rectangular_mesh;
+    }
+  else if (mesh_type == TriangulationType::Spherical)
+    {
+      return spherical_mesh;
+    }
+  else if (mesh_type == TriangulationType::Custom)
+    {
+      AssertThrow(custom_mesh != nullptr,
+                  dealii::ExcMessage("Custom mesh pointer is null."));
+      return *custom_mesh;
+    }
+  else
+    {
+      Assert(false, dealii::ExcMessage("Invalid mesh type."));
+      return rectangular_mesh; // This line will never be reached
+    }
+}
+
+template <unsigned int dim>
+Mesh<dim> &
+SpatialDiscretization<dim>::get_mesh()
+{
+  if (mesh_type == TriangulationType::Rectangular)
+    {
+      return rectangular_mesh;
+    }
+  else if (mesh_type == TriangulationType::Spherical)
+    {
+      return spherical_mesh;
+    }
+  else if (mesh_type == TriangulationType::Custom)
+    {
+      AssertThrow(custom_mesh != nullptr,
+                  dealii::ExcMessage("Custom mesh pointer is null."));
+      return *custom_mesh;
+    }
+  else
+    {
+      Assert(false, dealii::ExcMessage("Invalid mesh type."));
+      return rectangular_mesh; // This line will never be reached
+    }
+}
+
+template <unsigned int dim>
+void
+SpatialDiscretization<dim>::generate_mesh(Triangulation &triangulation) const
+{
+  get_mesh().generate_mesh(triangulation);
+}
+
+template <unsigned int dim>
+void
+SpatialDiscretization<dim>::mark_boundaries(Triangulation &triangulation) const
+{
+  get_mesh().mark_boundaries(triangulation);
+}
+
+template <unsigned int dim>
+std::list<PeriodicPair<dim>>
+SpatialDiscretization<dim>::periodicity_set() const
+{
+  return get_mesh().periodicity_set();
+}
+
+template <unsigned int dim>
+double
+SpatialDiscretization<dim>::distance(const dealii::Point<dim> &point_1,
+                                     const dealii::Point<dim> &point_2) const
+{
+  return get_mesh().distance(point_1, point_2);
 }
 
 template <unsigned int dim>

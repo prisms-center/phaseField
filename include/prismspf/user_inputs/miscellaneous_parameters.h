@@ -30,27 +30,15 @@ struct MiscellaneousParameters : public ParameterBase
   /**
    * @brief Declare the parameters to be read from file.
    */
-  void
-  predeclare(dealii::ParameterHandler &parameter_handler) const override;
-
-  /**
-   * @brief Assign the parameters from file.
-   */
-  void
-  preassign(dealii::ParameterHandler &parameter_handler) override;
-
-  /**
-   * @brief Declare the parameters to be read from file.
-   */
-  void
+  static void
   declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int max_criteria = Numbers::max_subsections) const override;
+          unsigned int              n_subsections = Numbers::default_subsections);
   /**
    * @brief Assign the parameters from file.
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              max_criteria = Numbers::max_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections) override;
 
   /**
    * @brief Validate.
