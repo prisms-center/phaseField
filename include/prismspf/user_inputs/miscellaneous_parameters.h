@@ -9,6 +9,8 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 
+#include <prismspf/user_inputs/parameter_base.h>
+
 #include <prismspf/utilities/utilities.h>
 
 #include <prismspf/config.h>
@@ -17,94 +19,51 @@
 #include <random>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
 using RNGEngine = std::mt19937;
 
 /**
  * @brief Struct that holds miscellaneous parameters.
  */
-struct MiscellaneousParameters
+struct MiscellaneousParameters : public ParameterBase
 {
-public:
   /**
-   * @brief Postprocess and validate parameters.
+   * @brief Declare the parameters to be read from file.
+   */
+  static void
+  declare(dealii::ParameterHandler &parameter_handler,
+          unsigned int              n_subsections = Numbers::default_subsections);
+  /**
+   * @brief Assign the parameters from file.
    */
   void
-  postprocess_and_validate();
+  assign(dealii::ParameterHandler &parameter_handler,
+         unsigned int              n_subsections = Numbers::default_subsections) override;
 
   /**
-   * @brief Print parameters to summary.log
+   * @brief Validate.
    */
   void
-  print_parameter_summary() const;
-
+  validate(const std::vector<FieldAttributes> &field_attributes,
+           const std::vector<SolveBlock>      &solve_blocks) const override;
   /**
    * @brief Set the random seed and initialize the RNG.
+   *
+   * NOTE: When using this method to set the RNG, the MPI process number is added to the
+   * random seed to avoid correlated events between processors. This means that to
+   * reproduce the same results as someone else you need both the number of MPI processes
+   * and the random seed.
+   *
+   * If you would like to change the default behavior you can override the rng manually.
    */
   void
-  set_random_seed(const unsigned int &_random_seed)
-  {
-    random_seed = _random_seed;
-    rng.seed(random_seed);
-  }
+  set_random_seed(const unsigned int &_random_seed);
 
-  /**
-   * @brief Declare the parameters to be read from an input file.
-   */
-  void
-  declare_parameters(dealii::ParameterHandler &parameter_handler) const;
-
-  /**
-   * @brief Assign the parameters read from an input file to this object.
-   */
-  void
-  assign_parameters(dealii::ParameterHandler &parameter_handler);
-
+  // Random seed
   unsigned int random_seed = 2025;
-  // Use a different seed for each MPI process to avoid correlated events
+
+  // RNG
   mutable RNGEngine rng {random_seed};
 };
-
-inline void
-MiscellaneousParameters::postprocess_and_validate()
-{}
-
-inline void
-MiscellaneousParameters::print_parameter_summary() const
-{
-  ConditionalOStreams::pout_summary()
-    << "================================================\n"
-    << "  Miscellaneous Parameters\n"
-    << "================================================\n"
-    << "Random seed: " << random_seed << "\n"
-    << std::flush;
-}
-
-inline void
-MiscellaneousParameters::declare_parameters(
-  dealii::ParameterHandler &parameter_handler) const
-{
-  parameter_handler.enter_subsection("miscellaneous");
-  {
-    parameter_handler.declare_entry(
-      "random seed",
-      "2025",
-      dealii::Patterns::Integer(0, INT_MAX),
-      "The random seed for the simulation. "
-      "This is used to initialize the random number generator.");
-  }
-  parameter_handler.leave_subsection();
-}
-
-inline void
-MiscellaneousParameters::assign_parameters(dealii::ParameterHandler &parameter_handler)
-{
-  parameter_handler.enter_subsection("miscellaneous");
-  {
-    set_random_seed(static_cast<unsigned int>(
-      parameter_handler.get_integer("random seed") +
-      dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)));
-  }
-  parameter_handler.leave_subsection();
-}
 
 PRISMS_PF_END_NAMESPACE

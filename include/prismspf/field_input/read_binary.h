@@ -13,13 +13,12 @@
 
 #include <prismspf/utilities/utilities.h>
 
-#include "prismspf/core/conditional_ostreams.h"
-
 #include <bit>
 #include <fstream>
 #include <iostream>
 #include <ranges>
 #include <string>
+#include <typeinfo>
 #include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -116,7 +115,7 @@ inline ReadBinary<dim, number>::ReadBinary(
   : ReadFieldBase<dim, number>(_ic_file, _spatial_discretization)
 {
   // Make sure the dataset format is correct
-  AssertThrow(this->ic_file.dataset_format == DataFormatType::FlatBinary,
+  AssertThrow(this->ic_file.format == InitialConditionFile::DataFormatType::FlatBinary,
               dealii::ExcMessage("Dataset format must be FlatBinary"));
 
   // Check that only one field is being read in
@@ -125,7 +124,7 @@ inline ReadBinary<dim, number>::ReadBinary(
               dealii::ExcMessage("Only one field can be read in from a binary file"));
 
   // Make sure we have a rectangular domain
-  AssertThrow(_spatial_discretization.type == TriangulationType::Rectangular,
+  AssertThrow(_spatial_discretization.mesh_type == TriangulationType::Rectangular,
               dealii::ExcMessage(
                 "Only rectangular domains are supported for binary input files"));
 
@@ -139,10 +138,10 @@ inline ReadBinary<dim, number>::ReadBinary(
   check_file_size();
 
   // Read in the binary file
-  std::ifstream data_file(this->ic_file.filename, std::ios::binary);
+  std::ifstream data_file(this->ic_file.file_name, std::ios::binary);
   AssertThrow(data_file,
               dealii::ExcMessage("Could not open binary file: " +
-                                 this->ic_file.filename));
+                                 this->ic_file.file_name));
 
   // Reserve space in the data vector
   data.resize(n_values);
@@ -157,7 +156,7 @@ inline void
 ReadBinary<dim, number>::check_file_size()
 {
   // Grab the file size of the binary file in bytes
-  auto file_size = std::filesystem::file_size(this->ic_file.filename);
+  auto file_size = std::filesystem::file_size(this->ic_file.file_name);
 
   // Compute the expected size of the binary file. This is simply the number of points
   // multiplied by the size of each point in bytes.
@@ -189,9 +188,9 @@ ReadBinary<dim, number>::write_file(const std::vector<number>  &data,
                                     const InitialConditionFile &ic_file)
 {
   // Try to open the file
-  std::ofstream data_file(ic_file.filename, std::ios::binary);
+  std::ofstream data_file(ic_file.file_name, std::ios::binary);
   AssertThrow(data_file,
-              dealii::ExcMessage("Could not open binary file: " + ic_file.filename));
+              dealii::ExcMessage("Could not open binary file: " + ic_file.file_name));
 
   // Write the data
   data_file.write(reinterpret_cast<const char *>(data.data()),
@@ -235,15 +234,18 @@ ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
   // Create a vector to hold the interpolated value
   dealii::Vector<number> value(n_components);
 
-  // Get the spatial discretization
-  const auto &spatial_discretization = this->spatial_discretization;
+  // Get the mesh
+  AssertThrow(this->spatial_discretization.mesh_type == TriangulationType::Rectangular,
+              dealii::ExcMessage(
+                "Only rectangular domains are supported for binary input files"));
+  const RectangularMesh<dim> &mesh = this->spatial_discretization.rectangular_mesh;
 
   // Compute the spacing in each direction
   std::array<number, dim> spacing;
   for (unsigned int d : std::views::iota(0U, dim))
     {
-      spacing[d] = spatial_discretization.rectangular_mesh.size[d] /
-                   static_cast<number>(this->ic_file.n_data_points[d] - 1);
+      spacing[d] =
+        (mesh.size[d]) / static_cast<number>(this->ic_file.n_data_points[d] - 1);
     }
 
   // Compute the indices of the lower corner of the cell containing the point

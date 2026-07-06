@@ -51,7 +51,8 @@ public:
     , matrix_free_manager()
     , solution_indexer(&_solution_indexer)
     , invm_manager()
-    , sim_timer(user_inputs->temporal_discretization.dt)
+    , sim_timer(user_inputs->temporal_discretization.dt,
+                user_inputs->temporal_discretization.initial_time)
     , pde_operator(&_pde_operator) {};
 
   /**

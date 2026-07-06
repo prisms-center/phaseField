@@ -11,6 +11,7 @@
 
 #include <prismspf/nucleation/nucleus.h>
 
+#include <prismspf/user_inputs/parameter_base.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
 
 #include <prismspf/utilities/utilities.h>
@@ -25,140 +26,34 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * @brief Struct that holds nucleation parameters.
  */
-struct NucleationParameters
+struct NucleationParameters : public ParameterBase
 {
-public:
   /**
-   * @brief Return if the increment should be nucleationted.
+   * @brief Declare the parameters to be read from file.
+   */
+  static void
+  declare(dealii::ParameterHandler &parameter_handler,
+          unsigned int              n_subsections = Numbers::default_subsections);
+
+  /**
+   * @brief Assign the parameters from file.
+   */
+  void
+  assign(dealii::ParameterHandler &parameter_handler,
+         unsigned int              n_subsections = Numbers::default_subsections) override;
+
+  /**
+   * @brief Validate.
+   */
+  void
+  validate(const std::vector<FieldAttributes> &field_attributes,
+           const std::vector<SolveBlock>      &solve_blocks) const override;
+
+  /**
+   * @brief Whether a given increment should attempt nucleation.
    */
   [[nodiscard]] bool
   should_attempt_nucleation(unsigned int increment) const;
-
-  /**
-   * @brief Postprocess and validate parameters.
-   */
-  void
-  validate() const;
-
-  /**
-   * @brief Print parameters to summary.log
-   */
-  void
-  print_parameter_summary() const;
-
-  /**
-   * @brief Set the print nucleation period
-   */
-  void
-  set_nucleation_period(const unsigned int &_nucleation_period)
-  {
-    nucleation_period = _nucleation_period;
-  }
-
-  /**
-   * @brief Get the nucleation period
-   */
-  [[nodiscard]] unsigned int
-  get_nucleation_period() const
-  {
-    return nucleation_period;
-  }
-
-  /**
-   * @brief Set the nucleus exclusion distance
-   */
-  void
-  set_exclusion_distance(const double &_nucleus_exclusion_distance)
-  {
-    AssertThrow(_nucleus_exclusion_distance >= 0.0,
-                dealii::ExcMessage("Nucleus exclusion distance must be non-negative."));
-    nucleus_exclusion_distance = _nucleus_exclusion_distance;
-  }
-
-  /**
-   * @brief Get the nucleus exclusion distance
-   */
-  [[nodiscard]] double
-  get_exclusion_distance() const
-  {
-    return nucleus_exclusion_distance;
-  }
-
-  /**
-   * @brief Set the nucleus exclusion distance
-   */
-  void
-  set_same_field_exclusion_distance(const double &exclusion_distance)
-  {
-    AssertThrow(exclusion_distance >= 0.0,
-                dealii::ExcMessage("Nucleus exclusion distance must be non-negative."));
-    same_field_nucleus_exclusion_distance = exclusion_distance;
-  }
-
-  /**
-   * @brief Get the nucleus exclusion distance
-   */
-  [[nodiscard]] double
-  get_same_field_exclusion_distance() const
-  {
-    return same_field_nucleus_exclusion_distance;
-  }
-
-  /**
-   * @brief Set the refinement radius
-   */
-  void
-  set_refinement_radius(const double &_refinement_radius)
-  {
-    AssertThrow(_refinement_radius >= 0.0,
-                dealii::ExcMessage("Nucleation refinement radius must be non-negative."));
-    refinement_radius = _refinement_radius;
-  }
-
-  /**
-   * @brief Get the refinement radius
-   */
-  [[nodiscard]] double
-  get_refinement_radius() const
-  {
-    return refinement_radius;
-  }
-
-  /**
-   * @brief Set the seeding time
-   */
-  void
-  set_seeding_time(const double &_seeding_time)
-  {
-    seeding_time = _seeding_time;
-  }
-
-  /**
-   * @brief Get the seeding time
-   */
-  [[nodiscard]] double
-  get_seeding_time() const
-  {
-    return seeding_time;
-  }
-
-  /**
-   * @brief Set the seeding increments
-   */
-  void
-  set_seeding_increments(const unsigned int &_seeding_increments)
-  {
-    seeding_increments = _seeding_increments;
-  }
-
-  /**
-   * @brief Get the seeding increments
-   */
-  [[nodiscard]] unsigned int
-  get_seeding_increments() const
-  {
-    return seeding_increments;
-  }
 
   /**
    * @brief Check if a nucleus is still active based on its seed time and increment.
@@ -168,35 +63,8 @@ public:
    */
   template <unsigned int dim>
   [[nodiscard]] bool
-  check_active(const Nucleus<dim> &nucleus, const SimulationTimer &time_info) const
-  {
-    return nucleus.seed_increment <= time_info.get_increment() &&
-           ((time_info.get_increment() - nucleus.seed_increment) < seeding_increments ||
-            time_info.get_time() - nucleus.seed_time < seeding_time);
-  }
+  check_active(const Nucleus<dim> &nucleus, const SimulationTimer &time_info) const;
 
-  /**
-   * @brief Whether a postprocessed nucleation rate exists
-   */
-  [[nodiscard]] bool
-  postprocessed_nucleation_rate_exists() const
-  {
-    return pp_nucleation_rate_exists;
-  }
-
-  /**
-   * @brief Declare the parameters to be read from an input file.
-   */
-  void
-  declare_parameters(dealii::ParameterHandler &parameter_handler) const;
-
-  /**
-   * @brief Assign the parameters read from an input file to this object.
-   */
-  void
-  assign_parameters(dealii::ParameterHandler &parameter_handler);
-
-private:
   // The number of steps between nucleationting relevant information to screen
   unsigned int nucleation_period = UINT_MAX;
 
@@ -218,123 +86,5 @@ private:
   // Seeding increments
   unsigned int seeding_increments = 1;
 };
-
-inline bool
-NucleationParameters::should_attempt_nucleation(unsigned int increment) const
-{
-  return !bool(increment % nucleation_period);
-}
-
-inline void
-NucleationParameters::validate() const
-{
-  // Check if the nucleation period is valid
-  AssertThrow(nucleation_period > 0,
-              dealii::ExcMessage("Nucleation period must be positive."));
-}
-
-inline void
-NucleationParameters::print_parameter_summary() const
-{
-  ConditionalOStreams::pout_summary()
-    << "================================================\n"
-    << "  Nucleation Parameters\n"
-    << "================================================\n"
-    << "Nucleation period: " << nucleation_period << "\n"
-    << "\n\n"
-    << std::flush;
-}
-
-inline void
-NucleationParameters::declare_parameters(
-  dealii::ParameterHandler &parameter_handler) const
-{
-  parameter_handler.enter_subsection("nucleation");
-  {
-    parameter_handler.declare_entry("nucleus exclusion distance",
-                                    "0.0",
-                                    dealii::Patterns::Double(),
-                                    "The minimum distance between nuclei.");
-    parameter_handler.declare_entry("same field nucleus exclusion distance",
-                                    "0.0",
-                                    dealii::Patterns::Double(),
-                                    "The minimum distance between nuclei.");
-    parameter_handler.declare_entry(
-      "nucleation period",
-      "2147483647",
-      dealii::Patterns::Integer(1),
-      "The number of increments between nucleation attempts.");
-    parameter_handler.declare_entry(
-      "refinement radius",
-      "0.0",
-      dealii::Patterns::Double(0.0),
-      "The radius around a nucleus in which AMR is applied.");
-    parameter_handler.declare_entry(
-      "seeding time",
-      "0.0",
-      dealii::Patterns::Double(0.0),
-      "The time duration over which nuclei are considered \"active\" and refinement and "
-      "exclusion zones are applied. Same as \"seeding increments\" but in time.");
-    parameter_handler.declare_entry(
-      "seeding increments",
-      "1",
-      dealii::Patterns::Integer(1, INT_MAX),
-      "The number of increments over which nuclei are considered \"active\" and "
-      "refinement and exclusion zones are applied. Same as \"seeding time\" but in "
-      "increments.");
-    { // Declare aliases for the parameters
-      //============================================================================================
-      parameter_handler.declare_alias("nucleus exclusion distance",
-                                      "nucleus_exclusion_distance");
-      parameter_handler.declare_alias("nucleus exclusion distance",
-                                      "nucleus exclusion radius");
-      parameter_handler.declare_alias("nucleus exclusion distance",
-                                      "nucleus_exclusion_radius");
-      parameter_handler.declare_alias("nucleus exclusion distance", "exclusion distance");
-      parameter_handler.declare_alias("nucleus exclusion distance", "exclusion_distance");
-      parameter_handler.declare_alias("nucleus exclusion distance", "exclusion radius");
-      parameter_handler.declare_alias("nucleus exclusion distance", "exclusion_radius");
-      //
-      parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                      "same_field_nucleus_exclusion_distance");
-      parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                      "same field nucleus exclusion radius");
-      parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                      "same_field_nucleus_exclusion_radius");
-      parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                      "same field exclusion distance");
-      parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                      "same_field_exclusion_distance");
-      parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                      "same field exclusion radius");
-      parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                      "same_field_exclusion_radius");
-    }
-  }
-  parameter_handler.leave_subsection();
-}
-
-inline void
-NucleationParameters::assign_parameters(dealii::ParameterHandler &parameter_handler)
-{
-  parameter_handler.enter_subsection("nucleation");
-  {
-    set_exclusion_distance(parameter_handler.get_double("nucleus exclusion distance"));
-
-    set_same_field_exclusion_distance(
-      parameter_handler.get_double("same field nucleus exclusion distance"));
-
-    set_nucleation_period(
-      static_cast<unsigned int>(parameter_handler.get_integer("nucleation period")));
-
-    set_refinement_radius(parameter_handler.get_double("refinement radius"));
-
-    set_seeding_time(parameter_handler.get_double("seeding time"));
-
-    set_seeding_increments(
-      static_cast<unsigned int>(parameter_handler.get_integer("seeding increments")));
-  }
-  parameter_handler.leave_subsection();
-}
 
 PRISMS_PF_END_NAMESPACE

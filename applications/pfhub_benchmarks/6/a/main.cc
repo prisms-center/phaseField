@@ -61,6 +61,7 @@ main(int argc, char *argv[])
   UserInputParameters<2> user_inputs(parameters_filename);
   user_inputs.spatial_discretization.rectangular_mesh.size =
     dealii::Tensor<1, 2>({100.0, 100.0});
+
   FieldConstraints<2> &Phi_bcs =
     user_inputs.boundary_parameters.boundary_condition_list["Phi"];
   Phi_bcs.component_constraints[0].conditions[0] = Dirichlet;

@@ -9,7 +9,6 @@
 
 #include <prismspf/core/types.h>
 
-#include <prismspf/user_inputs/load_initial_condition_parameters.h>
 #include <prismspf/user_inputs/spatial_discretization.h>
 
 #include <prismspf/utilities/utilities.h>
@@ -94,10 +93,10 @@ ReadFieldBase<dim, number>::ReadFieldBase(
   , ic_file(_ic_file)
 {
   // Check that the filename exists
-  if (!std::filesystem::exists(this->ic_file.filename))
+  if (!std::filesystem::exists(this->ic_file.file_name))
     {
       AssertThrow(false,
-                  dealii::ExcMessage("File " + this->ic_file.filename +
+                  dealii::ExcMessage("File " + this->ic_file.file_name +
                                      " does not exist"));
     }
 }

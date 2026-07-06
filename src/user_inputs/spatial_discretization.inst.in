@@ -1,0 +1,26 @@
+for ( dimension : SPACE_DIMENSIONS)
+  {
+    template class Mesh<dimension>;
+    template class RectangularMesh<dimension>;
+    template class SphericalMesh<dimension>;
+    template class SpatialDiscretization<dimension>;
+  }
+
+for ( dimension : SPACE_DIMENSIONS; number : REAL_SCALARS)
+  {
+    template void Mesh<dimension>::mark_periodic(const dealii::DoFHandler<dimension> &dof_handler, dealii::AffineConstraints<number> &constraints) const;
+
+    template dealii::VectorizedArray<number> Mesh<dimension>::distance(
+                                        const dealii::Point<dimension, dealii::VectorizedArray<number>> &point_1,
+                                        const dealii::Point<dimension, dealii::VectorizedArray<number>> &point_2) const;
+  }
+
+for ( dimension : SPACE_DIMENSIONS)
+  {
+    template double Mesh<dimension>::distance(const dealii::Point<dimension, float> &point_1,
+                                              const dealii::Point<dimension, float> &point_2) const;
+    template double Mesh<dimension>::distance(const dealii::Point<dimension, double> &point_1,
+                                              const dealii::Point<dimension, float> &point_2) const;
+    template double Mesh<dimension>::distance(const dealii::Point<dimension, float> &point_1,
+                                              const dealii::Point<dimension, double> &point_2) const;
+  }

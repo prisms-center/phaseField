@@ -27,14 +27,15 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <>
 TriangulationManager<1U>::TriangulationManager()
-  : triangulation(Triangulation<1U>::limit_level_difference_at_vertices)
+  : triangulation(
+      TriangulationManager<1U>::Triangulation::limit_level_difference_at_vertices)
 {}
 
 template <unsigned int dim>
 TriangulationManager<dim>::TriangulationManager()
   : triangulation(MPI_COMM_WORLD,
-                  Triangulation<dim>::smoothing_on_refinement,
-                  Triangulation<dim>::construct_multigrid_hierarchy)
+                  TriangulationManager<dim>::Triangulation::smoothing_on_refinement,
+                  TriangulationManager<dim>::Triangulation::construct_multigrid_hierarchy)
 {}
 
 template <unsigned int dim>
@@ -74,7 +75,7 @@ TriangulationManager<dim>::num_levels() const
 }
 
 template <unsigned int dim>
-const Triangulation<dim> &
+const typename TriangulationManager<dim>::Triangulation &
 TriangulationManager<dim>::get_triangulation() const
 {
   return triangulation;
@@ -96,14 +97,6 @@ TriangulationManager<dim>::get_triangulation(unsigned int relative_level) const
 }
 
 template <unsigned int dim>
-const std::vector<dealii::GridTools::PeriodicFacePair<
-  typename dealii::Triangulation<dim>::cell_iterator>> &
-TriangulationManager<dim>::get_periodic_face_pairs() const
-{
-  return periodicity_vector;
-}
-
-template <unsigned int dim>
 double
 TriangulationManager<dim>::get_volume() const
 {
@@ -115,24 +108,9 @@ void
 TriangulationManager<dim>::generate_mesh(
   const SpatialDiscretization<dim> &discretization_params)
 {
-  if (discretization_params.type == TriangulationType::Rectangular)
-    {
-      discretization_params.rectangular_mesh.generate_mesh(triangulation);
-      discretization_params.rectangular_mesh.collect_periodic_faces(triangulation,
-                                                                    periodicity_vector);
-    }
-  else if (discretization_params.type == TriangulationType::Spherical)
-    {
-      discretization_params.spherical_mesh.generate_mesh(triangulation);
-    }
-  else if (discretization_params.type == TriangulationType::Custom)
-    {
-      AssertThrow(false, FeatureNotImplemented("Custom Triangulation"));
-    }
-  else
-    {
-      AssertThrow(false, UnreachableCode("Invalid TriangulationType"));
-    }
+  discretization_params.generate_mesh(triangulation);
+  discretization_params.mark_boundaries(triangulation);
+  discretization_params.mark_periodic(triangulation);
 
   // TODO: Once we move to a pattern of manual initialization after default construction,
   // call this separately using the user_inputs output directory.

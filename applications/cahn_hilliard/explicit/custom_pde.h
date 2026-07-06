@@ -44,6 +44,7 @@ private:
   {
     const dealii::Tensor<1, dim> &mesh_size =
       get_user_inputs().spatial_discretization.rectangular_mesh.size;
+
     if (index == 0) // redundant
       {
         if (ic_type == 0)

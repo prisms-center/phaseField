@@ -18,7 +18,7 @@
 #include <prismspf/solvers/mf_operator.h>
 #include <prismspf/solvers/solver_base.h>
 
-#include <prismspf/user_inputs/linear_solve_parameters.h>
+#include <prismspf/user_inputs/solve_parameters.h>
 
 #include <prismspf/config.h>
 
@@ -452,7 +452,7 @@ protected:
   {
     const auto &chebyshev_params = lin_params().chebyshev_parameters;
     precond_data.degree          = chebyshev_params.degree;
-    precond_data.smoothing_range = chebyshev_params.smoothing_range; // ≈ λ_min / λ_max
+    precond_data.smoothing_range = chebyshev_params.smoothing_range; // ≈ λ_max / λ_min
     precond_data.eig_cg_n_iterations = chebyshev_params.eig_cg_n_iterations;
 
     lhs_operator.reinit_matrix_diagonal();

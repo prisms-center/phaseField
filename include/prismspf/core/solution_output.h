@@ -19,7 +19,7 @@
 
 #include <prismspf/solvers/solve_context.h>
 
-#include <prismspf/user_inputs/output_parameters.h>
+#include <prismspf/user_inputs/io_parameters.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
@@ -56,10 +56,10 @@ public:
                  const std::string                  &file_prefix,
                  const UserInputParameters<dim>     &user_inputs)
   {
-    const OutputParameters &output_parameters = user_inputs.output_parameters;
+    const FieldOutputParameters &output_parameters = user_inputs.output_parameters;
     // Some stuff to determine the actual name of the output file.
     const auto n_trailing_digits = static_cast<unsigned int>(
-      std::floor(std::log10(user_inputs.temporal_discretization.num_increments)) + 1);
+      std::floor(std::log10(user_inputs.temporal_discretization.n_increments)) + 1);
 
     // Init data out
     dealii::DataOut<dim> data_out;
@@ -113,8 +113,8 @@ public:
 
     // Write to file based on the user input.
     const unsigned int increment = sim_timer.get_increment();
-    const std::string &file_type = output_parameters.file_type;
-    if (file_type == "vtu")
+    const auto         file_type = output_parameters.file_type;
+    if (file_type == FieldOutputParameters::OutputType::VTU)
       {
         std::ostringstream increment_stream;
         increment_stream << std::setw(static_cast<int>(n_trailing_digits))
@@ -122,7 +122,7 @@ public:
         const std::string filename = file_prefix + "_" + increment_stream.str() + ".vtu";
         data_out.write_vtu_in_parallel(filename, MPI_COMM_WORLD);
       }
-    else if (file_type == "pvtu")
+    else if (file_type == FieldOutputParameters::OutputType::PVTU)
       {
         std::filesystem::path output_path = file_prefix;
         std::string           filename    = output_path.filename();
@@ -133,7 +133,7 @@ public:
                                             MPI_COMM_WORLD,
                                             n_trailing_digits);
       }
-    else if (file_type == "vtk")
+    else if (file_type == FieldOutputParameters::OutputType::VTK)
       {
         std::ostringstream increment_stream;
         increment_stream << std::setw(static_cast<int>(n_trailing_digits))
@@ -142,7 +142,7 @@ public:
         std::ofstream     vtk_output(filename);
         data_out.write_vtk(vtk_output);
       }
-    else if (file_type == "xdmf")
+    else if (file_type == FieldOutputParameters::OutputType::XDMF)
       {
 #ifdef DEAL_II_WITH_HDF5
         std::ostringstream increment_stream;
