@@ -1,7 +1,7 @@
 set global refinement = 3
 
 set number of steps = 10
-set timestep = 5.0e-4
+set timestep = 5.0e-3
 # set end time = 1.0
 
 subsection output
@@ -32,10 +32,10 @@ end
 
 subsection boundary conditions: 0
   set variables = u
-  set conditions = Dirichlet, Natural, Dirichlet, Dirichlet
+  set conditions = Natural, Dirichlet, Dirichlet, Natural, Dirichlet
 end
 
 subsection boundary conditions: 1
   set variables = phi
-  set conditions = Natural, Dirichlet, Natural, Natural 
+  set conditions = Natural, Natural, Natural, Dirichlet, Natural 
 end

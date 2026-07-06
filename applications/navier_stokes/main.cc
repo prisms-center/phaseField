@@ -4,6 +4,7 @@
 #include "custom_pde.h"
 
 #include <deal.II/grid/grid_generator.h>
+#include <deal.II/grid/grid_in.h>
 
 #include <prismspf/core/dependencies.h>
 #include <prismspf/core/field_attributes.h>
@@ -29,6 +30,30 @@ class ChannelWithCylinder : public Mesh<dim>
   mark_boundaries(Triangulation &triangulation) const override
   {
     // deal.II does this for us
+    // TODO: Document what the boundary ids are
+  }
+};
+
+template <unsigned int dim>
+class ChannelWithSquare : public Mesh<dim>
+{
+  using Triangulation = typename Mesh<dim>::Triangulation;
+
+  void
+  generate_mesh(Triangulation &triangulation) const override
+  {
+    dealii::GridIn<dim> grid_in;
+    grid_in.attach_triangulation(triangulation);
+    std::string   filename = "nsbench2.inp";
+    std::ifstream file(filename);
+    Assert(file, dealii::ExcFileNotOpen(filename));
+    grid_in.read_ucd(file);
+  }
+
+  void
+  mark_boundaries(Triangulation &triangulation) const override
+  {
+    // The mesh file does this for us
     // TODO: Document what the boundary ids are
   }
 };
@@ -100,7 +125,7 @@ main(int argc, char *argv[])
     {diffusion, projection, pressure_correction, extrapolation});
 
   UserInputParameters<dim> user_inputs(cli_options.get_parameters_filename());
-  ChannelWithCylinder<dim> mesh;
+  ChannelWithSquare<dim>   mesh;
   user_inputs.spatial_discretization.custom_mesh = &mesh;
   user_inputs.spatial_discretization.mesh_type   = Custom;
 
