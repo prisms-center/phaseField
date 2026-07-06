@@ -70,7 +70,15 @@ main(int argc, char *argv[])
   projection.field_indices    = {4}; // phi
   projection.solve_type       = Linear;
   projection.solve_timing     = Uninitialized;
-  projection.dependencies_rhs = make_dependency_set(fields, {"grad(u)"});
+  projection.dependencies_rhs = make_dependency_set(fields,
+                                                    {"u",
+                                                     "grad(u)",
+                                                     "hess(u)",
+                                                     "old_1(u)",
+                                                     "old_2(u)",
+                                                     "old_1(u_star)",
+                                                     "grad(old_1(u_star))",
+                                                     "grad(old_1(p_star))"});
   projection.dependencies_lhs = make_dependency_set(fields, {"grad(lhs(phi))"});
 
   SolveBlock pressure_correction;

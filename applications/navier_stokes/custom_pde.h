@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <prismspf/core/pde_operator_base.h>
+#include <prismspf/core/type_enums.h>
 
 #include <random>
 
@@ -88,14 +89,39 @@ public:
         const auto tau_stabilization =
           stabilization_parameter<dim, degree>(tau, h, u_star, nu);
 
+        VectorGrad supg_term;
+        for (unsigned int i = 0; i < dim; ++i)
+          for (unsigned int j = 0; j < dim; ++j)
+            supg_term[i][j] = tau_stabilization * residual_rhs[i] * u_star[j];
+
         variable_list.set_value_term(0, residual_rhs);
+        variable_list.set_gradient_term(0, supg_term);
       }
     else if (solve_block_id == 3)
       {
-        const auto div_u = variable_list.template get_divergence<Vector, Current>(0);
-        const auto tau   = sim_timer.get_timestep();
+        const auto u_old      = variable_list.template get_value<Vector, OldOne>(0);
+        const auto u_old_2    = variable_list.template get_value<Vector, OldTwo>(0);
+        const auto u          = variable_list.template get_value<Vector, Current>(0);
+        const auto grad_u     = variable_list.template get_gradient<Vector, Current>(0);
+        const auto div_u      = variable_list.template get_divergence<Vector, Current>(0);
+        const auto laplace_u  = variable_list.template get_laplacian<Vector, Current>(0);
+        const auto u_star     = variable_list.template get_value<Vector, OldOne>(1);
+        const auto div_u_star = variable_list.template get_divergence<Vector, OldOne>(1);
+        const auto grad_p_star = variable_list.template get_gradient<Scalar, OldOne>(3);
+        const ScalarValue tau  = sim_timer.get_timestep();
+        const ScalarValue h    = variable_list.get_element_volume();
+
+        const auto timestep_term  = (3.0 * u - 4.0 * u_old + u_old_2) / (2.0 * tau);
+        const auto advection_term = u_star * grad_u + 0.5 * div_u_star * u;
+
+        const auto residual =
+          timestep_term + advection_term - nu * laplace_u + grad_p_star;
+
+        const auto tau_stabilization =
+          stabilization_parameter<dim, degree>(tau, h, u_star, nu);
 
         variable_list.set_value_term(4, 1.5 * div_u / tau);
+        variable_list.set_gradient_term(4, tau_stabilization * residual);
       }
     else if (solve_block_id == 4)
       {
@@ -129,8 +155,13 @@ public:
         const auto tau_stabilization =
           stabilization_parameter<dim, degree>(tau, h, u_star, nu);
 
+        VectorGrad supg_term;
+        for (unsigned int i = 0; i < dim; ++i)
+          for (unsigned int j = 0; j < dim; ++j)
+            supg_term[i][j] = tau_stabilization * residual_lhs[i] * u_star[j];
+
         variable_list.set_value_term(0, timestep_term + advection_term);
-        variable_list.set_gradient_term(0, nu * grad_u);
+        variable_list.set_gradient_term(0, nu * grad_u + supg_term);
       }
     else if (solve_block_id == 3)
       {
@@ -140,7 +171,7 @@ public:
       }
   }
 
-  ScalarValue nu = 1.0;
+  ScalarValue nu = 0.0015;
 };
 
 PRISMS_PF_END_NAMESPACE

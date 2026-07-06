@@ -1,7 +1,8 @@
-set global refinement = 1
+set global refinement = 3
 
-set timestep = 5.0e-2
-set end time = 1.0
+set number of steps = 10
+set timestep = 5.0e-4
+# set end time = 1.0
 
 subsection output
   set condition = EQUAL_SPACING
@@ -25,8 +26,8 @@ subsection linear solver parameters: 1
   set max iterations           = 1000
   set tolerance type           = RMSEPerField
   set tolerance value          = 1e-10
-  set preconditioner = GMG
-	set mg depth = 2
+  set preconditioner = Chebyshev
+  set mg depth = 3
 end
 
 subsection boundary conditions: 0
