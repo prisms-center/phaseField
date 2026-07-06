@@ -76,12 +76,19 @@ public:
       {
         const auto u_old       = variable_list.template get_value<Vector, OldOne>(0);
         const auto u_old_2     = variable_list.template get_value<Vector, OldTwo>(0);
+        const auto u_star      = variable_list.template get_value<Vector, OldOne>(1);
         const auto grad_p_star = variable_list.template get_gradient<Scalar, OldOne>(3);
-        const auto tau         = sim_timer.get_timestep();
+        const ScalarValue tau  = sim_timer.get_timestep();
+        const ScalarValue h    = variable_list.get_element_volume();
 
         const auto timestep_term = (2.0 * u_old - 0.5 * u_old_2) / tau;
 
-        variable_list.set_value_term(0, timestep_term - grad_p_star);
+        const auto residual_rhs = timestep_term - grad_p_star;
+
+        const auto tau_stabilization =
+          stabilization_parameter<dim, degree>(tau, h, u_star, nu);
+
+        variable_list.set_value_term(0, residual_rhs);
       }
     else if (solve_block_id == 3)
       {
@@ -108,13 +115,19 @@ public:
       {
         const auto u          = variable_list.template get_value<Vector, LHS>(0);
         const auto grad_u     = variable_list.template get_gradient<Vector, LHS>(0);
+        const auto laplace_u  = variable_list.template get_laplacian<Vector, LHS>(0);
         const auto u_star     = variable_list.template get_value<Vector, OldOne>(1);
         const auto div_u_star = variable_list.template get_divergence<Vector, OldOne>(1);
-        const auto tau        = sim_timer.get_timestep();
+        const ScalarValue tau = sim_timer.get_timestep();
+        const ScalarValue h   = variable_list.get_element_volume();
 
-        const auto timestep_term = 1.5 * u / tau; // TODO: Clean this up
-        const auto advection_term =
-          u_star * grad_u + 0.5 * div_u_star * u; // TODO: Is this right
+        const auto timestep_term  = 1.5 * u / tau;
+        const auto advection_term = u_star * grad_u + 0.5 * div_u_star * u;
+
+        const auto residual_lhs = timestep_term + advection_term - nu * laplace_u;
+
+        const auto tau_stabilization =
+          stabilization_parameter<dim, degree>(tau, h, u_star, nu);
 
         variable_list.set_value_term(0, timestep_term + advection_term);
         variable_list.set_gradient_term(0, nu * grad_u);
@@ -127,7 +140,7 @@ public:
       }
   }
 
-  double nu = 1.0;
+  ScalarValue nu = 1.0;
 };
 
 PRISMS_PF_END_NAMESPACE

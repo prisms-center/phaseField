@@ -59,10 +59,11 @@ main(int argc, char *argv[])
   diffusion.solve_type    = Linear;
   diffusion.solve_timing  = Initialized;
   diffusion.dependencies_rhs =
-    make_dependency_set(fields, {"old_1(u)", "old_2(u)", "grad(old_1(p_star))"});
+    make_dependency_set(fields,
+                        {"old_1(u)", "old_2(u)", "old_1(u_star)", "grad(old_1(p_star))"});
   diffusion.dependencies_lhs = make_dependency_set(
     fields,
-    {"lhs(u)", "grad(lhs(u))", "old_1(u_star)", "grad(old_1(u_star))"});
+    {"lhs(u)", "grad(lhs(u))", "hess(lhs(u))", "old_1(u_star)", "grad(old_1(u_star))"});
 
   SolveBlock projection;
   projection.id               = 3;
