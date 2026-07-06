@@ -86,16 +86,7 @@ public:
 
         const auto residual_rhs = timestep_term - grad_p_star;
 
-        const auto tau_stabilization =
-          stabilization_parameter<dim, degree>(tau, h, u_star, nu);
-
-        VectorGrad supg_term;
-        for (unsigned int i = 0; i < dim; ++i)
-          for (unsigned int j = 0; j < dim; ++j)
-            supg_term[i][j] = tau_stabilization * residual_rhs[i] * u_star[j];
-
         variable_list.set_value_term(0, residual_rhs);
-        variable_list.set_gradient_term(0, supg_term);
       }
     else if (solve_block_id == 3)
       {
@@ -111,17 +102,7 @@ public:
         const ScalarValue tau  = sim_timer.get_timestep();
         const ScalarValue h    = variable_list.get_element_volume();
 
-        const auto timestep_term  = (3.0 * u - 4.0 * u_old + u_old_2) / (2.0 * tau);
-        const auto advection_term = u_star * grad_u + 0.5 * div_u_star * u;
-
-        const auto residual =
-          timestep_term + advection_term - nu * laplace_u + grad_p_star;
-
-        const auto tau_stabilization =
-          stabilization_parameter<dim, degree>(tau, h, u_star, nu);
-
         variable_list.set_value_term(4, 1.5 * div_u / tau);
-        variable_list.set_gradient_term(4, tau_stabilization * residual);
       }
     else if (solve_block_id == 4)
       {
@@ -150,18 +131,8 @@ public:
         const auto timestep_term  = 1.5 * u / tau;
         const auto advection_term = u_star * grad_u + 0.5 * div_u_star * u;
 
-        const auto residual_lhs = timestep_term + advection_term - nu * laplace_u;
-
-        const auto tau_stabilization =
-          stabilization_parameter<dim, degree>(tau, h, u_star, nu);
-
-        VectorGrad supg_term;
-        for (unsigned int i = 0; i < dim; ++i)
-          for (unsigned int j = 0; j < dim; ++j)
-            supg_term[i][j] = tau_stabilization * residual_lhs[i] * u_star[j];
-
         variable_list.set_value_term(0, timestep_term + advection_term);
-        variable_list.set_gradient_term(0, nu * grad_u + supg_term);
+        variable_list.set_gradient_term(0, nu * grad_u);
       }
     else if (solve_block_id == 3)
       {
