@@ -40,8 +40,8 @@ public:
         if (component == 0 && boundary_id == 0)
           {
             const auto y           = point[1];
-            const auto U_m         = 1.5;
-            const auto H           = 4.1;
+            const auto U_m         = 0.3;
+            const auto H           = 0.41;
             vector_component_value = 4.0 * U_m * y * (H - y) / (H * H);
           }
         else

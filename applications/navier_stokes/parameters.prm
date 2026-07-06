@@ -1,14 +1,7 @@
-subsection Rectangular mesh
-  set x size = 25.0
-  set y size = 4.1
-  set z size = 1.0
-  set x subdivisions = 6
-end
+set global refinement = 1
 
-set global refinement = 3
-
-set timestep = 5.0e-3
-set end time = 10.0
+set timestep = 5.0e-2
+set end time = 1.0
 
 subsection output
   set condition = EQUAL_SPACING

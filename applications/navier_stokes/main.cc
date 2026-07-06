@@ -3,6 +3,8 @@
 
 #include "custom_pde.h"
 
+#include <deal.II/grid/grid_generator.h>
+
 #include <prismspf/core/dependencies.h>
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/parse_cmd_options.h>
@@ -11,6 +13,25 @@
 #include <prismspf/core/type_enums.h>
 
 using namespace prismspf;
+
+template <unsigned int dim>
+class ChannelWithCylinder : public Mesh<dim>
+{
+  using Triangulation = typename Mesh<dim>::Triangulation;
+
+  void
+  generate_mesh(Triangulation &triangulation) const override
+  {
+    dealii::GridGenerator::channel_with_cylinder(triangulation, 0.03, 2, 2.0, true);
+  }
+
+  void
+  mark_boundaries(Triangulation &triangulation) const override
+  {
+    // deal.II does this for us
+    // TODO: Document what the boundary ids are
+  }
+};
 
 int
 main(int argc, char *argv[])
@@ -69,14 +90,18 @@ main(int argc, char *argv[])
   std::vector<SolveBlock> solve_blocks(
     {diffusion, projection, pressure_correction, extrapolation});
 
-  UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
+  UserInputParameters<dim> user_inputs(cli_options.get_parameters_filename());
+  ChannelWithCylinder<dim> mesh;
+  user_inputs.spatial_discretization.custom_mesh = &mesh;
+  user_inputs.spatial_discretization.mesh_type   = Custom;
+
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
   Problem<dim, degree, double>   problem(fields,
-                                       solve_blocks,
-                                       user_inputs,
-                                       pf_tools,
-                                       pde_operator);
+                                         solve_blocks,
+                                         user_inputs,
+                                         pf_tools,
+                                         pde_operator);
   problem.solve();
 
   return 0;
