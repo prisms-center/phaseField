@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['flatbinary_0',['FlatBinary',['../type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768a34212fd2a4664fc0162bb521638c03a9',1,'type_enums.h']]]
+  ['flatbinary_0',['FlatBinary',['../structInitialConditionFile.html#a496111adfcaaf6f5f2ba3dfa3ded8fd8a98292b57b5f89f02a67fa6eb21b18fac',1,'InitialConditionFile']]]
 ];

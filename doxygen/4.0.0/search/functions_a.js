@@ -1,26 +1,10 @@
 var searchData=
 [
-  ['m_0',['m',['../classMFOperator.html#a01ab9046ce2995b4a3138406eb621c99',1,'MFOperator']]],
-  ['make_5fbc_5fconstraints_1',['make_bc_constraints',['../classConstraintManager.html#a65bc1c1252fa1ea19e3fc8212f9d1d89',1,'ConstraintManager']]],
-  ['make_5fconstraints_5ffor_5fsingle_5ffield_2',['make_constraints_for_single_field',['../classConstraintManager.html#afb3ad5a11b0ab128c819d4f5482f42dc',1,'ConstraintManager']]],
-  ['make_5fdependency_5fset_3',['make_dependency_set',['../dependencies_8h.html#a8ee155eab2c56d1d5418eed94e41a238',1,'dependencies.h']]],
-  ['make_5fdirichlet_5fconstraints_4',['make_dirichlet_constraints',['../classConstraintManager.html#a5bfc7442d158e82646c8a0e35b8778d7',1,'ConstraintManager']]],
-  ['make_5fmg_5fconstraints_5',['make_mg_constraints',['../classMGContext.html#ac5684b18c2ae906999396e9c16573a86',1,'MGContext']]],
-  ['make_5fnatural_5fconstraints_6',['make_natural_constraints',['../classConstraintManager.html#a88966ca25a3ce2101f6a071a6a8338ed',1,'ConstraintManager']]],
-  ['make_5fone_5fboundary_5fconstraint_7',['make_one_boundary_constraint',['../classConstraintManager.html#a5d0d27d70067a7e0a39ec4039c806353',1,'ConstraintManager']]],
-  ['make_5fperiodic_5fconstraints_8',['make_periodic_constraints',['../classConstraintManager.html#a576440ff12a5e701e56948d5a1b9b2f2',1,'ConstraintManager']]],
-  ['make_5fsolvers_9',['make_solvers',['../namespacePRISMS__PF__BEGIN__NAMESPACE.html#ab982a006a8454dd8f42b631bd0ff9fb3',1,'PRISMS_PF_BEGIN_NAMESPACE']]],
-  ['mark_5fboundaries_10',['mark_boundaries',['../structRectangularMesh.html#a27dbdacf5965a876095e3a66bb1f7aba',1,'RectangularMesh::mark_boundaries()'],['../structSphericalMesh.html#a927c791137e3a8e81d8e15b5e7fc633a',1,'SphericalMesh::mark_boundaries()']]],
-  ['mark_5fcells_5ffor_5frefinement_11',['mark_cells_for_refinement',['../classRefinementManager.html#a2d2d992e4a3bb9507dca5a3060cf0983',1,'RefinementManager']]],
-  ['mark_5fcells_5ffor_5frefinement_5fand_5fcoarsening_12',['mark_cells_for_refinement_and_coarsening',['../classRefinementManager.html#a60db8f1c1a8bc2bc8259232053b28e3c',1,'RefinementManager']]],
-  ['mark_5fperiodic_13',['mark_periodic',['../structRectangularMesh.html#a1239e45b673843dd168d6c79e7f401eb',1,'RectangularMesh']]],
-  ['matrixfreemanager_14',['MatrixFreeManager',['../classMatrixFreeManager.html#ae3c084c27c4bdc64da61df3ceb8aecc2',1,'MatrixFreeManager']]],
-  ['mf_5fmanager_15',['mf_manager',['../classInvMManager.html#a6a3d4c02d16afc58cc7173f94709c629',1,'InvMManager']]],
-  ['mfoperator_16',['MFOperator',['../classMFOperator.html#a2df20704c99c55a088f8b8b1c8d17af9',1,'MFOperator']]],
-  ['mg_5ftransfer_5fdown_17',['mg_transfer_down',['../classGroupSolutionHandler.html#af390d05ecd28f0286f613a4b848682c3',1,'GroupSolutionHandler']]],
-  ['mgcontext_18',['MGContext',['../classMGContext.html#ad9642f530e8a8154acafdcd3d1dd88e3',1,'MGContext']]],
-  ['mpi_5fbroadcast_5fnuclei_19',['mpi_broadcast_nuclei',['../classNucleationManager.html#a4cf6ea096ed7b1291bc2928cd0904bca',1,'NucleationManager']]],
-  ['mpi_5fdatatype_20',['mpi_datatype',['../structNucleus.html#a567edb715eee48cd250f9eece9a8008b',1,'Nucleus']]],
-  ['mpi_5fgather_5fnuclei_21',['mpi_gather_nuclei',['../classNucleationManager.html#aa9cad1ef245a6e38a738ca90f3d97f26',1,'NucleationManager']]],
-  ['mpiinitfinalize_22',['MPIInitFinalize',['../classMPIInitFinalize.html#aba602b90b70fc51525c68b326c3e2cbb',1,'MPIInitFinalize']]]
+  ['newdependencyextents_0',['NewDependencyExtents',['../structNewDependencyExtents.html#a31e82a4a18f0c1ace6f2e14ec9aeddbf',1,'NewDependencyExtents']]],
+  ['newton_5fparams_1',['newton_params',['../classNewtonSolver.html#aa0c5b64710d0db2524b148631f4d3446',1,'NewtonSolver']]],
+  ['newtonsolver_2',['NewtonSolver',['../classNewtonSolver.html#ad88a436867f113e2b6d0f9955801d273',1,'NewtonSolver']]],
+  ['normalization_5fvalue_3',['normalization_value',['../classLinearSolver.html#a4f977b595684df41ac232ef6b7e17c8c',1,'LinearSolver']]],
+  ['nucleus_4',['Nucleus',['../structNucleus.html#a82163cca7ad486f8580beab89a3089e0',1,'Nucleus::Nucleus()=default'],['../structNucleus.html#a6dbc12c4cf9051bde83641865311cbf3',1,'Nucleus::Nucleus(const unsigned int &amp;_field_index, const dealii::Point&lt; dim &gt; &amp;_location, const double &amp;_seed_time, const unsigned int &amp;_seed_increment)']]],
+  ['nucleusrefinementfunction_5',['NucleusRefinementFunction',['../classNucleusRefinementFunction.html#a6e8be28b9b15c7071a7b18b21af465f6',1,'NucleusRefinementFunction']]],
+  ['num_5flevels_6',['num_levels',['../classDoFManager.html#a9d7b214bfb772f788dd6299b5bd214ee',1,'DoFManager::num_levels()'],['../classGroupSolutionHandler.html#a419a667bb0917c83a6e75cc3786b4c3f',1,'GroupSolutionHandler::num_levels()'],['../classTriangulationManager.html#ae4de5a9ec17780483d9f15a3a17a3686',1,'TriangulationManager::num_levels()']]]
 ];

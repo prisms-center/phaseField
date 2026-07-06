@@ -122,52 +122,58 @@ $(function(){initNavTree('spatial__discretization_8h.html',''); initResizable(tr
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">spatial_discretization.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;deal.II/base/parameter_handler.h&gt;</code><br />
+<code>#include &lt;deal.II/base/patterns.h&gt;</code><br />
+<code>#include &lt;deal.II/base/vectorization.h&gt;</code><br />
 <code>#include &lt;deal.II/distributed/tria.h&gt;</code><br />
+<code>#include &lt;deal.II/dofs/dof_handler.h&gt;</code><br />
+<code>#include &lt;deal.II/dofs/dof_tools.h&gt;</code><br />
 <code>#include &lt;deal.II/grid/grid_generator.h&gt;</code><br />
 <code>#include &lt;deal.II/grid/grid_tools.h&gt;</code><br />
 <code>#include &lt;deal.II/grid/tria.h&gt;</code><br />
+<code>#include &lt;deal.II/lac/affine_constraints.h&gt;</code><br />
+<code>#include &lt;deal.II/lac/full_matrix.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="conditional__ostreams_8h_source.html">prismspf/core/conditional_ostreams.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="exceptions_8h_source.html">prismspf/core/exceptions.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="grid__refiner__criterion_8h_source.html">prismspf/core/grid_refiner_criterion.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="types_8h_source.html">prismspf/core/types.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="parameter__base_8h_source.html">prismspf/user_inputs/parameter_base.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="utilities_8h_source.html">prismspf/utilities/utilities.h</a>&gt;</code><br />
 <code>#include &lt;prismspf/config.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for spatial_discretization.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="spatial__discretization_8h__incl.svg" width="4246" height="410"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="spatial__discretization_8h__incl.svg" width="3700" height="502"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="spatial__discretization_8h__dep__incl.svg" width="2626" height="1428"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="spatial__discretization_8h__dep__incl.svg" width="2704" height="1428"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="spatial__discretization_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structPeriodicPair.html">PeriodicPair&lt; dim &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Periodicity face pair.  <a href="structPeriodicPair.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMesh.html">Mesh&lt; dim &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structMesh.html#aeb49288743226761e65753ce8fe6f076">Triangulation</a> base class.  <a href="structMesh.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structRectangularMesh.html">RectangularMesh&lt; dim &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for rectangular mesh parameters.  <a href="structRectangularMesh.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSphericalMesh.html">SphericalMesh&lt; dim &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for spherical mesh parameters.  <a href="structSphericalMesh.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSpatialDiscretization.html">SpatialDiscretization&lt; dim &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSpatialDiscretization.html">SpatialDiscretization&lt; dim &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Struct that holds spatial discretization parameters.  <a href="structSpatialDiscretization.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a958a4485bfc1253dd633ebd0a338eed4" id="r_a958a4485bfc1253dd633ebd0a338eed4"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim&gt; </td></tr>
-<tr class="memitem:a958a4485bfc1253dd633ebd0a338eed4"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a958a4485bfc1253dd633ebd0a338eed4">Triangulation</a></td></tr>
-<tr class="separator:a958a4485bfc1253dd633ebd0a338eed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -178,27 +184,6 @@ Enumerations</h2></td></tr>
 <tr class="memdesc:aa998d1d441b49d044cf53118328c0db3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal enum for various triangulation types.  <a href="#aa998d1d441b49d044cf53118328c0db3">More...</a><br /></td></tr>
 <tr class="separator:aa998d1d441b49d044cf53118328c0db3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="a958a4485bfc1253dd633ebd0a338eed4" name="a958a4485bfc1253dd633ebd0a338eed4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a958a4485bfc1253dd633ebd0a338eed4">&#9670;&#160;</a></span>Triangulation</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="#a958a4485bfc1253dd633ebd0a338eed4">Triangulation</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line"> </div>
-<div class="line">  std::conditional_t&lt;dim == 1,</div>
-<div class="line">                     dealii::Triangulation&lt;dim&gt;,</div>
-<div class="line">                     dealii::parallel::distributed::Triangulation&lt;dim&gt;&gt;</div>
-</div><!-- fragment -->
-</div>
-</div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="aa998d1d441b49d044cf53118328c0db3" name="aa998d1d441b49d044cf53118328c0db3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa998d1d441b49d044cf53118328c0db3">&#9670;&#160;</a></span>TriangulationType</h2>

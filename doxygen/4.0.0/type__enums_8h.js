@@ -1,10 +1,5 @@
 var type__enums_8h =
 [
-    [ "DataFormatType", "type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768", [
-      [ "VTKUnstructuredGrid", "type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768a0947271ee3d44e16e7b98449f9fa76ce", null ],
-      [ "FlatBinary", "type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768a34212fd2a4664fc0162bb521638c03a9", null ],
-      [ "LastEntry", "type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768aca29386a7f596e2321b3c9ed8d4c1745", null ]
-    ] ],
     [ "DependencyType", "type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc", [
       [ "DST", "type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca7a1970158a695340fdc76c8424740233", null ],
       [ "SRC", "type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfcaafc38ae6a337625b99d6cd83fe7de226", null ],
@@ -51,11 +46,5 @@ var type__enums_8h =
       [ "Undefined", "type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9a18f893264a00711081b62de694f99db4", null ],
       [ "Scalar", "type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9ad589986008e8fea1b1726f564d17dd13", null ],
       [ "Vector", "type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9ab01795c8def509d833c47954f53637b1", null ]
-    ] ],
-    [ "to_string", "type__enums_8h.html#a12e5b65d3d598a17a78951be9f17016f", null ],
-    [ "to_string", "type__enums_8h.html#a19a26215f2444dace48f93255a1d572c", null ],
-    [ "to_string", "type__enums_8h.html#a3801563956cba2623a082aa139947f42", null ],
-    [ "to_string", "type__enums_8h.html#a9ca54d45051221616d693425b4c51dfa", null ],
-    [ "to_string", "type__enums_8h.html#a7c74e2afa5aec1145a42183fbbca8dbb", null ],
-    [ "to_string", "type__enums_8h.html#aa1b145438c28cca36a8dcd09d317edaa", null ]
+    ] ]
 ];

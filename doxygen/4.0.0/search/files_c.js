@@ -1,8 +1,20 @@
 var searchData=
 [
-  ['read_5fbinary_2eh_0',['read_binary.h',['../read__binary_8h.html',1,'']]],
-  ['read_5ffield_5fbase_2eh_1',['read_field_base.h',['../read__field__base_8h.html',1,'']]],
-  ['read_5ffield_5ffactory_2eh_2',['read_field_factory.h',['../read__field__factory_8h.html',1,'']]],
-  ['read_5fvtk_2eh_3',['read_vtk.h',['../read__vtk_8h.html',1,'']]],
-  ['refinement_5fmanager_2eh_4',['refinement_manager.h',['../refinement__manager_8h.html',1,'']]]
+  ['simulation_5ftimer_2eh_0',['simulation_timer.h',['../simulation__timer_8h.html',1,'']]],
+  ['solution_5findexer_2ecc_1',['solution_indexer.cc',['../solution__indexer_8cc.html',1,'']]],
+  ['solution_5findexer_2eh_2',['solution_indexer.h',['../solution__indexer_8h.html',1,'']]],
+  ['solution_5foutput_2ecc_3',['solution_output.cc',['../solution__output_8cc.html',1,'']]],
+  ['solution_5foutput_2eh_4',['solution_output.h',['../solution__output_8h.html',1,'']]],
+  ['solve_5fblock_2eh_5',['solve_block.h',['../solve__block_8h.html',1,'']]],
+  ['solve_5fcontext_2eh_6',['solve_context.h',['../solve__context_8h.html',1,'']]],
+  ['solve_5fparameters_2ecc_7',['solve_parameters.cc',['../solve__parameters_8cc.html',1,'']]],
+  ['solve_5fparameters_2eh_8',['solve_parameters.h',['../solve__parameters_8h.html',1,'']]],
+  ['solver_5fbase_2ecc_9',['solver_base.cc',['../solver__base_8cc.html',1,'']]],
+  ['solver_5fbase_2eh_10',['solver_base.h',['../solver__base_8h.html',1,'']]],
+  ['solvers_2ecc_11',['solvers.cc',['../solvers_8cc.html',1,'']]],
+  ['solvers_2eh_12',['solvers.h',['../solvers_8h.html',1,'']]],
+  ['spatial_5fdiscretization_2ecc_13',['spatial_discretization.cc',['../spatial__discretization_8cc.html',1,'']]],
+  ['spatial_5fdiscretization_2eh_14',['spatial_discretization.h',['../spatial__discretization_8h.html',1,'']]],
+  ['symmetry_2eh_15',['symmetry.h',['../symmetry_8h.html',1,'']]],
+  ['system_5fwide_2eh_16',['system_wide.h',['../system__wide_8h.html',1,'']]]
 ];

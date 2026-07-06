@@ -14,10 +14,9 @@ var searchData=
   ['user_5finput_5fparameters_2eh_11',['user_input_parameters.h',['../user__input__parameters_8h.html',1,'']]],
   ['user_5finputs_12',['user_inputs',['../classPDEOperatorBase.html#a258b97080008c211eef4670e868dd904',1,'PDEOperatorBase::user_inputs'],['../classSolveContext.html#a389115bdf2e5e2168d56e21bfd10aa59',1,'SolveContext::user_inputs']]],
   ['user_5finputs_5fptr_13',['user_inputs_ptr',['../classProblem.html#a5dbf38e64d65fa0deb5beaa7cba9017f',1,'Problem']]],
-  ['user_5foutput_5flist_14',['user_output_list',['../classFieldOutputParameterLoader.html#ae929f82b66480e46a6a7c99b11d916c8',1,'FieldOutputParameterLoader']]],
-  ['user_5fstop_15',['user_stop',['../classPDEOperatorBase.html#ab06e29bd0b2bc2ae23fb2e97aa8994dd',1,'PDEOperatorBase']]],
-  ['userconstants_16',['UserConstants',['../classUserConstants.html',1,'']]],
-  ['userinputparameters_17',['UserInputParameters',['../classUserInputParameters.html',1,'UserInputParameters&lt; dim &gt;'],['../classUserInputParameters.html#af1a6cb34c8ad976c6e99eec85cf963c9',1,'UserInputParameters::UserInputParameters()=default'],['../classUserInputParameters.html#a59028c45078a54893a81bc5dcbb02f5e',1,'UserInputParameters::UserInputParameters(const std::string &amp;file_name, unsigned int max_criteria=default_max_criteria)']]],
-  ['utilities_2ecc_18',['utilities.cc',['../utilities_8cc.html',1,'']]],
-  ['utilities_2eh_19',['utilities.h',['../utilities_8h.html',1,'']]]
+  ['user_5fstop_14',['user_stop',['../classPDEOperatorBase.html#ab06e29bd0b2bc2ae23fb2e97aa8994dd',1,'PDEOperatorBase']]],
+  ['userconstants_15',['UserConstants',['../classUserConstants.html',1,'']]],
+  ['userinputparameters_16',['UserInputParameters',['../classUserInputParameters.html',1,'UserInputParameters&lt; dim &gt;'],['../classUserInputParameters.html#af1a6cb34c8ad976c6e99eec85cf963c9',1,'UserInputParameters::UserInputParameters()=default'],['../classUserInputParameters.html#a4465bee8ac376a8b15dada868639fac9',1,'UserInputParameters::UserInputParameters(const std::string &amp;file_name, unsigned int n_subsections=Numbers::default_subsections)']]],
+  ['utilities_2ecc_17',['utilities.cc',['../utilities_8cc.html',1,'']]],
+  ['utilities_2eh_18',['utilities.h',['../utilities_8h.html',1,'']]]
 ];

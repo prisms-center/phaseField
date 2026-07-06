@@ -13,6 +13,5 @@ var constraint__parameters_8h =
       [ "UniformNeumann", "constraint__parameters_8h.html#a3a2d1de630bc61d956c09d7c1b9965feaee07e760b54c87b8d76c89c9fd9764f4", null ],
       [ "Periodic", "constraint__parameters_8h.html#a3a2d1de630bc61d956c09d7c1b9965fea6db09e3bc054df6f996a45de2ccfeacd", null ]
     ] ],
-    [ "condition_from_string", "constraint__parameters_8h.html#a0b853c9b11c5a8a812b07ce061ad6ffe", null ],
-    [ "to_string", "constraint__parameters_8h.html#abf2dcc1fb3e2b344ff1677d77776f208", null ]
+    [ "condition_from_string", "constraint__parameters_8h.html#a0b853c9b11c5a8a812b07ce061ad6ffe", null ]
 ];

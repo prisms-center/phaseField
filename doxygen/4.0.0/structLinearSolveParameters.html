@@ -122,6 +122,7 @@ $(function(){initNavTree('structLinearSolveParameters.html',''); initResizable(t
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structLinearSolveParameters-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">LinearSolveParameters Struct Reference</div></div>
@@ -131,22 +132,45 @@ $(function(){initNavTree('structLinearSolveParameters.html',''); initResizable(t
 <p>Struct that holds linear solver parameters.  
  <a href="#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="linear__solve__parameters_8h_source.html">linear_solve_parameters.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="solve__parameters_8h_source.html">solve_parameters.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for LinearSolveParameters:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structLinearSolveParameters__inherit__graph.svg" width="183" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for LinearSolveParameters:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structLinearSolveParameters__coll__graph.svg" width="183" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1d5d938fc56fdfe107cbdc30fb0ec27c" id="r_a1d5d938fc56fdfe107cbdc30fb0ec27c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d5d938fc56fdfe107cbdc30fb0ec27c">validate</a> ()</td></tr>
-<tr class="memdesc:a1d5d938fc56fdfe107cbdc30fb0ec27c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters.  <br /></td></tr>
-<tr class="separator:a1d5d938fc56fdfe107cbdc30fb0ec27c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab17d374849a9c2d5596de791fd8b25fb" id="r_ab17d374849a9c2d5596de791fd8b25fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab17d374849a9c2d5596de791fd8b25fb">print_parameter_summary</a> () const</td></tr>
-<tr class="memdesc:ab17d374849a9c2d5596de791fd8b25fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log.  <br /></td></tr>
-<tr class="separator:ab17d374849a9c2d5596de791fd8b25fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab781f43157fc9b24c0c9b6e4904cfcba" id="r_ab781f43157fc9b24c0c9b6e4904cfcba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab781f43157fc9b24c0c9b6e4904cfcba">declare_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5) const</td></tr>
-<tr class="memdesc:ab781f43157fc9b24c0c9b6e4904cfcba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare the parameters to be read from an input file.  <br /></td></tr>
-<tr class="separator:ab781f43157fc9b24c0c9b6e4904cfcba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60020933352c9ccb32b3bbf298f58a97" id="r_a60020933352c9ccb32b3bbf298f58a97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60020933352c9ccb32b3bbf298f58a97">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5)</td></tr>
-<tr class="memdesc:a60020933352c9ccb32b3bbf298f58a97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters read from an input file to this object.  <br /></td></tr>
-<tr class="separator:a60020933352c9ccb32b3bbf298f58a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9c7804ec840db95b4ec89d737d35d56" id="r_aa9c7804ec840db95b4ec89d737d35d56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9c7804ec840db95b4ec89d737d35d56">assign</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int n_subsections=<a class="el" href="namespaceNumbers.html#a02636074a0888f7a252ed9ece2013bba">Numbers::default_subsections</a>) override</td></tr>
+<tr class="memdesc:aa9c7804ec840db95b4ec89d737d35d56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters from file.  <br /></td></tr>
+<tr class="separator:aa9c7804ec840db95b4ec89d737d35d56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3094b5d28b2531d7e3725b002bca395d" id="r_a3094b5d28b2531d7e3725b002bca395d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3094b5d28b2531d7e3725b002bca395d">validate</a> (const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;field_attributes, const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;solve_blocks) const override</td></tr>
+<tr class="memdesc:a3094b5d28b2531d7e3725b002bca395d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate.  <br /></td></tr>
+<tr class="separator:a3094b5d28b2531d7e3725b002bca395d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structParameterBase"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_structParameterBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structParameterBase.html">ParameterBase</a></td></tr>
+<tr class="memitem:a138be4e7c8934cbb3f89608aaecdea20 inherit pub_methods_structParameterBase" id="r_a138be4e7c8934cbb3f89608aaecdea20"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structParameterBase.html#a138be4e7c8934cbb3f89608aaecdea20">ParameterBase</a> ()=default</td></tr>
+<tr class="separator:a138be4e7c8934cbb3f89608aaecdea20 inherit pub_methods_structParameterBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d78afb61695c9ead31fd3fff44d5b94 inherit pub_methods_structParameterBase" id="r_a6d78afb61695c9ead31fd3fff44d5b94"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structParameterBase.html#a6d78afb61695c9ead31fd3fff44d5b94">~ParameterBase</a> ()=default</td></tr>
+<tr class="separator:a6d78afb61695c9ead31fd3fff44d5b94 inherit pub_methods_structParameterBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2571a6f8ca13d1435b6459e5bfea734 inherit pub_methods_structParameterBase" id="r_ae2571a6f8ca13d1435b6459e5bfea734"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structParameterBase.html#ae2571a6f8ca13d1435b6459e5bfea734">ParameterBase</a> (const <a class="el" href="structParameterBase.html">ParameterBase</a> &amp;)=default</td></tr>
+<tr class="separator:ae2571a6f8ca13d1435b6459e5bfea734 inherit pub_methods_structParameterBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab40af2d561f4dd870220285708c13acc inherit pub_methods_structParameterBase" id="r_ab40af2d561f4dd870220285708c13acc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structParameterBase.html#ab40af2d561f4dd870220285708c13acc">ParameterBase</a> (<a class="el" href="structParameterBase.html">ParameterBase</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:ab40af2d561f4dd870220285708c13acc inherit pub_methods_structParameterBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed0f74de08ce50217aec3ca80b612b1c inherit pub_methods_structParameterBase" id="r_aed0f74de08ce50217aec3ca80b612b1c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structParameterBase.html">ParameterBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structParameterBase.html#aed0f74de08ce50217aec3ca80b612b1c">operator=</a> (const <a class="el" href="structParameterBase.html">ParameterBase</a> &amp;)=default</td></tr>
+<tr class="separator:aed0f74de08ce50217aec3ca80b612b1c inherit pub_methods_structParameterBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5606cbf5d1836784bdeccefd6535244 inherit pub_methods_structParameterBase" id="r_ab5606cbf5d1836784bdeccefd6535244"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structParameterBase.html">ParameterBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structParameterBase.html#ab5606cbf5d1836784bdeccefd6535244">operator=</a> (<a class="el" href="structParameterBase.html">ParameterBase</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:ab5606cbf5d1836784bdeccefd6535244 inherit pub_methods_structParameterBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ac886617f9647361fee28d8a3df84fd98" id="r_ac886617f9647361fee28d8a3df84fd98"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac886617f9647361fee28d8a3df84fd98">declare</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int n_subsections=<a class="el" href="namespaceNumbers.html#a02636074a0888f7a252ed9ece2013bba">Numbers::default_subsections</a>)</td></tr>
+<tr class="memdesc:ac886617f9647361fee28d8a3df84fd98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare the parameters to be read from file.  <br /></td></tr>
+<tr class="separator:ac886617f9647361fee28d8a3df84fd98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -156,8 +180,8 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that holds linear solver parameters. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a60020933352c9ccb32b3bbf298f58a97" name="a60020933352c9ccb32b3bbf298f58a97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60020933352c9ccb32b3bbf298f58a97">&#9670;&#160;</a></span>assign_parameters()</h2>
+<a id="aa9c7804ec840db95b4ec89d737d35d56" name="aa9c7804ec840db95b4ec89d737d35d56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9c7804ec840db95b4ec89d737d35d56">&#9670;&#160;</a></span>assign()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -166,29 +190,31 @@ Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void LinearSolveParameters::assign_parameters </td>
+          <td class="memname">void LinearSolveParameters::assign </td>
           <td>(</td>
           <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval">5</span>&#160;)</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>n_subsections</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespaceNumbers.html#a02636074a0888f7a252ed9ece2013bba">Numbers::default_subsections</a></span>&#160;)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Assign the parameters read from an input file to this object. </p>
+<p>Assign the parameters from file. </p>
+
+<p>Implements <a class="el" href="structParameterBase.html#a93bbbfb45132d61dade54cb605bfda1c">ParameterBase</a>.</p>
 
 </div>
 </div>
-<a id="ab781f43157fc9b24c0c9b6e4904cfcba" name="ab781f43157fc9b24c0c9b6e4904cfcba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab781f43157fc9b24c0c9b6e4904cfcba">&#9670;&#160;</a></span>declare_parameters()</h2>
+<a id="ac886617f9647361fee28d8a3df84fd98" name="ac886617f9647361fee28d8a3df84fd98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac886617f9647361fee28d8a3df84fd98">&#9670;&#160;</a></span>declare()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -197,56 +223,29 @@ Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void LinearSolveParameters::declare_parameters </td>
+          <td class="memname">void LinearSolveParameters::declare </td>
           <td>(</td>
           <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval">5</span>&#160;) const</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>n_subsections</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespaceNumbers.html#a02636074a0888f7a252ed9ece2013bba">Numbers::default_subsections</a></span>&#160;)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Declare the parameters to be read from an input file. </p>
+<p>Declare the parameters to be read from file. </p>
 
 </div>
 </div>
-<a id="ab17d374849a9c2d5596de791fd8b25fb" name="ab17d374849a9c2d5596de791fd8b25fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab17d374849a9c2d5596de791fd8b25fb">&#9670;&#160;</a></span>print_parameter_summary()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LinearSolveParameters::print_parameter_summary </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Print parameters to summary.log. </p>
-
-</div>
-</div>
-<a id="a1d5d938fc56fdfe107cbdc30fb0ec27c" name="a1d5d938fc56fdfe107cbdc30fb0ec27c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d5d938fc56fdfe107cbdc30fb0ec27c">&#9670;&#160;</a></span>validate()</h2>
+<a id="a3094b5d28b2531d7e3725b002bca395d" name="a3094b5d28b2531d7e3725b002bca395d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3094b5d28b2531d7e3725b002bca395d">&#9670;&#160;</a></span>validate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -257,18 +256,24 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">void LinearSolveParameters::validate </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>field_attributes</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>solve_blocks</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Postprocess and validate parameters. </p>
+<p>Validate. </p>
+
+<p>Implements <a class="el" href="structParameterBase.html#a1967bf667dad1f49dbcb0e914a81e363">ParameterBase</a>.</p>
 
 </div>
 </div>
@@ -287,8 +292,9 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li>include/prismspf/user_inputs/<a class="el" href="linear__solve__parameters_8h_source.html">linear_solve_parameters.h</a></li>
+<hr/>The documentation for this struct was generated from the following files:<ul>
+<li>include/prismspf/user_inputs/<a class="el" href="solve__parameters_8h_source.html">solve_parameters.h</a></li>
+<li>src/user_inputs/<a class="el" href="solve__parameters_8cc.html">solve_parameters.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

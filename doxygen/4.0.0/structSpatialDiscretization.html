@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=11" />
   <meta name="generator" content="Doxygen 1.13.2" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PRISMS-PF Manual: SpatialDiscretization&lt; dim &gt; Struct Template Reference</title>
+  <title>PRISMS-PF Manual: SpatialDiscretization&lt; dim &gt; Class Template Reference</title>
   <link href="tabs.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="jquery.js"></script>
   <script type="text/javascript" src="dynsections.js"></script>
@@ -121,10 +121,12 @@ $(function(){initNavTree('structSpatialDiscretization.html',''); initResizable(t
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structSpatialDiscretization-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">SpatialDiscretization&lt; dim &gt; Struct Template Reference</div></div>
+  <div class="headertitle"><div class="title">SpatialDiscretization&lt; dim &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -132,37 +134,83 @@ $(function(){initNavTree('structSpatialDiscretization.html',''); initResizable(t
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="spatial__discretization_8h_source.html">spatial_discretization.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SpatialDiscretization&lt; dim &gt;:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structSpatialDiscretization__inherit__graph.svg" width="267" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for SpatialDiscretization&lt; dim &gt;:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structSpatialDiscretization__coll__graph.svg" width="267" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:ad4945958cad9c065e6c1c0df0d63ce77" id="r_ad4945958cad9c065e6c1c0df0d63ce77"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4945958cad9c065e6c1c0df0d63ce77">Triangulation</a> = typename <a class="el" href="structMesh.html">Mesh</a>&lt;dim&gt;::Triangulation</td></tr>
+<tr class="separator:ad4945958cad9c065e6c1c0df0d63ce77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afcb82b50f54ed9a6609d8332f4242e1d" id="r_afcb82b50f54ed9a6609d8332f4242e1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afcb82b50f54ed9a6609d8332f4242e1d">print_parameter_summary</a> () const</td></tr>
-<tr class="memdesc:afcb82b50f54ed9a6609d8332f4242e1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log.  <br /></td></tr>
-<tr class="separator:afcb82b50f54ed9a6609d8332f4242e1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b3af6772b0cf43ff9aba658871edb28" id="r_a6b3af6772b0cf43ff9aba658871edb28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b3af6772b0cf43ff9aba658871edb28">validate</a> ()</td></tr>
-<tr class="memdesc:a6b3af6772b0cf43ff9aba658871edb28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate.  <br /></td></tr>
-<tr class="separator:a6b3af6772b0cf43ff9aba658871edb28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71cb8697a3dcf9dc3afd37c0132bc586" id="r_a71cb8697a3dcf9dc3afd37c0132bc586"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71cb8697a3dcf9dc3afd37c0132bc586">assign</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int n_subsections=<a class="el" href="namespaceNumbers.html#a02636074a0888f7a252ed9ece2013bba">Numbers::default_subsections</a>) override</td></tr>
+<tr class="memdesc:a71cb8697a3dcf9dc3afd37c0132bc586"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters from file.  <br /></td></tr>
+<tr class="separator:a71cb8697a3dcf9dc3afd37c0132bc586"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74e024a55c65e655ddb5e919a9fc5b7f" id="r_a74e024a55c65e655ddb5e919a9fc5b7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a74e024a55c65e655ddb5e919a9fc5b7f">validate</a> (const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;field_attributes, const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;solve_blocks) const override</td></tr>
+<tr class="memdesc:a74e024a55c65e655ddb5e919a9fc5b7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate.  <br /></td></tr>
+<tr class="separator:a74e024a55c65e655ddb5e919a9fc5b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5180c855ad20a6684f561b5365a6dca3" id="r_a5180c855ad20a6684f561b5365a6dca3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5180c855ad20a6684f561b5365a6dca3">generate_mesh</a> (<a class="el" href="#ad4945958cad9c065e6c1c0df0d63ce77">Triangulation</a> &amp;triangulation) const override</td></tr>
+<tr class="memdesc:a5180c855ad20a6684f561b5365a6dca3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the mesh.  <br /></td></tr>
+<tr class="separator:a5180c855ad20a6684f561b5365a6dca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a808d8ce805463844269b633012e3d16b" id="r_a808d8ce805463844269b633012e3d16b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a808d8ce805463844269b633012e3d16b">mark_boundaries</a> (<a class="el" href="#ad4945958cad9c065e6c1c0df0d63ce77">Triangulation</a> &amp;triangulation) const override</td></tr>
+<tr class="memdesc:a808d8ce805463844269b633012e3d16b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the boundaries of the mesh.  <br /></td></tr>
+<tr class="separator:a808d8ce805463844269b633012e3d16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab031b46e6f5acf13e075f26468377d74" id="r_ab031b46e6f5acf13e075f26468377d74"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="structPeriodicPair.html">PeriodicPair</a>&lt; dim &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab031b46e6f5acf13e075f26468377d74">periodicity_set</a> () const override</td></tr>
+<tr class="memdesc:ab031b46e6f5acf13e075f26468377d74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Periodicity set.  <br /></td></tr>
+<tr class="separator:ab031b46e6f5acf13e075f26468377d74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2defe5844e5e9ea6ff5ba659f57e618" id="r_ae2defe5844e5e9ea6ff5ba659f57e618"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2defe5844e5e9ea6ff5ba659f57e618">distance</a> (const dealii::Point&lt; dim &gt; &amp;point_1, const dealii::Point&lt; dim &gt; &amp;point_2) const override</td></tr>
+<tr class="memdesc:ae2defe5844e5e9ea6ff5ba659f57e618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculation the distance between two points considering periodic boundaries.  <br /></td></tr>
+<tr class="separator:ae2defe5844e5e9ea6ff5ba659f57e618"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a436247532d16319a4f2d86a7553885a3" id="r_a436247532d16319a4f2d86a7553885a3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structMesh.html">Mesh</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a436247532d16319a4f2d86a7553885a3">get_mesh</a> () const</td></tr>
+<tr class="memdesc:a436247532d16319a4f2d86a7553885a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mesh object.  <br /></td></tr>
+<tr class="separator:a436247532d16319a4f2d86a7553885a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c25c964617960743baafe536f2817d4" id="r_a8c25c964617960743baafe536f2817d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMesh.html">Mesh</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c25c964617960743baafe536f2817d4">get_mesh</a> ()</td></tr>
+<tr class="memdesc:a8c25c964617960743baafe536f2817d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mesh object.  <br /></td></tr>
+<tr class="separator:a8c25c964617960743baafe536f2817d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb46608c90654b84560721fe15f48b4a" id="r_abb46608c90654b84560721fe15f48b4a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb46608c90654b84560721fe15f48b4a">should_refine_mesh</a> (unsigned int increment) const</td></tr>
 <tr class="memdesc:abb46608c90654b84560721fe15f48b4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the provided increment is a valid grid refinement step.  <br /></td></tr>
 <tr class="separator:abb46608c90654b84560721fe15f48b4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa8c018a28300598461fde6310701e8c" id="r_aaa8c018a28300598461fde6310701e8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa8c018a28300598461fde6310701e8c">declare_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5) const</td></tr>
-<tr class="memdesc:aaa8c018a28300598461fde6310701e8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare the parameters to be read from an input file.  <br /></td></tr>
-<tr class="separator:aaa8c018a28300598461fde6310701e8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6cb55398a3da6ce4263cf047cf20916" id="r_ac6cb55398a3da6ce4263cf047cf20916"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6cb55398a3da6ce4263cf047cf20916">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5)</td></tr>
-<tr class="memdesc:ac6cb55398a3da6ce4263cf047cf20916"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters read from an input file to this object.  <br /></td></tr>
-<tr class="separator:ac6cb55398a3da6ce4263cf047cf20916"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structParameterBase"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_structParameterBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structParameterBase.html">ParameterBase</a></td></tr>
+<tr class="memitem:a138be4e7c8934cbb3f89608aaecdea20 inherit pub_methods_structParameterBase" id="r_a138be4e7c8934cbb3f89608aaecdea20"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structParameterBase.html#a138be4e7c8934cbb3f89608aaecdea20">ParameterBase</a> ()=default</td></tr>
+<tr class="separator:a138be4e7c8934cbb3f89608aaecdea20 inherit pub_methods_structParameterBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d78afb61695c9ead31fd3fff44d5b94 inherit pub_methods_structParameterBase" id="r_a6d78afb61695c9ead31fd3fff44d5b94"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structParameterBase.html#a6d78afb61695c9ead31fd3fff44d5b94">~ParameterBase</a> ()=default</td></tr>
+<tr class="separator:a6d78afb61695c9ead31fd3fff44d5b94 inherit pub_methods_structParameterBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2571a6f8ca13d1435b6459e5bfea734 inherit pub_methods_structParameterBase" id="r_ae2571a6f8ca13d1435b6459e5bfea734"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structParameterBase.html#ae2571a6f8ca13d1435b6459e5bfea734">ParameterBase</a> (const <a class="el" href="structParameterBase.html">ParameterBase</a> &amp;)=default</td></tr>
+<tr class="separator:ae2571a6f8ca13d1435b6459e5bfea734 inherit pub_methods_structParameterBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab40af2d561f4dd870220285708c13acc inherit pub_methods_structParameterBase" id="r_ab40af2d561f4dd870220285708c13acc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structParameterBase.html#ab40af2d561f4dd870220285708c13acc">ParameterBase</a> (<a class="el" href="structParameterBase.html">ParameterBase</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:ab40af2d561f4dd870220285708c13acc inherit pub_methods_structParameterBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed0f74de08ce50217aec3ca80b612b1c inherit pub_methods_structParameterBase" id="r_aed0f74de08ce50217aec3ca80b612b1c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structParameterBase.html">ParameterBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structParameterBase.html#aed0f74de08ce50217aec3ca80b612b1c">operator=</a> (const <a class="el" href="structParameterBase.html">ParameterBase</a> &amp;)=default</td></tr>
+<tr class="separator:aed0f74de08ce50217aec3ca80b612b1c inherit pub_methods_structParameterBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5606cbf5d1836784bdeccefd6535244 inherit pub_methods_structParameterBase" id="r_ab5606cbf5d1836784bdeccefd6535244"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structParameterBase.html">ParameterBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structParameterBase.html#ab5606cbf5d1836784bdeccefd6535244">operator=</a> (<a class="el" href="structParameterBase.html">ParameterBase</a> &amp;&amp;)=default</td></tr>
+<tr class="separator:ab5606cbf5d1836784bdeccefd6535244 inherit pub_methods_structParameterBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a024bd404c5113f2770a6b514b6969fe8" id="r_a024bd404c5113f2770a6b514b6969fe8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a024bd404c5113f2770a6b514b6969fe8">declare</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int n_subsections=<a class="el" href="namespaceNumbers.html#a02636074a0888f7a252ed9ece2013bba">Numbers::default_subsections</a>)</td></tr>
+<tr class="memdesc:a024bd404c5113f2770a6b514b6969fe8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare the parameters to be read from file.  <br /></td></tr>
+<tr class="separator:a024bd404c5113f2770a6b514b6969fe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a1da92dca8feba69b1ccb3bb6695798eb" id="r_a1da92dca8feba69b1ccb3bb6695798eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="spatial__discretization_8h.html#aa998d1d441b49d044cf53118328c0db3">TriangulationType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1da92dca8feba69b1ccb3bb6695798eb">type</a> = <a class="el" href="spatial__discretization_8h.html#aa998d1d441b49d044cf53118328c0db3a9fa2a6092938e2d9e3e23954ae550873">TriangulationType::Rectangular</a></td></tr>
-<tr class="separator:a1da92dca8feba69b1ccb3bb6695798eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a541b801440a70c5d82675533c8b2e283" id="r_a541b801440a70c5d82675533c8b2e283"><td class="memItemLeft" align="right" valign="top"><a class="el" href="spatial__discretization_8h.html#aa998d1d441b49d044cf53118328c0db3">TriangulationType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a541b801440a70c5d82675533c8b2e283">mesh_type</a> = <a class="el" href="spatial__discretization_8h.html#aa998d1d441b49d044cf53118328c0db3a9fa2a6092938e2d9e3e23954ae550873">TriangulationType::Rectangular</a></td></tr>
+<tr class="separator:a541b801440a70c5d82675533c8b2e283"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c922cba91a622eae21f194453a5d35d" id="r_a2c922cba91a622eae21f194453a5d35d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRectangularMesh.html">RectangularMesh</a>&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c922cba91a622eae21f194453a5d35d">rectangular_mesh</a></td></tr>
 <tr class="separator:a2c922cba91a622eae21f194453a5d35d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a740e02a72ea3555c243d78e522168927" id="r_a740e02a72ea3555c243d78e522168927"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSphericalMesh.html">SphericalMesh</a>&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a740e02a72ea3555c243d78e522168927">spherical_mesh</a></td></tr>
 <tr class="separator:a740e02a72ea3555c243d78e522168927"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae13c5c2b504118752fc57968be19d390" id="r_ae13c5c2b504118752fc57968be19d390"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structMesh.html">Mesh</a>&lt; dim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae13c5c2b504118752fc57968be19d390">custom_mesh</a> = nullptr</td></tr>
+<tr class="separator:ae13c5c2b504118752fc57968be19d390"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab84bf855e1c8453c2dcd01350cf607e2" id="r_ab84bf855e1c8453c2dcd01350cf607e2"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab84bf855e1c8453c2dcd01350cf607e2">global_refinement</a> = 0</td></tr>
 <tr class="separator:ab84bf855e1c8453c2dcd01350cf607e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1856ceb654034be5a9b667b98e735c43" id="r_a1856ceb654034be5a9b667b98e735c43"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1856ceb654034be5a9b667b98e735c43">degree</a> = 1</td></tr>
-<tr class="separator:a1856ceb654034be5a9b667b98e735c43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4c43c35aa366aec39c2a2d2ac80c2d6" id="r_ad4c43c35aa366aec39c2a2d2ac80c2d6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4c43c35aa366aec39c2a2d2ac80c2d6">has_adaptivity</a> = false</td></tr>
 <tr class="separator:ad4c43c35aa366aec39c2a2d2ac80c2d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac94c81900825941c185e9bbb91783699" id="r_ac94c81900825941c185e9bbb91783699"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac94c81900825941c185e9bbb91783699">max_refinement</a> = 0</td></tr>
@@ -173,13 +221,61 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ab4a2abd7611162024c251d1980e01320"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6af0aee24a304d5a0a73819aefe16b52" id="r_a6af0aee24a304d5a0a73819aefe16b52"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, <a class="el" href="structRefinementCriterion.html">RefinementCriterion</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6af0aee24a304d5a0a73819aefe16b52">refinement_criteria</a></td></tr>
 <tr class="separator:a6af0aee24a304d5a0a73819aefe16b52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_structMesh"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_structMesh')"><img src="closed.png" alt="-"/>&#160;Private Types inherited from <a class="el" href="structMesh.html">Mesh&lt; dim &gt;</a></td></tr>
+<tr class="memitem:aeb49288743226761e65753ce8fe6f076 inherit pub_types_structMesh" id="r_aeb49288743226761e65753ce8fe6f076"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMesh.html#aeb49288743226761e65753ce8fe6f076">Triangulation</a></td></tr>
+<tr class="separator:aeb49288743226761e65753ce8fe6f076 inherit pub_types_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structMesh"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_structMesh')"><img src="closed.png" alt="-"/>&#160;Private Member Functions inherited from <a class="el" href="structMesh.html">Mesh&lt; dim &gt;</a></td></tr>
+<tr class="memitem:ae25ebef6af2022a6a13fca216b75d18e inherit pub_methods_structMesh" id="r_ae25ebef6af2022a6a13fca216b75d18e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMesh.html#ae25ebef6af2022a6a13fca216b75d18e">Mesh</a> ()=default</td></tr>
+<tr class="memdesc:ae25ebef6af2022a6a13fca216b75d18e inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
+<tr class="separator:ae25ebef6af2022a6a13fca216b75d18e inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4fe700cbfb53b19b7f7a583396c27c8 inherit pub_methods_structMesh" id="r_af4fe700cbfb53b19b7f7a583396c27c8"><td class="memTemplParams" colspan="2">template&lt;typename real1, typename real2&gt; </td></tr>
+<tr class="memitem:af4fe700cbfb53b19b7f7a583396c27c8 inherit pub_methods_structMesh"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structMesh.html#af4fe700cbfb53b19b7f7a583396c27c8">distance</a> (const dealii::Point&lt; dim, real1 &gt; &amp;point_1, const dealii::Point&lt; dim, real2 &gt; &amp;point_2) const</td></tr>
+<tr class="memdesc:af4fe700cbfb53b19b7f7a583396c27c8 inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculation the distance between two points considering periodic boundaries.  <br /></td></tr>
+<tr class="separator:af4fe700cbfb53b19b7f7a583396c27c8 inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4425659779d196d39d53946e9b44186 inherit pub_methods_structMesh" id="r_ac4425659779d196d39d53946e9b44186"><td class="memTemplParams" colspan="2">template&lt;typename real1&gt; </td></tr>
+<tr class="memitem:ac4425659779d196d39d53946e9b44186 inherit pub_methods_structMesh"><td class="memTemplItemLeft" align="right" valign="top">dealii::VectorizedArray&lt; real1 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structMesh.html#ac4425659779d196d39d53946e9b44186">distance</a> (const dealii::Point&lt; dim, dealii::VectorizedArray&lt; real1 &gt; &gt; &amp;point_1, const dealii::Point&lt; dim, dealii::VectorizedArray&lt; real1 &gt; &gt; &amp;point_2) const</td></tr>
+<tr class="memdesc:ac4425659779d196d39d53946e9b44186 inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculation the distance between two points considering periodic boundaries.  <br /></td></tr>
+<tr class="separator:ac4425659779d196d39d53946e9b44186 inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad09ee8f928a39ccbcb7c1090cf22cc06 inherit pub_methods_structMesh" id="r_ad09ee8f928a39ccbcb7c1090cf22cc06"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMesh.html#ad09ee8f928a39ccbcb7c1090cf22cc06">validate</a> () const</td></tr>
+<tr class="memdesc:ad09ee8f928a39ccbcb7c1090cf22cc06 inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate.  <br /></td></tr>
+<tr class="separator:ad09ee8f928a39ccbcb7c1090cf22cc06 inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54e3632cc68d8563b23ee76e99b5005c inherit pub_methods_structMesh" id="r_a54e3632cc68d8563b23ee76e99b5005c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMesh.html#a54e3632cc68d8563b23ee76e99b5005c">mark_periodic</a> (<a class="el" href="structMesh.html#aeb49288743226761e65753ce8fe6f076">Triangulation</a> &amp;triangulation) const</td></tr>
+<tr class="memdesc:a54e3632cc68d8563b23ee76e99b5005c inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the periodic faces of the mesh.  <br /></td></tr>
+<tr class="separator:a54e3632cc68d8563b23ee76e99b5005c inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1fdc5ad5d452790743782ee4034d175 inherit pub_methods_structMesh" id="r_ab1fdc5ad5d452790743782ee4034d175"><td class="memTemplParams" colspan="2">template&lt;typename number&gt; </td></tr>
+<tr class="memitem:ab1fdc5ad5d452790743782ee4034d175 inherit pub_methods_structMesh"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structMesh.html#ab1fdc5ad5d452790743782ee4034d175">mark_periodic</a> (const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, dealii::AffineConstraints&lt; number &gt; &amp;constraints) const</td></tr>
+<tr class="memdesc:ab1fdc5ad5d452790743782ee4034d175 inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the periodic faces of the mesh.  <br /></td></tr>
+<tr class="separator:ab1fdc5ad5d452790743782ee4034d175 inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab019130a611de5ee97a30fb628c2cb7b inherit pub_methods_structMesh" id="r_ab019130a611de5ee97a30fb628c2cb7b"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim&gt; </td></tr>
+<tr class="memitem:ab019130a611de5ee97a30fb628c2cb7b inherit pub_methods_structMesh"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structMesh.html#ab019130a611de5ee97a30fb628c2cb7b">mark_periodic</a> (typename <a class="el" href="structMesh.html">Mesh</a>&lt; dim &gt;<a class="el" href="structMesh.html#aeb49288743226761e65753ce8fe6f076">::Triangulation</a> &amp;triangulation) const</td></tr>
+<tr class="separator:ab019130a611de5ee97a30fb628c2cb7b inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim&gt;<br />
-struct SpatialDiscretization&lt; dim &gt;</div><p>Struct that holds spatial discretization parameters. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac6cb55398a3da6ce4263cf047cf20916" name="ac6cb55398a3da6ce4263cf047cf20916"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6cb55398a3da6ce4263cf047cf20916">&#9670;&#160;</a></span>assign_parameters()</h2>
+class SpatialDiscretization&lt; dim &gt;</div><p>Struct that holds spatial discretization parameters. </p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="ad4945958cad9c065e6c1c0df0d63ce77" name="ad4945958cad9c065e6c1c0df0d63ce77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4945958cad9c065e6c1c0df0d63ce77">&#9670;&#160;</a></span>Triangulation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::Triangulation = typename <a class="el" href="structMesh.html">Mesh</a>&lt;dim&gt;::Triangulation</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a71cb8697a3dcf9dc3afd37c0132bc586" name="a71cb8697a3dcf9dc3afd37c0132bc586"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71cb8697a3dcf9dc3afd37c0132bc586">&#9670;&#160;</a></span>assign()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,29 +286,31 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::assign_parameters </td>
+          <td class="memname">void <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::assign </td>
           <td>(</td>
           <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval">5</span>&#160;)</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>n_subsections</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespaceNumbers.html#a02636074a0888f7a252ed9ece2013bba">Numbers::default_subsections</a></span>&#160;)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Assign the parameters read from an input file to this object. </p>
+<p>Assign the parameters from file. </p>
+
+<p>Implements <a class="el" href="structParameterBase.html#a93bbbfb45132d61dade54cb605bfda1c">ParameterBase</a>.</p>
 
 </div>
 </div>
-<a id="aaa8c018a28300598461fde6310701e8c" name="aaa8c018a28300598461fde6310701e8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa8c018a28300598461fde6310701e8c">&#9670;&#160;</a></span>declare_parameters()</h2>
+<a id="a024bd404c5113f2770a6b514b6969fe8" name="a024bd404c5113f2770a6b514b6969fe8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a024bd404c5113f2770a6b514b6969fe8">&#9670;&#160;</a></span>declare()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -223,29 +321,29 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::declare_parameters </td>
+          <td class="memname">void <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::declare </td>
           <td>(</td>
           <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval">5</span>&#160;) const</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>n_subsections</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespaceNumbers.html#a02636074a0888f7a252ed9ece2013bba">Numbers::default_subsections</a></span>&#160;)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Declare the parameters to be read from an input file. </p>
+<p>Declare the parameters to be read from file. </p>
 
 </div>
 </div>
-<a id="afcb82b50f54ed9a6609d8332f4242e1d" name="afcb82b50f54ed9a6609d8332f4242e1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcb82b50f54ed9a6609d8332f4242e1d">&#9670;&#160;</a></span>print_parameter_summary()</h2>
+<a id="ae2defe5844e5e9ea6ff5ba659f57e618" name="ae2defe5844e5e9ea6ff5ba659f57e618"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2defe5844e5e9ea6ff5ba659f57e618">&#9670;&#160;</a></span>distance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -256,7 +354,146 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::print_parameter_summary </td>
+          <td class="memname">double <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::distance </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Point&lt; dim &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>point_1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::Point&lt; dim &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>point_2</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calculation the distance between two points considering periodic boundaries. </p>
+
+<p>Reimplemented from <a class="el" href="structMesh.html#acaab476d5c208323a8170f480e3bf76a">Mesh&lt; dim &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a5180c855ad20a6684f561b5365a6dca3" name="a5180c855ad20a6684f561b5365a6dca3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5180c855ad20a6684f561b5365a6dca3">&#9670;&#160;</a></span>generate_mesh()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::generate_mesh </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#ad4945958cad9c065e6c1c0df0d63ce77">Triangulation</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>triangulation</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Generate the mesh. </p>
+
+<p>Implements <a class="el" href="structMesh.html#aa4a06a51f4e87c49c92e4c99fcbdcee4">Mesh&lt; dim &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a8c25c964617960743baafe536f2817d4" name="a8c25c964617960743baafe536f2817d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c25c964617960743baafe536f2817d4">&#9670;&#160;</a></span>get_mesh() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structMesh.html">Mesh</a>&lt; dim &gt; &amp; <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::get_mesh </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the mesh object. </p>
+
+</div>
+</div>
+<a id="a436247532d16319a4f2d86a7553885a3" name="a436247532d16319a4f2d86a7553885a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a436247532d16319a4f2d86a7553885a3">&#9670;&#160;</a></span>get_mesh() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structMesh.html">Mesh</a>&lt; dim &gt; &amp; <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::get_mesh </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the mesh object. </p>
+
+</div>
+</div>
+<a id="a808d8ce805463844269b633012e3d16b" name="a808d8ce805463844269b633012e3d16b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a808d8ce805463844269b633012e3d16b">&#9670;&#160;</a></span>mark_boundaries()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::mark_boundaries </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#ad4945958cad9c065e6c1c0df0d63ce77">Triangulation</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>triangulation</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mark the boundaries of the mesh. </p>
+
+<p>Reimplemented from <a class="el" href="structMesh.html#a72ff292e383269f5ecf731d08a7ce979">Mesh&lt; dim &gt;</a>.</p>
+
+</div>
+</div>
+<a id="ab031b46e6f5acf13e075f26468377d74" name="ab031b46e6f5acf13e075f26468377d74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab031b46e6f5acf13e075f26468377d74">&#9670;&#160;</a></span>periodicity_set()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::list&lt; <a class="el" href="structPeriodicPair.html">PeriodicPair</a>&lt; dim &gt; &gt; <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::periodicity_set </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -264,12 +501,15 @@ template&lt;unsigned int dim&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Print parameters to summary.log. </p>
+<p>Periodicity set. </p>
+<p>This set contains all the information about periodicity for the system. Each entry contain tuple with three entries: the first boundary id, the second boundary id, and the direction. </p>
+
+<p>Reimplemented from <a class="el" href="structMesh.html#a1061d787966f24fee58a5fd511c14f78">Mesh&lt; dim &gt;</a>.</p>
 
 </div>
 </div>
@@ -293,7 +533,7 @@ template&lt;unsigned int dim&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -302,8 +542,8 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="a6b3af6772b0cf43ff9aba658871edb28" name="a6b3af6772b0cf43ff9aba658871edb28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b3af6772b0cf43ff9aba658871edb28">&#9670;&#160;</a></span>validate()</h2>
+<a id="a74e024a55c65e655ddb5e919a9fc5b7f" name="a74e024a55c65e655ddb5e919a9fc5b7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74e024a55c65e655ddb5e919a9fc5b7f">&#9670;&#160;</a></span>validate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -316,24 +556,30 @@ template&lt;unsigned int dim&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::validate </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>field_attributes</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>solve_blocks</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Validate. </p>
 
+<p>Implements <a class="el" href="structParameterBase.html#a1967bf667dad1f49dbcb0e914a81e363">ParameterBase</a>.</p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a1856ceb654034be5a9b667b98e735c43" name="a1856ceb654034be5a9b667b98e735c43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1856ceb654034be5a9b667b98e735c43">&#9670;&#160;</a></span>degree</h2>
+<a id="ae13c5c2b504118752fc57968be19d390" name="ae13c5c2b504118752fc57968be19d390"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae13c5c2b504118752fc57968be19d390">&#9670;&#160;</a></span>custom_mesh</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -341,7 +587,7 @@ template&lt;unsigned int dim&gt; </div>
 template&lt;unsigned int dim&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::degree = 1</td>
+          <td class="memname"><a class="el" href="structMesh.html">Mesh</a>&lt;dim&gt;* <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::custom_mesh = nullptr</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -390,6 +636,22 @@ template&lt;unsigned int dim&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">unsigned int <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::max_refinement = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a541b801440a70c5d82675533c8b2e283" name="a541b801440a70c5d82675533c8b2e283"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a541b801440a70c5d82675533c8b2e283">&#9670;&#160;</a></span>mesh_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="spatial__discretization_8h.html#aa998d1d441b49d044cf53118328c0db3">TriangulationType</a> <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::mesh_type = <a class="el" href="spatial__discretization_8h.html#aa998d1d441b49d044cf53118328c0db3a9fa2a6092938e2d9e3e23954ae550873">TriangulationType::Rectangular</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -476,25 +738,10 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="a1da92dca8feba69b1ccb3bb6695798eb" name="a1da92dca8feba69b1ccb3bb6695798eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1da92dca8feba69b1ccb3bb6695798eb">&#9670;&#160;</a></span>type</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="spatial__discretization_8h.html#aa998d1d441b49d044cf53118328c0db3">TriangulationType</a> <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::type = <a class="el" href="spatial__discretization_8h.html#aa998d1d441b49d044cf53118328c0db3a9fa2a6092938e2d9e3e23954ae550873">TriangulationType::Rectangular</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<hr/>The documentation for this struct was generated from the following files:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/prismspf/core/<a class="el" href="initial__conditions_8h_source.html">initial_conditions.h</a></li>
 <li>include/prismspf/user_inputs/<a class="el" href="spatial__discretization_8h_source.html">spatial_discretization.h</a></li>
+<li>src/user_inputs/<a class="el" href="spatial__discretization_8cc.html">spatial_discretization.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

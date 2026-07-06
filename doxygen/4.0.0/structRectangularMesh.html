@@ -121,7 +121,9 @@ $(function(){initNavTree('structRectangularMesh.html',''); initResizable(true); 
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structRectangularMesh-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">RectangularMesh&lt; dim &gt; Struct Template Reference</div></div>
@@ -132,42 +134,90 @@ $(function(){initNavTree('structRectangularMesh.html',''); initResizable(true); 
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="spatial__discretization_8h_source.html">spatial_discretization.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for RectangularMesh&lt; dim &gt;:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structRectangularMesh__inherit__graph.svg" width="200" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for RectangularMesh&lt; dim &gt;:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structRectangularMesh__coll__graph.svg" width="200" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a42ea1781af37eb5310326a1d30f6aa03" id="r_a42ea1781af37eb5310326a1d30f6aa03"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a42ea1781af37eb5310326a1d30f6aa03">Triangulation</a> = typename <a class="el" href="structMesh.html">Mesh</a>&lt;dim&gt;::Triangulation</td></tr>
+<tr class="separator:a42ea1781af37eb5310326a1d30f6aa03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_structMesh"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_structMesh')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="structMesh.html">Mesh&lt; dim &gt;</a></td></tr>
+<tr class="memitem:aeb49288743226761e65753ce8fe6f076 inherit pub_types_structMesh" id="r_aeb49288743226761e65753ce8fe6f076"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMesh.html#aeb49288743226761e65753ce8fe6f076">Triangulation</a></td></tr>
+<tr class="separator:aeb49288743226761e65753ce8fe6f076 inherit pub_types_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac67b7b4b89f8c29f84b711365cb84ea9" id="r_ac67b7b4b89f8c29f84b711365cb84ea9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac67b7b4b89f8c29f84b711365cb84ea9">RectangularMesh</a> ()=default</td></tr>
 <tr class="memdesc:ac67b7b4b89f8c29f84b711365cb84ea9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:ac67b7b4b89f8c29f84b711365cb84ea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a138ca09db6d51d64e8fa8f49ddc95ca1" id="r_a138ca09db6d51d64e8fa8f49ddc95ca1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a138ca09db6d51d64e8fa8f49ddc95ca1">RectangularMesh</a> (dealii::Tensor&lt; 1, dim, double &gt; _size, dealii::Tensor&lt; 1, dim, double &gt; _lower_bound, std::array&lt; unsigned int, dim &gt; _subdivisions)</td></tr>
-<tr class="memdesc:a138ca09db6d51d64e8fa8f49ddc95ca1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
-<tr class="separator:a138ca09db6d51d64e8fa8f49ddc95ca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d4cf98b6277c0806a84c07b77029311" id="r_a6d4cf98b6277c0806a84c07b77029311"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d4cf98b6277c0806a84c07b77029311">generate_mesh</a> (<a class="el" href="spatial__discretization_8h.html#a958a4485bfc1253dd633ebd0a338eed4">Triangulation</a>&lt; dim &gt; &amp;triangulation) const</td></tr>
-<tr class="memdesc:a6d4cf98b6277c0806a84c07b77029311"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the mesh.  <br /></td></tr>
-<tr class="separator:a6d4cf98b6277c0806a84c07b77029311"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add59062977ecad3c744ca1e7968c2fba" id="r_add59062977ecad3c744ca1e7968c2fba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#add59062977ecad3c744ca1e7968c2fba">validate</a> () const</td></tr>
-<tr class="memdesc:add59062977ecad3c744ca1e7968c2fba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate.  <br /></td></tr>
-<tr class="separator:add59062977ecad3c744ca1e7968c2fba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27dbdacf5965a876095e3a66bb1f7aba" id="r_a27dbdacf5965a876095e3a66bb1f7aba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a27dbdacf5965a876095e3a66bb1f7aba">mark_boundaries</a> (<a class="el" href="spatial__discretization_8h.html#a958a4485bfc1253dd633ebd0a338eed4">Triangulation</a>&lt; dim &gt; &amp;triangulation) const</td></tr>
-<tr class="memdesc:a27dbdacf5965a876095e3a66bb1f7aba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the boundaries of the mesh.  <br /></td></tr>
-<tr class="separator:a27dbdacf5965a876095e3a66bb1f7aba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1239e45b673843dd168d6c79e7f401eb" id="r_a1239e45b673843dd168d6c79e7f401eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1239e45b673843dd168d6c79e7f401eb">mark_periodic</a> (<a class="el" href="spatial__discretization_8h.html#a958a4485bfc1253dd633ebd0a338eed4">Triangulation</a>&lt; dim &gt; &amp;triangulation) const</td></tr>
-<tr class="memdesc:a1239e45b673843dd168d6c79e7f401eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the periodic faces of the mesh.  <br /></td></tr>
-<tr class="separator:a1239e45b673843dd168d6c79e7f401eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab62ed6e8849833ebcbc04f4053ef805a" id="r_ab62ed6e8849833ebcbc04f4053ef805a"><td class="memTemplParams" colspan="2">template&lt;typename MeshType&gt; </td></tr>
-<tr class="memitem:ab62ed6e8849833ebcbc04f4053ef805a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab62ed6e8849833ebcbc04f4053ef805a">collect_periodic_faces</a> (const MeshType &amp;triangulation, std::vector&lt; dealii::GridTools::PeriodicFacePair&lt; typename MeshType::cell_iterator &gt; &gt; &amp;periodicity_vector) const</td></tr>
-<tr class="memdesc:ab62ed6e8849833ebcbc04f4053ef805a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the periodic face pairs.  <br /></td></tr>
-<tr class="separator:ab62ed6e8849833ebcbc04f4053ef805a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a148911db79df182d7105ba1afa23ce3a" id="r_a148911db79df182d7105ba1afa23ce3a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a148911db79df182d7105ba1afa23ce3a">RectangularMesh</a> (dealii::Tensor&lt; 1, dim, double &gt; _size, dealii::Tensor&lt; 1, dim, double &gt; _lower_bound, std::vector&lt; unsigned int &gt; _subdivisions)</td></tr>
+<tr class="memdesc:a148911db79df182d7105ba1afa23ce3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
+<tr class="separator:a148911db79df182d7105ba1afa23ce3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac822c1d5606f785033a70f124b8bf563" id="r_ac822c1d5606f785033a70f124b8bf563"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac822c1d5606f785033a70f124b8bf563">generate_mesh</a> (<a class="el" href="#a42ea1781af37eb5310326a1d30f6aa03">Triangulation</a> &amp;triangulation) const override</td></tr>
+<tr class="memdesc:ac822c1d5606f785033a70f124b8bf563"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the mesh.  <br /></td></tr>
+<tr class="separator:ac822c1d5606f785033a70f124b8bf563"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adab40ac45b287ba95010d2d98e7b12bb" id="r_adab40ac45b287ba95010d2d98e7b12bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adab40ac45b287ba95010d2d98e7b12bb">mark_boundaries</a> (<a class="el" href="#a42ea1781af37eb5310326a1d30f6aa03">Triangulation</a> &amp;triangulation) const override</td></tr>
+<tr class="memdesc:adab40ac45b287ba95010d2d98e7b12bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the boundaries of the mesh.  <br /></td></tr>
+<tr class="separator:adab40ac45b287ba95010d2d98e7b12bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72443fbcf531f7fb6417c915b9f51d11" id="r_a72443fbcf531f7fb6417c915b9f51d11"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="structPeriodicPair.html">PeriodicPair</a>&lt; dim &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72443fbcf531f7fb6417c915b9f51d11">periodicity_set</a> () const override</td></tr>
+<tr class="memdesc:a72443fbcf531f7fb6417c915b9f51d11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Periodicity set.  <br /></td></tr>
+<tr class="separator:a72443fbcf531f7fb6417c915b9f51d11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b18263a63d96b2375dca222022a7430" id="r_a6b18263a63d96b2375dca222022a7430"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b18263a63d96b2375dca222022a7430">distance</a> (const dealii::Point&lt; dim &gt; &amp;point_1, const dealii::Point&lt; dim &gt; &amp;point_2) const override</td></tr>
+<tr class="memdesc:a6b18263a63d96b2375dca222022a7430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculation the distance between two points considering periodic boundaries.  <br /></td></tr>
+<tr class="separator:a6b18263a63d96b2375dca222022a7430"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f3f9c5fe6ac39b4bbbe27ccb79b230b" id="r_a3f3f9c5fe6ac39b4bbbe27ccb79b230b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f3f9c5fe6ac39b4bbbe27ccb79b230b">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
+<tr class="memdesc:a3f3f9c5fe6ac39b4bbbe27ccb79b230b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters read from an input file to this object.  <br /></td></tr>
+<tr class="separator:a3f3f9c5fe6ac39b4bbbe27ccb79b230b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37b20d1daeb54fedce1c5b7aed26d9ae" id="r_a37b20d1daeb54fedce1c5b7aed26d9ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37b20d1daeb54fedce1c5b7aed26d9ae">validate</a> () const override</td></tr>
+<tr class="memdesc:a37b20d1daeb54fedce1c5b7aed26d9ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate.  <br /></td></tr>
+<tr class="separator:a37b20d1daeb54fedce1c5b7aed26d9ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structMesh"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_structMesh')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structMesh.html">Mesh&lt; dim &gt;</a></td></tr>
+<tr class="memitem:ae25ebef6af2022a6a13fca216b75d18e inherit pub_methods_structMesh" id="r_ae25ebef6af2022a6a13fca216b75d18e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMesh.html#ae25ebef6af2022a6a13fca216b75d18e">Mesh</a> ()=default</td></tr>
+<tr class="memdesc:ae25ebef6af2022a6a13fca216b75d18e inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
+<tr class="separator:ae25ebef6af2022a6a13fca216b75d18e inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4fe700cbfb53b19b7f7a583396c27c8 inherit pub_methods_structMesh" id="r_af4fe700cbfb53b19b7f7a583396c27c8"><td class="memTemplParams" colspan="2">template&lt;typename real1, typename real2&gt; </td></tr>
+<tr class="memitem:af4fe700cbfb53b19b7f7a583396c27c8 inherit pub_methods_structMesh"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structMesh.html#af4fe700cbfb53b19b7f7a583396c27c8">distance</a> (const dealii::Point&lt; dim, real1 &gt; &amp;point_1, const dealii::Point&lt; dim, real2 &gt; &amp;point_2) const</td></tr>
+<tr class="memdesc:af4fe700cbfb53b19b7f7a583396c27c8 inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculation the distance between two points considering periodic boundaries.  <br /></td></tr>
+<tr class="separator:af4fe700cbfb53b19b7f7a583396c27c8 inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4425659779d196d39d53946e9b44186 inherit pub_methods_structMesh" id="r_ac4425659779d196d39d53946e9b44186"><td class="memTemplParams" colspan="2">template&lt;typename real1&gt; </td></tr>
+<tr class="memitem:ac4425659779d196d39d53946e9b44186 inherit pub_methods_structMesh"><td class="memTemplItemLeft" align="right" valign="top">dealii::VectorizedArray&lt; real1 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structMesh.html#ac4425659779d196d39d53946e9b44186">distance</a> (const dealii::Point&lt; dim, dealii::VectorizedArray&lt; real1 &gt; &gt; &amp;point_1, const dealii::Point&lt; dim, dealii::VectorizedArray&lt; real1 &gt; &gt; &amp;point_2) const</td></tr>
+<tr class="memdesc:ac4425659779d196d39d53946e9b44186 inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculation the distance between two points considering periodic boundaries.  <br /></td></tr>
+<tr class="separator:ac4425659779d196d39d53946e9b44186 inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54e3632cc68d8563b23ee76e99b5005c inherit pub_methods_structMesh" id="r_a54e3632cc68d8563b23ee76e99b5005c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMesh.html#a54e3632cc68d8563b23ee76e99b5005c">mark_periodic</a> (<a class="el" href="structMesh.html#aeb49288743226761e65753ce8fe6f076">Triangulation</a> &amp;triangulation) const</td></tr>
+<tr class="memdesc:a54e3632cc68d8563b23ee76e99b5005c inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the periodic faces of the mesh.  <br /></td></tr>
+<tr class="separator:a54e3632cc68d8563b23ee76e99b5005c inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1fdc5ad5d452790743782ee4034d175 inherit pub_methods_structMesh" id="r_ab1fdc5ad5d452790743782ee4034d175"><td class="memTemplParams" colspan="2">template&lt;typename number&gt; </td></tr>
+<tr class="memitem:ab1fdc5ad5d452790743782ee4034d175 inherit pub_methods_structMesh"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structMesh.html#ab1fdc5ad5d452790743782ee4034d175">mark_periodic</a> (const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, dealii::AffineConstraints&lt; number &gt; &amp;constraints) const</td></tr>
+<tr class="memdesc:ab1fdc5ad5d452790743782ee4034d175 inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the periodic faces of the mesh.  <br /></td></tr>
+<tr class="separator:ab1fdc5ad5d452790743782ee4034d175 inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab019130a611de5ee97a30fb628c2cb7b inherit pub_methods_structMesh" id="r_ab019130a611de5ee97a30fb628c2cb7b"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim&gt; </td></tr>
+<tr class="memitem:ab019130a611de5ee97a30fb628c2cb7b inherit pub_methods_structMesh"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structMesh.html#ab019130a611de5ee97a30fb628c2cb7b">mark_periodic</a> (typename <a class="el" href="structMesh.html">Mesh</a>&lt; dim &gt;<a class="el" href="structMesh.html#aeb49288743226761e65753ce8fe6f076">::Triangulation</a> &amp;triangulation) const</td></tr>
+<tr class="separator:ab019130a611de5ee97a30fb628c2cb7b inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a69044357cf9742224f9d2cc15cfa8426" id="r_a69044357cf9742224f9d2cc15cfa8426"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69044357cf9742224f9d2cc15cfa8426">declare_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
+<tr class="memdesc:a69044357cf9742224f9d2cc15cfa8426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare the parameters to be read from an input file.  <br /></td></tr>
+<tr class="separator:a69044357cf9742224f9d2cc15cfa8426"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a5794eebe958cd7c4a737b83bfcf63db9" id="r_a5794eebe958cd7c4a737b83bfcf63db9"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 1, dim, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5794eebe958cd7c4a737b83bfcf63db9">size</a></td></tr>
-<tr class="memdesc:a5794eebe958cd7c4a737b83bfcf63db9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Domain extents in each cartesian direction.  <br /></td></tr>
+<tr class="memdesc:a5794eebe958cd7c4a737b83bfcf63db9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Upper bound point.  <br /></td></tr>
 <tr class="separator:a5794eebe958cd7c4a737b83bfcf63db9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d9983893c8ed8dfaf90845075906d39" id="r_a2d9983893c8ed8dfaf90845075906d39"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 1, dim, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d9983893c8ed8dfaf90845075906d39">lower_bound</a></td></tr>
-<tr class="memdesc:a2d9983893c8ed8dfaf90845075906d39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Domain extents in each cartesian direction.  <br /></td></tr>
+<tr class="memdesc:a2d9983893c8ed8dfaf90845075906d39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lower bound point.  <br /></td></tr>
 <tr class="separator:a2d9983893c8ed8dfaf90845075906d39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d1a902c46696c76ba014245003d279e" id="r_a8d1a902c46696c76ba014245003d279e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d1a902c46696c76ba014245003d279e">subdivisions</a> = std::vector&lt;unsigned int&gt;(dim, 1)</td></tr>
-<tr class="memdesc:a8d1a902c46696c76ba014245003d279e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mesh subdivisions in each cartesian direction.  <br /></td></tr>
+<tr class="memdesc:a8d1a902c46696c76ba014245003d279e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structMesh.html" title="Triangulation base class.">Mesh</a> subdivisions in each cartesian direction.  <br /></td></tr>
 <tr class="separator:a8d1a902c46696c76ba014245003d279e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83e44eff521a0ff235ae14f0924ed587" id="r_a83e44eff521a0ff235ae14f0924ed587"><td class="memItemLeft" align="right" valign="top">std::set&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83e44eff521a0ff235ae14f0924ed587">periodic_directions</a></td></tr>
 <tr class="memdesc:a83e44eff521a0ff235ae14f0924ed587"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which directions have periodic conditions.  <br /></td></tr>
@@ -176,7 +226,24 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim&gt;<br />
 struct RectangularMesh&lt; dim &gt;</div><p>Class for rectangular mesh parameters. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a42ea1781af37eb5310326a1d30f6aa03" name="a42ea1781af37eb5310326a1d30f6aa03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42ea1781af37eb5310326a1d30f6aa03">&#9670;&#160;</a></span>Triangulation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="structRectangularMesh.html">RectangularMesh</a>&lt; dim &gt;::Triangulation = typename <a class="el" href="structMesh.html">Mesh</a>&lt;dim&gt;::Triangulation</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac67b7b4b89f8c29f84b711365cb84ea9" name="ac67b7b4b89f8c29f84b711365cb84ea9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac67b7b4b89f8c29f84b711365cb84ea9">&#9670;&#160;</a></span>RectangularMesh() <span class="overload">[1/2]</span></h2>
 
@@ -206,16 +273,13 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="a138ca09db6d51d64e8fa8f49ddc95ca1" name="a138ca09db6d51d64e8fa8f49ddc95ca1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a138ca09db6d51d64e8fa8f49ddc95ca1">&#9670;&#160;</a></span>RectangularMesh() <span class="overload">[2/2]</span></h2>
+<a id="a148911db79df182d7105ba1afa23ce3a" name="a148911db79df182d7105ba1afa23ce3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a148911db79df182d7105ba1afa23ce3a">&#9670;&#160;</a></span>RectangularMesh() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structRectangularMesh.html">RectangularMesh</a>&lt; dim &gt;<a class="el" href="structRectangularMesh.html">::RectangularMesh</a> </td>
@@ -230,14 +294,9 @@ template&lt;unsigned int dim&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::array&lt; unsigned int, dim &gt;</td>          <td class="paramname"><span class="paramname"><em>_subdivisions</em></span>&#160;)</td>
+          <td class="paramtype">std::vector&lt; unsigned int &gt;</td>          <td class="paramname"><span class="paramname"><em>_subdivisions</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Constructor. </p>
@@ -245,43 +304,93 @@ template&lt;unsigned int dim&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab62ed6e8849833ebcbc04f4053ef805a" name="ab62ed6e8849833ebcbc04f4053ef805a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab62ed6e8849833ebcbc04f4053ef805a">&#9670;&#160;</a></span>collect_periodic_faces()</h2>
+<a id="a3f3f9c5fe6ac39b4bbbe27ccb79b230b" name="a3f3f9c5fe6ac39b4bbbe27ccb79b230b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f3f9c5fe6ac39b4bbbe27ccb79b230b">&#9670;&#160;</a></span>assign_parameters()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structRectangularMesh.html">RectangularMesh</a>&lt; dim &gt;::assign_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Assign the parameters read from an input file to this object. </p>
+
+</div>
+</div>
+<a id="a69044357cf9742224f9d2cc15cfa8426" name="a69044357cf9742224f9d2cc15cfa8426"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69044357cf9742224f9d2cc15cfa8426">&#9670;&#160;</a></span>declare_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
 <div class="memtemplate">
-template&lt;typename MeshType&gt; </div>
+template&lt;unsigned int dim&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="structRectangularMesh.html">RectangularMesh</a>&lt; dim &gt;::collect_periodic_faces </td>
+          <td class="memname">void <a class="el" href="structRectangularMesh.html">RectangularMesh</a>&lt; dim &gt;::declare_parameters </td>
           <td>(</td>
-          <td class="paramtype">const MeshType &amp;</td>          <td class="paramname"><span class="paramname"><em>triangulation</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">std::vector&lt; dealii::GridTools::PeriodicFacePair&lt; typename MeshType::cell_iterator &gt; &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>periodicity_vector</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Get the periodic face pairs. </p>
+<p>Declare the parameters to be read from an input file. </p>
 
 </div>
 </div>
-<a id="a6d4cf98b6277c0806a84c07b77029311" name="a6d4cf98b6277c0806a84c07b77029311"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d4cf98b6277c0806a84c07b77029311">&#9670;&#160;</a></span>generate_mesh()</h2>
+<a id="a6b18263a63d96b2375dca222022a7430" name="a6b18263a63d96b2375dca222022a7430"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b18263a63d96b2375dca222022a7430">&#9670;&#160;</a></span>distance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="structRectangularMesh.html">RectangularMesh</a>&lt; dim &gt;::distance </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Point&lt; dim &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>point_1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::Point&lt; dim &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>point_2</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calculation the distance between two points considering periodic boundaries. </p>
+
+<p>Reimplemented from <a class="el" href="structMesh.html#acaab476d5c208323a8170f480e3bf76a">Mesh&lt; dim &gt;</a>.</p>
+
+</div>
+</div>
+<a id="ac822c1d5606f785033a70f124b8bf563" name="ac822c1d5606f785033a70f124b8bf563"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac822c1d5606f785033a70f124b8bf563">&#9670;&#160;</a></span>generate_mesh()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -294,23 +403,25 @@ template&lt;unsigned int dim&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="structRectangularMesh.html">RectangularMesh</a>&lt; dim &gt;::generate_mesh </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="spatial__discretization_8h.html#a958a4485bfc1253dd633ebd0a338eed4">Triangulation</a>&lt; dim &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>triangulation</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="#a42ea1781af37eb5310326a1d30f6aa03">Triangulation</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>triangulation</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Generate the mesh. </p>
 
+<p>Implements <a class="el" href="structMesh.html#aa4a06a51f4e87c49c92e4c99fcbdcee4">Mesh&lt; dim &gt;</a>.</p>
+
 </div>
 </div>
-<a id="a27dbdacf5965a876095e3a66bb1f7aba" name="a27dbdacf5965a876095e3a66bb1f7aba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27dbdacf5965a876095e3a66bb1f7aba">&#9670;&#160;</a></span>mark_boundaries()</h2>
+<a id="adab40ac45b287ba95010d2d98e7b12bb" name="adab40ac45b287ba95010d2d98e7b12bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adab40ac45b287ba95010d2d98e7b12bb">&#9670;&#160;</a></span>mark_boundaries()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -323,23 +434,25 @@ template&lt;unsigned int dim&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="structRectangularMesh.html">RectangularMesh</a>&lt; dim &gt;::mark_boundaries </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="spatial__discretization_8h.html#a958a4485bfc1253dd633ebd0a338eed4">Triangulation</a>&lt; dim &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>triangulation</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="#a42ea1781af37eb5310326a1d30f6aa03">Triangulation</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>triangulation</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Mark the boundaries of the mesh. </p>
 
+<p>Reimplemented from <a class="el" href="structMesh.html#a72ff292e383269f5ecf731d08a7ce979">Mesh&lt; dim &gt;</a>.</p>
+
 </div>
 </div>
-<a id="a1239e45b673843dd168d6c79e7f401eb" name="a1239e45b673843dd168d6c79e7f401eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1239e45b673843dd168d6c79e7f401eb">&#9670;&#160;</a></span>mark_periodic()</h2>
+<a id="a72443fbcf531f7fb6417c915b9f51d11" name="a72443fbcf531f7fb6417c915b9f51d11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72443fbcf531f7fb6417c915b9f51d11">&#9670;&#160;</a></span>periodicity_set()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -350,25 +463,28 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="structRectangularMesh.html">RectangularMesh</a>&lt; dim &gt;::mark_periodic </td>
+          <td class="memname">std::list&lt; <a class="el" href="structPeriodicPair.html">PeriodicPair</a>&lt; dim &gt; &gt; <a class="el" href="structRectangularMesh.html">RectangularMesh</a>&lt; dim &gt;::periodicity_set </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="spatial__discretization_8h.html#a958a4485bfc1253dd633ebd0a338eed4">Triangulation</a>&lt; dim &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>triangulation</em></span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Mark the periodic faces of the mesh. </p>
+<p>Periodicity set. </p>
+<p>This set contains all the information about periodicity for the system. Each entry contain tuple with three entries: the first boundary id, the second boundary id, and the direction. </p>
+
+<p>Reimplemented from <a class="el" href="structMesh.html#a1061d787966f24fee58a5fd511c14f78">Mesh&lt; dim &gt;</a>.</p>
 
 </div>
 </div>
-<a id="add59062977ecad3c744ca1e7968c2fba" name="add59062977ecad3c744ca1e7968c2fba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add59062977ecad3c744ca1e7968c2fba">&#9670;&#160;</a></span>validate()</h2>
+<a id="a37b20d1daeb54fedce1c5b7aed26d9ae" name="a37b20d1daeb54fedce1c5b7aed26d9ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37b20d1daeb54fedce1c5b7aed26d9ae">&#9670;&#160;</a></span>validate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -387,12 +503,14 @@ template&lt;unsigned int dim&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Validate. </p>
+
+<p>Reimplemented from <a class="el" href="structMesh.html#ad09ee8f928a39ccbcb7c1090cf22cc06">Mesh&lt; dim &gt;</a>.</p>
 
 </div>
 </div>
@@ -411,7 +529,7 @@ template&lt;unsigned int dim&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Domain extents in each cartesian direction. </p>
+<p>Lower bound point. </p>
 
 </div>
 </div>
@@ -447,7 +565,7 @@ template&lt;unsigned int dim&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Domain extents in each cartesian direction. </p>
+<p>Upper bound point. </p>
 
 </div>
 </div>
@@ -465,12 +583,13 @@ template&lt;unsigned int dim&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Mesh subdivisions in each cartesian direction. </p>
+<p><a class="el" href="structMesh.html" title="Triangulation base class.">Mesh</a> subdivisions in each cartesian direction. </p>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<hr/>The documentation for this struct was generated from the following files:<ul>
 <li>include/prismspf/user_inputs/<a class="el" href="spatial__discretization_8h_source.html">spatial_discretization.h</a></li>
+<li>src/user_inputs/<a class="el" href="spatial__discretization_8cc.html">spatial_discretization.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,11 +1,12 @@
 var structTemporalDiscretization =
 [
-    [ "TemporalDiscretization", "structTemporalDiscretization.html#ac16ce380c093e25bf24a57397b98721b", null ],
-    [ "TemporalDiscretization", "structTemporalDiscretization.html#a95c375da58dd972a05883942ab6f9577", null ],
-    [ "assign_parameters", "structTemporalDiscretization.html#a394e4f1566a2b421c80837d920d4700e", null ],
-    [ "declare_parameters", "structTemporalDiscretization.html#ad1a5784268bcdc6dfc6c159f586d375b", null ],
-    [ "print_parameter_summary", "structTemporalDiscretization.html#aed1cf3ad555ab888b7244eacfe681523", null ],
-    [ "validate", "structTemporalDiscretization.html#a198927e1a8ff1477f3e5c1c90b86cfed", null ],
+    [ "TemporalDiscretization", "structTemporalDiscretization.html#a906711b9c5b1d9d91fb8f4821508c090", null ],
+    [ "TemporalDiscretization", "structTemporalDiscretization.html#a1a53cc38d06481d1115ca44f7688d63d", null ],
+    [ "TemporalDiscretization", "structTemporalDiscretization.html#ab5e7e0ebe3b3ad521cf52d8c1781d118", null ],
+    [ "assign", "structTemporalDiscretization.html#a6bf1560d291c99f4535c6f23a927724b", null ],
+    [ "declare", "structTemporalDiscretization.html#a7268f28f9c3e218c6ccd663153276409", null ],
+    [ "validate", "structTemporalDiscretization.html#aa871d8b141d3b9134fb6abd37423bc50", null ],
     [ "dt", "structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a", null ],
-    [ "num_increments", "structTemporalDiscretization.html#a2d4a12f2f905c541c80c6d3e2d74ec54", null ]
+    [ "initial_time", "structTemporalDiscretization.html#a2c9ebaecc801c754ce3a6a93ea49858f", null ],
+    [ "n_increments", "structTemporalDiscretization.html#aa83a8c15296e6a0c4cf736d50437e3ce", null ]
 ];

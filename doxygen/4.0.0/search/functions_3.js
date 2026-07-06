@@ -1,18 +1,16 @@
 var searchData=
 [
-  ['dealii_5fpoint_5fto_5fvector_0',['dealii_point_to_vector',['../utilities_8h.html#a6900a956ef14d53b30c0616e7cf7b930',1,'utilities.h']]],
-  ['declare_1',['declare',['../classFieldOutputParameterLoader.html#ae8ea8155ea7ac810df389f8be3bdc38f',1,'FieldOutputParameterLoader']]],
-  ['declare_5fparameters_2',['declare_parameters',['../structCheckpointParameters.html#a24d2bef9244140f69ada261d87d34989',1,'CheckpointParameters::declare_parameters()'],['../structBoundaryParameters.html#a1410586849f51b1bae533e76a068a890',1,'BoundaryParameters::declare_parameters()'],['../structLinearSolveParameters.html#ab781f43157fc9b24c0c9b6e4904cfcba',1,'LinearSolveParameters::declare_parameters()'],['../structLoadInitialConditionParameters.html#aa1f7f162999237040330d8347e2afbee',1,'LoadInitialConditionParameters::declare_parameters()'],['../structMiscellaneousParameters.html#a971433e469bd1bf02279c6bdd7bbca5c',1,'MiscellaneousParameters::declare_parameters()'],['../structNonlinearSolveParameterSet.html#a9c2e04654c4e1030b586672cd61a6b38',1,'NonlinearSolveParameterSet::declare_parameters()'],['../structNucleationParameters.html#a6ec72af9b167758dc751ff1e04da4e22',1,'NucleationParameters::declare_parameters()'],['../structOutputParameters.html#a3a2f4de77f281045102449b7d4872ba6',1,'OutputParameters::declare_parameters()'],['../structSpatialDiscretization.html#aaa8c018a28300598461fde6310701e8c',1,'SpatialDiscretization::declare_parameters()'],['../structTemporalDiscretization.html#ad1a5784268bcdc6dfc6c159f586d375b',1,'TemporalDiscretization::declare_parameters()'],['../classUserConstants.html#aa908a9ccd10476dd68f8bdb31eda8b9c',1,'UserConstants::declare_parameters()'],['../classUserInputParameters.html#ac3ffbf81d4daeabf6cb0d9f80d7cef2f',1,'UserInputParameters::declare_parameters()']]],
-  ['declexception1_3',['DeclException1',['../exceptions_8h.html#af272af578fc89a269c2755b84af53962',1,'exceptions.h']]],
-  ['declexception2_4',['DeclException2',['../exceptions_8h.html#ab27ff3a391d6de427c4c5317b62999a8',1,'exceptions.h']]],
-  ['declexceptionmsg_5',['DeclExceptionMsg',['../exceptions_8h.html#a8d86451113c706c6d08508cfafc6380f',1,'exceptions.h']]],
-  ['dependency_6',['Dependency',['../structDependency.html#af015f2c8b73a0e5a176b02a2b1f231da',1,'Dependency']]],
-  ['dependencyextents_7',['DependencyExtents',['../structDependencyExtents.html#addc3abb2dd1bf40f40e514881a6bcdf4',1,'DependencyExtents']]],
-  ['dirichletconditions_8',['DirichletConditions',['../classDirichletConditions.html#ab2609373ef68e576ae27d2b8549495fb',1,'DirichletConditions']]],
-  ['distance_9',['distance',['../periodic__distance_8h.html#a5fefe05fa81a5af6e87566a0d0480f6c',1,'periodic_distance.h']]],
-  ['distribute_10',['distribute',['../structFieldContainer_1_1FEEValuationDeps.html#a521e594067ddf6046a68e3a680be8830',1,'FieldContainer::FEEValuationDeps::distribute()'],['../classFieldContainer.html#a8803244d8760a67917e9dca2e2d5cabc',1,'FieldContainer::distribute(BlockVector&lt; number &gt; *dst_solutions)'],['../classFieldContainer.html#a120b0d31daa135eb751580b857b71ed8',1,'FieldContainer::distribute(unsigned int field_index, BlockVector&lt; number &gt; *dst_solutions)']]],
-  ['do_5fadaptive_5frefinement_11',['do_adaptive_refinement',['../classRefinementManager.html#ad221d9f1b0aaa271133993a31be5f344',1,'RefinementManager']]],
-  ['do_5finitial_5frefinement_12',['do_initial_refinement',['../classRefinementManager.html#ad09c4dc590452fac3ce2dfa0c1313a3c',1,'RefinementManager']]],
-  ['do_5flinear_5fsolve_13',['do_linear_solve',['../classLinearSolver.html#a5546aff1cd68fade625bbdaf22cc8724',1,'LinearSolver']]],
-  ['dofmanager_14',['DoFManager',['../classDoFManager.html#a6893a207746e57c9b8719199e22a82a9',1,'DoFManager::DoFManager()=default'],['../classDoFManager.html#a0aef68f1480180a71ad697e090d728a3',1,'DoFManager::DoFManager(const DoFManager &amp;)=delete'],['../classDoFManager.html#a28323004ed5f363ae72f4a88151c76fd',1,'DoFManager::DoFManager(const DoFManager &amp;&amp;)=delete']]]
+  ['el_0',['el',['../classMFOperator.html#af39bdaf8d61e5a1fa5c6c820394f1fb5',1,'MFOperator']]],
+  ['end_5fsection_1',['end_section',['../classTimer.html#ae1dc504d4bd75188b95693a4951149fd',1,'Timer']]],
+  ['erf_2',['erf',['../namespacestd.html#a67a0ce2e48b26df9dd8b7e209dc94cd6',1,'std']]],
+  ['erfc_3',['erfc',['../namespacestd.html#aaa800855aade4d1dc4ff77d813317481',1,'std']]],
+  ['eval_4',['eval',['../structFieldContainer_1_1FEEValuationDeps.html#aaa63fe2b7e9813f6260f3da42f043d5f',1,'FieldContainer::FEEValuationDeps::eval()'],['../classFieldContainer.html#a20646399c475e3b70c027d8eb405c92b',1,'FieldContainer::eval()']]],
+  ['eval_5fmatrix_5fdiagonal_5',['eval_matrix_diagonal',['../classMFOperator.html#a741a6cdfe435ae604e95a158fdc2eaa7',1,'MFOperator']]],
+  ['eval_5fwithout_5fread_6',['eval_without_read',['../structFieldContainer_1_1FEEValuationDeps.html#a099f6ad6a91be23eb433a180cb716bfc',1,'FieldContainer::FEEValuationDeps::eval_without_read()'],['../classFieldContainer.html#aacd72c89e902e2047c657bfbf742cf7f',1,'FieldContainer::eval_without_read()']]],
+  ['excdepnotinitialized_7',['ExcDepNotInitialized',['../classExcDepNotInitialized.html#a3b008c8fbd3f8fbe8e243b3ca839083d',1,'ExcDepNotInitialized']]],
+  ['excnan_8',['ExcNaN',['../classExcNaN.html#ad119b3218a8031bbd92d96b319bcab1e',1,'ExcNaN']]],
+  ['execute_5fgrid_5frefinement_9',['execute_grid_refinement',['../classTriangulationManager.html#a7bb857b9b31d0c8ff36a42281190f84a',1,'TriangulationManager']]],
+  ['execute_5fsolution_5ftransfer_10',['execute_solution_transfer',['../classGroupSolutionHandler.html#aab67ca948ec1e0d3d0f53c645878a5ab',1,'GroupSolutionHandler::execute_solution_transfer()'],['../classSolverBase.html#a014e7fc567c422256eb895622a82c875',1,'SolverBase::execute_solution_transfer()']]],
+  ['explicitsolver_11',['ExplicitSolver',['../classExplicitSolver.html#a7b1568d7be5ce26453a262bd81e19064',1,'ExplicitSolver']]],
+  ['export_5ftriangulation_5fas_5fvtk_12',['export_triangulation_as_vtk',['../classTriangulationManager.html#aa2ab608f86964043ab3ec2a13ab06c6f',1,'TriangulationManager']]]
 ];

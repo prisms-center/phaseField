@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['userconstants_0',['UserConstants',['../classUserConstants.html',1,'']]],
-  ['userinputparameters_1',['UserInputParameters',['../classUserInputParameters.html',1,'']]]
+  ['variantprinter_0',['VariantPrinter',['../classUserConstants_1_1VariantPrinter.html',1,'UserConstants']]]
 ];

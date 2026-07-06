@@ -121,41 +121,80 @@ $(function(){initNavTree('structInitialConditionFile.html',''); initResizable(tr
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structInitialConditionFile-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">InitialConditionFile Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Struct that store the read-in information for a single file.  
+<p>Initial condition file.  
  <a href="#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="load__initial__condition__parameters_8h_source.html">load_initial_condition_parameters.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="io__parameters_8h_source.html">io_parameters.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a496111adfcaaf6f5f2ba3dfa3ded8fd8" id="r_a496111adfcaaf6f5f2ba3dfa3ded8fd8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a496111adfcaaf6f5f2ba3dfa3ded8fd8">DataFormatType</a> : std::uint8_t { <br />
+&#160;&#160;<a class="el" href="#a496111adfcaaf6f5f2ba3dfa3ded8fd8a98292b57b5f89f02a67fa6eb21b18fac">FlatBinary</a>
+, <a class="el" href="#a496111adfcaaf6f5f2ba3dfa3ded8fd8aedfa203df5b961810494e668614f8c9b">VTKUnstructuredGrid</a>
+, <a class="el" href="#a496111adfcaaf6f5f2ba3dfa3ded8fd8aa478ece98a13ef2b2499ae0c51fb0192">VTKXMLUnstructuredGrid</a>
+, <a class="el" href="#a496111adfcaaf6f5f2ba3dfa3ded8fd8a341efcfad2b3398c1bd30a50611984fb">VTKPXMLUnstructuredGrid</a>
+, <br />
+&#160;&#160;<a class="el" href="#a496111adfcaaf6f5f2ba3dfa3ded8fd8a245263e01516722fdf524dfe109ff937">VTKXMLImageData</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:a496111adfcaaf6f5f2ba3dfa3ded8fd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data formats for input initial conditions.  <a href="#a496111adfcaaf6f5f2ba3dfa3ded8fd8">More...</a><br /></td></tr>
+<tr class="separator:a496111adfcaaf6f5f2ba3dfa3ded8fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ac5f3a08a6606a305cc633cf150c891f5" id="r_ac5f3a08a6606a305cc633cf150c891f5"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5f3a08a6606a305cc633cf150c891f5">filename</a></td></tr>
-<tr class="separator:ac5f3a08a6606a305cc633cf150c891f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac22979950186aee16fe98b2d06632262" id="r_ac22979950186aee16fe98b2d06632262"><td class="memItemLeft" align="right" valign="top"><a class="el" href="type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768">DataFormatType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac22979950186aee16fe98b2d06632262">dataset_format</a></td></tr>
-<tr class="separator:ac22979950186aee16fe98b2d06632262"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a513ea241c71a115e54a9dda54a83765a" id="r_a513ea241c71a115e54a9dda54a83765a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a513ea241c71a115e54a9dda54a83765a">file_name</a></td></tr>
+<tr class="separator:a513ea241c71a115e54a9dda54a83765a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2359ea131696e39515d60df0dd241208" id="r_a2359ea131696e39515d60df0dd241208"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a496111adfcaaf6f5f2ba3dfa3ded8fd8">DataFormatType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2359ea131696e39515d60df0dd241208">format</a></td></tr>
+<tr class="separator:a2359ea131696e39515d60df0dd241208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e94b523e7ae1d5d49aee48768997338" id="r_a2e94b523e7ae1d5d49aee48768997338"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e94b523e7ae1d5d49aee48768997338">file_variable_names</a></td></tr>
 <tr class="separator:a2e94b523e7ae1d5d49aee48768997338"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1085d0ad3f23744df264a18ee789f0c9" id="r_a1085d0ad3f23744df264a18ee789f0c9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1085d0ad3f23744df264a18ee789f0c9">simulation_variable_names</a></td></tr>
 <tr class="separator:a1085d0ad3f23744df264a18ee789f0c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e2ff0ebb97ba5ba6cda2acf9eea3da1" id="r_a2e2ff0ebb97ba5ba6cda2acf9eea3da1"><td class="memItemLeft" align="right" valign="top">std::array&lt; dealii::types::global_dof_index, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e2ff0ebb97ba5ba6cda2acf9eea3da1">n_data_points</a></td></tr>
-<tr class="separator:a2e2ff0ebb97ba5ba6cda2acf9eea3da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbb5d18e39e5911f4ec777efe2e54863" id="r_afbb5d18e39e5911f4ec777efe2e54863"><td class="memItemLeft" align="right" valign="top">std::array&lt; unsigned int, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afbb5d18e39e5911f4ec777efe2e54863">n_data_points</a></td></tr>
+<tr class="separator:afbb5d18e39e5911f4ec777efe2e54863"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Struct that store the read-in information for a single file. </p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="ac22979950186aee16fe98b2d06632262" name="ac22979950186aee16fe98b2d06632262"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac22979950186aee16fe98b2d06632262">&#9670;&#160;</a></span>dataset_format</h2>
+<div class="textblock"><p>Initial condition file. </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a496111adfcaaf6f5f2ba3dfa3ded8fd8" name="a496111adfcaaf6f5f2ba3dfa3ded8fd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a496111adfcaaf6f5f2ba3dfa3ded8fd8">&#9670;&#160;</a></span>DataFormatType</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768">DataFormatType</a> InitialConditionFile::dataset_format</td>
+          <td class="memname">enum <a class="el" href="#a496111adfcaaf6f5f2ba3dfa3ded8fd8">InitialConditionFile::DataFormatType</a> : std::uint8_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Data formats for input initial conditions. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a496111adfcaaf6f5f2ba3dfa3ded8fd8a98292b57b5f89f02a67fa6eb21b18fac" name="a496111adfcaaf6f5f2ba3dfa3ded8fd8a98292b57b5f89f02a67fa6eb21b18fac"></a>FlatBinary&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a496111adfcaaf6f5f2ba3dfa3ded8fd8aedfa203df5b961810494e668614f8c9b" name="a496111adfcaaf6f5f2ba3dfa3ded8fd8aedfa203df5b961810494e668614f8c9b"></a>VTKUnstructuredGrid&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a496111adfcaaf6f5f2ba3dfa3ded8fd8aa478ece98a13ef2b2499ae0c51fb0192" name="a496111adfcaaf6f5f2ba3dfa3ded8fd8aa478ece98a13ef2b2499ae0c51fb0192"></a>VTKXMLUnstructuredGrid&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a496111adfcaaf6f5f2ba3dfa3ded8fd8a341efcfad2b3398c1bd30a50611984fb" name="a496111adfcaaf6f5f2ba3dfa3ded8fd8a341efcfad2b3398c1bd30a50611984fb"></a>VTKPXMLUnstructuredGrid&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a496111adfcaaf6f5f2ba3dfa3ded8fd8a245263e01516722fdf524dfe109ff937" name="a496111adfcaaf6f5f2ba3dfa3ded8fd8a245263e01516722fdf524dfe109ff937"></a>VTKXMLImageData&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a513ea241c71a115e54a9dda54a83765a" name="a513ea241c71a115e54a9dda54a83765a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a513ea241c71a115e54a9dda54a83765a">&#9670;&#160;</a></span>file_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string InitialConditionFile::file_name</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -176,28 +215,28 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac5f3a08a6606a305cc633cf150c891f5" name="ac5f3a08a6606a305cc633cf150c891f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5f3a08a6606a305cc633cf150c891f5">&#9670;&#160;</a></span>filename</h2>
+<a id="a2359ea131696e39515d60df0dd241208" name="a2359ea131696e39515d60df0dd241208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2359ea131696e39515d60df0dd241208">&#9670;&#160;</a></span>format</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string InitialConditionFile::filename</td>
+          <td class="memname"><a class="el" href="#a496111adfcaaf6f5f2ba3dfa3ded8fd8">DataFormatType</a> InitialConditionFile::format</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a2e2ff0ebb97ba5ba6cda2acf9eea3da1" name="a2e2ff0ebb97ba5ba6cda2acf9eea3da1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e2ff0ebb97ba5ba6cda2acf9eea3da1">&#9670;&#160;</a></span>n_data_points</h2>
+<a id="afbb5d18e39e5911f4ec777efe2e54863" name="afbb5d18e39e5911f4ec777efe2e54863"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbb5d18e39e5911f4ec777efe2e54863">&#9670;&#160;</a></span>n_data_points</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::array&lt;dealii::types::global_dof_index, 3&gt; InitialConditionFile::n_data_points</td>
+          <td class="memname">std::array&lt;unsigned int, 3&gt; InitialConditionFile::n_data_points</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -222,7 +261,7 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>include/prismspf/user_inputs/<a class="el" href="load__initial__condition__parameters_8h_source.html">load_initial_condition_parameters.h</a></li>
+<li>include/prismspf/user_inputs/<a class="el" href="io__parameters_8h_source.html">io_parameters.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

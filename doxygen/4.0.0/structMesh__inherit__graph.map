@@ -1,0 +1,9 @@
+<map id="Mesh&lt; dim &gt;" name="Mesh&lt; dim &gt;">
+<area shape="rect" id="Node000001" title="Triangulation base class." alt="" coords="242,5,353,33"/>
+<area shape="rect" id="Node000002" href="$structRectangularMesh.html" title="Class for rectangular mesh parameters." alt="" coords="5,90,195,117"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="253,42,133,91,131,86,251,37"/>
+<area shape="rect" id="Node000003" href="$structSpatialDiscretization.html" title="Struct that holds spatial discretization parameters." alt="" coords="219,81,376,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="300,49,300,80,295,80,295,49"/>
+<area shape="rect" id="Node000004" href="$structSphericalMesh.html" title="Class for spherical mesh parameters." alt="" coords="400,90,571,117"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="342,37,456,86,454,91,340,42"/>
+</map>

@@ -121,6 +121,7 @@ $(function(){initNavTree('classTriangulationManager.html',''); initResizable(tru
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classTriangulationManager-members.html">List of all members</a>  </div>
@@ -133,6 +134,11 @@ $(function(){initNavTree('classTriangulationManager.html',''); initResizable(tru
 
 <p><code>#include &lt;<a class="el" href="triangulation__manager_8h_source.html">triangulation_manager.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a8f58fb575869ef56223db5e6f19b6606" id="r_a8f58fb575869ef56223db5e6f19b6606"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f58fb575869ef56223db5e6f19b6606">Triangulation</a> = typename <a class="el" href="structMesh.html">Mesh</a>&lt;dim&gt;::Triangulation</td></tr>
+<tr class="separator:a8f58fb575869ef56223db5e6f19b6606"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad673ff106cea0aacb0a43e5d41bf0b20" id="r_ad673ff106cea0aacb0a43e5d41bf0b20"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad673ff106cea0aacb0a43e5d41bf0b20">TriangulationManager</a> ()</td></tr>
@@ -150,15 +156,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae4de5a9ec17780483d9f15a3a17a3686" id="r_ae4de5a9ec17780483d9f15a3a17a3686"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae4de5a9ec17780483d9f15a3a17a3686">num_levels</a> () const</td></tr>
 <tr class="memdesc:ae4de5a9ec17780483d9f15a3a17a3686"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of levels in the multigrid.  <br /></td></tr>
 <tr class="separator:ae4de5a9ec17780483d9f15a3a17a3686"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4475e02cf297e55851a6f7f0608d396" id="r_ad4475e02cf297e55851a6f7f0608d396"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="spatial__discretization_8h.html#a958a4485bfc1253dd633ebd0a338eed4">Triangulation</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4475e02cf297e55851a6f7f0608d396">get_triangulation</a> () const</td></tr>
-<tr class="memdesc:ad4475e02cf297e55851a6f7f0608d396"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for triangulation.  <br /></td></tr>
-<tr class="separator:ad4475e02cf297e55851a6f7f0608d396"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34eead577b5c3bd37159ccc3b60a3d82" id="r_a34eead577b5c3bd37159ccc3b60a3d82"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="#a8f58fb575869ef56223db5e6f19b6606">Triangulation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34eead577b5c3bd37159ccc3b60a3d82">get_triangulation</a> () const</td></tr>
+<tr class="memdesc:a34eead577b5c3bd37159ccc3b60a3d82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for triangulation.  <br /></td></tr>
+<tr class="separator:a34eead577b5c3bd37159ccc3b60a3d82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad373ea92ef9ea75351ea6b0907abb53d" id="r_ad373ea92ef9ea75351ea6b0907abb53d"><td class="memItemLeft" align="right" valign="top">const dealii::Triangulation&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad373ea92ef9ea75351ea6b0907abb53d">get_triangulation</a> (unsigned int relative_level) const</td></tr>
 <tr class="memdesc:ad373ea92ef9ea75351ea6b0907abb53d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for a relative level in the globally coarsening multigrid triangulation.  <br /></td></tr>
 <tr class="separator:ad373ea92ef9ea75351ea6b0907abb53d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaae6980dc639e2b88b9c324e92cd3c2c" id="r_aaae6980dc639e2b88b9c324e92cd3c2c"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; dealii::GridTools::PeriodicFacePair&lt; typename dealii::Triangulation&lt; dim &gt;::cell_iterator &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaae6980dc639e2b88b9c324e92cd3c2c">get_periodic_face_pairs</a> () const</td></tr>
-<tr class="memdesc:aaae6980dc639e2b88b9c324e92cd3c2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the vector of periodic face pairs.  <br /></td></tr>
-<tr class="separator:aaae6980dc639e2b88b9c324e92cd3c2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac83afcdda423a124ce6149ff9ceb7d6d" id="r_ac83afcdda423a124ce6149ff9ceb7d6d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac83afcdda423a124ce6149ff9ceb7d6d">get_volume</a> () const</td></tr>
 <tr class="memdesc:ac83afcdda423a124ce6149ff9ceb7d6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the volume of the triangulation.  <br /></td></tr>
 <tr class="separator:ac83afcdda423a124ce6149ff9ceb7d6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,15 +185,12 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a1bdce261f4921bf884e9a1313d350d82" id="r_a1bdce261f4921bf884e9a1313d350d82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="spatial__discretization_8h.html#a958a4485bfc1253dd633ebd0a338eed4">Triangulation</a>&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1bdce261f4921bf884e9a1313d350d82">triangulation</a></td></tr>
-<tr class="memdesc:a1bdce261f4921bf884e9a1313d350d82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main triangulation.  <br /></td></tr>
-<tr class="separator:a1bdce261f4921bf884e9a1313d350d82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a000e337a58cc9ac7ffbc180968d49010" id="r_a000e337a58cc9ac7ffbc180968d49010"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a8f58fb575869ef56223db5e6f19b6606">Triangulation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a000e337a58cc9ac7ffbc180968d49010">triangulation</a></td></tr>
+<tr class="memdesc:a000e337a58cc9ac7ffbc180968d49010"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main triangulation.  <br /></td></tr>
+<tr class="separator:a000e337a58cc9ac7ffbc180968d49010"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7184924c29371fd6aa8d26c4d9eef949" id="r_a7184924c29371fd6aa8d26c4d9eef949"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; const dealii::Triangulation&lt; dim &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7184924c29371fd6aa8d26c4d9eef949">coarsened_triangulations</a></td></tr>
 <tr class="memdesc:a7184924c29371fd6aa8d26c4d9eef949"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coarsened triangulations for multigrid.  <br /></td></tr>
 <tr class="separator:a7184924c29371fd6aa8d26c4d9eef949"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac167522f89800a541531822c526a6b1d" id="r_ac167522f89800a541531822c526a6b1d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; dealii::GridTools::PeriodicFacePair&lt; typename dealii::Triangulation&lt; dim &gt;::cell_iterator &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac167522f89800a541531822c526a6b1d">periodicity_vector</a></td></tr>
-<tr class="memdesc:ac167522f89800a541531822c526a6b1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Periodic face pairs on the coarsest mesh if they exist.  <br /></td></tr>
-<tr class="separator:ac167522f89800a541531822c526a6b1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a642940a89302e7ce548412c56bd3da67" id="r_a642940a89302e7ce548412c56bd3da67"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a642940a89302e7ce548412c56bd3da67">volume</a> = 0</td></tr>
 <tr class="memdesc:a642940a89302e7ce548412c56bd3da67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Volume of the triangulation.  <br /></td></tr>
 <tr class="separator:a642940a89302e7ce548412c56bd3da67"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,7 +198,24 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim&gt;<br />
 class TriangulationManager&lt; dim &gt;</div><p>This class handlers the generation and manipulation of triangulations. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a8f58fb575869ef56223db5e6f19b6606" name="a8f58fb575869ef56223db5e6f19b6606"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f58fb575869ef56223db5e6f19b6606">&#9670;&#160;</a></span>Triangulation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classTriangulationManager.html">TriangulationManager</a>&lt; dim &gt;::Triangulation = typename <a class="el" href="structMesh.html">Mesh</a>&lt;dim&gt;::Triangulation</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad673ff106cea0aacb0a43e5d41bf0b20" name="ad673ff106cea0aacb0a43e5d41bf0b20"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad673ff106cea0aacb0a43e5d41bf0b20">&#9670;&#160;</a></span>TriangulationManager() <span class="overload">[1/2]</span></h2>
 
@@ -367,8 +384,8 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="aaae6980dc639e2b88b9c324e92cd3c2c" name="aaae6980dc639e2b88b9c324e92cd3c2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaae6980dc639e2b88b9c324e92cd3c2c">&#9670;&#160;</a></span>get_periodic_face_pairs()</h2>
+<a id="a34eead577b5c3bd37159ccc3b60a3d82" name="a34eead577b5c3bd37159ccc3b60a3d82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34eead577b5c3bd37159ccc3b60a3d82">&#9670;&#160;</a></span>get_triangulation() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -379,36 +396,7 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::vector&lt; dealii::GridTools::PeriodicFacePair&lt; typename dealii::Triangulation&lt; dim &gt;::cell_iterator &gt; &gt; &amp; <a class="el" href="classTriangulationManager.html">TriangulationManager</a>&lt; dim &gt;::get_periodic_face_pairs </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get the vector of periodic face pairs. </p>
-
-</div>
-</div>
-<a id="ad4475e02cf297e55851a6f7f0608d396" name="ad4475e02cf297e55851a6f7f0608d396"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4475e02cf297e55851a6f7f0608d396">&#9670;&#160;</a></span>get_triangulation() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="spatial__discretization_8h.html#a958a4485bfc1253dd633ebd0a338eed4">Triangulation</a>&lt; dim &gt; &amp; <a class="el" href="classTriangulationManager.html">TriangulationManager</a>&lt; dim &gt;::get_triangulation </td>
+          <td class="memname">const <a class="el" href="classTriangulationManager.html">TriangulationManager</a>&lt; dim &gt;<a class="el" href="#a8f58fb575869ef56223db5e6f19b6606">::Triangulation</a> &amp; <a class="el" href="classTriangulationManager.html">TriangulationManager</a>&lt; dim &gt;::get_triangulation </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -618,8 +606,8 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="ac167522f89800a541531822c526a6b1d" name="ac167522f89800a541531822c526a6b1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac167522f89800a541531822c526a6b1d">&#9670;&#160;</a></span>periodicity_vector</h2>
+<a id="a000e337a58cc9ac7ffbc180968d49010" name="a000e337a58cc9ac7ffbc180968d49010"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a000e337a58cc9ac7ffbc180968d49010">&#9670;&#160;</a></span>triangulation</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -630,33 +618,7 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;dealii::GridTools::PeriodicFacePair&lt; typename dealii::Triangulation&lt;dim&gt;::cell_iterator&gt; &gt; <a class="el" href="classTriangulationManager.html">TriangulationManager</a>&lt; dim &gt;::periodicity_vector</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Periodic face pairs on the coarsest mesh if they exist. </p>
-
-</div>
-</div>
-<a id="a1bdce261f4921bf884e9a1313d350d82" name="a1bdce261f4921bf884e9a1313d350d82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1bdce261f4921bf884e9a1313d350d82">&#9670;&#160;</a></span>triangulation</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="spatial__discretization_8h.html#a958a4485bfc1253dd633ebd0a338eed4">Triangulation</a>&lt;dim&gt; <a class="el" href="classTriangulationManager.html">TriangulationManager</a>&lt; dim &gt;::triangulation</td>
+          <td class="memname"><a class="el" href="#a8f58fb575869ef56223db5e6f19b6606">Triangulation</a> <a class="el" href="classTriangulationManager.html">TriangulationManager</a>&lt; dim &gt;::triangulation</td>
         </tr>
       </table>
   </td>

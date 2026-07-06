@@ -135,69 +135,67 @@ $(function(){initNavTree('read__field__factory_8h_source.html',''); initResizabl
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;<a class="code" href="read__binary_8h.html">prismspf/field_input/read_binary.h</a>&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;<a class="code" href="read__field__base_8h.html">prismspf/field_input/read_field_base.h</a>&gt;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;<a class="code" href="load__initial__condition__parameters_8h.html">prismspf/user_inputs/load_initial_condition_parameters.h</a>&gt;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;<a class="code" href="spatial__discretization_8h.html">prismspf/user_inputs/spatial_discretization.h</a>&gt;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;<a class="code" href="utilities_8h.html">prismspf/utilities/utilities.h</a>&gt;</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#ifdef PRISMS_PF_WITH_VTK</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#  include &lt;<a class="code" href="read__vtk_8h.html">prismspf/field_input/read_vtk.h</a>&gt;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="foldopen" id="foldopen00029" data-start="{" data-end="};">
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">   29</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7ac55875d93c53ee540550f728b9d36960">   31</a></span>  <a class="code hl_class" href="classReadUnstructuredVTK.html">ReadUnstructuredVTK</a>,</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7a087df96b394ba2f8b205fa9452fe2473">   32</a></span>  <a class="code hl_class" href="classReadBinary.html">ReadBinary</a></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>};</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;<a class="code" href="spatial__discretization_8h.html">prismspf/user_inputs/spatial_discretization.h</a>&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;<a class="code" href="utilities_8h.html">prismspf/utilities/utilities.h</a>&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#ifdef PRISMS_PF_WITH_VTK</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#  include &lt;<a class="code" href="read__vtk_8h.html">prismspf/field_input/read_vtk.h</a>&gt;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">   28</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7ac55875d93c53ee540550f728b9d36960">   30</a></span>  <a class="code hl_class" href="classReadUnstructuredVTK.html">ReadUnstructuredVTK</a>,</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7a087df96b394ba2f8b205fa9452fe2473">   31</a></span>  <a class="code hl_class" href="classReadBinary.html">ReadBinary</a></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>};</div>
 </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>std::shared_ptr&lt;ReadFieldBase&lt;dim, number&gt;&gt;</div>
-<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="read__field__factory_8h.html#a42275eddf71c83153aa8a2115c76dfe4">   37</a></span><a class="code hl_function" href="read__field__factory_8h.html#a42275eddf71c83153aa8a2115c76dfe4">create_reader</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structInitialConditionFile.html">InitialConditionFile</a>       &amp;ic_file,</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>              <span class="keyword">const</span> <a class="code hl_struct" href="structSpatialDiscretization.html">SpatialDiscretization&lt;dim&gt;</a> &amp;spatial_discretization)</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>{</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">switch</span> (ic_file.<a class="code hl_variable" href="structInitialConditionFile.html#ac22979950186aee16fe98b2d06632262">dataset_format</a>)</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    {</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768a0947271ee3d44e16e7b98449f9fa76ce">DataFormatType::VTKUnstructuredGrid</a>:</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#ifdef PRISMS_PF_WITH_VTK</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">return</span> std::make_shared&lt;ReadUnstructuredVTK&lt;dim, number&gt;&gt;(ic_file,</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                                                                  spatial_discretization);</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        AssertThrow(<span class="keyword">false</span>,</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                    dealii::ExcMessage(</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                      <span class="stringliteral">&quot;You are trying to read a VTK file as an input; however, PRISMS-PF &quot;</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                      <span class="stringliteral">&quot;was not built with VTK. Please reconfig PRISMS-PF with VTK using &quot;</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                      <span class="stringliteral">&quot;-D PRISMS_PF_WITH_VTK=ON&quot;</span>));</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768a34212fd2a4664fc0162bb521638c03a9">DataFormatType::FlatBinary</a>:</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <span class="keywordflow">return</span> std::make_shared&lt;ReadBinary&lt;dim, number&gt;&gt;(ic_file, spatial_discretization);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        AssertThrow(<span class="keyword">false</span>, UnreachableCode());</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    }</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>std::shared_ptr&lt;ReadFieldBase&lt;dim, number&gt;&gt;</div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="read__field__factory_8h.html#a42275eddf71c83153aa8a2115c76dfe4">   36</a></span><a class="code hl_function" href="read__field__factory_8h.html#a42275eddf71c83153aa8a2115c76dfe4">create_reader</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structInitialConditionFile.html">InitialConditionFile</a>       &amp;ic_file,</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>              <span class="keyword">const</span> <a class="code hl_class" href="structSpatialDiscretization.html">SpatialDiscretization&lt;dim&gt;</a> &amp;spatial_discretization)</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>{</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordflow">switch</span> (ic_file.<a class="code hl_variable" href="structInitialConditionFile.html#a2359ea131696e39515d60df0dd241208">format</a>)</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="structInitialConditionFile.html#a496111adfcaaf6f5f2ba3dfa3ded8fd8aedfa203df5b961810494e668614f8c9b">InitialConditionFile::DataFormatType::VTKUnstructuredGrid</a>:</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#ifdef PRISMS_PF_WITH_VTK</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keywordflow">return</span> std::make_shared&lt;ReadUnstructuredVTK&lt;dim, number&gt;&gt;(ic_file,</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                                                                  spatial_discretization);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        AssertThrow(<span class="keyword">false</span>,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                    dealii::ExcMessage(</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                      <span class="stringliteral">&quot;You are trying to read a VTK file as an input; however, PRISMS-PF &quot;</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                      <span class="stringliteral">&quot;was not built with VTK. Please reconfig PRISMS-PF with VTK using &quot;</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                      <span class="stringliteral">&quot;-D PRISMS_PF_WITH_VTK=ON&quot;</span>));</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="structInitialConditionFile.html#a496111adfcaaf6f5f2ba3dfa3ded8fd8a98292b57b5f89f02a67fa6eb21b18fac">InitialConditionFile::DataFormatType::FlatBinary</a>:</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keywordflow">return</span> std::make_shared&lt;ReadBinary&lt;dim, number&gt;&gt;(ic_file, spatial_discretization);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        AssertThrow(<span class="keyword">false</span>, UnreachableCode());</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    }</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>}</div>
 </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>PRISMS_PF_END_NAMESPACE</div>
-<div class="ttc" id="aclassReadBinary_html"><div class="ttname"><a href="classReadBinary.html">ReadBinary</a></div><div class="ttdoc">Class to read in a flat binary file and provide values at given points.</div><div class="ttdef"><b>Definition</b> read_binary.h:32</div></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="ttc" id="aclassReadBinary_html"><div class="ttname"><a href="classReadBinary.html">ReadBinary</a></div><div class="ttdoc">Class to read in a flat binary file and provide values at given points.</div><div class="ttdef"><b>Definition</b> read_binary.h:31</div></div>
 <div class="ttc" id="aclassReadUnstructuredVTK_html"><div class="ttname"><a href="classReadUnstructuredVTK.html">ReadUnstructuredVTK</a></div><div class="ttdef"><b>Definition</b> read_vtk.h:24</div></div>
-<div class="ttc" id="aload__initial__condition__parameters_8h_html"><div class="ttname"><a href="load__initial__condition__parameters_8h.html">load_initial_condition_parameters.h</a></div></div>
 <div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
 <div class="ttc" id="aread__binary_8h_html"><div class="ttname"><a href="read__binary_8h.html">read_binary.h</a></div></div>
 <div class="ttc" id="aread__field__base_8h_html"><div class="ttname"><a href="read__field__base_8h.html">read_field_base.h</a></div></div>
-<div class="ttc" id="aread__field__factory_8h_html_a1d1cfd8ffb84e947f82999c682b666a7"><div class="ttname"><a href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a></div><div class="ttdeci">Type</div><div class="ttdoc">Factory function to create appropriate reader based on input file type not a member of ReadFieldBase ...</div><div class="ttdef"><b>Definition</b> read_field_factory.h:30</div></div>
-<div class="ttc" id="aread__field__factory_8h_html_a42275eddf71c83153aa8a2115c76dfe4"><div class="ttname"><a href="read__field__factory_8h.html#a42275eddf71c83153aa8a2115c76dfe4">create_reader</a></div><div class="ttdeci">std::shared_ptr&lt; ReadFieldBase&lt; dim, number &gt; &gt; create_reader(const InitialConditionFile &amp;ic_file, const SpatialDiscretization&lt; dim &gt; &amp;spatial_discretization)</div><div class="ttdef"><b>Definition</b> read_field_factory.h:37</div></div>
+<div class="ttc" id="aread__field__factory_8h_html_a1d1cfd8ffb84e947f82999c682b666a7"><div class="ttname"><a href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a></div><div class="ttdeci">Type</div><div class="ttdoc">Factory function to create appropriate reader based on input file type not a member of ReadFieldBase ...</div><div class="ttdef"><b>Definition</b> read_field_factory.h:29</div></div>
+<div class="ttc" id="aread__field__factory_8h_html_a42275eddf71c83153aa8a2115c76dfe4"><div class="ttname"><a href="read__field__factory_8h.html#a42275eddf71c83153aa8a2115c76dfe4">create_reader</a></div><div class="ttdeci">std::shared_ptr&lt; ReadFieldBase&lt; dim, number &gt; &gt; create_reader(const InitialConditionFile &amp;ic_file, const SpatialDiscretization&lt; dim &gt; &amp;spatial_discretization)</div><div class="ttdef"><b>Definition</b> read_field_factory.h:36</div></div>
 <div class="ttc" id="aread__vtk_8h_html"><div class="ttname"><a href="read__vtk_8h.html">read_vtk.h</a></div></div>
 <div class="ttc" id="aspatial__discretization_8h_html"><div class="ttname"><a href="spatial__discretization_8h.html">spatial_discretization.h</a></div></div>
-<div class="ttc" id="astructInitialConditionFile_html"><div class="ttname"><a href="structInitialConditionFile.html">InitialConditionFile</a></div><div class="ttdoc">Struct that store the read-in information for a single file.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:28</div></div>
-<div class="ttc" id="astructInitialConditionFile_html_ac22979950186aee16fe98b2d06632262"><div class="ttname"><a href="structInitialConditionFile.html#ac22979950186aee16fe98b2d06632262">InitialConditionFile::dataset_format</a></div><div class="ttdeci">DataFormatType dataset_format</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:33</div></div>
-<div class="ttc" id="astructSpatialDiscretization_html"><div class="ttname"><a href="structSpatialDiscretization.html">SpatialDiscretization</a></div><div class="ttdoc">Struct that holds spatial discretization parameters.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:231</div></div>
-<div class="ttc" id="atype__enums_8h_html_a4b6daaa2b300483df81d068cf4a65768a0947271ee3d44e16e7b98449f9fa76ce"><div class="ttname"><a href="type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768a0947271ee3d44e16e7b98449f9fa76ce">VTKUnstructuredGrid</a></div><div class="ttdeci">@ VTKUnstructuredGrid</div><div class="ttdef"><b>Definition</b> type_enums.h:155</div></div>
-<div class="ttc" id="atype__enums_8h_html_a4b6daaa2b300483df81d068cf4a65768a34212fd2a4664fc0162bb521638c03a9"><div class="ttname"><a href="type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768a34212fd2a4664fc0162bb521638c03a9">FlatBinary</a></div><div class="ttdeci">@ FlatBinary</div><div class="ttdef"><b>Definition</b> type_enums.h:156</div></div>
+<div class="ttc" id="astructInitialConditionFile_html"><div class="ttname"><a href="structInitialConditionFile.html">InitialConditionFile</a></div><div class="ttdoc">Initial condition file.</div><div class="ttdef"><b>Definition</b> io_parameters.h:320</div></div>
+<div class="ttc" id="astructInitialConditionFile_html_a2359ea131696e39515d60df0dd241208"><div class="ttname"><a href="structInitialConditionFile.html#a2359ea131696e39515d60df0dd241208">InitialConditionFile::format</a></div><div class="ttdeci">DataFormatType format</div><div class="ttdef"><b>Definition</b> io_parameters.h:337</div></div>
+<div class="ttc" id="astructInitialConditionFile_html_a496111adfcaaf6f5f2ba3dfa3ded8fd8a98292b57b5f89f02a67fa6eb21b18fac"><div class="ttname"><a href="structInitialConditionFile.html#a496111adfcaaf6f5f2ba3dfa3ded8fd8a98292b57b5f89f02a67fa6eb21b18fac">InitialConditionFile::FlatBinary</a></div><div class="ttdeci">@ FlatBinary</div><div class="ttdef"><b>Definition</b> io_parameters.h:326</div></div>
+<div class="ttc" id="astructInitialConditionFile_html_a496111adfcaaf6f5f2ba3dfa3ded8fd8aedfa203df5b961810494e668614f8c9b"><div class="ttname"><a href="structInitialConditionFile.html#a496111adfcaaf6f5f2ba3dfa3ded8fd8aedfa203df5b961810494e668614f8c9b">InitialConditionFile::VTKUnstructuredGrid</a></div><div class="ttdeci">@ VTKUnstructuredGrid</div><div class="ttdef"><b>Definition</b> io_parameters.h:327</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html"><div class="ttname"><a href="structSpatialDiscretization.html">SpatialDiscretization</a></div><div class="ttdoc">Struct that holds spatial discretization parameters.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:287</div></div>
 <div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="types_8h.html">types.h</a></div></div>
 <div class="ttc" id="autilities_8h_html"><div class="ttname"><a href="utilities_8h.html">utilities.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
