@@ -1,8 +1,7 @@
-set global refinement = 3
+set global refinement = 4
 
-set number of steps = 100
-set timestep = 4.0e-3
-# set end time = 1.0
+set timestep = 1.0e-3
+set end time = 10.0
 
 subsection Rectangular mesh
   set x size = 1.0
@@ -20,7 +19,7 @@ subsection linear solver parameters: 0
 
   set max iterations           = 1000
   set tolerance type           = AbsoluteResidual
-  set tolerance value          = 1e-8
+  set tolerance value          = 1e-6
   set preconditioner = Chebyshev
 end
 
@@ -30,7 +29,7 @@ subsection linear solver parameters: 1
 
   set max iterations           = 1000
   set tolerance type           = AbsoluteResidual
-  set tolerance value          = 1e-8
+  set tolerance value          = 1e-6
   set preconditioner = GMG
   set mg depth = 3
 end

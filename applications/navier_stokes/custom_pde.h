@@ -58,21 +58,15 @@ public:
     if (solve_block_id == 0)
       {
         const VectorValue u_old = variable_list.template get_value<Vector, OldOne>(0);
-        const VectorGrad  u_grad_old =
-          variable_list.template get_gradient<Vector, OldOne>(0);
-        const ScalarValue u_div_old =
-          variable_list.template get_divergence<Vector, OldOne>(0);
-        const ScalarValue tau = sim_timer.get_timestep();
-        const ScalarValue h   = variable_list.get_element_volume();
+        const ScalarValue tau   = sim_timer.get_timestep();
+        const ScalarValue h     = variable_list.get_element_volume();
 
         const ScalarValue tau_stabilization =
           stabilization_parameter<dim, degree>(tau, h, u_old, nu);
 
-        const VectorValue advection_term = u_old * u_grad_old + 0.5 * u_div_old * u_old;
-        const VectorValue forcing_term;
         const VectorValue timestep_term = -u_old / tau;
 
-        const VectorValue residual_star = timestep_term + advection_term + forcing_term;
+        const VectorValue residual_star = timestep_term;
 
         VectorGrad supg_term;
         for (unsigned int i = 0; i < dim; i++)
@@ -83,17 +77,17 @@ public:
               }
           }
 
-        variable_list.set_value_term(1, -timestep_term - advection_term - forcing_term);
+        variable_list.set_value_term(1, -timestep_term);
         variable_list.set_gradient_term(1, -supg_term);
       }
     else if (solve_block_id == 1)
       {
         const VectorValue u_old = variable_list.template get_value<Vector, OldOne>(0);
-        const VectorGrad  u_grad_old =
-          variable_list.template get_gradient<Vector, OldOne>(0);
         const ScalarValue u_div_old =
           variable_list.template get_divergence<Vector, OldOne>(0);
         const VectorValue u_star = variable_list.template get_value<Vector, Current>(1);
+        const VectorGrad  u_star_grad =
+          variable_list.template get_gradient<Vector, Current>(1);
         const ScalarValue u_star_div =
           variable_list.template get_divergence<Vector, Current>(1);
         const VectorValue u_star_lap =
@@ -104,7 +98,7 @@ public:
         const ScalarValue tau_stabilization =
           stabilization_parameter<dim, degree>(tau, h, u_old, nu);
 
-        const VectorValue advection_term = u_old * u_grad_old + 0.5 * u_div_old * u_old;
+        const VectorValue advection_term = u_old * u_star_grad + 0.5 * u_div_old * u_star;
         const VectorValue diffusion_term = -nu * u_star_lap;
         const VectorValue forcing_term;
         const VectorValue timestep_term = (u_star - u_old) / tau;
@@ -152,7 +146,9 @@ public:
   {
     if (solve_block_id == 0)
       {
-        const VectorValue u_old  = variable_list.template get_value<Vector, OldOne>(0);
+        const VectorValue u_old = variable_list.template get_value<Vector, OldOne>(0);
+        const ScalarValue u_div_old =
+          variable_list.template get_divergence<Vector, OldOne>(0);
         const VectorValue u_star = variable_list.template get_value<Vector, LHS>(1);
         const VectorGrad  u_star_grad =
           variable_list.template get_gradient<Vector, LHS>(1);
@@ -164,10 +160,13 @@ public:
         const ScalarValue tau_stabilization =
           stabilization_parameter<dim, degree>(tau, h, u_old, nu);
 
+        const VectorValue advection_term = u_old * u_star_grad + 0.5 * u_div_old * u_star;
         const VectorValue diffusion_term = -nu * u_star_lap;
-        const VectorValue timestep_term  = u_star / tau;
+        const VectorValue forcing_term;
+        const VectorValue timestep_term = u_star / tau;
 
-        const VectorValue residual_star = timestep_term + diffusion_term;
+        const VectorValue residual_star =
+          timestep_term + advection_term + diffusion_term + forcing_term;
 
         VectorGrad supg_term;
         for (unsigned int i = 0; i < dim; i++)
@@ -178,7 +177,7 @@ public:
               }
           }
 
-        variable_list.set_value_term(1, timestep_term);
+        variable_list.set_value_term(1, timestep_term + advection_term + forcing_term);
         variable_list.set_gradient_term(1, nu * u_star_grad + supg_term);
       }
     else if (solve_block_id == 1)
@@ -215,7 +214,7 @@ public:
       }
   }
 
-  ScalarValue nu = 1.0;
+  ScalarValue nu = 1.0 / 100.0;
 };
 
 PRISMS_PF_END_NAMESPACE

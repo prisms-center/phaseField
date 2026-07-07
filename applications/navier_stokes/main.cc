@@ -77,15 +77,17 @@ main(int argc, char *argv[])
                                          FieldAttributes("p")};
 
   SolveBlock diffusion;
-  diffusion.id            = 0;
-  diffusion.field_indices = {1};
-  diffusion.solve_type    = Linear;
-  diffusion.solve_timing  = Initialized;
-  diffusion.dependencies_rhs =
-    make_dependency_set(fields, {"old_1(u)", "grad(old_1(u))"});
-  diffusion.dependencies_lhs = make_dependency_set(
-    fields,
-    {"lhs(u_star)", "grad(lhs(u_star))", "hess(lhs(u_star))", "old_1(u)"});
+  diffusion.id               = 0;
+  diffusion.field_indices    = {1};
+  diffusion.solve_type       = Linear;
+  diffusion.solve_timing     = Initialized;
+  diffusion.dependencies_rhs = make_dependency_set(fields, {"old_1(u)"});
+  diffusion.dependencies_lhs = make_dependency_set(fields,
+                                                   {"lhs(u_star)",
+                                                    "grad(lhs(u_star))",
+                                                    "hess(lhs(u_star))",
+                                                    "old_1(u)",
+                                                    "grad(old_1(u))"});
 
   SolveBlock projection;
   projection.id               = 1;
