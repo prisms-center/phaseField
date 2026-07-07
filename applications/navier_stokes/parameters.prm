@@ -9,9 +9,9 @@ subsection output
   set number = 100
 end
 
-# velocity: u
+# velocity: u, u_star
 subsection linear solver parameters: 0
-  set solver_ids               = 2
+  set solver_ids               = 0, 2
 
   set max iterations           = 1000
   set tolerance type           = RMSEPerField
@@ -19,9 +19,9 @@ subsection linear solver parameters: 0
   set preconditioner = Chebyshev
 end
 
-# projection: phi
+# projection: p
 subsection linear solver parameters: 1
-  set solver_ids               = 3
+  set solver_ids               = 1
 
   set max iterations           = 1000
   set tolerance type           = RMSEPerField
@@ -31,11 +31,11 @@ subsection linear solver parameters: 1
 end
 
 subsection boundary conditions: 0
-  set variables = u
+  set variables = u, u_star
   set conditions = Natural, Dirichlet, Dirichlet, Natural, Dirichlet
 end
 
 subsection boundary conditions: 1
-  set variables = phi
+  set variables = p
   set conditions = Natural, Natural, Natural, Dirichlet, Natural 
 end

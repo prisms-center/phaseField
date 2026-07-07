@@ -74,55 +74,38 @@ main(int argc, char *argv[])
   // TODO: Add documentation
   std::vector<FieldAttributes> fields = {FieldAttributes("u", Vector),
                                          FieldAttributes("u_star", Vector),
-                                         FieldAttributes("p"),
-                                         FieldAttributes("p_star"),
-                                         FieldAttributes("phi")};
+                                         FieldAttributes("p")};
 
   SolveBlock diffusion;
-  diffusion.id            = 2;
-  diffusion.field_indices = {0}; // u
+  diffusion.id            = 0;
+  diffusion.field_indices = {1};
   diffusion.solve_type    = Linear;
   diffusion.solve_timing  = Initialized;
   diffusion.dependencies_rhs =
-    make_dependency_set(fields,
-                        {"old_1(u)", "old_2(u)", "old_1(u_star)", "grad(old_1(p_star))"});
-  diffusion.dependencies_lhs = make_dependency_set(
-    fields,
-    {"lhs(u)", "grad(lhs(u))", "hess(lhs(u))", "old_1(u_star)", "grad(old_1(u_star))"});
+    make_dependency_set(fields, {"old_1(u)", "grad(old_1(u))", "hess(old_1(u))"});
+  diffusion.dependencies_lhs = make_dependency_set(fields, {"lhs(u_star)", "old_1(u)"});
 
   SolveBlock projection;
-  projection.id               = 3;
-  projection.field_indices    = {4}; // phi
+  projection.id               = 1;
+  projection.field_indices    = {2};
   projection.solve_type       = Linear;
   projection.solve_timing     = Uninitialized;
-  projection.dependencies_rhs = make_dependency_set(fields,
-                                                    {"u",
-                                                     "grad(u)",
-                                                     "hess(u)",
-                                                     "old_1(u)",
-                                                     "old_2(u)",
-                                                     "old_1(u_star)",
-                                                     "grad(old_1(u_star))",
-                                                     "grad(old_1(p_star))"});
-  projection.dependencies_lhs = make_dependency_set(fields, {"grad(lhs(phi))"});
+  projection.dependencies_rhs = make_dependency_set(
+    fields,
+    {"old_1(u)", "grad(old_1(u))", "hess(old_1(u))", "u_star", "grad(u_star)"});
+  projection.dependencies_lhs = make_dependency_set(fields, {"grad(lhs(p))"});
 
   SolveBlock pressure_correction;
-  pressure_correction.id               = 4;
-  pressure_correction.field_indices    = {2}; // p
-  pressure_correction.solve_type       = Explicit;
-  pressure_correction.solve_timing     = Initialized;
-  pressure_correction.dependencies_rhs = make_dependency_set(fields, {"old_1(p)", "phi"});
+  pressure_correction.id            = 2;
+  pressure_correction.field_indices = {0};
+  pressure_correction.solve_type    = Linear;
+  pressure_correction.solve_timing  = Initialized;
+  pressure_correction.dependencies_rhs =
+    make_dependency_set(fields, {"u_star", "grad(p)", "old_1(u)"});
+  pressure_correction.dependencies_lhs =
+    make_dependency_set(fields, {"lhs(u)", "old_1(u)"});
 
-  SolveBlock extrapolation;
-  extrapolation.id            = 1;
-  extrapolation.field_indices = {1, 3}; // u_star & p_star
-  extrapolation.solve_type    = Explicit;
-  extrapolation.solve_timing  = Uninitialized;
-  extrapolation.dependencies_rhs =
-    make_dependency_set(fields, {"u", "old_1(u)", "p", "phi", "old_1(phi)"});
-
-  std::vector<SolveBlock> solve_blocks(
-    {diffusion, projection, pressure_correction, extrapolation});
+  std::vector<SolveBlock> solve_blocks({diffusion, projection, pressure_correction});
 
   UserInputParameters<dim> user_inputs(cli_options.get_parameters_filename());
   ChannelWithSquare<dim>   mesh;
@@ -132,10 +115,10 @@ main(int argc, char *argv[])
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
   Problem<dim, degree, double>   problem(fields,
-                                         solve_blocks,
-                                         user_inputs,
-                                         pf_tools,
-                                         pde_operator);
+                                       solve_blocks,
+                                       user_inputs,
+                                       pf_tools,
+                                       pde_operator);
   problem.solve();
 
   return 0;
