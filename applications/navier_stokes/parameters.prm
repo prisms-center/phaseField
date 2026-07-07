@@ -1,7 +1,7 @@
-set global refinement = 6
+set global refinement = 3
 
-set number of steps = 1000
-set timestep = 4.0e-5
+set number of steps = 100
+set timestep = 4.0e-3
 # set end time = 1.0
 
 subsection Rectangular mesh
@@ -32,20 +32,20 @@ subsection linear solver parameters: 1
   set tolerance type           = AbsoluteResidual
   set tolerance value          = 1e-8
   set preconditioner = GMG
-  set mg depth = 6
+  set mg depth = 3
 end
 
 subsection boundary conditions: 0
   set variables = u:x, u_star:x
-  set conditions = Dirichlet, Dirichlet, Dirichlet, Dirichlet
+  set conditions = Natural, Dirichlet, Dirichlet, Natural, Dirichlet
 end
 
 subsection boundary conditions: 1
   set variables = u:y, u_star:y
-  set conditions = Dirichlet, Dirichlet, Dirichlet, Dirichlet
+  set conditions = Natural, Dirichlet, Dirichlet, Natural, Dirichlet
 end
 
 subsection boundary conditions: 2
   set variables = p
-  set conditions = Natural, Natural, Dirichlet, Natural 
+  set conditions = Natural, Natural, Natural, Dirichlet, Natural
 end

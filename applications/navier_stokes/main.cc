@@ -82,8 +82,10 @@ main(int argc, char *argv[])
   diffusion.solve_type    = Linear;
   diffusion.solve_timing  = Initialized;
   diffusion.dependencies_rhs =
-    make_dependency_set(fields, {"old_1(u)", "grad(old_1(u))", "hess(old_1(u))"});
-  diffusion.dependencies_lhs = make_dependency_set(fields, {"lhs(u_star)", "old_1(u)"});
+    make_dependency_set(fields, {"old_1(u)", "grad(old_1(u))"});
+  diffusion.dependencies_lhs = make_dependency_set(
+    fields,
+    {"lhs(u_star)", "grad(lhs(u_star))", "hess(lhs(u_star))", "old_1(u)"});
 
   SolveBlock projection;
   projection.id               = 1;
@@ -92,7 +94,7 @@ main(int argc, char *argv[])
   projection.solve_timing     = Uninitialized;
   projection.dependencies_rhs = make_dependency_set(
     fields,
-    {"old_1(u)", "grad(old_1(u))", "hess(old_1(u))", "u_star", "grad(u_star)"});
+    {"old_1(u)", "grad(old_1(u))", "u_star", "grad(u_star)", "hess(u_star)"});
   projection.dependencies_lhs = make_dependency_set(fields, {"grad(lhs(p))"});
 
   SolveBlock pressure_correction;
@@ -108,6 +110,9 @@ main(int argc, char *argv[])
   std::vector<SolveBlock> solve_blocks({diffusion, projection, pressure_correction});
 
   UserInputParameters<dim> user_inputs(cli_options.get_parameters_filename());
+  ChannelWithSquare<dim>   mesh;
+  user_inputs.spatial_discretization.custom_mesh = &mesh;
+  user_inputs.spatial_discretization.mesh_type   = Custom;
 
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
