@@ -142,7 +142,7 @@ public:
       }
   }
 
-  ScalarValue nu = 0.0015;
+  ScalarValue nu = 1.0;
 };
 
 PRISMS_PF_END_NAMESPACE
