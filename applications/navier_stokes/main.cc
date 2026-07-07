@@ -108,9 +108,6 @@ main(int argc, char *argv[])
   std::vector<SolveBlock> solve_blocks({diffusion, projection, pressure_correction});
 
   UserInputParameters<dim> user_inputs(cli_options.get_parameters_filename());
-  ChannelWithSquare<dim>   mesh;
-  user_inputs.spatial_discretization.custom_mesh = &mesh;
-  user_inputs.spatial_discretization.mesh_type   = Custom;
 
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);

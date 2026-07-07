@@ -38,14 +38,31 @@ public:
                 [[maybe_unused]] number                   &scalar_value,
                 [[maybe_unused]] number &vector_component_value) const override
   {
-    if (index == 0)
+    if (index == 0 || index == 1)
       {
-        if (component == 0 && boundary_id == 2)
+        if (component == 0 && boundary_id == 3)
           {
-            const auto y           = point[1];
-            const auto U_m         = 1.5;
-            const auto H           = 4.1;
-            vector_component_value = 4.0 * U_m * y * (H - y) / (H * H);
+            const number xL =
+              get_user_inputs().spatial_discretization.rectangular_mesh.size[0];
+            const number x0 = 0.1 * xL;
+            const number x  = point[0];
+
+            if (x <= x0)
+              {
+                vector_component_value = 1.0 - 0.25 *
+                                                 (1.0 - std::cos(M_PI * (x0 - x) / x0)) *
+                                                 (1.0 - std::cos(M_PI * (x0 - x) / x0));
+              }
+            else if (x > x0 && x < xL - x0)
+              {
+                vector_component_value = 1.0;
+              }
+            else
+              {
+                vector_component_value =
+                  1.0 - 0.25 * (1.0 - std::cos(M_PI * (x - (xL - x0)) / x0)) *
+                          (1.0 - std::cos(M_PI * (x - (xL - x0)) / x0));
+              }
           }
         else
           {
@@ -218,7 +235,7 @@ public:
       }
   }
 
-  ScalarValue nu = 1.0;
+  ScalarValue nu = 1.0 / 10.0;
 };
 
 PRISMS_PF_END_NAMESPACE
