@@ -1,7 +1,7 @@
 set global refinement = 3
 
-set timestep = 1.0e-3
-set end time = 1.0
+set timestep = 5.0e-3
+set end time = 20.0
 
 subsection Rectangular mesh
   set x size = 1.0
