@@ -6,8 +6,6 @@
 
 #include <prismspf/utilities/utilities.h>
 
-#include <random>
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -55,107 +53,41 @@ public:
               [[maybe_unused]] const SimulationTimer               &sim_timer,
               [[maybe_unused]] unsigned int solve_block_id) const override
   {
+    const ScalarValue tau = sim_timer.get_timestep();
+
     if (solve_block_id == 0)
       {
-        if (sim_timer.get_increment() <= 3)
+        const VectorValue u_old = variable_list.template get_value<Vector, OldOne>(0);
+        const ScalarValue p_old = variable_list.template get_value<Scalar, OldOne>(2);
+
+        VectorValue timestep_term = u_old / tau;
+        VectorGrad  pressure_term;
+        for (unsigned int i = 0; i < dim; ++i)
           {
-            const VectorValue u_old = variable_list.template get_value<Vector, OldOne>(0);
-            const ScalarGrad  p_hash_grad =
-              variable_list.template get_gradient<Scalar, OldOne>(3);
-            const ScalarValue tau = sim_timer.get_timestep();
-
-            const VectorValue pressure_term = p_hash_grad;
-            const VectorValue timestep_term = -u_old / tau;
-
-            const VectorValue residual = timestep_term + pressure_term;
-
-            variable_list.set_value_term(0, -residual);
+            pressure_term[i][i] = p_old;
           }
-        else
-          {
-            const VectorValue u_old = variable_list.template get_value<Vector, OldOne>(0);
-            const VectorValue u_old_2 =
-              variable_list.template get_value<Vector, OldTwo>(0);
-            const ScalarGrad p_hash_grad =
-              variable_list.template get_gradient<Scalar, OldOne>(3);
-            const ScalarValue tau = sim_timer.get_timestep();
 
-            const VectorValue pressure_term = p_hash_grad;
-            const VectorValue timestep_term = (-2.0 * u_old + 0.5 * u_old_2) / tau;
-
-            const VectorValue residual = timestep_term + pressure_term;
-
-            variable_list.set_value_term(0, -residual);
-          }
+        variable_list.set_value_term(1, timestep_term);
+        variable_list.set_gradient_term(1, pressure_term);
       }
     else if (solve_block_id == 1)
       {
-        if (sim_timer.get_increment() <= 3)
-          {
-            const ScalarValue u_div =
-              variable_list.template get_divergence<Vector, Current>(0);
-            const ScalarValue tau = sim_timer.get_timestep();
+        const ScalarValue u_star_div =
+          variable_list.template get_divergence<Vector, Current>(1);
+        const ScalarGrad p_old_grad =
+          variable_list.template get_gradient<Scalar, OldOne>(2);
 
-            variable_list.set_value_term(4, u_div / tau);
-          }
-        else
-          {
-            const ScalarValue u_div =
-              variable_list.template get_divergence<Vector, Current>(0);
-            const ScalarValue tau = sim_timer.get_timestep();
-
-            variable_list.set_value_term(4, 1.5 * u_div / tau);
-          }
+        variable_list.set_value_term(2, u_star_div);
+        variable_list.set_gradient_term(2, -tau * p_old_grad);
       }
     else if (solve_block_id == 2)
       {
-        if (sim_timer.get_increment() <= 3)
-          {
-            const VectorValue u = variable_list.template get_value<Vector, Current>(0);
-            const ScalarValue p_old = variable_list.template get_value<Scalar, OldOne>(2);
-            const ScalarValue phi = variable_list.template get_value<Scalar, Current>(4);
-            const VectorValue u_star_old =
-              variable_list.template get_value<Vector, OldOne>(1);
-            const ScalarValue tau = sim_timer.get_timestep();
-            const ScalarValue h   = variable_list.get_element_volume();
+        const VectorValue u_star = variable_list.template get_value<Vector, Current>(1);
+        const ScalarGrad p_grad = variable_list.template get_gradient<Scalar, Current>(2);
+        const ScalarGrad p_old_grad =
+          variable_list.template get_gradient<Scalar, OldOne>(2);
 
-            const ScalarValue tau_stabilization =
-              stabilization_parameter<dim, degree>(tau, h, u_star_old, nu);
-
-            const ScalarValue p      = p_old + phi;
-            const VectorValue u_star = u;
-            const ScalarValue p_hash = p;
-
-            variable_list.set_value_term(1, u_star);
-            variable_list.set_value_term(2, p);
-            variable_list.set_value_term(3, p_hash);
-            variable_list.set_value_term(5, tau_stabilization);
-          }
-        else
-          {
-            const VectorValue u = variable_list.template get_value<Vector, Current>(0);
-            const VectorValue u_old = variable_list.template get_value<Vector, OldOne>(0);
-            const ScalarValue p_old = variable_list.template get_value<Scalar, OldOne>(2);
-            const ScalarValue phi = variable_list.template get_value<Scalar, Current>(4);
-            const ScalarValue phi_old =
-              variable_list.template get_value<Scalar, OldOne>(4);
-            const VectorValue u_star_old =
-              variable_list.template get_value<Vector, OldOne>(1);
-            const ScalarValue tau = sim_timer.get_timestep();
-            const ScalarValue h   = variable_list.get_element_volume();
-
-            const ScalarValue tau_stabilization =
-              stabilization_parameter<dim, degree>(tau, h, u_star_old, nu);
-
-            const ScalarValue p      = p_old + phi;
-            const VectorValue u_star = 2.0 * u - u_old;
-            const ScalarValue p_hash = p + 4.0 / 3.0 * phi - 1.0 / 3.0 * phi_old;
-
-            variable_list.set_value_term(1, u_star);
-            variable_list.set_value_term(2, p);
-            variable_list.set_value_term(3, p_hash);
-            variable_list.set_value_term(5, tau_stabilization);
-          }
+        variable_list.set_value_term(0, u_star - tau * (p_grad - p_old_grad));
       }
   }
 
@@ -164,54 +96,43 @@ public:
               [[maybe_unused]] const SimulationTimer               &sim_timer,
               [[maybe_unused]] unsigned int solve_block_id) const override
   {
+    const ScalarValue tau = sim_timer.get_timestep();
+
     if (solve_block_id == 0)
       {
-        if (sim_timer.get_increment() <= 3)
+        const VectorValue u_old = variable_list.template get_value<Vector, OldOne>(0);
+        const ScalarValue u_old_div =
+          variable_list.template get_divergence<Vector, OldOne>(0);
+        const VectorValue u_star = variable_list.template get_value<Vector, LHS>(1);
+        const VectorGrad  u_star_grad =
+          variable_list.template get_gradient<Vector, LHS>(1);
+        const ScalarValue u_star_div =
+          variable_list.template get_divergence<Vector, LHS>(1);
+
+        const VectorValue timestep_term  = u_star / tau;
+        const VectorGrad  diffusion_term = nu * u_star_grad;
+        const VectorValue advection_term = u_old * u_star_grad + 0.5 * u_old_div * u_star;
+        const VectorValue forcing_term;
+
+        VectorGrad grad_div_term;
+        for (unsigned int i = 0; i < dim; ++i)
           {
-            const VectorValue u     = variable_list.template get_value<Vector, LHS>(0);
-            const VectorGrad u_grad = variable_list.template get_gradient<Vector, LHS>(0);
-            const VectorValue u_star_old =
-              variable_list.template get_value<Vector, OldOne>(1);
-            const ScalarValue u_star_div =
-              variable_list.template get_divergence<Vector, OldOne>(1);
-            const ScalarValue tau = sim_timer.get_timestep();
-
-            const VectorValue advection_term = u_star_old * u_grad + 0.5 * u_star_div * u;
-            const VectorValue forcing_term;
-            const VectorValue timestep_term = u / tau;
-
-            variable_list.set_value_term(0,
-                                         timestep_term + advection_term + forcing_term);
-            variable_list.set_gradient_term(0, nu * u_grad);
+            grad_div_term[i][i] = gamma * u_star_div;
           }
-        else
-          {
-            const VectorValue u     = variable_list.template get_value<Vector, LHS>(0);
-            const VectorGrad u_grad = variable_list.template get_gradient<Vector, LHS>(0);
-            const VectorValue u_star_old =
-              variable_list.template get_value<Vector, OldOne>(1);
-            const ScalarValue u_star_div =
-              variable_list.template get_divergence<Vector, OldOne>(1);
-            const ScalarValue tau = sim_timer.get_timestep();
 
-            const VectorValue advection_term = u_star_old * u_grad + 0.5 * u_star_div * u;
-            const VectorValue forcing_term;
-            const VectorValue timestep_term = 1.5 * u / tau;
-
-            variable_list.set_value_term(0,
-                                         timestep_term + advection_term + forcing_term);
-            variable_list.set_gradient_term(0, nu * u_grad);
-          }
+        variable_list.set_value_term(1, timestep_term + advection_term + forcing_term);
+        variable_list.set_gradient_term(1, diffusion_term + grad_div_term);
       }
     else if (solve_block_id == 1)
       {
-        const ScalarGrad phi_grad = variable_list.template get_gradient<Scalar, LHS>(4);
+        const ScalarGrad p_grad = variable_list.template get_gradient<Scalar, LHS>(2);
 
-        variable_list.set_gradient_term(4, -phi_grad);
+        variable_list.set_gradient_term(2, -tau * p_grad);
       }
   }
 
-  ScalarValue nu = 1.0 / (100.0 * 200.0);
+  ScalarValue gamma = 1.0;
+  ScalarValue nu    = 1.0 / (100.0 * 200.0);
 };
 
 PRISMS_PF_END_NAMESPACE

@@ -17,10 +17,10 @@ end
 subsection linear solver parameters: 0
   set solver_ids               = 0
 
-  set max iterations           = 1000
+  set max iterations           = 10000
   set tolerance type           = AbsoluteResidual
-  set tolerance value          = 1e-4
-  set preconditioner = Chebyshev
+  set tolerance value          = 1e-6
+  set preconditioner = None
 end
 
 # projection: p
@@ -29,7 +29,7 @@ subsection linear solver parameters: 1
 
   set max iterations           = 1000
   set tolerance type           = AbsoluteResidual
-  set tolerance value          = 1e-4
+  set tolerance value          = 1e-6
   set preconditioner = GMG
   set mg depth = 3
 end
@@ -45,6 +45,6 @@ subsection boundary conditions: 1
 end
 
 subsection boundary conditions: 2
-  set variables = phi
+  set variables = p
   set conditions = Natural, Dirichlet, Natural, Natural
 end
