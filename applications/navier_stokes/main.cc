@@ -74,42 +74,47 @@ main(int argc, char *argv[])
   // TODO: Add documentation
   std::vector<FieldAttributes> fields = {FieldAttributes("u", Vector),
                                          FieldAttributes("u_star", Vector),
-                                         FieldAttributes("p")};
+                                         FieldAttributes("p"),
+                                         FieldAttributes("p_hash"),
+                                         FieldAttributes("phi")};
 
   SolveBlock diffusion;
-  diffusion.id               = 0;
-  diffusion.field_indices    = {1};
-  diffusion.solve_type       = Linear;
-  diffusion.solve_timing     = Initialized;
-  diffusion.dependencies_rhs = make_dependency_set(fields, {"old_1(u)"});
-  diffusion.dependencies_lhs = make_dependency_set(fields,
-                                                   {"lhs(u_star)",
-                                                    "grad(lhs(u_star))",
-                                                    "hess(lhs(u_star))",
-                                                    "old_1(u)",
-                                                    "grad(old_1(u))"});
+  diffusion.id            = 0;
+  diffusion.field_indices = {0};
+  diffusion.solve_type    = Linear;
+  diffusion.solve_timing  = Initialized;
+  diffusion.dependencies_rhs =
+    make_dependency_set(fields,
+                        {"old_1(u)", "old_2(u)", "old_1(u_star)", "grad(old_1(p_hash))"});
+  diffusion.dependencies_lhs = make_dependency_set(
+    fields,
+    {"lhs(u)", "grad(lhs(u))", "hess(lhs(u))", "old_1(u_star)", "grad(old_1(u_star))"});
 
   SolveBlock projection;
   projection.id               = 1;
-  projection.field_indices    = {2};
+  projection.field_indices    = {4};
   projection.solve_type       = Linear;
   projection.solve_timing     = Uninitialized;
-  projection.dependencies_rhs = make_dependency_set(
-    fields,
-    {"old_1(u)", "grad(old_1(u))", "u_star", "grad(u_star)", "hess(u_star)"});
-  projection.dependencies_lhs = make_dependency_set(fields, {"grad(lhs(p))"});
+  projection.dependencies_rhs = make_dependency_set(fields,
+                                                    {"u",
+                                                     "grad(u)",
+                                                     "hess(u)",
+                                                     "old_1(u)",
+                                                     "old_2(u)",
+                                                     "old_1(u_star)",
+                                                     "grad(old_1(u_star))",
+                                                     "grad(old_1(p_hash))"});
+  projection.dependencies_lhs = make_dependency_set(fields, {"grad(lhs(phi))"});
 
-  SolveBlock pressure_correction;
-  pressure_correction.id            = 2;
-  pressure_correction.field_indices = {0};
-  pressure_correction.solve_type    = Linear;
-  pressure_correction.solve_timing  = Initialized;
-  pressure_correction.dependencies_rhs =
-    make_dependency_set(fields, {"u_star", "grad(p)", "old_1(u)"});
-  pressure_correction.dependencies_lhs =
-    make_dependency_set(fields, {"lhs(u)", "old_1(u)"});
+  SolveBlock extrapolation;
+  extrapolation.id            = 2;
+  extrapolation.field_indices = {1, 2, 3};
+  extrapolation.solve_type    = Explicit;
+  extrapolation.solve_timing  = Uninitialized;
+  extrapolation.dependencies_rhs =
+    make_dependency_set(fields, {"old_1(p)", "phi", "u", "old_1(u)", "old_1(phi)"});
 
-  std::vector<SolveBlock> solve_blocks({diffusion, projection, pressure_correction});
+  std::vector<SolveBlock> solve_blocks({diffusion, projection, extrapolation});
 
   UserInputParameters<dim> user_inputs(cli_options.get_parameters_filename());
   ChannelWithSquare<dim>   mesh;

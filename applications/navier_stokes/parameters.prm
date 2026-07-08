@@ -1,7 +1,7 @@
-set global refinement = 4
+set global refinement = 3
 
 set timestep = 1.0e-3
-set end time = 10.0
+set end time = 1.0
 
 subsection Rectangular mesh
   set x size = 1.0
@@ -13,9 +13,9 @@ subsection output
   set number = 100
 end
 
-# velocity: u, u_star
+# diffusion: u
 subsection linear solver parameters: 0
-  set solver_ids               = 0, 2
+  set solver_ids               = 0
 
   set max iterations           = 1000
   set tolerance type           = AbsoluteResidual
@@ -45,6 +45,6 @@ subsection boundary conditions: 1
 end
 
 subsection boundary conditions: 2
-  set variables = p
+  set variables = phi
   set conditions = Natural, Natural, Natural, Dirichlet, Natural
 end
