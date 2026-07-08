@@ -117,7 +117,7 @@ main(int argc, char *argv[])
   std::vector<SolveBlock> solve_blocks({diffusion, projection, extrapolation});
 
   UserInputParameters<dim> user_inputs(cli_options.get_parameters_filename());
-  ChannelWithSquare<dim>   mesh;
+  ChannelWithCylinder<dim> mesh;
   user_inputs.spatial_discretization.custom_mesh = &mesh;
   user_inputs.spatial_discretization.mesh_type   = Custom;
 

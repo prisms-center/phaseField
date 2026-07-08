@@ -19,7 +19,7 @@ subsection linear solver parameters: 0
 
   set max iterations           = 1000
   set tolerance type           = AbsoluteResidual
-  set tolerance value          = 1e-6
+  set tolerance value          = 1e-4
   set preconditioner = Chebyshev
 end
 
@@ -29,22 +29,22 @@ subsection linear solver parameters: 1
 
   set max iterations           = 1000
   set tolerance type           = AbsoluteResidual
-  set tolerance value          = 1e-6
+  set tolerance value          = 1e-4
   set preconditioner = GMG
   set mg depth = 3
 end
 
 subsection boundary conditions: 0
   set variables = u:x, u_star:x
-  set conditions = Natural, Dirichlet, Dirichlet, Natural, Dirichlet
+  set conditions = Dirichlet, Natural, Dirichlet, Dirichlet
 end
 
 subsection boundary conditions: 1
   set variables = u:y, u_star:y
-  set conditions = Natural, Dirichlet, Dirichlet, Natural, Dirichlet
+  set conditions = Dirichlet, Natural, Dirichlet, Dirichlet
 end
 
 subsection boundary conditions: 2
   set variables = phi
-  set conditions = Natural, Natural, Natural, Dirichlet, Natural
+  set conditions = Natural, Dirichlet, Natural, Natural
 end
