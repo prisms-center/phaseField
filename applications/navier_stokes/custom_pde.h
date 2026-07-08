@@ -117,10 +117,8 @@ public:
         const VectorValue residual =
           timestep_term + advection_term + diffusion_term + pressure_term + forcing_term;
 
-        variable_list.set_value_term(4, 1.5 * u_div / (tau + tau_stabilization));
-        variable_list.set_gradient_term(4,
-                                        tau_stabilization * residual /
-                                          (tau + tau_stabilization));
+        variable_list.set_value_term(4, 1.5 * u_div / tau);
+        variable_list.set_gradient_term(4, tau_stabilization * residual);
       }
     else if (solve_block_id == 2)
       {
@@ -129,6 +127,13 @@ public:
         const ScalarValue p_old   = variable_list.template get_value<Scalar, OldOne>(2);
         const ScalarValue phi     = variable_list.template get_value<Scalar, Current>(4);
         const ScalarValue phi_old = variable_list.template get_value<Scalar, OldOne>(4);
+        const VectorValue u_star_old =
+          variable_list.template get_value<Vector, OldOne>(1);
+        const ScalarValue tau = sim_timer.get_timestep();
+        const ScalarValue h   = variable_list.get_element_volume();
+
+        const ScalarValue tau_stabilization =
+          stabilization_parameter<dim, degree>(tau, h, u_star_old, nu);
 
         const ScalarValue p      = p_old + phi;
         const VectorValue u_star = 2.0 * u - u_old;
@@ -137,6 +142,7 @@ public:
         variable_list.set_value_term(1, u_star);
         variable_list.set_value_term(2, p);
         variable_list.set_value_term(3, p_hash);
+        variable_list.set_value_term(5, tau_stabilization);
       }
   }
 
@@ -182,9 +188,16 @@ public:
       }
     else if (solve_block_id == 1)
       {
-        const ScalarGrad phi_grad = variable_list.template get_gradient<Scalar, LHS>(4);
+        const VectorValue u_star_old =
+          variable_list.template get_value<Vector, OldOne>(1);
+        const ScalarGrad  phi_grad = variable_list.template get_gradient<Scalar, LHS>(4);
+        const ScalarValue tau      = sim_timer.get_timestep();
+        const ScalarValue h        = variable_list.get_element_volume();
 
-        variable_list.set_gradient_term(4, -phi_grad);
+        const ScalarValue tau_stabilization =
+          stabilization_parameter<dim, degree>(tau, h, u_star_old, nu);
+
+        variable_list.set_gradient_term(4, -(1.0 + tau_stabilization) * phi_grad);
       }
   }
 

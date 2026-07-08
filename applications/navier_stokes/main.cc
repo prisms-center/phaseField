@@ -76,7 +76,8 @@ main(int argc, char *argv[])
                                          FieldAttributes("u_star", Vector),
                                          FieldAttributes("p"),
                                          FieldAttributes("p_hash"),
-                                         FieldAttributes("phi")};
+                                         FieldAttributes("phi"),
+                                         FieldAttributes("tau_stabilization")};
 
   SolveBlock diffusion;
   diffusion.id            = 0;
@@ -104,15 +105,17 @@ main(int argc, char *argv[])
                                                      "old_1(u_star)",
                                                      "grad(old_1(u_star))",
                                                      "grad(old_1(p_hash))"});
-  projection.dependencies_lhs = make_dependency_set(fields, {"grad(lhs(phi))"});
+  projection.dependencies_lhs =
+    make_dependency_set(fields, {"grad(lhs(phi))", "old_1(u_star)"});
 
   SolveBlock extrapolation;
-  extrapolation.id            = 2;
-  extrapolation.field_indices = {1, 2, 3};
-  extrapolation.solve_type    = Explicit;
-  extrapolation.solve_timing  = Uninitialized;
-  extrapolation.dependencies_rhs =
-    make_dependency_set(fields, {"old_1(p)", "phi", "u", "old_1(u)", "old_1(phi)"});
+  extrapolation.id               = 2;
+  extrapolation.field_indices    = {1, 2, 3, 5};
+  extrapolation.solve_type       = Explicit;
+  extrapolation.solve_timing     = Uninitialized;
+  extrapolation.dependencies_rhs = make_dependency_set(
+    fields,
+    {"old_1(p)", "phi", "u", "old_1(u)", "old_1(phi)", "old_1(u_star)"});
 
   std::vector<SolveBlock> solve_blocks({diffusion, projection, extrapolation});
 
