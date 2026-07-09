@@ -1,6 +1,6 @@
 set global refinement = 3
 
-set timestep = 5.0e-3
+set timestep = 5.0e-4
 set end time = 20.0
 
 subsection Rectangular mesh
@@ -35,16 +35,11 @@ subsection linear solver parameters: 1
 end
 
 subsection boundary conditions: 0
-  set variables = u:x, u_star:x
-  set conditions = Dirichlet, Natural, Dirichlet, Dirichlet
+  set variables = u:x, u_star:x, u:y, u_star:y
+  set conditions = Natural, Dirichlet, Dirichlet, Natural, Dirichlet
 end
 
 subsection boundary conditions: 1
-  set variables = u:y, u_star:y
-  set conditions = Dirichlet, Natural, Dirichlet, Dirichlet
-end
-
-subsection boundary conditions: 2
   set variables = p
-  set conditions = Natural, Dirichlet, Natural, Natural
+  set conditions = Natural, Natural, Natural, Dirichlet, Natural
 end

@@ -38,11 +38,11 @@ public:
   {
     if (index == 0 || index == 1)
       {
-        if (component == 0 && boundary_id == 0)
+        if (component == 0 && boundary_id == 2)
           {
             const auto y           = point[1];
-            const auto U_m         = 0.15;
-            const auto H           = 0.41;
+            const auto U_m         = 1.5;
+            const auto H           = 4.1;
             vector_component_value = 4.0 * U_m * y * (H - y) / (H * H);
           }
       }
@@ -131,8 +131,8 @@ public:
       }
   }
 
-  ScalarValue gamma = 1.0;
-  ScalarValue nu    = 1.0 / (100.0 * 200.0);
+  ScalarValue gamma = 0.01;
+  ScalarValue nu    = 1.0 / 100.0;
 };
 
 PRISMS_PF_END_NAMESPACE
