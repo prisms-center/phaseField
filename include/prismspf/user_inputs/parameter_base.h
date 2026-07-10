@@ -249,9 +249,15 @@ namespace Patterns
   }
 
   static inline dealii::Patterns::Integer
-  PositiveInteger()
+  UnsignedInteger()
   {
     return {0, INT_MAX};
+  }
+
+  static inline dealii::Patterns::Integer
+  PositiveInteger()
+  {
+    return {1, INT_MAX};
   }
 
   static inline dealii::Patterns::Integer
@@ -285,9 +291,9 @@ namespace Patterns
   }
 
   static inline dealii::Patterns::List
-  PositiveIntegerList()
+  UnsignedIntegerList()
   {
-    return {PositiveInteger(), 0, INT_MAX, ","};
+    return {UnsignedInteger(), 0, INT_MAX, ","};
   }
 
   // NOLINTEND(readability-identifier-naming)
