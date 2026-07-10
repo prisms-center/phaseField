@@ -28,6 +28,38 @@ enum class Pattern : std::uint8_t
   PositiveIntegerList
 };
 
+std::string_view
+to_string(Pattern pattern)
+{
+  switch (pattern)
+    {
+      case Pattern::Anything:
+        return "Anything";
+      case Pattern::Selection:
+        return "Selection";
+      case Pattern::Bool:
+        return "Bool";
+      case Pattern::Integer:
+        return "Integer";
+      case Pattern::PositiveInteger:
+        return "PositiveInteger";
+      case Pattern::NegativeInteger:
+        return "NegativeInteger";
+      case Pattern::Double:
+        return "Double";
+      case Pattern::PositiveDouble:
+        return "PositiveDouble";
+      case Pattern::NegativeDouble:
+        return "NegativeDouble";
+      case Pattern::StringList:
+        return "StringList";
+      case Pattern::PositiveIntegerList:
+        return "PositiveIntegerList";
+    }
+
+  return "Unknown";
+}
+
 struct ParameterData
 {
   using String = std::string_view;
@@ -44,6 +76,36 @@ struct ParameterData
   bool              advanced   = false;
   bool              deprecated = false;
 };
+
+std::string
+to_html_row(const ParameterData &p)
+{
+  std::ostringstream html;
+
+  html << "<tr>";
+  html << "<td>" << p.entry << "</td>";
+  html << "<td>" << p.default_value << "</td>";
+  html << "<td>" << to_string(p.pattern) << "</td>";
+  html << "<td>" << p.pattern_options << "</td>";
+  html << "<td>" << p.documentation << "</td>";
+  html << "<td>" << p.warnings << "</td>";
+  html << "<td>" << p.category << "</td>";
+  html << "<td>" << p.example << "</td>";
+
+  html << "<td>";
+  for (const auto &alias : p.aliases)
+    {
+      html << alias << "<br>";
+    }
+  html << "</td>";
+
+  html << "<td>" << (p.advanced ? "true" : "false") << "</td>";
+  html << "<td>" << (p.deprecated ? "true" : "false") << "</td>";
+
+  html << "</tr>";
+
+  return html.str();
+}
 
 struct Parameter
 {
