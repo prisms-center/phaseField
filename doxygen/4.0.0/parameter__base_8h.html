@@ -122,15 +122,18 @@ $(function(){initNavTree('parameter__base_8h.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">parameter_base.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;deal.II/base/parameter_handler.h&gt;</code><br />
+<code>#include &lt;deal.II/base/patterns.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="field__attributes_8h_source.html">prismspf/core/field_attributes.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="types_8h_source.html">prismspf/core/types.h</a>&gt;</code><br />
 <code>#include &lt;prismspf/config.h&gt;</code><br />
+<code>#include &lt;cfloat&gt;</code><br />
 <code>#include &lt;concepts&gt;</code><br />
 <code>#include &lt;ranges&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
@@ -139,7 +142,7 @@ $(function(){initNavTree('parameter__base_8h.html',''); initResizable(true); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for parameter_base.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="parameter__base_8h__incl.svg" width="1323" height="392"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="parameter__base_8h__incl.svg" width="1466" height="392"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -155,6 +158,11 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual base class for parameter groups.  <a href="structParameterBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePatterns.html">Patterns</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a1ba7e5bf4f2b3a79023aac7e9b16efb7" id="r_a1ba7e5bf4f2b3a79023aac7e9b16efb7"><td class="memTemplParams" colspan="2">template&lt;std::ranges::input_range Range&gt; <br />
@@ -163,6 +171,54 @@ requires std::convertible_to&lt;std::ranges::range_reference_t&lt;Range&gt;, std
 <tr class="separator:a1ba7e5bf4f2b3a79023aac7e9b16efb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae08e1d79011419d39f3e80cf44e68f79" id="r_ae08e1d79011419d39f3e80cf44e68f79"><td class="memItemLeft" align="right" valign="top">static std::array&lt; std::string, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae08e1d79011419d39f3e80cf44e68f79">generate_aliases</a> (std::string_view name)</td></tr>
 <tr class="separator:ae08e1d79011419d39f3e80cf44e68f79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7da1dec71cd12f0708dc9935bbf2db2" id="r_ad7da1dec71cd12f0708dc9935bbf2db2"><td class="memTemplParams" colspan="2">template&lt;std::ranges::input_range Range&gt; <br />
+requires std::convertible_to&lt;std::ranges::range_reference_t&lt;Range&gt;, std::string_view&gt;</td></tr>
+<tr class="memitem:ad7da1dec71cd12f0708dc9935bbf2db2"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ad7da1dec71cd12f0708dc9935bbf2db2">declare_aliases_with_generated</a> (dealii::ParameterHandler &amp;parameter_handler, const std::string &amp;existing_entry_name, const Range &amp;aliases)</td></tr>
+<tr class="separator:ad7da1dec71cd12f0708dc9935bbf2db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ad390978ef09cd21bdd20d4ba32c1e5" id="r_a6ad390978ef09cd21bdd20d4ba32c1e5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ad390978ef09cd21bdd20d4ba32c1e5">declare_entry</a> (dealii::ParameterHandler &amp;parameter_handler, const std::string_view &amp;entry, const std::string_view &amp;default_value, const dealii::Patterns::PatternBase &amp;pattern, const std::string_view &amp;documentation, const std::list&lt; std::string_view &gt; &amp;aliases={}, const std::string_view &amp;warnings={}, const std::string_view &amp;example={}, bool deprecated=false)</td></tr>
+<tr class="separator:a6ad390978ef09cd21bdd20d4ba32c1e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab39343088471499db91c9d5c24fd6c23" id="r_ab39343088471499db91c9d5c24fd6c23"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab39343088471499db91c9d5c24fd6c23">get</a> (const dealii::ParameterHandler &amp;parameter_handler, const std::string_view &amp;entry)</td></tr>
+<tr class="separator:ab39343088471499db91c9d5c24fd6c23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9788aa13aa6681f459b97859c982d8fb" id="r_a9788aa13aa6681f459b97859c982d8fb"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9788aa13aa6681f459b97859c982d8fb">get_int</a> (const dealii::ParameterHandler &amp;parameter_handler, const std::string_view &amp;entry)</td></tr>
+<tr class="separator:a9788aa13aa6681f459b97859c982d8fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea598f0ad1cff6a68524e92f5030e98f" id="r_aea598f0ad1cff6a68524e92f5030e98f"><td class="memItemLeft" align="right" valign="top">static unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea598f0ad1cff6a68524e92f5030e98f">get_unsigned_int</a> (const dealii::ParameterHandler &amp;parameter_handler, const std::string_view &amp;entry)</td></tr>
+<tr class="separator:aea598f0ad1cff6a68524e92f5030e98f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1add649d4b6d40ff8820ebea05532a2" id="r_ab1add649d4b6d40ff8820ebea05532a2"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1add649d4b6d40ff8820ebea05532a2">get_double</a> (const dealii::ParameterHandler &amp;parameter_handler, const std::string_view &amp;entry)</td></tr>
+<tr class="separator:ab1add649d4b6d40ff8820ebea05532a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93c448ebd606092d0d87994fbfa241d1" id="r_a93c448ebd606092d0d87994fbfa241d1"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93c448ebd606092d0d87994fbfa241d1">get_bool</a> (const dealii::ParameterHandler &amp;parameter_handler, const std::string_view &amp;entry)</td></tr>
+<tr class="separator:a93c448ebd606092d0d87994fbfa241d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf52acf3cde6590456a73bbe09a0b95c" id="r_acf52acf3cde6590456a73bbe09a0b95c"><td class="memTemplParams" colspan="2">template&lt;typename Map&gt; <br />
+requires requires(Map &amp;map, const typename Map::key_type &amp;key) { map.find(key); map.end(); }</td></tr>
+<tr class="memitem:acf52acf3cde6590456a73bbe09a0b95c"><td class="memTemplItemLeft" align="right" valign="top">Map::mapped_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#acf52acf3cde6590456a73bbe09a0b95c">get_selection</a> (const dealii::ParameterHandler &amp;parameter_handler, const std::string_view &amp;entry, Map &amp;map)</td></tr>
+<tr class="separator:acf52acf3cde6590456a73bbe09a0b95c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a598668b7e8ad7a0a25c54e78bc8c1bca" id="r_a598668b7e8ad7a0a25c54e78bc8c1bca"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a598668b7e8ad7a0a25c54e78bc8c1bca">get_string_list</a> (const dealii::ParameterHandler &amp;parameter_handler, const std::string_view &amp;entry)</td></tr>
+<tr class="separator:a598668b7e8ad7a0a25c54e78bc8c1bca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade96e6bd8f6a5a10fd17f64cb3386e11" id="r_ade96e6bd8f6a5a10fd17f64cb3386e11"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ade96e6bd8f6a5a10fd17f64cb3386e11">get_unsigned_int_list</a> (const dealii::ParameterHandler &amp;parameter_handler, const std::string_view &amp;entry)</td></tr>
+<tr class="separator:ade96e6bd8f6a5a10fd17f64cb3386e11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d487302ac9a171935a32a3e82e90ab4" id="r_a7d487302ac9a171935a32a3e82e90ab4"><td class="memItemLeft" align="right" valign="top">static dealii::Patterns::Anything&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePatterns.html#a7d487302ac9a171935a32a3e82e90ab4">Patterns::Anything</a> ()</td></tr>
+<tr class="separator:a7d487302ac9a171935a32a3e82e90ab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5026f20c04a7c712e21dce31a6000ecd" id="r_a5026f20c04a7c712e21dce31a6000ecd"><td class="memItemLeft" align="right" valign="top">static dealii::Patterns::Selection&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePatterns.html#a5026f20c04a7c712e21dce31a6000ecd">Patterns::Selection</a> (std::string_view options)</td></tr>
+<tr class="separator:a5026f20c04a7c712e21dce31a6000ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf2940008ff11bc50ca7ba036eb4f2e4" id="r_aaf2940008ff11bc50ca7ba036eb4f2e4"><td class="memItemLeft" align="right" valign="top">static dealii::Patterns::Bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePatterns.html#aaf2940008ff11bc50ca7ba036eb4f2e4">Patterns::Bool</a> ()</td></tr>
+<tr class="separator:aaf2940008ff11bc50ca7ba036eb4f2e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a9be59c2d5785c55fedf599be29b35f" id="r_a7a9be59c2d5785c55fedf599be29b35f"><td class="memItemLeft" align="right" valign="top">static dealii::Patterns::Integer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePatterns.html#a7a9be59c2d5785c55fedf599be29b35f">Patterns::Integer</a> ()</td></tr>
+<tr class="separator:a7a9be59c2d5785c55fedf599be29b35f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eaf37b98f1a2a0af6c66c421ef9eebd" id="r_a8eaf37b98f1a2a0af6c66c421ef9eebd"><td class="memItemLeft" align="right" valign="top">static dealii::Patterns::Integer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePatterns.html#a8eaf37b98f1a2a0af6c66c421ef9eebd">Patterns::UnsignedInteger</a> ()</td></tr>
+<tr class="separator:a8eaf37b98f1a2a0af6c66c421ef9eebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b864f96d78470c492ed576536c9a9c9" id="r_a9b864f96d78470c492ed576536c9a9c9"><td class="memItemLeft" align="right" valign="top">static dealii::Patterns::Integer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePatterns.html#a9b864f96d78470c492ed576536c9a9c9">Patterns::PositiveInteger</a> ()</td></tr>
+<tr class="separator:a9b864f96d78470c492ed576536c9a9c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad698158ab66e73084dc1e79f75ac9d1b" id="r_ad698158ab66e73084dc1e79f75ac9d1b"><td class="memItemLeft" align="right" valign="top">static dealii::Patterns::Integer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePatterns.html#ad698158ab66e73084dc1e79f75ac9d1b">Patterns::NegativeInteger</a> ()</td></tr>
+<tr class="separator:ad698158ab66e73084dc1e79f75ac9d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d0cdbdfe7517a344be4c035421b4a6f" id="r_a5d0cdbdfe7517a344be4c035421b4a6f"><td class="memItemLeft" align="right" valign="top">static dealii::Patterns::Double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePatterns.html#a5d0cdbdfe7517a344be4c035421b4a6f">Patterns::Double</a> ()</td></tr>
+<tr class="separator:a5d0cdbdfe7517a344be4c035421b4a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa72e1c79fe36a56686b58adc49988b9b" id="r_aa72e1c79fe36a56686b58adc49988b9b"><td class="memItemLeft" align="right" valign="top">static dealii::Patterns::Double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePatterns.html#aa72e1c79fe36a56686b58adc49988b9b">Patterns::PositiveDouble</a> ()</td></tr>
+<tr class="separator:aa72e1c79fe36a56686b58adc49988b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a51436487a51e832c981e6d28e13198" id="r_a6a51436487a51e832c981e6d28e13198"><td class="memItemLeft" align="right" valign="top">static dealii::Patterns::Double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePatterns.html#a6a51436487a51e832c981e6d28e13198">Patterns::NegativeDouble</a> ()</td></tr>
+<tr class="separator:a6a51436487a51e832c981e6d28e13198"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a659e962e727248492bac1385fb293e8c" id="r_a659e962e727248492bac1385fb293e8c"><td class="memItemLeft" align="right" valign="top">static dealii::Patterns::List&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePatterns.html#a659e962e727248492bac1385fb293e8c">Patterns::StringList</a> ()</td></tr>
+<tr class="separator:a659e962e727248492bac1385fb293e8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4fb74aaf29c7c8313936ce7f24af218" id="r_ad4fb74aaf29c7c8313936ce7f24af218"><td class="memItemLeft" align="right" valign="top">static dealii::Patterns::List&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacePatterns.html#ad4fb74aaf29c7c8313936ce7f24af218">Patterns::UnsignedIntegerList</a> ()</td></tr>
+<tr class="separator:ad4fb74aaf29c7c8313936ce7f24af218"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -209,6 +265,108 @@ requires std::convertible_to&lt;std::ranges::range_reference_t&lt;Range&gt;, std
 
 </div>
 </div>
+<a id="ad7da1dec71cd12f0708dc9935bbf2db2" name="ad7da1dec71cd12f0708dc9935bbf2db2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7da1dec71cd12f0708dc9935bbf2db2">&#9670;&#160;</a></span>declare_aliases_with_generated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::ranges::input_range Range&gt; <br />
+requires std::convertible_to&lt;std::ranges::range_reference_t&lt;Range&gt;, std::string_view&gt;</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void declare_aliases_with_generated </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>existing_entry_name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Range &amp;</td>          <td class="paramname"><span class="paramname"><em>aliases</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Declare multiple aliases for a parameter name with generated aliases. </p>
+
+</div>
+</div>
+<a id="a6ad390978ef09cd21bdd20d4ba32c1e5" name="a6ad390978ef09cd21bdd20d4ba32c1e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ad390978ef09cd21bdd20d4ba32c1e5">&#9670;&#160;</a></span>declare_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void declare_entry </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>default_value</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::Patterns::PatternBase &amp;</td>          <td class="paramname"><span class="paramname"><em>pattern</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>documentation</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::list&lt; std::string_view &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>aliases</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>warnings</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>example</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>deprecated</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ae08e1d79011419d39f3e80cf44e68f79" name="ae08e1d79011419d39f3e80cf44e68f79"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae08e1d79011419d39f3e80cf44e68f79">&#9670;&#160;</a></span>generate_aliases()</h2>
 
@@ -238,6 +396,238 @@ requires std::convertible_to&lt;std::ranges::range_reference_t&lt;Range&gt;, std
 <li>"User_Inputs"</li>
 <li>"UserInputs" </li>
 </ul>
+
+</div>
+</div>
+<a id="ab39343088471499db91c9d5c24fd6c23" name="ab39343088471499db91c9d5c24fd6c23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab39343088471499db91c9d5c24fd6c23">&#9670;&#160;</a></span>get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::string get </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a93c448ebd606092d0d87994fbfa241d1" name="a93c448ebd606092d0d87994fbfa241d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93c448ebd606092d0d87994fbfa241d1">&#9670;&#160;</a></span>get_bool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool get_bool </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab1add649d4b6d40ff8820ebea05532a2" name="ab1add649d4b6d40ff8820ebea05532a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1add649d4b6d40ff8820ebea05532a2">&#9670;&#160;</a></span>get_double()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static double get_double </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9788aa13aa6681f459b97859c982d8fb" name="a9788aa13aa6681f459b97859c982d8fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9788aa13aa6681f459b97859c982d8fb">&#9670;&#160;</a></span>get_int()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int get_int </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acf52acf3cde6590456a73bbe09a0b95c" name="acf52acf3cde6590456a73bbe09a0b95c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf52acf3cde6590456a73bbe09a0b95c">&#9670;&#160;</a></span>get_selection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Map&gt; <br />
+requires requires(Map &amp;map, const typename Map::key_type &amp;key) { map.find(key); map.end(); }</div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Map::mapped_type get_selection </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Map &amp;</td>          <td class="paramname"><span class="paramname"><em>map</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a598668b7e8ad7a0a25c54e78bc8c1bca" name="a598668b7e8ad7a0a25c54e78bc8c1bca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a598668b7e8ad7a0a25c54e78bc8c1bca">&#9670;&#160;</a></span>get_string_list()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::vector&lt; std::string &gt; get_string_list </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aea598f0ad1cff6a68524e92f5030e98f" name="aea598f0ad1cff6a68524e92f5030e98f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea598f0ad1cff6a68524e92f5030e98f">&#9670;&#160;</a></span>get_unsigned_int()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static unsigned int get_unsigned_int </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ade96e6bd8f6a5a10fd17f64cb3386e11" name="ade96e6bd8f6a5a10fd17f64cb3386e11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade96e6bd8f6a5a10fd17f64cb3386e11">&#9670;&#160;</a></span>get_unsigned_int_list()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::vector&lt; unsigned int &gt; get_unsigned_int_list </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>entry</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

@@ -1,25 +1,6 @@
 var searchData=
 [
-  ['m_0',['m',['../classMFOperator.html#a01ab9046ce2995b4a3138406eb621c99',1,'MFOperator']]],
-  ['make_5fbc_5fconstraints_1',['make_bc_constraints',['../classConstraintManager.html#a65bc1c1252fa1ea19e3fc8212f9d1d89',1,'ConstraintManager']]],
-  ['make_5fconstraints_5ffor_5fsingle_5ffield_2',['make_constraints_for_single_field',['../classConstraintManager.html#afb3ad5a11b0ab128c819d4f5482f42dc',1,'ConstraintManager']]],
-  ['make_5fdependency_5fset_3',['make_dependency_set',['../dependencies_8h.html#a8ee155eab2c56d1d5418eed94e41a238',1,'dependencies.h']]],
-  ['make_5fdirichlet_5fconstraints_4',['make_dirichlet_constraints',['../classConstraintManager.html#a5bfc7442d158e82646c8a0e35b8778d7',1,'ConstraintManager']]],
-  ['make_5fmg_5fconstraints_5',['make_mg_constraints',['../classMGContext.html#ac5684b18c2ae906999396e9c16573a86',1,'MGContext']]],
-  ['make_5fone_5fboundary_5fconstraint_6',['make_one_boundary_constraint',['../classConstraintManager.html#a5d0d27d70067a7e0a39ec4039c806353',1,'ConstraintManager']]],
-  ['make_5fsolvers_7',['make_solvers',['../namespacePRISMS__PF__BEGIN__NAMESPACE.html#ab982a006a8454dd8f42b631bd0ff9fb3',1,'PRISMS_PF_BEGIN_NAMESPACE']]],
-  ['mark_5fboundaries_8',['mark_boundaries',['../structMesh.html#a72ff292e383269f5ecf731d08a7ce979',1,'Mesh::mark_boundaries()'],['../structRectangularMesh.html#adab40ac45b287ba95010d2d98e7b12bb',1,'RectangularMesh::mark_boundaries()'],['../structSphericalMesh.html#acbfb653edd22dd4d632555a13f56bf46',1,'SphericalMesh::mark_boundaries()'],['../structSpatialDiscretization.html#a808d8ce805463844269b633012e3d16b',1,'SpatialDiscretization::mark_boundaries()']]],
-  ['mark_5fcells_5ffor_5frefinement_9',['mark_cells_for_refinement',['../classRefinementManager.html#a2d2d992e4a3bb9507dca5a3060cf0983',1,'RefinementManager']]],
-  ['mark_5fcells_5ffor_5frefinement_5fand_5fcoarsening_10',['mark_cells_for_refinement_and_coarsening',['../classRefinementManager.html#a60db8f1c1a8bc2bc8259232053b28e3c',1,'RefinementManager']]],
-  ['mark_5fperiodic_11',['mark_periodic',['../structMesh.html#a54e3632cc68d8563b23ee76e99b5005c',1,'Mesh::mark_periodic(Triangulation &amp;triangulation) const'],['../structMesh.html#ab1fdc5ad5d452790743782ee4034d175',1,'Mesh::mark_periodic(const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, dealii::AffineConstraints&lt; number &gt; &amp;constraints) const'],['../structMesh.html#ab019130a611de5ee97a30fb628c2cb7b',1,'Mesh::mark_periodic(typename Mesh&lt; dim &gt;::Triangulation &amp;triangulation) const']]],
-  ['matrixfreemanager_12',['MatrixFreeManager',['../classMatrixFreeManager.html#ae3c084c27c4bdc64da61df3ceb8aecc2',1,'MatrixFreeManager']]],
-  ['mesh_13',['Mesh',['../structMesh.html#ae25ebef6af2022a6a13fca216b75d18e',1,'Mesh']]],
-  ['mf_5fmanager_14',['mf_manager',['../classInvMManager.html#a6a3d4c02d16afc58cc7173f94709c629',1,'InvMManager']]],
-  ['mfoperator_15',['MFOperator',['../classMFOperator.html#a2df20704c99c55a088f8b8b1c8d17af9',1,'MFOperator']]],
-  ['mg_5ftransfer_5fdown_16',['mg_transfer_down',['../classGroupSolutionHandler.html#af390d05ecd28f0286f613a4b848682c3',1,'GroupSolutionHandler']]],
-  ['mgcontext_17',['MGContext',['../classMGContext.html#ad9642f530e8a8154acafdcd3d1dd88e3',1,'MGContext']]],
-  ['mpi_5fbroadcast_5fnuclei_18',['mpi_broadcast_nuclei',['../classNucleationManager.html#a4cf6ea096ed7b1291bc2928cd0904bca',1,'NucleationManager']]],
-  ['mpi_5fdatatype_19',['mpi_datatype',['../structNucleus.html#a567edb715eee48cd250f9eece9a8008b',1,'Nucleus']]],
-  ['mpi_5fgather_5fnuclei_20',['mpi_gather_nuclei',['../classNucleationManager.html#aa9cad1ef245a6e38a738ca90f3d97f26',1,'NucleationManager']]],
-  ['mpiinitfinalize_21',['MPIInitFinalize',['../classMPIInitFinalize.html#aba602b90b70fc51525c68b326c3e2cbb',1,'MPIInitFinalize']]]
+  ['lin_5fparams_0',['lin_params',['../classLinearSolver.html#a3fce5f57903c375eaa685621790a494d',1,'LinearSolver']]],
+  ['linearsolver_1',['LinearSolver',['../classLinearSolver.html#ae3b77af5f056e684117a2d707189f971',1,'LinearSolver']]],
+  ['location_5fvectorized_2',['location_vectorized',['../structNucleus.html#a65645a28ec2c1d62dbae42e288c1cf6b',1,'Nucleus']]]
 ];
