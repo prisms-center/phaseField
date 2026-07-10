@@ -429,6 +429,12 @@ void
 SpatialDiscretization<dim>::assign(dealii::ParameterHandler &parameter_handler,
                                    unsigned int              n_subsections)
 {
+  const std::map<std::string, TriangulationType> mesh_types = {
+    {"rectangular", TriangulationType::Rectangular},
+    {"spherical",   TriangulationType::Spherical  },
+    {"custom",      TriangulationType::Custom     }
+  };
+  mesh_type = mesh_types.at(parameter_handler.get("mesh type"));
   rectangular_mesh.assign_parameters(parameter_handler);
   spherical_mesh.assign_parameters(parameter_handler);
 

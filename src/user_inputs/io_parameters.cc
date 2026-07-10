@@ -46,19 +46,19 @@ FieldOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
     parameter_handler.declare_entry(
       "condition",
       "EQUAL_SPACING",
-      dealii::Patterns::Selection("EQUAL_SPACING|LOG_SPACING|N_PER_DECADE|LIST"),
+      dealii::Patterns::Selection("EQUAL_SPACING|LOG_SPACING|N_PER_DECADE"),
       "The spacing type for outputting the solution fields.");
+    parameter_handler.declare_entry(
+      "number",
+      "10",
+      dealii::Patterns::Integer(0, INT_MAX),
+      "The number of outputs for EQUAL_SPACING and for LOG_SPACING or number of outputs "
+      "per decade for N_PER_DECADE.");
     parameter_handler.declare_entry(
       "list",
       "0",
       dealii::Patterns::List(dealii::Patterns::Integer(0, INT_MAX), 0, INT_MAX, ","),
-      "The list of time steps to output. Used for the LIST type only and must be comma "
-      "delimited.");
-    parameter_handler.declare_entry("number",
-                                    "10",
-                                    dealii::Patterns::Integer(0, INT_MAX),
-                                    "The number of outputs (or number of outputs "
-                                    "per decade for the N_PER_DECADE type).");
+      "Comma-separated list of increments to output on.");
 
     parameter_handler.declare_entry(
       "variables",
@@ -129,13 +129,10 @@ FieldOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
       {
         add_n_per_decade_outputs(n_outputs, n_increments, output_list);
       }
-    else
-      {
-        add_list_outputs(dealii::Utilities::string_to_int(
-                           dealii::Utilities::split_string_list(
-                             parameter_handler.get("list"))),
-                         output_list);
-      }
+    add_list_outputs(dealii::Utilities::string_to_int(
+                       dealii::Utilities::split_string_list(
+                         parameter_handler.get("list"))),
+                     output_list);
   }
   parameter_handler.leave_subsection();
 }
