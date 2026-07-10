@@ -108,7 +108,7 @@ declare_aliases_with_generated(dealii::ParameterHandler &parameter_handler,
 
   for (const auto &alias : aliases)
     {
-      parameter_handler.declare_alias(existing_entry_name, alias);
+      parameter_handler.declare_alias(existing_entry_name, std::string(alias));
       declare_aliases(parameter_handler, existing_entry_name, generate_aliases(alias));
     }
 }
@@ -198,14 +198,14 @@ get_selection(const dealii::ParameterHandler &parameter_handler,
   return iter->second;
 }
 
-std::vector<std::string>
+static std::vector<std::string>
 get_string_list(const dealii::ParameterHandler &parameter_handler,
                 const std::string_view         &entry)
 {
   return dealii::Utilities::split_string_list(parameter_handler.get(std::string(entry)));
 }
 
-std::vector<unsigned int>
+static std::vector<unsigned int>
 get_unsigned_int_list(const dealii::ParameterHandler &parameter_handler,
                       const std::string_view         &entry)
 {
