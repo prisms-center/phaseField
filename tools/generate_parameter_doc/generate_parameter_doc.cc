@@ -14,7 +14,7 @@ main(int argc, char *argv[])
   std::ofstream                    json_file("parameter_doc.json");
   std::ofstream                    latex_file("parameter_doc.tex");
   std::ofstream                    prm_file("parameter_doc.prm");
-  user_inputs.declare_parameters(parameter_handler, 1);
+  user_inputs.declare(parameter_handler, 1);
   parameter_handler.print_parameters(xml_file, dealii::ParameterHandler::XML);
   parameter_handler.print_parameters(json_file, dealii::ParameterHandler::JSON);
   parameter_handler.print_parameters(latex_file, dealii::ParameterHandler::LaTeX);

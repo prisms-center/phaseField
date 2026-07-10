@@ -214,33 +214,40 @@ RectangularMesh<dim>::declare_parameters(dealii::ParameterHandler &parameter_han
       {
         const std::string axis {dir};
 
-        parameter_handler.declare_entry(axis + " size",
-                                        "0.0",
-                                        dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                        "The size of the domain in the " + axis +
-                                          "-direction.");
-        parameter_handler.declare_alias(axis + " size", "size" + axis);
-
-        parameter_handler.declare_entry(axis + " lower bound",
-                                        "0.0",
-                                        dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                        "The lower bound of the domain in the " + axis +
-                                          "-direction.");
-        parameter_handler.declare_alias(axis + " lower bound", "lower bound" + axis);
-
-        parameter_handler.declare_entry(axis + " subdivisions",
-                                        "1",
-                                        dealii::Patterns::Integer(1, INT_MAX),
-                                        "The number of mesh subdivisions in the " + axis +
-                                          "-direction.");
-        parameter_handler.declare_alias(axis + " subdivisions", "subdivisions" + axis);
-
-        parameter_handler.declare_entry(axis + " periodic",
-                                        "false",
-                                        dealii::Patterns::Bool(),
-                                        "Whether to have periodicity in the " + axis +
-                                          "-direction.");
-        parameter_handler.declare_alias(axis + " periodic", "periodic" + axis);
+        declare_entry(parameter_handler,
+                      axis + " size",
+                      "0.0",
+                      Patterns::Double(),
+                      "The upper of the domain in the " + axis +
+                        "-direction. When the lower bound is the origin, this "
+                        "corresponds to the size of the domain.",
+                      {"size " + axis, axis + " upper bound", "upper bound " + axis},
+                      "When setting lower bound, this parameter no longer corresponds to "
+                      "the size of the domain.");
+        declare_entry(parameter_handler,
+                      axis + " lower bound",
+                      "0.0",
+                      Patterns::Double(),
+                      "The lower bound of the domain in the " + axis + "-direction.",
+                      {"lower bound " + axis});
+        declare_entry(
+          parameter_handler,
+          axis + " subdivisions",
+          "1",
+          dealii::Patterns::Integer(1, INT_MAX),
+          "The number of mesh subdivisions in the " + axis + "-direction.",
+          {"subdivisions " + axis},
+          "Be careful when using many subdivisions as they affect the coarse mesh! This "
+          "is important because the coarse mesh is stored on every processor. Don't use "
+          "subdivisions in place of refinements! They are not the same.");
+        declare_entry(parameter_handler,
+                      axis + " periodic",
+                      "false",
+                      Patterns::Bool(),
+                      "Whether to have periodicity in the " + axis + "-direction.",
+                      {"periodic " + axis},
+                      "If you set a certain direction to be period, make sure the "
+                      "corresponding boundary condition is `NATURAL`.");
       }
   }
   parameter_handler.leave_subsection();

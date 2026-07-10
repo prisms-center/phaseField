@@ -45,10 +45,8 @@ struct UserInputParameters : public ParameterBase
 
     dealii::ParameterHandler parameter_handler;
 
-    // Now, parse the rest. Again, we must skip undefined so deal.II doesn't throw an
-    // error since some entries are only used in the "pre" parse.
     declare(parameter_handler, n_subsections);
-    parameter_handler.parse_input(file_name, "", true);
+    parameter_handler.parse_input(file_name);
     assign(parameter_handler, n_subsections);
   };
 
