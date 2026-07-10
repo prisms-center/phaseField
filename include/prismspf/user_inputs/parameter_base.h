@@ -91,6 +91,27 @@ generate_aliases(std::string_view name)
 }
 
 /**
+ * Declare multiple aliases for a parameter name with generated aliases.
+ */
+template <std::ranges::input_range Range>
+requires std::convertible_to<std::ranges::range_reference_t<Range>, std::string_view>
+static void
+declare_aliases_with_generated(dealii::ParameterHandler &parameter_handler,
+                               const std::string        &existing_entry_name,
+                               const Range              &aliases)
+{
+  declare_aliases(parameter_handler,
+                  existing_entry_name,
+                  generate_aliases(existing_entry_name));
+
+  for (const auto &alias : aliases)
+    {
+      parameter_handler.declare_alias(existing_entry_name, alias);
+      declare_aliases(parameter_handler, existing_entry_name, generate_aliases(alias));
+    }
+}
+
+/**
  * @brief Virtual base class for parameter groups.
  *
  * This virtual base class ensures that we always have the following execution order.
