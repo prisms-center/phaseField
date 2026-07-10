@@ -2,6 +2,7 @@
 
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/patterns.h>
+#include <deal.II/base/utilities.h>
 
 #include <prismspf/core/exceptions.h>
 
@@ -10,6 +11,8 @@
 #include <prismspf/config.h>
 
 #include <cfloat>
+#include <concepts>
+#include <ranges>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -253,6 +256,73 @@ class ParameterHandler
                                    data.aliases);
   }
 
+  std::string
+  get(const String &entry) const
+  {
+    return parameter_handler.get(std::string(entry));
+  }
+
+  int
+  get_int(const String &entry) const
+  {
+    // TODO: Add check for safe casting
+    return (int) parameter_handler.get_integer(std::string(entry));
+  }
+
+  unsigned int
+  get_unsigned_int(const String &entry) const
+  {
+    // TODO: Add check for safe casting
+    return (unsigned int) parameter_handler.get_integer(std::string(entry));
+  }
+
+  double
+  get_double(const String &entry) const
+  {
+    return parameter_handler.get_double(std::string(entry));
+  }
+
+  bool
+  get_bool(const String &entry) const
+  {
+    return parameter_handler.get_bool(std::string(entry));
+  }
+
+  template <typename Map>
+  requires requires(Map &map, const typename Map::key_type &key) {
+    map.find(key);
+    map.end();
+  }
+  typename Map::mapped_type
+  get_selection(const String &entry, Map &map) const
+  {
+    const auto value = get(entry);
+    const auto iter  = map.find(value);
+    AssertThrow(iter != map.end(), dealii::ExcMessage("Invalid selection"));
+    return iter->second;
+  }
+
+  std::vector<std::string>
+  get_string_list(const String &entry) const
+  {
+    return dealii::Utilities::split_string_list(
+      parameter_handler.get(std::string(entry)));
+  }
+
+  std::vector<unsigned int>
+  get_unsigned_int_list(const String &entry) const
+  {
+    // TODO: Add check for safe casting
+    std::vector<unsigned int> list;
+
+    for (const auto &list_entry : get_string_list(entry))
+      {
+        list.push_back((unsigned int) std::stoul(list_entry));
+      }
+
+    return list;
+  }
+
   void
   enter_subsection(const String &subsection)
   {
@@ -285,8 +355,8 @@ class ParameterHandler
 private:
   dealii::ParameterHandler parameter_handler;
 
-  std::vector<std::string_view> subsection_stack;
-  std::vector<Parameter>        parameters;
+  std::vector<String>    subsection_stack;
+  std::vector<Parameter> parameters;
 };
 
 PRISMS_PF_END_NAMESPACE
