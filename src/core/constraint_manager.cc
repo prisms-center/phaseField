@@ -37,12 +37,14 @@ ConstraintManager<dim, degree, number>::init(
   const BoundaryParameters                   &_boundary_parameters,
   const SpatialDiscretization<dim>           &_spatial_discretization,
   const DoFManager<dim, degree>              &_dof_manager,
-  const PDEOperatorBase<dim, degree, number> &_pde_operator)
+  const PDEOperatorBase<dim, degree, number> &_pde_operator,
+  const SimulationTimer                      &_sim_timer)
 {
   boundary_parameters     = &_boundary_parameters;
   spatial_discretization  = &_spatial_discretization;
   dof_manager             = &_dof_manager;
   pde_operator            = &_pde_operator;
+  sim_timer               = &_sim_timer;
   unsigned int num_levels = dof_manager->has_mg() ? dof_manager->num_levels() : 0;
   mg_generic_constraints.resize(num_levels);
 }
@@ -434,6 +436,7 @@ ConstraintManager<dim, degree, number>::make_dirichlet_constraints(
     DirichletConditions<dim, degree, number>(field_index,
                                              boundary_id,
                                              *pde_operator,
+                                             *sim_timer,
                                              is_vector_field ? dim : 1),
     _constraints,
     mask);

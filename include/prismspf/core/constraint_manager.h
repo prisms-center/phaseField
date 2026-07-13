@@ -11,6 +11,7 @@
 
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
+#include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/solve_block.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
@@ -62,7 +63,8 @@ public:
   init(const BoundaryParameters                   &_boundary_parameters,
        const SpatialDiscretization<dim>           &_spatial_discretization,
        const DoFManager<dim, degree>              &_dof_manager,
-       const PDEOperatorBase<dim, degree, number> &_pde_operator);
+       const PDEOperatorBase<dim, degree, number> &_pde_operator,
+       const SimulationTimer                      &_sim_timer);
 
   /**
    * @brief Getter function for the constraints.
@@ -209,6 +211,11 @@ private:
    * @brief PDE operator.
    */
   const PDEOperatorBase<dim, degree, number> *pde_operator = nullptr;
+
+  /**
+   * @brief Simulation time for time-dependent constraints.
+   */
+  const SimulationTimer *sim_timer = nullptr;
 
   /**
    * @brief Constraints. Outer vector is indexed by field index.

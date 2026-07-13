@@ -266,7 +266,8 @@ Problem<dim, degree, number>::init_system()
   constraint_manager.init(user_inputs.boundary_parameters,
                           user_inputs.spatial_discretization,
                           dof_manager,
-                          solve_context.get_pde_operator());
+                          solve_context.get_pde_operator(),
+                          solve_context.get_simulation_timer());
   constraint_manager.reinit(field_attributes);
   Timer::end_section("Create constraints");
 
