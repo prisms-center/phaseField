@@ -1,10 +1,7 @@
 #include <prismspf/user_inputs/constraint_parameters.h>
+#include <prismspf/user_inputs/parameter_base.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/user_inputs/parameter_base.h"
-
-#include <string_view>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
