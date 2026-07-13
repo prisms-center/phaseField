@@ -189,12 +189,10 @@ public:
         unsigned int field_index     = solutions.get_block_to_global_index()[block_index];
         const FieldAttributes &field = field_attributes[field_index];
         unsigned int num_comps       = (field.field_type == TensorRank::Vector) ? dim : 1;
-        for (unsigned int comp = 0; comp < num_comps; comp++)
+        for (const auto &[comp, comp_bcs] :
+             field.boundary_conditions.component_constraints)
           {
-            std::set<unsigned int>     constrained_boundary_ids;
-            const ComponentConditions &comp_bcs =
-              field_attributes[field_index].boundary_conditions.component_constraints.at(
-                comp);
+            std::set<unsigned int> constrained_boundary_ids;
             for (const auto &[boundary_id, boundary_type] : comp_bcs)
               {
                 if (boundary_type == Condition::Dirichlet)
