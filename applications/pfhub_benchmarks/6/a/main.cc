@@ -3,6 +3,7 @@
 
 #include "custom_pde.h"
 
+#include <prismspf/core/field_attributes.h>
 #include <prismspf/core/parse_cmd_options.h>
 #include <prismspf/core/problem.h>
 
@@ -62,10 +63,9 @@ main(int argc, char *argv[])
   user_inputs.spatial_discretization.rectangular_mesh.size =
     dealii::Tensor<1, 2>({100.0, 100.0});
 
-  FieldConstraints<2> &Phi_bcs =
-    user_inputs.boundary_parameters.boundary_condition_list["Phi"];
-  Phi_bcs.component_constraints[0].conditions[0] = Dirichlet;
-  Phi_bcs.component_constraints[0].conditions[1] = Dirichlet;
+  BoundaryConditionSet &Phi_bcs       = fields[3].boundary_conditions;
+  Phi_bcs.component_constraints[0][0] = Dirichlet;
+  Phi_bcs.component_constraints[0][1] = Dirichlet;
 
   // Output at times specified by the benchmark spec.
   for (double output_time : {400})
