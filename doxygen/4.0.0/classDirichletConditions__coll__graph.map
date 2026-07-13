@@ -1,5 +1,7 @@
 <map id="DirichletConditions&lt; dim, degree, number &gt;" name="DirichletConditions&lt; dim, degree, number &gt;">
-<area shape="rect" id="Node000001" title="Function for user&#45;implemented Dirichlet boundary condition." alt="" coords="5,98,193,143"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="17,5,181,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,66,102,98,96,98,96,66"/>
+<area shape="rect" id="Node000001" title="Function for user&#45;implemented Dirichlet boundary condition." alt="" coords="79,115,266,160"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,170,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,61,158,113,154,116,112,64"/>
+<area shape="rect" id="Node000003" href="$classSimulationTimer.html" title=" " alt="" coords="194,14,323,42"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="241,55,192,116,188,113,236,52"/>
 </map>

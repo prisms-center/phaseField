@@ -140,14 +140,14 @@ Inheritance diagram for DirichletConditions&lt; dim, degree, number &gt;:</div>
 <div class="dynheader">
 Collaboration diagram for DirichletConditions&lt; dim, degree, number &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classDirichletConditions__coll__graph.svg" width="199" height="148"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classDirichletConditions__coll__graph.svg" width="328" height="166"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab2609373ef68e576ae27d2b8549495fb" id="r_ab2609373ef68e576ae27d2b8549495fb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2609373ef68e576ae27d2b8549495fb">DirichletConditions</a> (unsigned int _index, unsigned int _boundary_id, const <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt; &amp;_pde_operator, unsigned int spacedim)</td></tr>
-<tr class="memdesc:ab2609373ef68e576ae27d2b8549495fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
-<tr class="separator:ab2609373ef68e576ae27d2b8549495fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2779d05863ac23a617bb79ef710c5c3" id="r_af2779d05863ac23a617bb79ef710c5c3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2779d05863ac23a617bb79ef710c5c3">DirichletConditions</a> (unsigned int _index, unsigned int _boundary_id, const <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt; &amp;_pde_operator, const <a class="el" href="classSimulationTimer.html">SimulationTimer</a> &amp;_sim_timer, unsigned int spacedim)</td></tr>
+<tr class="memdesc:af2779d05863ac23a617bb79ef710c5c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
+<tr class="separator:af2779d05863ac23a617bb79ef710c5c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95e67e2ca91018c0f29f0f5f4d1462c2" id="r_a95e67e2ca91018c0f29f0f5f4d1462c2"><td class="memItemLeft" align="right" valign="top">number&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a95e67e2ca91018c0f29f0f5f4d1462c2">value</a> (const dealii::Point&lt; dim &gt; &amp;p, const unsigned int component=0) const override</td></tr>
 <tr class="memdesc:a95e67e2ca91018c0f29f0f5f4d1462c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scalar value.  <br /></td></tr>
 <tr class="separator:a95e67e2ca91018c0f29f0f5f4d1462c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,15 +161,17 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a7103bb77235661ed164a136abd34d7ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62629da018a1e27edc1fd76609450a80" id="r_a62629da018a1e27edc1fd76609450a80"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62629da018a1e27edc1fd76609450a80">boundary_id</a></td></tr>
 <tr class="separator:a62629da018a1e27edc1fd76609450a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf649390d2c458bce4e3a62a8a9dee53" id="r_acf649390d2c458bce4e3a62a8a9dee53"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf649390d2c458bce4e3a62a8a9dee53">pde_operator</a></td></tr>
+<tr class="memitem:acf649390d2c458bce4e3a62a8a9dee53" id="r_acf649390d2c458bce4e3a62a8a9dee53"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf649390d2c458bce4e3a62a8a9dee53">pde_operator</a> = nullptr</td></tr>
 <tr class="separator:acf649390d2c458bce4e3a62a8a9dee53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99c3207946297f4cbf8692e436cc790c" id="r_a99c3207946297f4cbf8692e436cc790c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSimulationTimer.html">SimulationTimer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99c3207946297f4cbf8692e436cc790c">sim_timer</a> = nullptr</td></tr>
+<tr class="separator:a99c3207946297f4cbf8692e436cc790c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
 class DirichletConditions&lt; dim, degree, number &gt;</div><p>Function for user-implemented Dirichlet boundary condition. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ab2609373ef68e576ae27d2b8549495fb" name="ab2609373ef68e576ae27d2b8549495fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2609373ef68e576ae27d2b8549495fb">&#9670;&#160;</a></span>DirichletConditions()</h2>
+<a id="af2779d05863ac23a617bb79ef710c5c3" name="af2779d05863ac23a617bb79ef710c5c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2779d05863ac23a617bb79ef710c5c3">&#9670;&#160;</a></span>DirichletConditions()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,6 +192,11 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>_pde_operator</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSimulationTimer.html">SimulationTimer</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>_sim_timer</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -331,7 +338,31 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt;dim, degree, number&gt;* <a class="el" href="classDirichletConditions.html">DirichletConditions</a>&lt; dim, degree, number &gt;::pde_operator</td>
+          <td class="memname">const <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt;dim, degree, number&gt;* <a class="el" href="classDirichletConditions.html">DirichletConditions</a>&lt; dim, degree, number &gt;::pde_operator = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a99c3207946297f4cbf8692e436cc790c" name="a99c3207946297f4cbf8692e436cc790c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99c3207946297f4cbf8692e436cc790c">&#9670;&#160;</a></span>sim_timer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSimulationTimer.html">SimulationTimer</a>* <a class="el" href="classDirichletConditions.html">DirichletConditions</a>&lt; dim, degree, number &gt;::sim_timer = nullptr</td>
         </tr>
       </table>
   </td>

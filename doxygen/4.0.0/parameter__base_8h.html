@@ -130,7 +130,6 @@ $(function(){initNavTree('parameter__base_8h.html',''); initResizable(true); });
 <div class="contents">
 <div class="textblock"><code>#include &lt;deal.II/base/parameter_handler.h&gt;</code><br />
 <code>#include &lt;deal.II/base/patterns.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="field__attributes_8h_source.html">prismspf/core/field_attributes.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="types_8h_source.html">prismspf/core/types.h</a>&gt;</code><br />
 <code>#include &lt;prismspf/config.h&gt;</code><br />
 <code>#include &lt;cfloat&gt;</code><br />
@@ -142,12 +141,12 @@ $(function(){initNavTree('parameter__base_8h.html',''); initResizable(true); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for parameter_base.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="parameter__base_8h__incl.svg" width="1466" height="392"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="parameter__base_8h__incl.svg" width="1315" height="316"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="parameter__base_8h__dep__incl.svg" width="3598" height="1539"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="parameter__base_8h__dep__incl.svg" width="3739" height="1724"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="parameter__base_8h_source.html">Go to the source code of this file.</a></p>
@@ -165,10 +164,10 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1ba7e5bf4f2b3a79023aac7e9b16efb7" id="r_a1ba7e5bf4f2b3a79023aac7e9b16efb7"><td class="memTemplParams" colspan="2">template&lt;std::ranges::input_range Range&gt; <br />
+<tr class="memitem:a6dbb65b140da57c89b9e1dd315fad8dd" id="r_a6dbb65b140da57c89b9e1dd315fad8dd"><td class="memTemplParams" colspan="2">template&lt;std::ranges::input_range Range = std::vector&lt;std::string&gt;&gt; <br />
 requires std::convertible_to&lt;std::ranges::range_reference_t&lt;Range&gt;, std::string_view&gt;</td></tr>
-<tr class="memitem:a1ba7e5bf4f2b3a79023aac7e9b16efb7"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1ba7e5bf4f2b3a79023aac7e9b16efb7">declare_aliases</a> (dealii::ParameterHandler &amp;parameter_handler, const std::string &amp;existing_entry_name, const Range &amp;aliases)</td></tr>
-<tr class="separator:a1ba7e5bf4f2b3a79023aac7e9b16efb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dbb65b140da57c89b9e1dd315fad8dd"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6dbb65b140da57c89b9e1dd315fad8dd">declare_aliases</a> (dealii::ParameterHandler &amp;parameter_handler, const std::string &amp;existing_entry_name, const Range &amp;aliases={})</td></tr>
+<tr class="separator:a6dbb65b140da57c89b9e1dd315fad8dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae08e1d79011419d39f3e80cf44e68f79" id="r_ae08e1d79011419d39f3e80cf44e68f79"><td class="memItemLeft" align="right" valign="top">static std::array&lt; std::string, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae08e1d79011419d39f3e80cf44e68f79">generate_aliases</a> (std::string_view name)</td></tr>
 <tr class="separator:ae08e1d79011419d39f3e80cf44e68f79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7da1dec71cd12f0708dc9935bbf2db2" id="r_ad7da1dec71cd12f0708dc9935bbf2db2"><td class="memTemplParams" colspan="2">template&lt;std::ranges::input_range Range&gt; <br />
@@ -227,13 +226,13 @@ Variables</h2></td></tr>
 <tr class="separator:a238f2815394854d76c9a69359f5be6ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a1ba7e5bf4f2b3a79023aac7e9b16efb7" name="a1ba7e5bf4f2b3a79023aac7e9b16efb7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ba7e5bf4f2b3a79023aac7e9b16efb7">&#9670;&#160;</a></span>declare_aliases()</h2>
+<a id="a6dbb65b140da57c89b9e1dd315fad8dd" name="a6dbb65b140da57c89b9e1dd315fad8dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dbb65b140da57c89b9e1dd315fad8dd">&#9670;&#160;</a></span>declare_aliases()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;std::ranges::input_range Range&gt; <br />
+template&lt;std::ranges::input_range Range = std::vector&lt;std::string&gt;&gt; <br />
 requires std::convertible_to&lt;std::ranges::range_reference_t&lt;Range&gt;, std::string_view&gt;</div>
 <table class="mlabels">
   <tr>
@@ -252,7 +251,7 @@ requires std::convertible_to&lt;std::ranges::range_reference_t&lt;Range&gt;, std
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Range &amp;</td>          <td class="paramname"><span class="paramname"><em>aliases</em></span>&#160;)</td>
+          <td class="paramtype">const Range &amp;</td>          <td class="paramname"><span class="paramname"><em>aliases</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>&#160;)</td>
         </tr>
       </table>
   </td>

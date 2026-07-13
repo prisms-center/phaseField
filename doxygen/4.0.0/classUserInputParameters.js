@@ -5,7 +5,7 @@ var classUserInputParameters =
     [ "assign", "classUserInputParameters.html#a5b205d7ac6e315a47716ebdda8e5890a", null ],
     [ "declare", "classUserInputParameters.html#a7158b63d6ae69224e557201ca5fbfd99", null ],
     [ "validate", "classUserInputParameters.html#a7bde7d2c23c4704d5655c2ef16a7c334", null ],
-    [ "boundary_parameters", "classUserInputParameters.html#aa5d23cb09251f292b1b5c9c54c19cf5c", null ],
+    [ "boundary_parameters", "classUserInputParameters.html#abd382f3e1223b068ba19318664af4548", null ],
     [ "input_parameters", "classUserInputParameters.html#a8e6249926adeaa26fb1e52f828e89691", null ],
     [ "linear_solve_parameters", "classUserInputParameters.html#a53fa02b5add7145a2dc3e02350222e4f", null ],
     [ "misc_parameters", "classUserInputParameters.html#a6f0fcf43c69787009be290550403e4ec", null ],

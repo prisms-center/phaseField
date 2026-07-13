@@ -134,15 +134,20 @@ $(function(){initNavTree('classConstraintManager.html',''); initResizable(true);
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="constraint__manager_8h_source.html">constraint_manager.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for ConstraintManager&lt; dim, degree, number &gt;:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classConstraintManager__coll__graph.svg" width="332" height="148"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:afccd3fffea6c58ab19fe484441239adf" id="r_afccd3fffea6c58ab19fe484441239adf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afccd3fffea6c58ab19fe484441239adf">ConstraintManager</a> ()=default</td></tr>
 <tr class="memdesc:afccd3fffea6c58ab19fe484441239adf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:afccd3fffea6c58ab19fe484441239adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af919d3df277d87993d1c8bece1187838" id="r_af919d3df277d87993d1c8bece1187838"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af919d3df277d87993d1c8bece1187838">init</a> (const <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt; &amp;_boundary_parameters, const <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt; &amp;_spatial_discretization, const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;_dof_manager, const <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt; &amp;_pde_operator)</td></tr>
-<tr class="memdesc:af919d3df277d87993d1c8bece1187838"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the constraint manager.  <br /></td></tr>
-<tr class="separator:af919d3df277d87993d1c8bece1187838"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabe3981c80352c37e2fbf4cf2b5fab21" id="r_aabe3981c80352c37e2fbf4cf2b5fab21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aabe3981c80352c37e2fbf4cf2b5fab21">init</a> (const <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a> &amp;_boundary_parameters, const <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt; &amp;_spatial_discretization, const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;_dof_manager, const <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt; &amp;_pde_operator, const <a class="el" href="classSimulationTimer.html">SimulationTimer</a> &amp;_sim_timer)</td></tr>
+<tr class="memdesc:aabe3981c80352c37e2fbf4cf2b5fab21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the constraint manager.  <br /></td></tr>
+<tr class="separator:aabe3981c80352c37e2fbf4cf2b5fab21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29fb6efe44008e46b1449b641584f313" id="r_a29fb6efe44008e46b1449b641584f313"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const dealii::AffineConstraints&lt; number &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29fb6efe44008e46b1449b641584f313">get_field_constraints</a> () const</td></tr>
 <tr class="memdesc:a29fb6efe44008e46b1449b641584f313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the constraints.  <br /></td></tr>
 <tr class="separator:a29fb6efe44008e46b1449b641584f313"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,12 +195,12 @@ Static Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:afb3ad5a11b0ab128c819d4f5482f42dc" id="r_afb3ad5a11b0ab128c819d4f5482f42dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb3ad5a11b0ab128c819d4f5482f42dc">make_constraints_for_single_field</a> (dealii::AffineConstraints&lt; number &gt; &amp;constraint, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const <a class="el" href="structFieldConstraints.html">FieldConstraints</a>&lt; dim &gt; &amp;_field_constraints, <a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> tensor_rank, <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, unsigned int relative_level=-1)</td></tr>
-<tr class="memdesc:afb3ad5a11b0ab128c819d4f5482f42dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct constraints for a single field based on the boundary conditions.  <br /></td></tr>
-<tr class="separator:afb3ad5a11b0ab128c819d4f5482f42dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65bc1c1252fa1ea19e3fc8212f9d1d89" id="r_a65bc1c1252fa1ea19e3fc8212f9d1d89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65bc1c1252fa1ea19e3fc8212f9d1d89">make_bc_constraints</a> (dealii::AffineConstraints&lt; number &gt; &amp;constraint, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const <a class="el" href="structFieldConstraints.html">FieldConstraints</a>&lt; dim &gt; &amp;boundary_condition, <a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> tensor_rank, <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index)</td></tr>
-<tr class="memdesc:a65bc1c1252fa1ea19e3fc8212f9d1d89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add boundary conditions to a single constraint.  <br /></td></tr>
-<tr class="separator:a65bc1c1252fa1ea19e3fc8212f9d1d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afce417b27032d2e4199bdaf314d0f1ee" id="r_afce417b27032d2e4199bdaf314d0f1ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afce417b27032d2e4199bdaf314d0f1ee">make_constraints_for_single_field</a> (dealii::AffineConstraints&lt; number &gt; &amp;constraint, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const <a class="el" href="structBoundaryConditionSet.html">BoundaryConditionSet</a> &amp;_field_constraints, <a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> tensor_rank, <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, unsigned int relative_level=-1)</td></tr>
+<tr class="memdesc:afce417b27032d2e4199bdaf314d0f1ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct constraints for a single field based on the boundary conditions.  <br /></td></tr>
+<tr class="separator:afce417b27032d2e4199bdaf314d0f1ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7ed2f2a6bb889205e496eff3b6f7c81" id="r_aa7ed2f2a6bb889205e496eff3b6f7c81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7ed2f2a6bb889205e496eff3b6f7c81">make_bc_constraints</a> (dealii::AffineConstraints&lt; number &gt; &amp;constraint, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const <a class="el" href="structBoundaryConditionSet.html">BoundaryConditionSet</a> &amp;boundary_condition, <a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> tensor_rank, <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index)</td></tr>
+<tr class="memdesc:aa7ed2f2a6bb889205e496eff3b6f7c81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add boundary conditions to a single constraint.  <br /></td></tr>
+<tr class="separator:aa7ed2f2a6bb889205e496eff3b6f7c81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d0d27d70067a7e0a39ec4039c806353" id="r_a5d0d27d70067a7e0a39ec4039c806353"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d0d27d70067a7e0a39ec4039c806353">make_one_boundary_constraint</a> (dealii::AffineConstraints&lt; number &gt; &amp;_constraints, unsigned int boundary_id, unsigned int component, <a class="el" href="constraint__parameters_8h.html#a3a2d1de630bc61d956c09d7c1b9965fe">Condition</a> boundary_type, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, <a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> tensor_rank, <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index) const</td></tr>
 <tr class="memdesc:a5d0d27d70067a7e0a39ec4039c806353"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply constraints for common boundary conditions.  <br /></td></tr>
 <tr class="separator:a5d0d27d70067a7e0a39ec4039c806353"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -205,9 +210,9 @@ Private Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a4a24b2f56ff3262849a25db75200d31e" id="r_a4a24b2f56ff3262849a25db75200d31e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a24b2f56ff3262849a25db75200d31e">boundary_parameters</a> = nullptr</td></tr>
-<tr class="memdesc:a4a24b2f56ff3262849a25db75200d31e"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-inputs constraint parameters.  <br /></td></tr>
-<tr class="separator:a4a24b2f56ff3262849a25db75200d31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ba629bc8a68a20ce683531b75625858" id="r_a1ba629bc8a68a20ce683531b75625858"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ba629bc8a68a20ce683531b75625858">boundary_parameters</a> = nullptr</td></tr>
+<tr class="memdesc:a1ba629bc8a68a20ce683531b75625858"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-inputs constraint parameters.  <br /></td></tr>
+<tr class="separator:a1ba629bc8a68a20ce683531b75625858"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fd6f5fc6db82a5847cbff898a3d0d18" id="r_a6fd6f5fc6db82a5847cbff898a3d0d18"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6fd6f5fc6db82a5847cbff898a3d0d18">spatial_discretization</a> = nullptr</td></tr>
 <tr class="memdesc:a6fd6f5fc6db82a5847cbff898a3d0d18"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-inputs discretization.  <br /></td></tr>
 <tr class="separator:a6fd6f5fc6db82a5847cbff898a3d0d18"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,6 +222,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a1814f0ca6f0cdb9225f818a888dbe9c2" id="r_a1814f0ca6f0cdb9225f818a888dbe9c2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1814f0ca6f0cdb9225f818a888dbe9c2">pde_operator</a> = nullptr</td></tr>
 <tr class="memdesc:a1814f0ca6f0cdb9225f818a888dbe9c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">PDE operator.  <br /></td></tr>
 <tr class="separator:a1814f0ca6f0cdb9225f818a888dbe9c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4781fa85fd70bc8e993c41cd5e492a5" id="r_ad4781fa85fd70bc8e993c41cd5e492a5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSimulationTimer.html">SimulationTimer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4781fa85fd70bc8e993c41cd5e492a5">sim_timer</a> = nullptr</td></tr>
+<tr class="memdesc:ad4781fa85fd70bc8e993c41cd5e492a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simulation time for time-dependent constraints.  <br /></td></tr>
+<tr class="separator:ad4781fa85fd70bc8e993c41cd5e492a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54e7716b7fee938bedbf6f15ccd18bb2" id="r_a54e7716b7fee938bedbf6f15ccd18bb2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; dealii::AffineConstraints&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54e7716b7fee938bedbf6f15ccd18bb2">field_constraints</a></td></tr>
 <tr class="memdesc:a54e7716b7fee938bedbf6f15ccd18bb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constraints. Outer vector is indexed by field index.  <br /></td></tr>
 <tr class="separator:a54e7716b7fee938bedbf6f15ccd18bb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -562,8 +570,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="af919d3df277d87993d1c8bece1187838" name="af919d3df277d87993d1c8bece1187838"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af919d3df277d87993d1c8bece1187838">&#9670;&#160;</a></span>init()</h2>
+<a id="aabe3981c80352c37e2fbf4cf2b5fab21" name="aabe3981c80352c37e2fbf4cf2b5fab21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabe3981c80352c37e2fbf4cf2b5fab21">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -573,7 +581,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="memname">PRISMS_PF_BEGIN_NAMESPACE void <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt;::init </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>_boundary_parameters</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>_boundary_parameters</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -588,7 +596,12 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>_pde_operator</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>_pde_operator</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSimulationTimer.html">SimulationTimer</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>_sim_timer</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -597,8 +610,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a65bc1c1252fa1ea19e3fc8212f9d1d89" name="a65bc1c1252fa1ea19e3fc8212f9d1d89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65bc1c1252fa1ea19e3fc8212f9d1d89">&#9670;&#160;</a></span>make_bc_constraints()</h2>
+<a id="aa7ed2f2a6bb889205e496eff3b6f7c81" name="aa7ed2f2a6bb889205e496eff3b6f7c81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7ed2f2a6bb889205e496eff3b6f7c81">&#9670;&#160;</a></span>make_bc_constraints()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -621,7 +634,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structFieldConstraints.html">FieldConstraints</a>&lt; dim &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>boundary_condition</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="structBoundaryConditionSet.html">BoundaryConditionSet</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>boundary_condition</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -645,8 +658,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="afb3ad5a11b0ab128c819d4f5482f42dc" name="afb3ad5a11b0ab128c819d4f5482f42dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb3ad5a11b0ab128c819d4f5482f42dc">&#9670;&#160;</a></span>make_constraints_for_single_field()</h2>
+<a id="afce417b27032d2e4199bdaf314d0f1ee" name="afce417b27032d2e4199bdaf314d0f1ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afce417b27032d2e4199bdaf314d0f1ee">&#9670;&#160;</a></span>make_constraints_for_single_field()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -669,7 +682,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structFieldConstraints.html">FieldConstraints</a>&lt; dim &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>_field_constraints</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="structBoundaryConditionSet.html">BoundaryConditionSet</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>_field_constraints</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -852,8 +865,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a4a24b2f56ff3262849a25db75200d31e" name="a4a24b2f56ff3262849a25db75200d31e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a24b2f56ff3262849a25db75200d31e">&#9670;&#160;</a></span>boundary_parameters</h2>
+<a id="a1ba629bc8a68a20ce683531b75625858" name="a1ba629bc8a68a20ce683531b75625858"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ba629bc8a68a20ce683531b75625858">&#9670;&#160;</a></span>boundary_parameters</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -864,7 +877,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt;dim&gt;* <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt;::boundary_parameters = nullptr</td>
+          <td class="memname">const <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>* <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt;::boundary_parameters = nullptr</td>
         </tr>
       </table>
   </td>
@@ -1055,6 +1068,32 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad4781fa85fd70bc8e993c41cd5e492a5" name="ad4781fa85fd70bc8e993c41cd5e492a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4781fa85fd70bc8e993c41cd5e492a5">&#9670;&#160;</a></span>sim_timer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSimulationTimer.html">SimulationTimer</a>* <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt;::sim_timer = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Simulation time for time-dependent constraints. </p>
 
 </div>
 </div>

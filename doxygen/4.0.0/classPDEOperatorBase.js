@@ -10,7 +10,7 @@ var classPDEOperatorBase =
     [ "get_user_stop", "classPDEOperatorBase.html#a3f2c1cc94d75c57fba23891e7f3ab549", null ],
     [ "post_solve_block", "classPDEOperatorBase.html#aaac0725042b4f5226d034617a171f413", null ],
     [ "pre_solve_block", "classPDEOperatorBase.html#ae9c1136adf59c5587fc6cd0a03ed818f", null ],
-    [ "set_dirichlet", "classPDEOperatorBase.html#a20ef551cb08b5514826b6e20e33d4b0b", null ],
+    [ "set_dirichlet", "classPDEOperatorBase.html#af657017f03e210fb5902e80ecd41e82c", null ],
     [ "set_initial_condition", "classPDEOperatorBase.html#abc1551537ebfbd2a0a0f0ec7f96bad9d", null ],
     [ "set_user_stop", "classPDEOperatorBase.html#a2570d133dcae64929f4c8f667e2a39e9", null ],
     [ "pf_tools", "classPDEOperatorBase.html#a3b011d6dc53d8f325dad8706fa64d237", null ],

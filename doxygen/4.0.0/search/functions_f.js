@@ -3,7 +3,7 @@ var searchData=
   ['scope_0',['Scope',['../structTimer_1_1Scope.html#a3c42110b82ba9d1190a8ce3da79b542b',1,'Timer::Scope::Scope(const char *name)'],['../structTimer_1_1Scope.html#aefeb1520d1e0ce6b8d43bdb3277a25fa',1,'Timer::Scope::Scope(const Scope &amp;)=delete'],['../structTimer_1_1Scope.html#a433e52499a9e04be28ed6cf2e806c1bb',1,'Timer::Scope::Scope(Scope &amp;&amp;)=delete']]],
   ['selection_1',['Selection',['../namespacePatterns.html#a5026f20c04a7c712e21dce31a6000ecd',1,'Patterns']]],
   ['serial_5ftimer_2',['serial_timer',['../classTimer.html#abab11b7f11ebabd0ec136f93c3a7f556',1,'Timer']]],
-  ['set_5fdirichlet_3',['set_dirichlet',['../classPDEOperatorBase.html#a20ef551cb08b5514826b6e20e33d4b0b',1,'PDEOperatorBase']]],
+  ['set_5fdirichlet_3',['set_dirichlet',['../classPDEOperatorBase.html#af657017f03e210fb5902e80ecd41e82c',1,'PDEOperatorBase']]],
   ['set_5fgradient_5fterm_4',['set_gradient_term',['../classFieldContainer.html#a0c85f97ec43e7ce37302460dee82d4f8',1,'FieldContainer::set_gradient_term(Types::Index field_index, const GradType &amp;val)'],['../classFieldContainer.html#a6967f6bc71c81192e34e4b5b018c6dd6',1,'FieldContainer::set_gradient_term(Types::Index field_index, const GradType &amp;val)']]],
   ['set_5fincrement_5',['set_increment',['../classSimulationTimer.html#acea22e259bd9a292faa2fd99e49575a9',1,'SimulationTimer']]],
   ['set_5finitial_5fcondition_6',['set_initial_condition',['../classPDEOperatorBase.html#abc1551537ebfbd2a0a0f0ec7f96bad9d',1,'PDEOperatorBase::set_initial_condition()'],['../classSolverBase.html#a1ea3231db13cc32b113e487f859a41ef',1,'SolverBase::set_initial_condition()']]],

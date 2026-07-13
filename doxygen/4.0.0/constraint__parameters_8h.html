@@ -122,6 +122,7 @@ $(function(){initNavTree('constraint__parameters_8h.html',''); initResizable(tru
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">constraint_parameters.h File Reference</div></div>
@@ -135,52 +136,45 @@ $(function(){initNavTree('constraint__parameters_8h.html',''); initResizable(tru
 <code>#include &lt;boost/algorithm/string/predicate.hpp&gt;</code><br />
 <code>#include &lt;<a class="el" href="conditional__ostreams_8h_source.html">prismspf/core/conditional_ostreams.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="exceptions_8h_source.html">prismspf/core/exceptions.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="field__attributes_8h_source.html">prismspf/core/field_attributes.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="type__enums_8h_source.html">prismspf/core/type_enums.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="types_8h_source.html">prismspf/core/types.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="parameter__base_8h_source.html">prismspf/user_inputs/parameter_base.h</a>&gt;</code><br />
 <code>#include &lt;prismspf/config.h&gt;</code><br />
-<code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;map&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
-<code>#include &lt;unordered_set&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for constraint_parameters.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="constraint__parameters_8h__incl.svg" width="2779" height="486"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="constraint__parameters_8h__incl.svg" width="2846" height="410"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="constraint__parameters_8h__dep__incl.svg" width="2330" height="1428"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="constraint__parameters_8h__dep__incl.svg" width="3146" height="1614"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="constraint__parameters_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structComponentConditions.html">ComponentConditions</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Struct that stores relevant information for boundary conditions of a certain field.  <a href="structComponentConditions.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryConditionSet.html">BoundaryConditionSet</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldConstraints.html">FieldConstraints&lt; dim &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html">BoundaryParameters&lt; dim &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html">BoundaryParameters</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Struct that holds boundary parameters.  <a href="structBoundaryParameters.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a0f688f1266610a0e7d82bae66a63c05d" id="r_a0f688f1266610a0e7d82bae66a63c05d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f688f1266610a0e7d82bae66a63c05d">ComponentConditions</a> = std::map&lt;unsigned int, <a class="el" href="#a3a2d1de630bc61d956c09d7c1b9965fe">Condition</a>&gt;</td></tr>
+<tr class="memdesc:a0f688f1266610a0e7d82bae66a63c05d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map of boundary conditions and domain boundary for which they correspond to. For a simple geometry like a square the boundary ids are marked, in order, by x=0, x=max, y=0, y=max.  <br /></td></tr>
+<tr class="separator:a0f688f1266610a0e7d82bae66a63c05d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a3a2d1de630bc61d956c09d7c1b9965fe" id="r_a3a2d1de630bc61d956c09d7c1b9965fe"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a2d1de630bc61d956c09d7c1b9965fe">Condition</a> : std::uint8_t { <br />
-&#160;&#160;<a class="el" href="#a3a2d1de630bc61d956c09d7c1b9965fea7430c17ad2a5f21fbd8a5676c3b73835">Natural</a>
+<tr class="memitem:a3a2d1de630bc61d956c09d7c1b9965fe" id="r_a3a2d1de630bc61d956c09d7c1b9965fe"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a2d1de630bc61d956c09d7c1b9965fe">Condition</a> : std::uint8_t { <a class="el" href="#a3a2d1de630bc61d956c09d7c1b9965fea7430c17ad2a5f21fbd8a5676c3b73835">Natural</a>
 , <a class="el" href="#a3a2d1de630bc61d956c09d7c1b9965fead2ba0bf65961bac8373de60a7e6571b9">Dirichlet</a>
 , <a class="el" href="#a3a2d1de630bc61d956c09d7c1b9965fea2d800ee9173ede696b1d91d5b665d5b3">Neumann</a>
-, <a class="el" href="#a3a2d1de630bc61d956c09d7c1b9965fea5c5aa52ff7b0a89af55194de66cdb501">TimeDependentDirichlet</a>
-, <br />
-&#160;&#160;<a class="el" href="#a3a2d1de630bc61d956c09d7c1b9965feae81efddfed2f98f5e24f88b6dd678c57">TimeDependentNeumann</a>
-, <a class="el" href="#a3a2d1de630bc61d956c09d7c1b9965fea4dcb4a94b98bd2b74e5efdb7bbacfbce">UniformDirichlet</a>
-, <a class="el" href="#a3a2d1de630bc61d956c09d7c1b9965feaee07e760b54c87b8d76c89c9fd9764f4">UniformNeumann</a>
 , <a class="el" href="#a3a2d1de630bc61d956c09d7c1b9965fea6db09e3bc054df6f996a45de2ccfeacd">Periodic</a>
-<br />
  }</td></tr>
 <tr class="memdesc:a3a2d1de630bc61d956c09d7c1b9965fe"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#a3a2d1de630bc61d956c09d7c1b9965fe" title="Condition of boundary condition.">Condition</a> of boundary condition.  <a href="#a3a2d1de630bc61d956c09d7c1b9965fe">More...</a><br /></td></tr>
 <tr class="separator:a3a2d1de630bc61d956c09d7c1b9965fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -191,6 +185,23 @@ Functions</h2></td></tr>
 <tr class="memdesc:a0b853c9b11c5a8a812b07ce061ad6ffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum to string for type.  <br /></td></tr>
 <tr class="separator:a0b853c9b11c5a8a812b07ce061ad6ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a0f688f1266610a0e7d82bae66a63c05d" name="a0f688f1266610a0e7d82bae66a63c05d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f688f1266610a0e7d82bae66a63c05d">&#9670;&#160;</a></span>ComponentConditions</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#a0f688f1266610a0e7d82bae66a63c05d">ComponentConditions</a> = std::map&lt;unsigned int, <a class="el" href="#a3a2d1de630bc61d956c09d7c1b9965fe">Condition</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Map of boundary conditions and domain boundary for which they correspond to. For a simple geometry like a square the boundary ids are marked, in order, by x=0, x=max, y=0, y=max. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a3a2d1de630bc61d956c09d7c1b9965fe" name="a3a2d1de630bc61d956c09d7c1b9965fe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3a2d1de630bc61d956c09d7c1b9965fe">&#9670;&#160;</a></span>Condition</h2>
@@ -209,10 +220,6 @@ Functions</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3a2d1de630bc61d956c09d7c1b9965fea7430c17ad2a5f21fbd8a5676c3b73835" name="a3a2d1de630bc61d956c09d7c1b9965fea7430c17ad2a5f21fbd8a5676c3b73835"></a>Natural&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a3a2d1de630bc61d956c09d7c1b9965fead2ba0bf65961bac8373de60a7e6571b9" name="a3a2d1de630bc61d956c09d7c1b9965fead2ba0bf65961bac8373de60a7e6571b9"></a>Dirichlet&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a3a2d1de630bc61d956c09d7c1b9965fea2d800ee9173ede696b1d91d5b665d5b3" name="a3a2d1de630bc61d956c09d7c1b9965fea2d800ee9173ede696b1d91d5b665d5b3"></a>Neumann&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3a2d1de630bc61d956c09d7c1b9965fea5c5aa52ff7b0a89af55194de66cdb501" name="a3a2d1de630bc61d956c09d7c1b9965fea5c5aa52ff7b0a89af55194de66cdb501"></a>TimeDependentDirichlet&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3a2d1de630bc61d956c09d7c1b9965feae81efddfed2f98f5e24f88b6dd678c57" name="a3a2d1de630bc61d956c09d7c1b9965feae81efddfed2f98f5e24f88b6dd678c57"></a>TimeDependentNeumann&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3a2d1de630bc61d956c09d7c1b9965fea4dcb4a94b98bd2b74e5efdb7bbacfbce" name="a3a2d1de630bc61d956c09d7c1b9965fea4dcb4a94b98bd2b74e5efdb7bbacfbce"></a>UniformDirichlet&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a3a2d1de630bc61d956c09d7c1b9965feaee07e760b54c87b8d76c89c9fd9764f4" name="a3a2d1de630bc61d956c09d7c1b9965feaee07e760b54c87b8d76c89c9fd9764f4"></a>UniformNeumann&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a3a2d1de630bc61d956c09d7c1b9965fea6db09e3bc054df6f996a45de2ccfeacd" name="a3a2d1de630bc61d956c09d7c1b9965fea6db09e3bc054df6f996a45de2ccfeacd"></a>Periodic&#160;</td><td class="fielddoc"></td></tr>
 </table>
 

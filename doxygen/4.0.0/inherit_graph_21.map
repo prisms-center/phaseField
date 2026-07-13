@@ -4,32 +4,30 @@
 <area shape="poly" id="edge9_Node000000_Node000001" title=" " alt="" coords="136,51,214,31,216,36,137,56"/>
 <area shape="rect" id="Node000002" href="$structSpatialDiscretization.html" title="Struct that holds spatial discretization parameters." alt="" coords="195,109,352,154"/>
 <area shape="poly" id="edge10_Node000000_Node000002" title=" " alt="" coords="131,87,196,106,194,111,130,92"/>
-<area shape="rect" id="Node000016" href="$structSphericalMesh.html" title="Class for spherical mesh parameters." alt="" coords="188,57,359,85"/>
-<area shape="poly" id="edge11_Node000000_Node000016" title=" " alt="" coords="137,68,187,68,187,74,137,74"/>
-<area shape="rect" id="Node000003" href="$structParameterBase.html" title="Virtual base class for parameter groups." alt="" coords="5,455,126,482"/>
-<area shape="poly" id="edge22_Node000003_Node000002" title=" " alt="" coords="66,439,74,382,92,308,106,270,123,232,145,196,172,164,193,148,196,153,175,168,149,199,128,234,111,272,97,310,80,383,72,440"/>
-<area shape="rect" id="Node000004" href="$structBoundaryParameters.html" title="Struct that holds boundary parameters." alt="" coords="195,178,352,223"/>
-<area shape="poly" id="edge12_Node000003_Node000004" title=" " alt="" coords="70,439,82,394,102,339,131,283,150,256,172,233,193,219,196,223,175,237,154,260,136,285,106,341,87,396,75,440"/>
-<area shape="rect" id="Node000005" href="$structFieldInputParameters.html" title="Simple struct for field input." alt="" coords="194,247,353,274"/>
-<area shape="poly" id="edge13_Node000003_Node000005" title=" " alt="" coords="73,439,87,404,108,362,136,320,172,285,194,273,196,277,175,289,140,324,113,365,92,406,78,441"/>
-<area shape="rect" id="Node000006" href="$structFieldOutputParameters.html" title="Simple struct for field output." alt="" coords="188,299,358,326"/>
-<area shape="poly" id="edge14_Node000003_Node000006" title=" " alt="" coords="80,440,117,387,143,360,172,337,198,324,200,329,175,341,147,364,122,391,84,443"/>
-<area shape="rect" id="Node000007" href="$structLinearSolveParameters.html" title="Struct that holds linear solver parameters." alt="" coords="188,351,359,378"/>
-<area shape="poly" id="edge15_Node000003_Node000007" title=" " alt="" coords="93,442,129,414,173,389,205,376,207,381,175,394,132,419,96,446"/>
-<area shape="rect" id="Node000008" href="$structLinearSolverParameters.html" title="Struct that stores relevant linear solve information of a certain solve block." alt="" coords="185,403,362,430"/>
-<area shape="poly" id="edge16_Node000003_Node000008" title=" " alt="" coords="138,448,214,428,215,434,139,453"/>
-<area shape="rect" id="Node000009" href="$structMiscellaneousParameters.html" title="Struct that holds miscellaneous parameters." alt="" coords="179,455,368,482"/>
-<area shape="poly" id="edge17_Node000003_Node000009" title=" " alt="" coords="141,466,179,466,179,471,141,471"/>
-<area shape="rect" id="Node000010" href="$structNonlinearSolveParameters.html" title="Struct that holds nonlinear solver parameters." alt="" coords="176,507,370,534"/>
-<area shape="poly" id="edge18_Node000003_Node000010" title=" " alt="" coords="139,484,215,503,214,509,138,489"/>
-<area shape="rect" id="Node000011" href="$structNonlinearSolverParameters.html" title="Struct that stores relevant nonlinear solve information of a certain field." alt="" coords="174,559,373,586"/>
-<area shape="poly" id="edge19_Node000003_Node000011" title=" " alt="" coords="96,491,132,518,175,543,207,556,205,561,173,548,129,523,93,495"/>
-<area shape="rect" id="Node000012" href="$structNucleationParameters.html" title="Struct that holds nucleation parameters." alt="" coords="191,611,356,638"/>
-<area shape="poly" id="edge20_Node000003_Node000012" title=" " alt="" coords="84,494,122,546,147,573,175,596,200,608,198,613,172,600,143,577,117,550,80,497"/>
-<area shape="rect" id="Node000013" href="$structRestartOutputParameters.html" title="Simple struct for restart output." alt="" coords="180,663,366,690"/>
-<area shape="poly" id="edge21_Node000003_Node000013" title=" " alt="" coords="78,496,92,531,113,572,140,613,175,648,196,660,194,664,172,652,136,617,108,575,87,533,73,498"/>
-<area shape="rect" id="Node000014" href="$structTemporalDiscretization.html" title="Struct that holds temporal discretization parameters." alt="" coords="188,715,359,742"/>
-<area shape="poly" id="edge23_Node000003_Node000014" title=" " alt="" coords="74,497,86,542,105,597,134,652,153,678,175,700,195,712,192,716,172,704,149,681,130,655,100,599,80,543,69,498"/>
-<area shape="rect" id="Node000015" href="$classUserInputParameters.html" title=" " alt="" coords="194,766,352,811"/>
-<area shape="poly" id="edge24_Node000003_Node000015" title=" " alt="" coords="72,497,81,551,99,619,130,690,151,723,175,752,195,766,192,770,172,756,146,726,125,693,94,621,76,552,67,498"/>
+<area shape="rect" id="Node000015" href="$structSphericalMesh.html" title="Class for spherical mesh parameters." alt="" coords="188,57,359,85"/>
+<area shape="poly" id="edge11_Node000000_Node000015" title=" " alt="" coords="137,68,187,68,187,74,137,74"/>
+<area shape="rect" id="Node000003" href="$structParameterBase.html" title="Virtual base class for parameter groups." alt="" coords="5,411,126,438"/>
+<area shape="poly" id="edge21_Node000003_Node000002" title=" " alt="" coords="68,395,79,346,98,284,128,220,148,190,172,164,193,149,196,153,175,168,152,194,133,223,103,286,84,347,74,396"/>
+<area shape="rect" id="Node000004" href="$structFieldInputParameters.html" title="Simple struct for field input." alt="" coords="194,177,353,205"/>
+<area shape="poly" id="edge12_Node000003_Node000004" title=" " alt="" coords="71,395,84,355,104,306,133,258,172,216,193,203,196,208,175,220,137,261,109,309,89,357,76,397"/>
+<area shape="rect" id="Node000005" href="$structFieldOutputParameters.html" title="Simple struct for field output." alt="" coords="188,229,358,257"/>
+<area shape="poly" id="edge13_Node000003_Node000005" title=" " alt="" coords="77,395,113,331,140,297,172,268,195,255,198,260,175,272,144,300,117,334,81,398"/>
+<area shape="rect" id="Node000006" href="$structLinearSolveParameters.html" title="Struct that holds linear solver parameters." alt="" coords="188,281,359,309"/>
+<area shape="poly" id="edge14_Node000003_Node000006" title=" " alt="" coords="85,397,123,357,172,320,200,307,203,312,175,324,127,361,89,400"/>
+<area shape="rect" id="Node000007" href="$structLinearSolverParameters.html" title="Struct that stores relevant linear solve information of a certain solve block." alt="" coords="185,333,362,361"/>
+<area shape="poly" id="edge15_Node000003_Node000007" title=" " alt="" coords="106,401,173,371,211,359,213,364,175,376,108,406"/>
+<area shape="rect" id="Node000008" href="$structMiscellaneousParameters.html" title="Struct that holds miscellaneous parameters." alt="" coords="179,385,368,413"/>
+<area shape="poly" id="edge16_Node000003_Node000008" title=" " alt="" coords="141,413,178,408,179,413,142,418"/>
+<area shape="rect" id="Node000009" href="$structNonlinearSolveParameters.html" title="Struct that holds nonlinear solver parameters." alt="" coords="176,437,370,465"/>
+<area shape="poly" id="edge17_Node000003_Node000009" title=" " alt="" coords="141,432,176,436,175,441,141,437"/>
+<area shape="rect" id="Node000010" href="$structNonlinearSolverParameters.html" title="Struct that stores relevant nonlinear solve information of a certain field." alt="" coords="174,489,373,517"/>
+<area shape="poly" id="edge18_Node000003_Node000010" title=" " alt="" coords="108,444,175,474,212,486,211,491,173,479,105,448"/>
+<area shape="rect" id="Node000011" href="$structNucleationParameters.html" title="Struct that holds nucleation parameters." alt="" coords="191,541,356,569"/>
+<area shape="poly" id="edge19_Node000003_Node000011" title=" " alt="" coords="89,449,127,489,150,509,175,526,203,538,200,543,172,531,147,513,123,493,85,453"/>
+<area shape="rect" id="Node000012" href="$structRestartOutputParameters.html" title="Simple struct for restart output." alt="" coords="180,593,366,621"/>
+<area shape="poly" id="edge20_Node000003_Node000012" title=" " alt="" coords="81,451,117,516,143,550,175,578,198,590,195,595,172,583,140,553,113,519,76,454"/>
+<area shape="rect" id="Node000013" href="$structTemporalDiscretization.html" title="Struct that holds temporal discretization parameters." alt="" coords="188,645,359,673"/>
+<area shape="poly" id="edge22_Node000003_Node000013" title=" " alt="" coords="76,452,89,493,109,541,137,589,155,611,175,630,195,642,192,647,172,635,151,615,133,592,104,543,84,495,71,454"/>
+<area shape="rect" id="Node000014" href="$classUserInputParameters.html" title=" " alt="" coords="194,697,352,742"/>
+<area shape="poly" id="edge23_Node000003_Node000014" title=" " alt="" coords="73,453,84,502,103,564,133,627,152,657,175,683,195,697,192,701,172,686,148,660,128,630,98,566,79,504,68,454"/>
 </map>

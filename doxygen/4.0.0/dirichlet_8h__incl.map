@@ -1,18 +1,23 @@
 <map id="include/prismspf/core/dirichlet.h" name="include/prismspf/core/dirichlet.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="354,5,515,50"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="191,5,353,50"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,106,171,134"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="354,53,154,105,153,99,353,48"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="195,106,341,134"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="396,53,307,101,304,96,393,48"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="364,106,505,134"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="437,50,437,91,432,91,432,50"/>
-<area shape="rect" id="Node000005" href="$type__enums_8h.html" title=" " alt="" coords="587,98,730,143"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="489,48,592,89,590,94,487,53"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="472,191,605,218"/>
-<area shape="poly" id="edge8_Node000001_Node000006" title=" " alt="" coords="472,48,498,70,520,97,535,137,541,175,535,176,530,138,515,99,494,73,468,52"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="629,145,572,184,569,179,626,141"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="630,191,695,218"/>
-<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="662,143,664,175,659,175,657,143"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="719,191,777,218"/>
-<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="684,141,724,178,721,182,680,145"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="229,53,129,102,127,97,227,48"/>
+<area shape="rect" id="Node000003" href="$simulation__timer_8h.html" title=" " alt="" coords="246,98,429,143"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="290,49,315,84,311,87,285,52"/>
+<area shape="rect" id="Node000006" href="$type__enums_8h.html" title=" " alt="" coords="71,266,214,311"/>
+<area shape="poly" id="edge11_Node000001_Node000006" title=" " alt="" coords="262,52,236,99,161,253,156,251,231,97,257,49"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="379,359,512,387"/>
+<area shape="poly" id="edge12_Node000001_Node000007" title=" " alt="" coords="354,42,402,62,425,77,443,96,462,123,475,149,483,173,486,197,482,249,471,312,460,345,455,344,465,310,477,248,481,197,478,174,470,151,458,126,439,100,421,81,400,67,352,46"/>
+<area shape="rect" id="Node000004" href="$types_8h.html" title=" " alt="" coords="251,191,413,218"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="339,143,337,175,331,175,333,143"/>
+<area shape="poly" id="edge10_Node000003_Node000007" title=" " alt="" coords="379,141,406,162,428,189,443,229,451,271,453,311,451,344,446,344,447,311,446,272,438,231,423,192,402,166,376,145"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="238,266,383,311"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="331,220,323,252,318,250,326,218"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="303,221,208,262,206,257,301,216"/>
+<area shape="poly" id="edge9_Node000004_Node000007" title=" " alt="" coords="350,217,374,238,397,265,421,305,438,343,433,345,416,307,393,268,370,242,347,221"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="215,307,383,352,381,357,214,312"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="67,359,133,387"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="134,313,116,346,112,344,129,310"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="156,359,214,387"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="156,310,174,344,169,346,152,313"/>
 </map>

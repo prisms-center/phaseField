@@ -3,9 +3,9 @@ var annotated_dup =
     [ "PRISMS_PF_BEGIN_NAMESPACE", "namespacePRISMS__PF__BEGIN__NAMESPACE.html", [
       [ "TimerStack", "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html", "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack" ]
     ] ],
+    [ "BoundaryConditionSet", "structBoundaryConditionSet.html", "structBoundaryConditionSet" ],
     [ "BoundaryParameters", "structBoundaryParameters.html", "structBoundaryParameters" ],
     [ "CellMarkerBase", "classCellMarkerBase.html", "classCellMarkerBase" ],
-    [ "ComponentConditions", "structComponentConditions.html", "structComponentConditions" ],
     [ "ConditionalOStreams", "classConditionalOStreams.html", "classConditionalOStreams" ],
     [ "ConstraintManager", "classConstraintManager.html", "classConstraintManager" ],
     [ "Dependency", "structDependency.html", "structDependency" ],
@@ -16,7 +16,6 @@ var annotated_dup =
     [ "ExcNaN", "classExcNaN.html", "classExcNaN" ],
     [ "ExplicitSolver", "classExplicitSolver.html", "classExplicitSolver" ],
     [ "FieldAttributes", "structFieldAttributes.html", "structFieldAttributes" ],
-    [ "FieldConstraints", "structFieldConstraints.html", "structFieldConstraints" ],
     [ "FieldContainer", "classFieldContainer.html", "classFieldContainer" ],
     [ "FieldInputParameters", "structFieldInputParameters.html", "structFieldInputParameters" ],
     [ "FieldOutputParameters", "structFieldOutputParameters.html", "structFieldOutputParameters" ],

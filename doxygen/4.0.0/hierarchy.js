@@ -1,9 +1,10 @@
 var hierarchy =
 [
+    [ "BoundaryConditionSet", "structBoundaryConditionSet.html", null ],
+    [ "BoundaryParameters", "structBoundaryParameters.html", null ],
     [ "CellMarkerBase< dim >", "classCellMarkerBase.html", [
       [ "NucleusRefinementFunction< dim >", "classNucleusRefinementFunction.html", null ]
     ] ],
-    [ "ComponentConditions", "structComponentConditions.html", null ],
     [ "ConditionalOStreams", "classConditionalOStreams.html", null ],
     [ "ConstraintManager< dim, degree, number >", "classConstraintManager.html", null ],
     [ "Dependency", "structDependency.html", null ],
@@ -17,7 +18,6 @@ var hierarchy =
     ] ],
     [ "FieldContainer< dim, degree, number >::FEEValuationDeps< Rank >", "structFieldContainer_1_1FEEValuationDeps.html", null ],
     [ "FieldAttributes", "structFieldAttributes.html", null ],
-    [ "FieldConstraints< dim >", "structFieldConstraints.html", null ],
     [ "FieldContainer< dim, degree, number >", "classFieldContainer.html", null ],
     [ "dealii::Function", null, [
       [ "DirichletConditions< dim, degree, number >", "classDirichletConditions.html", null ],
@@ -49,7 +49,6 @@ var hierarchy =
       [ "TeeStream", "classTeeStream.html", null ]
     ] ],
     [ "ParameterBase", "structParameterBase.html", [
-      [ "BoundaryParameters< dim >", "structBoundaryParameters.html", null ],
       [ "FieldInputParameters", "structFieldInputParameters.html", null ],
       [ "FieldOutputParameters", "structFieldOutputParameters.html", null ],
       [ "LinearSolveParameters", "structLinearSolveParameters.html", null ],

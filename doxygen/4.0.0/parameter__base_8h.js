@@ -3,7 +3,7 @@ var parameter__base_8h =
     [ "ParameterBase", "structParameterBase.html", "structParameterBase" ],
     [ "Patterns::Anything", "namespacePatterns.html#a7d487302ac9a171935a32a3e82e90ab4", null ],
     [ "Patterns::Bool", "namespacePatterns.html#aaf2940008ff11bc50ca7ba036eb4f2e4", null ],
-    [ "declare_aliases", "parameter__base_8h.html#a1ba7e5bf4f2b3a79023aac7e9b16efb7", null ],
+    [ "declare_aliases", "parameter__base_8h.html#a6dbb65b140da57c89b9e1dd315fad8dd", null ],
     [ "declare_aliases_with_generated", "parameter__base_8h.html#ad7da1dec71cd12f0708dc9935bbf2db2", null ],
     [ "declare_entry", "parameter__base_8h.html#a6ad390978ef09cd21bdd20d4ba32c1e5", null ],
     [ "Patterns::Double", "namespacePatterns.html#a5d0cdbdfe7517a344be4c035421b4a6f", null ],
