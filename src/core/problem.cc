@@ -21,6 +21,8 @@
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include "prismspf/user_inputs/constraint_parameters.h"
+
 #include <algorithm>
 #include <filesystem>
 
@@ -149,6 +151,31 @@ Problem<dim, degree, number>::Problem(
                   _pde_operator)
   , grid_refiner(solve_context)
 {
+  // Override boundary condition parameters if they are specified in user inputs
+  std::unordered_map<std::string, BoundaryConditionSet> boundary_condition_list =
+    _user_inputs.boundary_parameters.boundary_condition_list;
+  for (auto &field : field_attributes)
+    {
+      if (const auto &bc_it = boundary_condition_list.find(field.name);
+          bc_it != boundary_condition_list.end())
+        {
+          ConditionalOStreams::pout_base()
+            << "Overriding boundary condition parameters for field " << field.name
+            << " with user input parameters.\n";
+          field.boundary_conditions = bc_it->second;
+          boundary_condition_list.erase(bc_it);
+        }
+    }
+  for (const auto &remaining_bc_params : boundary_condition_list)
+    {
+      ConditionalOStreams::pout_base()
+        << "Warning: Boundary condition parameters provided by user inputs for field "
+        << remaining_bc_params.first
+        << " field list. These parameters will be "
+           "ignored.\n";
+    }
+
+  // Override solver parameters if they are specified in user inputs
   std::map<unsigned int, LinearSolverParameters> linear_solver_parameters_copy =
     _user_inputs.linear_solve_parameters.linear_solvers;
   std::map<unsigned int, NonlinearSolverParameters> nonlinear_solver_parameters_copy =

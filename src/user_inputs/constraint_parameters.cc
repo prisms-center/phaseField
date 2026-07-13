@@ -2,36 +2,15 @@
 
 #include <prismspf/config.h>
 
+#include "prismspf/user_inputs/parameter_base.h"
+
+#include <string_view>
+
 PRISMS_PF_BEGIN_NAMESPACE
 
-bool
-ComponentConditions::has_time_dependent_bcs() const
-{
-  return std::any_of(conditions.begin(),
-                     conditions.end(),
-                     [](const auto &_condition)
-                     {
-                       return _condition.second == Condition::TimeDependentDirichlet ||
-                              _condition.second == Condition::TimeDependentNeumann;
-                     });
-}
-
-template <unsigned int dim>
-bool
-FieldConstraints<dim>::has_time_dependent_bcs() const
-{
-  return std::any_of(component_constraints.begin(),
-                     component_constraints.end(),
-                     [](const ComponentConditions &component)
-                     {
-                       return component.has_time_dependent_bcs();
-                     });
-}
-
-template <unsigned int dim>
 void
-BoundaryParameters<dim>::declare(dealii::ParameterHandler &parameter_handler,
-                                 unsigned int              n_subsections)
+BoundaryParameters::declare(dealii::ParameterHandler &parameter_handler,
+                            unsigned int              n_subsections)
 {
   for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
@@ -49,6 +28,11 @@ BoundaryParameters<dim>::declare(dealii::ParameterHandler &parameter_handler,
           "",
           dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
           "List of conditions.");
+        parameter_handler.declare_entry("time dependent",
+                                        "false",
+                                        dealii::Patterns::Bool(),
+                                        "Whether these conditions vary in time.");
+        declare_aliases(parameter_handler, "time dependent");
       }
       parameter_handler.leave_subsection();
     }
@@ -56,8 +40,8 @@ BoundaryParameters<dim>::declare(dealii::ParameterHandler &parameter_handler,
 
 template <unsigned int dim>
 void
-BoundaryParameters<dim>::assign(dealii::ParameterHandler &parameter_handler,
-                                unsigned int              n_subsections)
+BoundaryParameters::assign(dealii::ParameterHandler &parameter_handler,
+                           unsigned int              n_subsections)
 {
   for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
@@ -74,31 +58,29 @@ BoundaryParameters<dim>::assign(dealii::ParameterHandler &parameter_handler,
         for (unsigned int boundary_id = 0; boundary_id < conditions_strings.size();
              boundary_id++)
           {
-            component_conditions.conditions[boundary_id] =
+            component_conditions[boundary_id] =
               condition_from_string(conditions_strings[boundary_id]);
           }
 
         // Attach conditions to fields
         for (const auto &field_comp_name : field_names)
           {
-            int                    pos = field_comp_name.length() - 2;
-            const std::string      end = field_comp_name.substr(pos > 0 ? pos : 0);
             std::string            field_name;
             std::set<unsigned int> comps;
-            if (end == ":x")
+            if (field_comp_name.ends_with(":x"))
               {
                 comps      = {0};
-                field_name = field_comp_name.substr(0, pos);
+                field_name = field_comp_name.substr(0, field_comp_name.length() - 2);
               }
-            else if (end == ":y")
+            else if (field_comp_name.ends_with(":y"))
               {
                 comps      = {1};
-                field_name = field_comp_name.substr(0, pos);
+                field_name = field_comp_name.substr(0, field_comp_name.length() - 2);
               }
-            else if (end == ":z")
+            else if (field_comp_name.ends_with(":z"))
               {
                 comps      = {2};
-                field_name = field_comp_name.substr(0, pos);
+                field_name = field_comp_name.substr(0, field_comp_name.length() - 2);
               }
             else
               {
@@ -112,20 +94,21 @@ BoundaryParameters<dim>::assign(dealii::ParameterHandler &parameter_handler,
               {
                 if (component < dim)
                   {
-                    boundary_condition_list[field_name].component_constraints.at(
-                      component) = component_conditions;
+                    boundary_condition_list[field_name].component_constraints[component] =
+                      component_conditions;
                   }
               }
+            boundary_condition_list[field_name].time_dependent =
+              parameter_handler.get_bool("time dependent");
           }
       }
       parameter_handler.leave_subsection();
     }
 }
 
-template <unsigned int dim>
 void
-BoundaryParameters<dim>::validate(const std::vector<FieldAttributes> &field_attributes,
-                                  const std::vector<SolveBlock>      &solve_blocks) const
+BoundaryParameters::validate(const std::vector<FieldAttributes> &field_attributes,
+                             const std::vector<SolveBlock>      &solve_blocks) const
 {
   // TODO: Do this later
 }

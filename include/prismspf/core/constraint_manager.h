@@ -59,7 +59,7 @@ public:
    * @brief Initialize the constraint manager.
    */
   void
-  init(const BoundaryParameters<dim>              &_boundary_parameters,
+  init(const BoundaryParameters                   &_boundary_parameters,
        const SpatialDiscretization<dim>           &_spatial_discretization,
        const DoFManager<dim, degree>              &_dof_manager,
        const PDEOperatorBase<dim, degree, number> &_pde_operator);
@@ -152,7 +152,7 @@ private:
   void
   make_constraints_for_single_field(dealii::AffineConstraints<number> &constraint,
                                     const dealii::DoFHandler<dim>     &dof_handler,
-                                    const FieldConstraints<dim>       &_field_constraints,
+                                    const BoundaryConditionSet        &_field_constraints,
                                     TensorRank                         tensor_rank,
                                     Types::Index                       field_index,
                                     unsigned int relative_level = -1);
@@ -163,7 +163,7 @@ private:
   void
   make_bc_constraints(dealii::AffineConstraints<number> &constraint,
                       const dealii::DoFHandler<dim>     &dof_handler,
-                      const FieldConstraints<dim>       &boundary_condition,
+                      const BoundaryConditionSet        &boundary_condition,
                       TensorRank                         tensor_rank,
                       Types::Index                       field_index);
 
@@ -193,7 +193,7 @@ private:
   /**
    * @brief User-inputs constraint parameters.
    */
-  const BoundaryParameters<dim> *boundary_parameters = nullptr;
+  const BoundaryParameters *boundary_parameters = nullptr;
 
   /**
    * @brief User-inputs discretization.

@@ -1,5 +1,5 @@
 for ( dimension : SPACE_DIMENSIONS)
   {
-    template class FieldConstraints<dimension>;
-    template class BoundaryParameters<dimension>;
+    template void BoundaryParameters::assign<dimension>(dealii::ParameterHandler &parameter_handler,
+                                                        unsigned int              n_subsections);
   }
