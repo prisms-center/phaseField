@@ -83,7 +83,13 @@ MFOperator<dim, degree, number>::compute_diagonal(BlockVector<number>       &dst
 {
   dst.reinit(src);
   data->cell_loop(&MFOperator::compute_local_diagonal, this, dst, src);
-
+  if (scale_by_diagonal)
+    {
+      for (unsigned int block_index = 0; block_index < dst.n_blocks(); block_index++)
+        {
+          dst.block(block_index).scale(*(scaling_diagonal[block_index]));
+        }
+    }
   // This is to make sure the preconditioner doesn't break down when there are
   // Dirichlet conditions (which lead to zero diagonal entries). The actual value
   // of these entries doesn't matter since they get overwritten by the constraints
