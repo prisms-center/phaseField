@@ -3,7 +3,6 @@
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/patterns.h>
 
-#include <prismspf/core/field_attributes.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
@@ -18,6 +17,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 class SolveBlock;
+class FieldAttributes;
 
 /**
  * @brief Cartesian axis labels
@@ -27,12 +27,12 @@ static constexpr std::array<std::string_view, 3> axis_labels {"x", "y", "z"};
 /**
  * Declare multiple aliases for a parameter name.
  */
-template <std::ranges::input_range Range>
+template <std::ranges::input_range Range = std::vector<std::string>>
 requires std::convertible_to<std::ranges::range_reference_t<Range>, std::string_view>
 static void
 declare_aliases(dealii::ParameterHandler &parameter_handler,
                 const std::string        &existing_entry_name,
-                const Range              &aliases)
+                const Range              &aliases = {})
 {
   for (const auto &alias : aliases)
     {
@@ -144,7 +144,9 @@ declare_entry(dealii::ParameterHandler            &parameter_handler,
                                   std::string(default_value),
                                   pattern,
                                   std::string(documentation));
+#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
   parameter_handler.mark_as_deprecated(_entry, deprecated);
+#endif
   declare_aliases_with_generated(parameter_handler, _entry, aliases);
 }
 

@@ -181,8 +181,6 @@ public:
         mg_constraints[block_index].initialize(
           solve_context.get_dof_manager().get_field_dof_handler(field_index));
       }
-    std::unordered_map<std::string, FieldConstraints<dim>> boundary_condition_list =
-      solve_context.get_user_inputs().boundary_parameters.boundary_condition_list;
     const std::vector<FieldAttributes> &field_attributes =
       solve_context.get_field_attributes();
     for (unsigned int block_index = 0; block_index < solve_block.field_indices.size();
@@ -195,11 +193,11 @@ public:
           {
             std::set<unsigned int>     constrained_boundary_ids;
             const ComponentConditions &comp_bcs =
-              boundary_condition_list[field.name].component_constraints.at(comp);
-            for (const auto &[boundary_id, boundary_type] : comp_bcs.conditions)
+              field_attributes[field_index].boundary_conditions.component_constraints.at(
+                comp);
+            for (const auto &[boundary_id, boundary_type] : comp_bcs)
               {
-                if (boundary_type == Condition::Dirichlet ||
-                    boundary_type == Condition::TimeDependentDirichlet)
+                if (boundary_type == Condition::Dirichlet)
                   {
                     constrained_boundary_ids.insert(boundary_id);
                   }

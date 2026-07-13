@@ -59,7 +59,7 @@ struct UserInputParameters : public ParameterBase
   {
     SpatialDiscretization<dim>::declare(parameter_handler, n_subsections);
     TemporalDiscretization::declare(parameter_handler, n_subsections);
-    BoundaryParameters<dim>::declare(parameter_handler, n_subsections);
+    BoundaryParameters::declare(parameter_handler, n_subsections);
 
     LinearSolveParameters::declare(parameter_handler, n_subsections);
     NonlinearSolveParameters::declare(parameter_handler, n_subsections);
@@ -83,7 +83,7 @@ struct UserInputParameters : public ParameterBase
   {
     spatial_discretization.assign(parameter_handler, n_subsections);
     temporal_discretization.assign(parameter_handler, n_subsections);
-    boundary_parameters.assign(parameter_handler, n_subsections);
+    boundary_parameters.assign<dim>(parameter_handler, n_subsections);
 
     linear_solve_parameters.assign(parameter_handler, n_subsections);
     nonlinear_solve_parameters.assign(parameter_handler, n_subsections);
@@ -126,7 +126,7 @@ struct UserInputParameters : public ParameterBase
 
   SpatialDiscretization<dim> spatial_discretization;
   TemporalDiscretization     temporal_discretization;
-  BoundaryParameters<dim>    boundary_parameters;
+  BoundaryParameters         boundary_parameters;
 
   LinearSolveParameters    linear_solve_parameters;
   NonlinearSolveParameters nonlinear_solve_parameters;

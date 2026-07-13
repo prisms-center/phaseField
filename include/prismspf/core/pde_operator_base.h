@@ -62,6 +62,7 @@ public:
                 [[maybe_unused]] const unsigned int       &boundary_id,
                 [[maybe_unused]] const unsigned int       &component,
                 [[maybe_unused]] const dealii::Point<dim> &point,
+                [[maybe_unused]] const SimulationTimer    &sim_timer,
                 [[maybe_unused]] number                   &scalar_value,
                 [[maybe_unused]] number                   &vector_component_value) const
   {

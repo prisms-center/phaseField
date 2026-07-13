@@ -34,15 +34,17 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim, unsigned int degree, typename number>
 void
 ConstraintManager<dim, degree, number>::init(
-  const BoundaryParameters<dim>              &_boundary_parameters,
+  const BoundaryParameters                   &_boundary_parameters,
   const SpatialDiscretization<dim>           &_spatial_discretization,
   const DoFManager<dim, degree>              &_dof_manager,
-  const PDEOperatorBase<dim, degree, number> &_pde_operator)
+  const PDEOperatorBase<dim, degree, number> &_pde_operator,
+  const SimulationTimer                      &_sim_timer)
 {
   boundary_parameters     = &_boundary_parameters;
   spatial_discretization  = &_spatial_discretization;
   dof_manager             = &_dof_manager;
   pde_operator            = &_pde_operator;
+  sim_timer               = &_sim_timer;
   unsigned int num_levels = dof_manager->has_mg() ? dof_manager->num_levels() : 0;
   mg_generic_constraints.resize(num_levels);
 }
@@ -194,8 +196,6 @@ ConstraintManager<dim, degree, number>::reinit(
         }
     }
   // The map from user inputs has string keys for now.
-  std::unordered_map<std::string, FieldConstraints<dim>> boundary_condition_list =
-    boundary_parameters->boundary_condition_list;
   for (unsigned int field_index = 0; field_index < field_attributes.size(); field_index++)
     {
       const dealii::DoFHandler<dim> &dof_handler =
@@ -207,7 +207,7 @@ ConstraintManager<dim, degree, number>::reinit(
         make_constraints_for_single_field(
           constraint,
           dof_handler,
-          boundary_condition_list[field_attributes[field_index].name],
+          field_attributes[field_index].boundary_conditions,
           field_attributes[field_index].field_type,
           field_index);
       }
@@ -221,7 +221,7 @@ ConstraintManager<dim, degree, number>::reinit(
           make_constraints_for_single_field(
             constraint,
             dof_handler,
-            boundary_condition_list[field_attributes[field_index].name],
+            field_attributes[field_index].boundary_conditions,
             field_attributes[field_index].field_type,
             field_index,
             relative_level);
@@ -257,7 +257,7 @@ void
 ConstraintManager<dim, degree, number>::make_constraints_for_single_field(
   dealii::AffineConstraints<number> &constraint,
   const dealii::DoFHandler<dim>     &dof_handler,
-  const FieldConstraints<dim>       &_field_constraints,
+  const BoundaryConditionSet        &_field_constraints,
   TensorRank                         tensor_rank,
   Types::Index                       field_index,
   unsigned int                       relative_level)
@@ -307,15 +307,17 @@ void
 ConstraintManager<dim, degree, number>::make_bc_constraints(
   dealii::AffineConstraints<number> &constraint,
   const dealii::DoFHandler<dim>     &dof_handler,
-  const FieldConstraints<dim>       &boundary_condition,
+  const BoundaryConditionSet        &boundary_condition,
   const TensorRank                   tensor_rank,
   Types::Index                       field_index)
 {
-  for (unsigned int comp = 0; comp < dim; comp++)
+  for (const auto &[comp, comp_bcs] : boundary_condition.component_constraints)
     {
-      const ComponentConditions &comp_bcs =
-        boundary_condition.component_constraints.at(comp);
-      for (const auto &[boundary_id, boundary_type] : comp_bcs.conditions)
+      if (comp >= dim)
+        {
+          continue;
+        }
+      for (const auto &[boundary_id, boundary_type] : comp_bcs)
         {
           make_one_boundary_constraint(constraint,
                                        boundary_id,
@@ -347,12 +349,12 @@ ConstraintManager<dim, degree, number>::make_one_boundary_constraint(
   switch (boundary_type)
     {
       case Condition::Natural:
+      case Condition::Periodic:
         {
           // do nothing
           break;
         }
       case Condition::Dirichlet:
-      case Condition::TimeDependentDirichlet:
         {
           make_dirichlet_constraints(_constraints,
                                      dof_handler,
@@ -362,26 +364,9 @@ ConstraintManager<dim, degree, number>::make_one_boundary_constraint(
                                      mask);
           break;
         }
-      case Condition::UniformDirichlet:
-        {
-          Assert(false, FeatureNotImplemented("Uniform dirichlet boundary conditions"));
-          break;
-        }
       case Condition::Neumann:
         {
           Assert(false, FeatureNotImplemented("Neumann boundary conditions"));
-          break;
-        }
-
-      case Condition::TimeDependentNeumann:
-        {
-          Assert(false,
-                 FeatureNotImplemented("Time dependent neumann boundary conditions"));
-          break;
-        }
-      case Condition::UniformNeumann:
-        {
-          Assert(false, FeatureNotImplemented("Uniform neumann boundary conditions"));
           break;
         }
       default:
@@ -396,14 +381,11 @@ void
 ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
   const std::vector<FieldAttributes> &field_attributes)
 {
-  // The map from user inputs has string keys for now.
-  std::map<std::string, Types::Index> field_indices = field_index_map(field_attributes);
-  for (const auto &[name, field_constraints_params] :
-       boundary_parameters->boundary_condition_list)
+  for (unsigned int field_index = 0; field_index < field_attributes.size(); field_index++)
     {
-      if (field_constraints_params.has_time_dependent_bcs())
+      const FieldAttributes &field = field_attributes[field_index];
+      if (field.boundary_conditions.time_dependent)
         {
-          const unsigned int             field_index = field_indices.at(name);
           const dealii::DoFHandler<dim> &dof_handler =
             dof_manager->get_field_dof_handler(field_index);
           {
@@ -413,8 +395,8 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
 
             make_constraints_for_single_field(constraint,
                                               dof_handler,
-                                              field_constraints_params,
-                                              field_attributes[field_index].field_type,
+                                              field.boundary_conditions,
+                                              field.field_type,
                                               field_index,
                                               -1);
             constraint.close();
@@ -429,8 +411,8 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
 
               make_constraints_for_single_field(constraint,
                                                 dof_handler,
-                                                field_constraints_params,
-                                                field_attributes[field_index].field_type,
+                                                field.boundary_conditions,
+                                                field.field_type,
                                                 field_index,
                                                 relative_level);
               constraint.close();
@@ -456,6 +438,7 @@ ConstraintManager<dim, degree, number>::make_dirichlet_constraints(
     DirichletConditions<dim, degree, number>(field_index,
                                              boundary_id,
                                              *pde_operator,
+                                             *sim_timer,
                                              is_vector_field ? dim : 1),
     _constraints,
     mask);

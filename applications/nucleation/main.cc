@@ -21,11 +21,11 @@ main(int argc, char *argv[])
   constexpr unsigned int dim    = 2;
   constexpr unsigned int degree = 2;
 
-  std::vector<FieldAttributes> fields = {
-    FieldAttributes("c"),
-    FieldAttributes("n"),
-    FieldAttributes("nucleation_rate", Scalar, true, {1}),
-  };
+  std::vector<FieldAttributes> fields   = {FieldAttributes("c"),
+                                           FieldAttributes("n"),
+                                           FieldAttributes("nucleation_rate")};
+  fields[2].is_nucleation_rate_variable = true;
+  fields[2].nucleating_field_indices    = {1};
 
   SolveBlock explicits;
   explicits.id            = 0;
