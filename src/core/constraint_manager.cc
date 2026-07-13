@@ -311,10 +311,12 @@ ConstraintManager<dim, degree, number>::make_bc_constraints(
   const TensorRank                   tensor_rank,
   Types::Index                       field_index)
 {
-  for (unsigned int comp = 0; comp < dim; comp++)
+  for (const auto &[comp, comp_bcs] : boundary_condition.component_constraints)
     {
-      const ComponentConditions &comp_bcs =
-        boundary_condition.component_constraints.at(comp);
+      if (comp >= dim)
+        {
+          continue;
+        }
       for (const auto &[boundary_id, boundary_type] : comp_bcs)
         {
           make_one_boundary_constraint(constraint,
