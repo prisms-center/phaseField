@@ -7,7 +7,7 @@ set_target_properties(
   expand_template_instantiations_exe
   PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY
-      "${CMAKE_BINARY_DIR}/cmake/scripts"
+		"${CMAKE_CURRENT_BINARY_DIR}"
     CXX_EXTENSIONS
       OFF
 )
