@@ -40,7 +40,11 @@ enum SolveType : std::uint8_t
    * x -> x + damping * Deltax.
    * See [Newton's Method](https://en.wikipedia.org/wiki/Newton%27s_method)
    */
-  Newton
+  Newton,
+  /**
+   * Custom solver to provide users greater flexibility
+   */
+  CustomSolver
 };
 
 /**
