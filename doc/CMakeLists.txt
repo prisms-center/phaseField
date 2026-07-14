@@ -9,8 +9,8 @@ add_subdirectory(scripts)
 add_custom_target(
   generate_parameter_docs
   COMMAND
-	scrape_parameters_exe ${CMAKE_CURRENT_SOURCE_DIR}/doxygen/parameters/parameters.h.in
-	 ${CMAKE_CURRENT_SOURCE_DIR}/doxygen/parameters/parameters.h
+    scrape_parameters_exe ${CMAKE_CURRENT_SOURCE_DIR}/doxygen/parameters/parameters.h.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/doxygen/parameters/parameters.h
   COMMENT "Generating parameter documentation"
 )
 add_dependencies(generate_parameter_docs scrape_parameters_exe)
