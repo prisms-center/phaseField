@@ -405,6 +405,7 @@ private:
       }
 
     // Now we onto the patterns
+    // TODO: Format patterns to be a little more readable
 
     ss << "<tr" << row_style << ">\n"
        << "<td>" << name_cell.str() << "</td>\n"
