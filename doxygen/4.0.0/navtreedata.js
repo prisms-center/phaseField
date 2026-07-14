@@ -33,6 +33,7 @@ var NAVTREE =
     [ "Tutorial", "tutorial.html", [
       [ "Structure", "structure.html", null ]
     ] ],
+    [ "Parameters", "parameters.html", null ],
     [ "Applications", "applications.html", null ],
     [ "Contact", "contact.html", null ],
     [ "Namespaces", "namespaces.html", [
@@ -80,7 +81,7 @@ var NAVTREEINDEX =
 "classSimulationTimer.html#a91b657a1a2260be48a02130734c25277",
 "constant__solver_8h.html#a6b67899c23aaa2e60976e47d8cbb159e",
 "namespaceTypes.html",
-"structNonlinearSolverParameters.html#a013d3916c0874d62a34f59c7c7ce3656"
+"structNonlinearSolveParameters.html#a739532467fce44357d9807e3ae38e661"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

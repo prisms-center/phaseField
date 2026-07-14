@@ -1,0 +1,1467 @@
+{
+    "begin time": {
+        "alias": "start time",
+        "deprecation_status": "false"
+    },
+    "begin_time": {
+        "alias": "start time",
+        "deprecation_status": "false"
+    },
+    "dt": {
+        "alias": "time step",
+        "deprecation_status": "false"
+    },
+    "end increment": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "end time": {
+        "value": "0.0",
+        "default_value": "0.0",
+        "documentation": "The value of simulated time where the simulation ends. Overrides final increment if greater than 0.",
+        "pattern": "27",
+        "pattern_description": "[Double 0...MAX_DOUBLE (inclusive)]"
+    },
+    "end_increment": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "end_time": {
+        "alias": "end time",
+        "deprecation_status": "false"
+    },
+    "final increment": {
+        "value": "0",
+        "default_value": "0",
+        "documentation": "The final increment for the simulation.",
+        "pattern": "24",
+        "pattern_description": "[Integer range 0...2147483647 (inclusive)]"
+    },
+    "final iteration": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "final time": {
+        "alias": "end time",
+        "deprecation_status": "false"
+    },
+    "final_increment": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "final_time": {
+        "alias": "end time",
+        "deprecation_status": "false"
+    },
+    "global refinement": {
+        "value": "0",
+        "default_value": "0",
+        "documentation": "The number of initial refinements of the coarse mesh.",
+        "pattern": "14",
+        "pattern_description": "[Integer range 0...2147483647 (inclusive)]"
+    },
+    "increments": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "iterations": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "last increment": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "last_increment": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "max iteration": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "max refinement": {
+        "value": "0",
+        "default_value": "0",
+        "documentation": "The maximum level of refinement.",
+        "pattern": "16",
+        "pattern_description": "[Integer range 0...2147483647 (inclusive)]"
+    },
+    "mesh adaptivity": {
+        "value": "false",
+        "default_value": "false",
+        "documentation": "Whether to enable mesh adaptivity.",
+        "pattern": "15",
+        "pattern_description": "[Bool]"
+    },
+    "mesh type": {
+        "value": "rectangular",
+        "default_value": "rectangular",
+        "documentation": "The type of mesh to use.",
+        "pattern": "0",
+        "pattern_description": "[Selection rectangular|spherical|custom ]"
+    },
+    "min refinement": {
+        "value": "0",
+        "default_value": "0",
+        "documentation": "The minimum level of refinement.",
+        "pattern": "17",
+        "pattern_description": "[Integer range 0...2147483647 (inclusive)]"
+    },
+    "n steps": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "n_steps": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "num steps": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "num_steps": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "number of steps": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "number steps": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "number_of_steps": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "number_steps": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "read initial conditions from file": {
+        "value": "false",
+        "default_value": "false",
+        "documentation": "Whether to read any initial conditions from file.",
+        "pattern": "77",
+        "pattern_description": "[Bool]"
+    },
+    "remeshing period": {
+        "value": "2147483647",
+        "default_value": "2147483647",
+        "documentation": "The number of time steps between mesh refinement operations.",
+        "pattern": "18",
+        "pattern_description": "[Integer range 1...2147483647 (inclusive)]"
+    },
+    "start time": {
+        "value": "0.0",
+        "default_value": "0.0",
+        "documentation": "The value of simulated time where the simulation begins.",
+        "pattern": "26",
+        "pattern_description": "[Double 0...MAX_DOUBLE (inclusive)]"
+    },
+    "start_time": {
+        "alias": "start time",
+        "deprecation_status": "false"
+    },
+    "steps": {
+        "alias": "final increment",
+        "deprecation_status": "false"
+    },
+    "t0": {
+        "alias": "start time",
+        "deprecation_status": "false"
+    },
+    "t_0": {
+        "alias": "start time",
+        "deprecation_status": "false"
+    },
+    "t_f": {
+        "alias": "end time",
+        "deprecation_status": "false"
+    },
+    "tf": {
+        "alias": "end time",
+        "deprecation_status": "false"
+    },
+    "time step": {
+        "value": "0.0",
+        "default_value": "0.0",
+        "documentation": "The time step size for the simulation.",
+        "pattern": "25",
+        "pattern_description": "[Double 0...MAX_DOUBLE (inclusive)]"
+    },
+    "time_step": {
+        "alias": "time step",
+        "deprecation_status": "false"
+    },
+    "timestep": {
+        "alias": "time step",
+        "deprecation_status": "false"
+    },
+    "Rectangular mesh": {
+        "LowerBoundX": {
+            "alias": "x lower bound",
+            "deprecation_status": "false"
+        },
+        "LowerBoundY": {
+            "alias": "y lower bound",
+            "deprecation_status": "false"
+        },
+        "LowerBoundZ": {
+            "alias": "z lower bound",
+            "deprecation_status": "false"
+        },
+        "Lower Bound X": {
+            "alias": "x lower bound",
+            "deprecation_status": "false"
+        },
+        "Lower Bound Y": {
+            "alias": "y lower bound",
+            "deprecation_status": "false"
+        },
+        "Lower Bound Z": {
+            "alias": "z lower bound",
+            "deprecation_status": "false"
+        },
+        "Lower_Bound_X": {
+            "alias": "x lower bound",
+            "deprecation_status": "false"
+        },
+        "Lower_Bound_Y": {
+            "alias": "y lower bound",
+            "deprecation_status": "false"
+        },
+        "Lower_Bound_Z": {
+            "alias": "z lower bound",
+            "deprecation_status": "false"
+        },
+        "PeriodicX": {
+            "alias": "x periodic",
+            "deprecation_status": "false"
+        },
+        "PeriodicY": {
+            "alias": "y periodic",
+            "deprecation_status": "false"
+        },
+        "PeriodicZ": {
+            "alias": "z periodic",
+            "deprecation_status": "false"
+        },
+        "Periodic X": {
+            "alias": "x periodic",
+            "deprecation_status": "false"
+        },
+        "Periodic Y": {
+            "alias": "y periodic",
+            "deprecation_status": "false"
+        },
+        "Periodic Z": {
+            "alias": "z periodic",
+            "deprecation_status": "false"
+        },
+        "Periodic_X": {
+            "alias": "x periodic",
+            "deprecation_status": "false"
+        },
+        "Periodic_Y": {
+            "alias": "y periodic",
+            "deprecation_status": "false"
+        },
+        "Periodic_Z": {
+            "alias": "z periodic",
+            "deprecation_status": "false"
+        },
+        "SizeX": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "SizeY": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "SizeZ": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "Size X": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "Size Y": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "Size Z": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "Size_X": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "Size_Y": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "Size_Z": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "SubdivisionsX": {
+            "alias": "x subdivisions",
+            "deprecation_status": "false"
+        },
+        "SubdivisionsY": {
+            "alias": "y subdivisions",
+            "deprecation_status": "false"
+        },
+        "SubdivisionsZ": {
+            "alias": "z subdivisions",
+            "deprecation_status": "false"
+        },
+        "Subdivisions X": {
+            "alias": "x subdivisions",
+            "deprecation_status": "false"
+        },
+        "Subdivisions Y": {
+            "alias": "y subdivisions",
+            "deprecation_status": "false"
+        },
+        "Subdivisions Z": {
+            "alias": "z subdivisions",
+            "deprecation_status": "false"
+        },
+        "Subdivisions_X": {
+            "alias": "x subdivisions",
+            "deprecation_status": "false"
+        },
+        "Subdivisions_Y": {
+            "alias": "y subdivisions",
+            "deprecation_status": "false"
+        },
+        "Subdivisions_Z": {
+            "alias": "z subdivisions",
+            "deprecation_status": "false"
+        },
+        "UpperBoundX": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "UpperBoundY": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "UpperBoundZ": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "Upper Bound X": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "Upper Bound Y": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "Upper Bound Z": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "Upper_Bound_X": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "Upper_Bound_Y": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "Upper_Bound_Z": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "XLowerBound": {
+            "alias": "x lower bound",
+            "deprecation_status": "false"
+        },
+        "XPeriodic": {
+            "alias": "x periodic",
+            "deprecation_status": "false"
+        },
+        "XSize": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "XSubdivisions": {
+            "alias": "x subdivisions",
+            "deprecation_status": "false"
+        },
+        "XUpperBound": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "X Lower Bound": {
+            "alias": "x lower bound",
+            "deprecation_status": "false"
+        },
+        "X Periodic": {
+            "alias": "x periodic",
+            "deprecation_status": "false"
+        },
+        "X Size": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "X Subdivisions": {
+            "alias": "x subdivisions",
+            "deprecation_status": "false"
+        },
+        "X Upper Bound": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "X_Lower_Bound": {
+            "alias": "x lower bound",
+            "deprecation_status": "false"
+        },
+        "X_Periodic": {
+            "alias": "x periodic",
+            "deprecation_status": "false"
+        },
+        "X_Size": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "X_Subdivisions": {
+            "alias": "x subdivisions",
+            "deprecation_status": "false"
+        },
+        "X_Upper_Bound": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "YLowerBound": {
+            "alias": "y lower bound",
+            "deprecation_status": "false"
+        },
+        "YPeriodic": {
+            "alias": "y periodic",
+            "deprecation_status": "false"
+        },
+        "YSize": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "YSubdivisions": {
+            "alias": "y subdivisions",
+            "deprecation_status": "false"
+        },
+        "YUpperBound": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "Y Lower Bound": {
+            "alias": "y lower bound",
+            "deprecation_status": "false"
+        },
+        "Y Periodic": {
+            "alias": "y periodic",
+            "deprecation_status": "false"
+        },
+        "Y Size": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "Y Subdivisions": {
+            "alias": "y subdivisions",
+            "deprecation_status": "false"
+        },
+        "Y Upper Bound": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "Y_Lower_Bound": {
+            "alias": "y lower bound",
+            "deprecation_status": "false"
+        },
+        "Y_Periodic": {
+            "alias": "y periodic",
+            "deprecation_status": "false"
+        },
+        "Y_Size": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "Y_Subdivisions": {
+            "alias": "y subdivisions",
+            "deprecation_status": "false"
+        },
+        "Y_Upper_Bound": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "ZLowerBound": {
+            "alias": "z lower bound",
+            "deprecation_status": "false"
+        },
+        "ZPeriodic": {
+            "alias": "z periodic",
+            "deprecation_status": "false"
+        },
+        "ZSize": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "ZSubdivisions": {
+            "alias": "z subdivisions",
+            "deprecation_status": "false"
+        },
+        "ZUpperBound": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "Z Lower Bound": {
+            "alias": "z lower bound",
+            "deprecation_status": "false"
+        },
+        "Z Periodic": {
+            "alias": "z periodic",
+            "deprecation_status": "false"
+        },
+        "Z Size": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "Z Subdivisions": {
+            "alias": "z subdivisions",
+            "deprecation_status": "false"
+        },
+        "Z Upper Bound": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "Z_Lower_Bound": {
+            "alias": "z lower bound",
+            "deprecation_status": "false"
+        },
+        "Z_Periodic": {
+            "alias": "z periodic",
+            "deprecation_status": "false"
+        },
+        "Z_Size": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "Z_Subdivisions": {
+            "alias": "z subdivisions",
+            "deprecation_status": "false"
+        },
+        "Z_Upper_Bound": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "lower bound x": {
+            "alias": "x lower bound",
+            "deprecation_status": "false"
+        },
+        "lower bound y": {
+            "alias": "y lower bound",
+            "deprecation_status": "false"
+        },
+        "lower bound z": {
+            "alias": "z lower bound",
+            "deprecation_status": "false"
+        },
+        "lower_bound_x": {
+            "alias": "x lower bound",
+            "deprecation_status": "false"
+        },
+        "lower_bound_y": {
+            "alias": "y lower bound",
+            "deprecation_status": "false"
+        },
+        "lower_bound_z": {
+            "alias": "z lower bound",
+            "deprecation_status": "false"
+        },
+        "periodic x": {
+            "alias": "x periodic",
+            "deprecation_status": "false"
+        },
+        "periodic y": {
+            "alias": "y periodic",
+            "deprecation_status": "false"
+        },
+        "periodic z": {
+            "alias": "z periodic",
+            "deprecation_status": "false"
+        },
+        "periodic_x": {
+            "alias": "x periodic",
+            "deprecation_status": "false"
+        },
+        "periodic_y": {
+            "alias": "y periodic",
+            "deprecation_status": "false"
+        },
+        "periodic_z": {
+            "alias": "z periodic",
+            "deprecation_status": "false"
+        },
+        "size x": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "size y": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "size z": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "size_x": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "size_y": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "size_z": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "subdivisions x": {
+            "alias": "x subdivisions",
+            "deprecation_status": "false"
+        },
+        "subdivisions y": {
+            "alias": "y subdivisions",
+            "deprecation_status": "false"
+        },
+        "subdivisions z": {
+            "alias": "z subdivisions",
+            "deprecation_status": "false"
+        },
+        "subdivisions_x": {
+            "alias": "x subdivisions",
+            "deprecation_status": "false"
+        },
+        "subdivisions_y": {
+            "alias": "y subdivisions",
+            "deprecation_status": "false"
+        },
+        "subdivisions_z": {
+            "alias": "z subdivisions",
+            "deprecation_status": "false"
+        },
+        "upper bound x": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "upper bound y": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "upper bound z": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "upper_bound_x": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "upper_bound_y": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "upper_bound_z": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "x lower bound": {
+            "value": "0.0",
+            "default_value": "0.0",
+            "documentation": "The lower bound of the domain in the x-direction.",
+            "pattern": "3",
+            "pattern_description": "[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]",
+            "deprecation_status": "false"
+        },
+        "x periodic": {
+            "value": "false",
+            "default_value": "false",
+            "documentation": "Whether to have periodicity in the x-direction.\n\n@warning If you set a certain direction to be period, make sure the corresponding boundary condition is `NATURAL`.\n@end_warning",
+            "pattern": "5",
+            "pattern_description": "[Bool]",
+            "deprecation_status": "false"
+        },
+        "x size": {
+            "value": "0.0",
+            "default_value": "0.0",
+            "documentation": "The upper of the domain in the x-direction. When the lower bound is the origin, this corresponds to the size of the domain.\n\n@warning When setting lower bound, this parameter no longer corresponds to the size of the domain.\n@end_warning",
+            "pattern": "2",
+            "pattern_description": "[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]",
+            "deprecation_status": "false"
+        },
+        "x subdivisions": {
+            "value": "1",
+            "default_value": "1",
+            "documentation": "The number of mesh subdivisions in the x-direction.\n\n@warning Be careful when using many subdivisions as they affect the coarse mesh! This is important because the coarse mesh is stored on every processor. Don't use subdivisions in place of refinements! They are not the same.\n@end_warning",
+            "pattern": "4",
+            "pattern_description": "[Integer range 1...2147483647 (inclusive)]",
+            "deprecation_status": "false"
+        },
+        "x upper bound": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "x_lower_bound": {
+            "alias": "x lower bound",
+            "deprecation_status": "false"
+        },
+        "x_periodic": {
+            "alias": "x periodic",
+            "deprecation_status": "false"
+        },
+        "x_size": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "x_subdivisions": {
+            "alias": "x subdivisions",
+            "deprecation_status": "false"
+        },
+        "x_upper_bound": {
+            "alias": "x size",
+            "deprecation_status": "false"
+        },
+        "y lower bound": {
+            "value": "0.0",
+            "default_value": "0.0",
+            "documentation": "The lower bound of the domain in the y-direction.",
+            "pattern": "7",
+            "pattern_description": "[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]",
+            "deprecation_status": "false"
+        },
+        "y periodic": {
+            "value": "false",
+            "default_value": "false",
+            "documentation": "Whether to have periodicity in the y-direction.\n\n@warning If you set a certain direction to be period, make sure the corresponding boundary condition is `NATURAL`.\n@end_warning",
+            "pattern": "9",
+            "pattern_description": "[Bool]",
+            "deprecation_status": "false"
+        },
+        "y size": {
+            "value": "0.0",
+            "default_value": "0.0",
+            "documentation": "The upper of the domain in the y-direction. When the lower bound is the origin, this corresponds to the size of the domain.\n\n@warning When setting lower bound, this parameter no longer corresponds to the size of the domain.\n@end_warning",
+            "pattern": "6",
+            "pattern_description": "[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]",
+            "deprecation_status": "false"
+        },
+        "y subdivisions": {
+            "value": "1",
+            "default_value": "1",
+            "documentation": "The number of mesh subdivisions in the y-direction.\n\n@warning Be careful when using many subdivisions as they affect the coarse mesh! This is important because the coarse mesh is stored on every processor. Don't use subdivisions in place of refinements! They are not the same.\n@end_warning",
+            "pattern": "8",
+            "pattern_description": "[Integer range 1...2147483647 (inclusive)]",
+            "deprecation_status": "false"
+        },
+        "y upper bound": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "y_lower_bound": {
+            "alias": "y lower bound",
+            "deprecation_status": "false"
+        },
+        "y_periodic": {
+            "alias": "y periodic",
+            "deprecation_status": "false"
+        },
+        "y_size": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "y_subdivisions": {
+            "alias": "y subdivisions",
+            "deprecation_status": "false"
+        },
+        "y_upper_bound": {
+            "alias": "y size",
+            "deprecation_status": "false"
+        },
+        "z lower bound": {
+            "value": "0.0",
+            "default_value": "0.0",
+            "documentation": "The lower bound of the domain in the z-direction.",
+            "pattern": "11",
+            "pattern_description": "[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]",
+            "deprecation_status": "false"
+        },
+        "z periodic": {
+            "value": "false",
+            "default_value": "false",
+            "documentation": "Whether to have periodicity in the z-direction.\n\n@warning If you set a certain direction to be period, make sure the corresponding boundary condition is `NATURAL`.\n@end_warning",
+            "pattern": "13",
+            "pattern_description": "[Bool]",
+            "deprecation_status": "false"
+        },
+        "z size": {
+            "value": "0.0",
+            "default_value": "0.0",
+            "documentation": "The upper of the domain in the z-direction. When the lower bound is the origin, this corresponds to the size of the domain.\n\n@warning When setting lower bound, this parameter no longer corresponds to the size of the domain.\n@end_warning",
+            "pattern": "10",
+            "pattern_description": "[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]",
+            "deprecation_status": "false"
+        },
+        "z subdivisions": {
+            "value": "1",
+            "default_value": "1",
+            "documentation": "The number of mesh subdivisions in the z-direction.\n\n@warning Be careful when using many subdivisions as they affect the coarse mesh! This is important because the coarse mesh is stored on every processor. Don't use subdivisions in place of refinements! They are not the same.\n@end_warning",
+            "pattern": "12",
+            "pattern_description": "[Integer range 1...2147483647 (inclusive)]",
+            "deprecation_status": "false"
+        },
+        "z upper bound": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "z_lower_bound": {
+            "alias": "z lower bound",
+            "deprecation_status": "false"
+        },
+        "z_periodic": {
+            "alias": "z periodic",
+            "deprecation_status": "false"
+        },
+        "z_size": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        },
+        "z_subdivisions": {
+            "alias": "z subdivisions",
+            "deprecation_status": "false"
+        },
+        "z_upper_bound": {
+            "alias": "z size",
+            "deprecation_status": "false"
+        }
+    },
+    "Spherical mesh": {
+        "radius": {
+            "value": "0",
+            "default_value": "0",
+            "documentation": "The radius of the domain.",
+            "pattern": "1",
+            "pattern_description": "[Double 0...MAX_DOUBLE (inclusive)]"
+        }
+    },
+    "boundary conditions: 0": {
+        "conditions": {
+            "value": "",
+            "default_value": "",
+            "documentation": "List of conditions.",
+            "pattern": "29",
+            "pattern_description": "[List of <[Anything]> of length 0...2147483647 (inclusive)]"
+        },
+        "time dependent": {
+            "value": "false",
+            "default_value": "false",
+            "documentation": "Whether these conditions vary in time.",
+            "pattern": "30",
+            "pattern_description": "[Bool]"
+        },
+        "variables": {
+            "value": "",
+            "default_value": "",
+            "documentation": "The names of the fields that will use these constraints.",
+            "pattern": "28",
+            "pattern_description": "[List of <[Anything]> of length 0...2147483647 (inclusive)]"
+        }
+    },
+    "checkpoint": {
+        "condition": {
+            "value": "EQUAL_SPACING",
+            "default_value": "EQUAL_SPACING",
+            "documentation": "The spacing type for outputting the solution fields.",
+            "pattern": "67",
+            "pattern_description": "[Selection EQUAL_SPACING|LOG_SPACING|N_PER_DECADE|LIST ]"
+        },
+        "directory": {
+            "value": "solutions",
+            "default_value": "solutions",
+            "documentation": "The name of the output directory.",
+            "pattern": "65",
+            "pattern_description": "[Anything]"
+        },
+        "file name": {
+            "value": "solution",
+            "default_value": "solution",
+            "documentation": "The prefix of the output files, before the time step and processor info are added.",
+            "pattern": "66",
+            "pattern_description": "[Anything]"
+        },
+        "folder name": {
+            "alias": "directory",
+            "deprecation_status": "false"
+        },
+        "list": {
+            "value": "0",
+            "default_value": "0",
+            "documentation": "The list of time steps to output. Used for the LIST type only and must be comma delimited.",
+            "pattern": "68",
+            "pattern_description": "[List of <[Integer range 0...2147483647 (inclusive)]> of length 0...2147483647 (inclusive)]"
+        },
+        "load from checkpoint": {
+            "value": "false",
+            "default_value": "false",
+            "documentation": "Whether to load from a checkpoint created during a previous simulation.",
+            "pattern": "64",
+            "pattern_description": "[Bool]"
+        },
+        "number": {
+            "value": "10",
+            "default_value": "10",
+            "documentation": "The number of outputs (or number of outputs per decade for the N_PER_DECADE type).",
+            "pattern": "69",
+            "pattern_description": "[Integer range 0...2147483647 (inclusive)]"
+        }
+    },
+    "input file: 0": {
+        "file name": {
+            "value": "",
+            "default_value": "",
+            "documentation": "The file name to load from for each variable.",
+            "pattern": "70",
+            "pattern_description": "[Anything]"
+        },
+        "file variables": {
+            "value": "",
+            "default_value": "",
+            "documentation": "The names of the fields in the file.",
+            "pattern": "72",
+            "pattern_description": "[List of <[Anything]> of length 0...2147483647 (inclusive)]"
+        },
+        "format": {
+            "value": "vtu",
+            "default_value": "vtu",
+            "documentation": "The type of grid in the file.",
+            "pattern": "71",
+            "pattern_description": "[Selection vtk|vtu|vti|pvtu|binary ]"
+        },
+        "simulation variables": {
+            "value": "",
+            "default_value": "",
+            "documentation": "The correspond names of the fields in the simulation.",
+            "pattern": "73",
+            "pattern_description": "[List of <[Anything]> of length 0...2147483647 (inclusive)]"
+        },
+        "x data points": {
+            "value": "0",
+            "default_value": "0",
+            "documentation": "The number of data points in the x-direction.",
+            "pattern": "74",
+            "pattern_description": "[Integer range 0...2147483647 (inclusive)]"
+        },
+        "y data points": {
+            "value": "0",
+            "default_value": "0",
+            "documentation": "The number of data points in the y-direction.",
+            "pattern": "75",
+            "pattern_description": "[Integer range 0...2147483647 (inclusive)]"
+        },
+        "z data points": {
+            "value": "0",
+            "default_value": "0",
+            "documentation": "The number of data points in the z-direction.",
+            "pattern": "76",
+            "pattern_description": "[Integer range 0...2147483647 (inclusive)]"
+        }
+    },
+    "linear solver parameters: 0": {
+        "linear solver": {
+            "alias": "solver type",
+            "deprecation_status": "false"
+        },
+        "linear solver type": {
+            "alias": "solver type",
+            "deprecation_status": "false"
+        },
+        "linear_solver": {
+            "alias": "solver type",
+            "deprecation_status": "false"
+        },
+        "linear_solver_type": {
+            "alias": "solver type",
+            "deprecation_status": "false"
+        },
+        "max iterations": {
+            "value": "100",
+            "default_value": "100",
+            "documentation": "The maximum number of linear solver iterations before the loop is stopped.",
+            "pattern": "35",
+            "pattern_description": "[Integer range 1...2147483647 (inclusive)]"
+        },
+        "mg depth": {
+            "value": "1",
+            "default_value": "1",
+            "documentation": "The depth of the multigrid hierarchy.",
+            "pattern": "36",
+            "pattern_description": "[Integer range 1...2147483647 (inclusive)]"
+        },
+        "mg_depth": {
+            "alias": "mg depth",
+            "deprecation_status": "false"
+        },
+        "preconditioner": {
+            "alias": "preconditioner type",
+            "deprecation_status": "false"
+        },
+        "preconditioner type": {
+            "value": "None",
+            "default_value": "None",
+            "documentation": "The preconditioner type for the linear solver.",
+            "pattern": "37",
+            "pattern_description": "[Selection None|Chebyshev|GMG|none|chebyshev|gmg|MG|mg|multigrid ]"
+        },
+        "preconditioner_type": {
+            "alias": "preconditioner type",
+            "deprecation_status": "false"
+        },
+        "solve block ids": {
+            "alias": "solver_ids",
+            "deprecation_status": "false"
+        },
+        "solve blocks": {
+            "alias": "solver_ids",
+            "deprecation_status": "false"
+        },
+        "solve_block_ids": {
+            "alias": "solver_ids",
+            "deprecation_status": "false"
+        },
+        "solve_blocks": {
+            "alias": "solver_ids",
+            "deprecation_status": "false"
+        },
+        "solver ids": {
+            "alias": "solver_ids",
+            "deprecation_status": "false"
+        },
+        "solver type": {
+            "value": "cg",
+            "default_value": "cg",
+            "documentation": "The type of iterative solver to use for linear solves.",
+            "pattern": "32",
+            "pattern_description": "[Selection richardson|cg|bicgstab|gmres|fgmres|minres ]"
+        },
+        "solver_ids": {
+            "value": "",
+            "default_value": "",
+            "documentation": "The ids of the solvers that will use these settings.",
+            "pattern": "31",
+            "pattern_description": "[List of <[Anything]> of length 0...2147483647 (inclusive)]"
+        },
+        "solver_type": {
+            "alias": "solver type",
+            "deprecation_status": "false"
+        },
+        "tolerance": {
+            "alias": "tolerance value",
+            "deprecation_status": "false"
+        },
+        "tolerance type": {
+            "value": "AbsoluteResidual",
+            "default_value": "AbsoluteResidual",
+            "documentation": "The tolerance type for the linear solver.",
+            "pattern": "33",
+            "pattern_description": "[Selection AbsoluteResidual|RMSEPerField|IntegratedPerField|RMSETotal|IntegratedTotal ]"
+        },
+        "tolerance value": {
+            "value": "1.0e-10",
+            "default_value": "1.0e-10",
+            "documentation": "The value of for the linear solver tolerance.",
+            "pattern": "34",
+            "pattern_description": "[Double 0...MAX_DOUBLE (inclusive)]"
+        },
+        "type": {
+            "alias": "solver type",
+            "deprecation_status": "false"
+        },
+        "BiCGStab": {
+            "breakdown": {
+                "value": "0.000000",
+                "default_value": "0.000000",
+                "documentation": "Breakdown threshold.",
+                "pattern": "44",
+                "pattern_description": "[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]"
+            },
+            "exact residual": {
+                "value": "true",
+                "default_value": "true",
+                "documentation": "Flag for exact computation of residual.",
+                "pattern": "43",
+                "pattern_description": "[Bool]"
+            }
+        },
+        "Chebyshev": {
+            "eigenvalue cg iterations": {
+                "value": "10",
+                "default_value": "10",
+                "documentation": "The maximum number of CG iterations used to find the maximum eigenvalue.",
+                "pattern": "40",
+                "pattern_description": "[Integer range 1...2147483647 (inclusive)]"
+            },
+            "smoother degree": {
+                "value": "5",
+                "default_value": "5",
+                "documentation": "The smoother polynomial degree.",
+                "pattern": "39",
+                "pattern_description": "[Integer range 1...2147483647 (inclusive)]"
+            },
+            "smoothing range": {
+                "value": "15.0",
+                "default_value": "15.0",
+                "documentation": "The smoothing range for eigenvalues. Try λ_max \/ λ_min.",
+                "pattern": "38",
+                "pattern_description": "[Double 2.22507e-308...MAX_DOUBLE (inclusive)]"
+            }
+        },
+        "GMRES": {
+            "batched mode": {
+                "value": "false",
+                "default_value": "false",
+                "documentation": "Whether to use batched mode in GMRES.",
+                "pattern": "50",
+                "pattern_description": "[Bool]"
+            },
+            "force re-orthogonalization": {
+                "value": "false",
+                "default_value": "false",
+                "documentation": "Whether to force re-orthogonalization of the Krylov basis in GMRES.",
+                "pattern": "49",
+                "pattern_description": "[Bool]"
+            },
+            "max basis size": {
+                "value": "30",
+                "default_value": "30",
+                "documentation": "The maximum size of the Krylov basis used in GMRES before restarting.",
+                "pattern": "45",
+                "pattern_description": "[Integer range 1...2147483647 (inclusive)]"
+            },
+            "orthogonalization strategy": {
+                "value": "delayed_classical_gram_schmidt",
+                "default_value": "delayed_classical_gram_schmidt",
+                "documentation": "The orthogonalization strategy to use in GMRES.",
+                "pattern": "46",
+                "pattern_description": "[Selection classical_gram_schmidt|modified_gram_schmidt|delayed_classical_gram_schmidt ]"
+            },
+            "right preconditioning": {
+                "value": "false",
+                "default_value": "false",
+                "documentation": "Whether to use right preconditioning.",
+                "pattern": "47",
+                "pattern_description": "[Bool]"
+            },
+            "use default residual": {
+                "value": "true",
+                "default_value": "true",
+                "documentation": "Whether to use the default residual computation in GMRES.",
+                "pattern": "48",
+                "pattern_description": "[Bool]"
+            }
+        },
+        "Richardson": {
+            "omega": {
+                "value": "1.0",
+                "default_value": "1.0",
+                "documentation": "Damping factor.",
+                "pattern": "41",
+                "pattern_description": "[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]"
+            },
+            "use preconditioned residual": {
+                "value": "false",
+                "default_value": "false",
+                "documentation": "Whether to use the preconditioned residual l2 norm in the stopping criterion.",
+                "pattern": "42",
+                "pattern_description": "[Bool]"
+            }
+        }
+    },
+    "miscellaneous": {
+        "random seed": {
+            "value": "2025",
+            "default_value": "2025",
+            "documentation": "The random seed for the simulation. This is used to initialize the random number generator.",
+            "pattern": "78",
+            "pattern_description": "[Integer range 0...2147483647 (inclusive)]"
+        }
+    },
+    "newton solver parameters: 0": {
+        "max iterations": {
+            "value": "100",
+            "default_value": "100",
+            "documentation": "The maximum number of nonlinear solver iterations before the loop is stopped.",
+            "pattern": "52",
+            "pattern_description": "[Integer range 1...2147483647 (inclusive)]"
+        },
+        "solve block ids": {
+            "alias": "solver_ids",
+            "deprecation_status": "false"
+        },
+        "solve blocks": {
+            "alias": "solver_ids",
+            "deprecation_status": "false"
+        },
+        "solve_block_ids": {
+            "alias": "solver_ids",
+            "deprecation_status": "false"
+        },
+        "solve_blocks": {
+            "alias": "solver_ids",
+            "deprecation_status": "false"
+        },
+        "solver ids": {
+            "alias": "solver_ids",
+            "deprecation_status": "false"
+        },
+        "solver_ids": {
+            "value": "",
+            "default_value": "",
+            "documentation": "The ids of the solvers that will use these settings.",
+            "pattern": "51",
+            "pattern_description": "[List of <[Anything]> of length 0...2147483647 (inclusive)]"
+        },
+        "step size": {
+            "value": "1.0",
+            "default_value": "1.0",
+            "documentation": "The constant damping value to be used if the backtrace line-search approach isn't used.",
+            "pattern": "54",
+            "pattern_description": "[Double 0...MAX_DOUBLE (inclusive)]"
+        },
+        "tolerance": {
+            "alias": "tolerance value",
+            "deprecation_status": "false"
+        },
+        "tolerance value": {
+            "value": "1.0e-10",
+            "default_value": "1.0e-10",
+            "documentation": "The value of for the nonlinear solver tolerance.",
+            "pattern": "53",
+            "pattern_description": "[Double 0...MAX_DOUBLE (inclusive)]"
+        }
+    },
+    "nucleation": {
+        "exclusion distance": {
+            "alias": "nucleus exclusion distance",
+            "deprecation_status": "false"
+        },
+        "exclusion radius": {
+            "alias": "nucleus exclusion distance",
+            "deprecation_status": "false"
+        },
+        "exclusion_distance": {
+            "alias": "nucleus exclusion distance",
+            "deprecation_status": "false"
+        },
+        "exclusion_radius": {
+            "alias": "nucleus exclusion distance",
+            "deprecation_status": "false"
+        },
+        "nucleation period": {
+            "value": "2147483647",
+            "default_value": "2147483647",
+            "documentation": "The number of increments between nucleation attempts.",
+            "pattern": "81",
+            "pattern_description": "[Integer range 1...2147483647 (inclusive)]"
+        },
+        "nucleus exclusion distance": {
+            "value": "0.0",
+            "default_value": "0.0",
+            "documentation": "The minimum distance between nuclei.",
+            "pattern": "79",
+            "pattern_description": "[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]"
+        },
+        "nucleus exclusion radius": {
+            "alias": "nucleus exclusion distance",
+            "deprecation_status": "false"
+        },
+        "nucleus_exclusion_distance": {
+            "alias": "nucleus exclusion distance",
+            "deprecation_status": "false"
+        },
+        "nucleus_exclusion_radius": {
+            "alias": "nucleus exclusion distance",
+            "deprecation_status": "false"
+        },
+        "refinement radius": {
+            "value": "0.0",
+            "default_value": "0.0",
+            "documentation": "The radius around a nucleus in which AMR is applied.",
+            "pattern": "82",
+            "pattern_description": "[Double 0...MAX_DOUBLE (inclusive)]"
+        },
+        "same field exclusion distance": {
+            "alias": "same field nucleus exclusion distance",
+            "deprecation_status": "false"
+        },
+        "same field exclusion radius": {
+            "alias": "same field nucleus exclusion distance",
+            "deprecation_status": "false"
+        },
+        "same field nucleus exclusion distance": {
+            "value": "0.0",
+            "default_value": "0.0",
+            "documentation": "The minimum distance between nuclei.",
+            "pattern": "80",
+            "pattern_description": "[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]"
+        },
+        "same field nucleus exclusion radius": {
+            "alias": "same field nucleus exclusion distance",
+            "deprecation_status": "false"
+        },
+        "same_field_exclusion_distance": {
+            "alias": "same field nucleus exclusion distance",
+            "deprecation_status": "false"
+        },
+        "same_field_exclusion_radius": {
+            "alias": "same field nucleus exclusion distance",
+            "deprecation_status": "false"
+        },
+        "same_field_nucleus_exclusion_distance": {
+            "alias": "same field nucleus exclusion distance",
+            "deprecation_status": "false"
+        },
+        "same_field_nucleus_exclusion_radius": {
+            "alias": "same field nucleus exclusion distance",
+            "deprecation_status": "false"
+        },
+        "seeding increments": {
+            "value": "1",
+            "default_value": "1",
+            "documentation": "The number of increments over which nuclei are considered \"active\" and refinement and exclusion zones are applied. Same as \"seeding time\" but in increments.",
+            "pattern": "84",
+            "pattern_description": "[Integer range 1...2147483647 (inclusive)]"
+        },
+        "seeding time": {
+            "value": "0.0",
+            "default_value": "0.0",
+            "documentation": "The time duration over which nuclei are considered \"active\" and refinement and exclusion zones are applied. Same as \"seeding increments\" but in time.",
+            "pattern": "83",
+            "pattern_description": "[Double 0...MAX_DOUBLE (inclusive)]"
+        }
+    },
+    "output": {
+        "compression level": {
+            "value": "default",
+            "default_value": "default",
+            "documentation": "The compression level for output.",
+            "pattern": "57",
+            "pattern_description": "[Selection default|speed|size|none ]"
+        },
+        "condition": {
+            "value": "EQUAL_SPACING",
+            "default_value": "EQUAL_SPACING",
+            "documentation": "The spacing type for outputting the solution fields.",
+            "pattern": "60",
+            "pattern_description": "[Selection EQUAL_SPACING|LOG_SPACING|N_PER_DECADE ]"
+        },
+        "directory": {
+            "value": "solutions",
+            "default_value": "solutions",
+            "documentation": "The name of the output directory.",
+            "pattern": "58",
+            "pattern_description": "[Anything]"
+        },
+        "file name": {
+            "value": "solution",
+            "default_value": "solution",
+            "documentation": "The prefix of the output files, before the time step and processor info are added.",
+            "pattern": "59",
+            "pattern_description": "[Anything]"
+        },
+        "file type": {
+            "value": "vtu",
+            "default_value": "vtu",
+            "documentation": "The output file type (either vtu, pvtu, vtk, or xdmf).",
+            "pattern": "55",
+            "pattern_description": "[Selection vtu|vtk|pvtu|xdmf ]"
+        },
+        "folder name": {
+            "alias": "directory",
+            "deprecation_status": "false"
+        },
+        "list": {
+            "value": "0",
+            "default_value": "0",
+            "documentation": "Comma-separated list of increments to output on.",
+            "pattern": "62",
+            "pattern_description": "[List of <[Integer range 0...2147483647 (inclusive)]> of length 0...2147483647 (inclusive)]"
+        },
+        "number": {
+            "value": "10",
+            "default_value": "10",
+            "documentation": "The number of outputs for EQUAL_SPACING and for LOG_SPACING or number of outputs per decade for N_PER_DECADE.",
+            "pattern": "61",
+            "pattern_description": "[Integer range 0...2147483647 (inclusive)]"
+        },
+        "subdivisions": {
+            "value": "0",
+            "default_value": "0",
+            "documentation": "The number of subdivisions to apply to the mesh when building output patches. If 0, the degree is used.",
+            "pattern": "56",
+            "pattern_description": "[Integer range 0...2147483647 (inclusive)]"
+        },
+        "variables": {
+            "value": "",
+            "default_value": "",
+            "documentation": "The list of the fields to output. Must be comma delimited. Additionally, for the output of left-hand side and old fields, they must follow the same delimiters that are used in dependency sets. In other words, something like `set variables = n1, old_1(n1), lhs(n1)`.",
+            "pattern": "63",
+            "pattern_description": "[List of <[Anything]> of length 0...2147483647 (inclusive)]"
+        }
+    },
+    "refinement criterion: 0": {
+        "gradient lower bound": {
+            "alias": "gradient magnitude lower bound",
+            "deprecation_status": "false"
+        },
+        "gradient magnitude lower bound": {
+            "value": "2147483647",
+            "default_value": "2147483647",
+            "documentation": "The magnitude of the gradient above which the mesh should be refined.",
+            "pattern": "23",
+            "pattern_description": "[Double 0...MAX_DOUBLE (inclusive)]"
+        },
+        "type": {
+            "value": "none",
+            "default_value": "none",
+            "documentation": "The type of criterion used to determine if a cell should be refined. The options are none, value, gradient, value_and_gradient.",
+            "pattern": "20",
+            "pattern_description": "[Selection none|value|gradient|value_and_gradient ]"
+        },
+        "value lower bound": {
+            "value": "0.0",
+            "default_value": "0.0",
+            "documentation": "The lower bound for the window determining where the mesh should be refined.",
+            "pattern": "21",
+            "pattern_description": "[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]"
+        },
+        "value upper bound": {
+            "value": "0.0",
+            "default_value": "0.0",
+            "documentation": "The upper bound for the window determining where the mesh should be refined.",
+            "pattern": "22",
+            "pattern_description": "[Double -MAX_DOUBLE...MAX_DOUBLE (inclusive)]"
+        },
+        "variables": {
+            "value": "",
+            "default_value": "",
+            "documentation": "The names of the fields that will use this refinement criterion.",
+            "pattern": "19",
+            "pattern_description": "[List of <[Anything]> of length 0...2147483647 (inclusive)]"
+        }
+    }
+}

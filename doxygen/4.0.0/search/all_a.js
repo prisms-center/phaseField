@@ -1,24 +1,5 @@
 var searchData=
 [
-  ['level_5fdof_5fhandlers_0',['level_dof_handlers',['../classDoFManager.html#abc8dd5aade16935c606fc70413bd632c',1,'DoFManager']]],
-  ['lhs_1',['LHS',['../type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca3655ed459e56fd114a44b382f345de9b',1,'type_enums.h']]],
-  ['lhs_5foperator_2',['lhs_operator',['../classLinearSolver.html#a647034c706ee70586a4554dca2b2c2e9',1,'LinearSolver']]],
-  ['lin_5fparams_3',['lin_params',['../classLinearSolver.html#a3fce5f57903c375eaa685621790a494d',1,'LinearSolver']]],
-  ['lin_5fsolver_4',['lin_solver',['../classLinearSolver.html#a933fe3ec5e22329efc330bb5be2cc6d0',1,'LinearSolver']]],
-  ['linear_5',['Linear',['../type__enums_8h.html#a072e94d49e31cd51e8c341714bf265f9a1a1f3bc55fefa098d9034cc46e2e7a2b',1,'type_enums.h']]],
-  ['linear_5fsolve_5fparameters_6',['linear_solve_parameters',['../classUserInputParameters.html#a53fa02b5add7145a2dc3e02350222e4f',1,'UserInputParameters']]],
-  ['linear_5fsolver_2eh_7',['linear_solver.h',['../linear__solver_8h.html',1,'']]],
-  ['linear_5fsolver_5fcontrol_8',['linear_solver_control',['../classLinearSolver.html#ac9f7aa00bbccab9a806513417a940c28',1,'LinearSolver']]],
-  ['linear_5fsolver_5fparameters_9',['linear_solver_parameters',['../classSolveBlock.html#a03ddf441a7044dab4e5ee7c589d5083c',1,'SolveBlock']]],
-  ['linear_5fsolvers_10',['linear_solvers',['../structLinearSolveParameters.html#a4b44ec09435ecabcb72b8660b25aa55f',1,'LinearSolveParameters']]],
-  ['linearsolveparameters_11',['LinearSolveParameters',['../structLinearSolveParameters.html',1,'']]],
-  ['linearsolver_12',['LinearSolver',['../classLinearSolver.html',1,'LinearSolver&lt; dim, degree, number &gt;'],['../classLinearSolver.html#ae3b77af5f056e684117a2d707189f971',1,'LinearSolver::LinearSolver()']]],
-  ['linearsolverparameters_13',['LinearSolverParameters',['../structLinearSolverParameters.html',1,'']]],
-  ['links_20contact_20info_14',['Helpful Links &amp; Contact Info',['../index.html#links_contact',1,'']]],
-  ['list_15',['Todo List',['../todo.html',1,'']]],
-  ['load_5ffrom_5fcheckpoint_16',['load_from_checkpoint',['../structRestartOutputParameters.html#a9fa866f53899f0e71586d4cefc063134',1,'RestartOutputParameters']]],
-  ['load_5ffrom_5ffile_17',['load_from_file',['../structFieldInputParameters.html#aa141091ae989699f40c9e0bf441dc61b',1,'FieldInputParameters']]],
-  ['location_18',['location',['../structNucleus.html#addb86426dbd7ded2fc1cb9f1e624788f',1,'Nucleus']]],
-  ['location_5fvectorized_19',['location_vectorized',['../structNucleus.html#a65645a28ec2c1d62dbae42e288c1cf6b',1,'Nucleus']]],
-  ['lower_5fbound_20',['lower_bound',['../structRectangularMesh.html#a2d9983893c8ed8dfaf90845075906d39',1,'RectangularMesh']]]
+  ['jxw_5fscalar_0',['jxw_scalar',['../classInvMManager.html#ad50d6ff146b544d80941dfc8354e486b',1,'InvMManager']]],
+  ['jxw_5fvector_1',['jxw_vector',['../classInvMManager.html#a69295d0af9b9bd2a7f17545958b7a831',1,'InvMManager']]]
 ];
