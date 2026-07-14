@@ -6,13 +6,16 @@
 
 # First, we must scrape the parameters to build their documentation
 add_subdirectory(scripts)
-add_custom_target(generate_parameter_docs
-    COMMAND scrape_parameters_exe
-    COMMENT "Generating parameter documentation"
+add_custom_target(
+  generate_parameter_docs
+  COMMAND
+	scrape_parameters_exe ${CMAKE_CURRENT_SOURCE_DIR}/doxygen/parameters/parameters.h.in
+	 ${CMAKE_CURRENT_SOURCE_DIR}/doxygen/parameters/parameters.h
+  COMMENT "Generating parameter documentation"
 )
 add_dependencies(generate_parameter_docs scrape_parameters_exe)
 
-
+# Next, doxygen documentation with the parameter docs dependency
 find_package(Doxygen REQUIRED)
 
 # Path of Doxyfile and its output

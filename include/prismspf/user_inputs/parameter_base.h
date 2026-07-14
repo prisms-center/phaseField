@@ -131,19 +131,14 @@ declare_entry(dealii::ParameterHandler            &parameter_handler,
 
   if (!warnings.empty())
     {
-      _doc += "\n\n@warning " + std::string(warnings);
+      _doc += "\n\n@warning " + std::string(warnings) + "\n@end_warning";
     }
   if (!example.empty())
     {
-      _doc += "\n\n@example\n"
-              "```text\n" +
-              std::string(example) + "\n```\n";
+      _doc += "\n\n@example\n" + std::string(example) + "\n@end_example";
     }
 
-  parameter_handler.declare_entry(_entry,
-                                  std::string(default_value),
-                                  pattern,
-                                  std::string(documentation));
+  parameter_handler.declare_entry(_entry, std::string(default_value), pattern, _doc);
 #if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
   parameter_handler.mark_as_deprecated(_entry, deprecated);
 #endif

@@ -429,8 +429,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
 
   set(
     PRISMS_PF_TARGETS
-    prisms_pf_debug
     prisms_pf
+    prisms_pf_debug
   )
 else()
   add_library(prisms_pf)
