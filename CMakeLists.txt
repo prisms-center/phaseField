@@ -429,8 +429,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
 
   set(
     PRISMS_PF_TARGETS
-    prisms_pf_debug
     prisms_pf
+    prisms_pf_debug
   )
 else()
   add_library(prisms_pf)
@@ -553,37 +553,11 @@ endif()
 # Documentation
 # =========================================================
 
+print_subsection("Configuring PRISMS-PF documentation")
+# TODO: Add status message here
+
 if(PRISMS_PF_DOCS)
-  print_subsection("Configuring PRISMS-PF documentation")
-
-  find_package(Doxygen REQUIRED)
-
-  # Path of Doxyfile and its output
-  set(DOXYGEN_INPUT ${CMAKE_SOURCE_DIR}/doc/doxygen/Doxyfile)
-  set(DOXYGEN_OUTPUT ${CMAKE_BINARY_DIR}/doc/doxygen/Doxyfile.out)
-
-  # The directory where the documentation will be generated
-  set(DOXYGEN_HTML_OUTPUT "${PRISMS_PF_VERSION}")
-  set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/doc)
-
-  # Copy input to output
-  configure_file(${DOXYGEN_INPUT} ${DOXYGEN_OUTPUT} @ONLY)
-
-  # Add target to generate documentation
-  doxygen_add_docs(
-    doc
-    COMMENT "Generating Doxygen documentation"
-    CONFIG_FILE ${DOXYGEN_OUTPUT}
-    ALL
-  )
-
-  message(
-    STATUS
-    "Doxygen documentation will be generated using:\n"
-    "     ${DOXYGEN_INPUT}\n"
-    "   and output to:\n"
-    "     ${DOXYGEN_OUTPUT_DIRECTORY}/${DOXYGEN_HTML_OUTPUT}\n"
-  )
+  add_subdirectory(doc)
 endif()
 
 # =========================================================

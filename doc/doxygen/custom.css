@@ -6,6 +6,53 @@ html.dark-mode {
     /* define dark-mode variable overrides here if you DO use doxygen-awesome-darkmode-toggle.js */
 }
 
+.parameter-badge {
+    display: inline-block;
+    background-color: #eadcff;
+    color: #5b21b6;
+    border: 1px solid #c4a1ff;
+    border-radius: 10px;
+    padding: 2px 8px;
+    margin: 2px;
+    font-family: monospace;
+    font-size: 90%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.parameter-badge:hover {
+    background-color: #d8bfff;
+}
+
+.parameter-badge.copied {
+    background-color: #7c3aed;
+    color: white;
+}
+
+.alias-badge {
+    display: inline-block;
+    background-color: #d8f5d0;
+    color: #176b17;
+    border: 1px solid #9bd18b;
+    border-radius: 10px;
+    padding: 2px 8px;
+    margin: 2px;
+    font-family: monospace;
+    font-size: 80%;
+    cursor: pointer;
+    user-select: none;
+}
+
+
+.alias-badge:hover {
+    background-color: #b8e6a8;
+}
+
+.alias-badge.copied {
+    background-color: #4caf50;
+    color: white;
+}
+
 #projectalign {
     display: flex;
     justify-content: space-between;
