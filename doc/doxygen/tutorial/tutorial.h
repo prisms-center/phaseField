@@ -121,3 +121,54 @@ problem.run();
 \endcode
 
 */
+
+/** \page dev_docs Developers
+
+There's a lot of institutional knowledge that comes along with being a developer of
+PRISMS-PF. Here, we hope to cover all the bits and pieces that you'll need to adhere to
+our developer standards.
+
+\subsection Documentation
+
+There are a few components of our documentation:
+- Doxygen-style inline code documentation (core library and applications)
+- Doxygen-style manual documentation
+- GitHub pages website
+
+Both the inline code documentation and manual documentation are bundled together in what
+we call the PRISMS-PF User Manual. As a developer (and user) this is what you'll be using
+and changing the most. To visualize the User Manual locally you'll need Doxygen and
+Graphviz. On Ubuntu these can be installed with
+@code
+sudo apt-get install doxygen graphviz
+@endcode
+Additionally, we use Doxygen Awesome as a submodule to make everything look pretty. The
+submodules can be downloaded with
+@code
+git submodule update --init --recursive
+@endcode
+@warning If you don't have Doxygen Awesome the website will not render correctly.
+
+With all the prerequisites, we just need to build the documentation. Newer versions of
+CMake can use the `CMakePresets.json`
+@code
+cmake --workflow --preset docs
+@endcode
+or without the preset
+@code
+cmake -DPRISMS_PF_DOCS=ON -DCMAKE_BUILD_TYPE=Debug -B build
+cmake --build build/docs --target doc -j <nprocs>
+@endcode
+
+Once the build is complete you can visualize the local documentation by navigating to the
+doxygen folder in the build directory and starting a python HTTP server.
+@code
+cd build/docs/doc/4.0.0
+python3 -m http.server 8000
+@endcode
+You can open the `http://localhost:8000/` on whatever web browser you use.
+
+@note Some features of the User Manual don't render locally (e.g., the version selector).
+
+
+ */

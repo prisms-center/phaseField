@@ -11,6 +11,7 @@
     </tab>
     <tab  type="usergroup" url="\ref tutorial" title="Tutorial">
       <tab type="user" url="structure.html" title="Structure"/>
+      <tab type="user" url="dev_docs.html" title="Developers"/>
     </tab>
     <tab type="user" url="\ref parameters" title="Parameters"/>
     <tab type="user" url="applications.html" title="Applications"/>
