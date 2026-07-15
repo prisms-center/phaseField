@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"namespaceSymmetry.html#ad4b8e9c4ba8384250503c0866419c732":[6,0,6,2],
 "namespaceTypes.html":[6,0,7],
 "namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186":[6,0,7,0],
 "namespacemembers.html":[6,1,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "structNewDependencyExtents.html#a31e82a4a18f0c1ace6f2e14ec9aeddbf":[8,0,31,0],
 "structNewDependencyExtents.html#afc3e613a69246fcfe9a6914aa7893309":[8,0,31,1],
 "structNonlinearSolveParameters.html":[8,0,33],
-"structNonlinearSolveParameters.html#a5e2e24d997fa78364071e61460a759be":[8,0,33,0],
-"structNonlinearSolveParameters.html#a6da6e47991b7659b0c35345555550719":[8,0,33,2]
+"structNonlinearSolveParameters.html#a5e2e24d997fa78364071e61460a759be":[8,0,33,0]
 };

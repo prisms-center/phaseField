@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=11" />
   <meta name="generator" content="Doxygen 1.13.2" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PRISMS-PF Manual: doxygen/tutorial/tutorial.h Source File</title>
+  <title>PRISMS-PF Manual: Developers</title>
   <link href="tabs.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="jquery.js"></script>
   <script type="text/javascript" src="dynsections.js"></script>
@@ -95,7 +95,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('tutorial_8h_source.html',''); initResizable(true); });
+$(function(){initNavTree('dev_docs.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -120,19 +120,35 @@ $(function(){initNavTree('tutorial_8h_source.html',''); initResizable(true); });
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">tutorial.h</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">Developers</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="tutorial_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span></div>
-</div><!-- fragment --></div><!-- contents -->
+<div class="textblock"><p>There's a lot of institutional knowledge that comes along with being a developer of PRISMS-PF. Here, we hope to cover all the bits and pieces that you'll need to adhere to our developer standards.</p>
+<h2><a class="anchor" id="Documentation"></a>
+Documentation</h2>
+<p>There are a few components of our documentation:</p><ul>
+<li>Doxygen-style inline code documentation (core library and applications)</li>
+<li>Doxygen-style manual documentation</li>
+<li>GitHub pages website</li>
+</ul>
+<p>Both the inline code documentation and manual documentation are bundled together in what we call the PRISMS-PF User Manual. As a developer (and user) this is what you'll be using and changing the most. To visualize the User Manual locally you'll need Doxygen and Graphviz. On Ubuntu these can be installed with </p><div class="fragment"><div class="line">sudo apt-<a class="code hl_function" href="parameter__base_8h.html#ab39343088471499db91c9d5c24fd6c23">get</a> install doxygen graphviz</div>
+<div class="ttc" id="aparameter__base_8h_html_ab39343088471499db91c9d5c24fd6c23"><div class="ttname"><a href="parameter__base_8h.html#ab39343088471499db91c9d5c24fd6c23">get</a></div><div class="ttdeci">static std::string get(const dealii::ParameterHandler &amp;parameter_handler, const std::string_view &amp;entry)</div><div class="ttdef"><b>Definition</b> parameter_base.h:149</div></div>
+</div><!-- fragment --><p> Additionally, we use Doxygen Awesome as a submodule to make everything look pretty. The submodules can be downloaded with </p><div class="fragment"><div class="line">git submodule update --init --recursive</div>
+</div><!-- fragment --> <dl class="section warning"><dt>Warning</dt><dd>If you don't have Doxygen Awesome the website will not render correctly.</dd></dl>
+<p>With all the prerequisites, we just need to build the documentation. Newer versions of CMake can use the <code>CMakePresets.json</code> </p><div class="fragment"><div class="line">cmake --workflow --preset docs</div>
+</div><!-- fragment --><p> or without the preset </p><div class="fragment"><div class="line">cmake -DPRISMS_PF_DOCS=ON -DCMAKE_BUILD_TYPE=Debug -B build</div>
+<div class="line">cmake --build build/docs --target doc -j &lt;nprocs&gt;</div>
+</div><!-- fragment --><p>Once the build is complete you can visualize the local documentation by navigating to the doxygen folder in the build directory and starting a python HTTP server. </p><div class="fragment"><div class="line">cd build/docs/doc/4.0.0</div>
+<div class="line">python3 -m http.server 8000</div>
+</div><!-- fragment --><p> You can open the <code><a href="http://localhost:8000/">http://localhost:8000/</a></code> on whatever web browser you use.</p>
+<dl class="section note"><dt>Note</dt><dd>Some features of the User Manual don't render locally (e.g., the version selector). </dd></dl>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_04f2ecc425faf0d475a3caf484e551f3.html">doxygen</a></li><li class="navelem"><a class="el" href="dir_7f921e14d817774bc32ca4338fe11225.html">tutorial</a></li><li class="navelem"><a class="el" href="tutorial_8h.html">tutorial.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

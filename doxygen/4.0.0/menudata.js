@@ -28,7 +28,8 @@ var menudata={children:[
 {text:"Docker",url:"docker.html"},
 {text:"Source",url:"source.html"}]},
 {text:"Tutorial",url:"tutorial.html",children:[
-{text:"Structure",url:"structure.html"}]},
+{text:"Structure",url:"structure.html"},
+{text:"Developers",url:"dev_docs.html"}]},
 {text:"Parameters",url:"parameters.html"},
 {text:"Applications",url:"applications.html"},
 {text:"Contact",url:"contact.html"},

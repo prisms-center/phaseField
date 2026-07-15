@@ -29,6 +29,7 @@ var NAVTREEINDEX3 =
 "dependency__extents_8h.html#a8f40d3fcbf314f9d38b8058131168322":[9,0,1,0,0,4,3],
 "dependency__extents_8h.html#a9d31823aacb9340967eb0d036454eb89":[9,0,1,0,0,4,2],
 "dependency__extents_8h_source.html":[9,0,1,0,0,4],
+"dev_docs.html":[2,1],
 "dir_04f2ecc425faf0d475a3caf484e551f3.html":[9,0,0],
 "dir_19373f467389307dc54ab8a6e9e19559.html":[9,0,2,1],
 "dir_1b89f3ef2cea2c4e7a7e310b8e37f1bd.html":[9,0,1,0,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "namespaceSymmetry.html#a8695ff296b1ad8ab762fb62f3f72098a":[6,0,6,0],
 "namespaceSymmetry.html#a97f4ed2e6e0d2ca2631ca98d1b3050a3":[6,0,6,3],
 "namespaceSymmetry.html#aa6048cd1b64132621ce379f1cca79e48":[6,0,6,4],
-"namespaceSymmetry.html#ab69588207ec31b4f24b266cd4c9be1fe":[6,0,6,1],
-"namespaceSymmetry.html#ad4b8e9c4ba8384250503c0866419c732":[6,0,6,2]
+"namespaceSymmetry.html#ab69588207ec31b4f24b266cd4c9be1fe":[6,0,6,1]
 };
