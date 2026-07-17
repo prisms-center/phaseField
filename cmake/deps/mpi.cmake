@@ -2,7 +2,6 @@
 # Find MPI and run some checks
 #
 
-# TODO: We should see if there's a minimum version we need to specify
 find_package(MPI REQUIRED COMPONENTS CXX)
 
 if(NOT MPI_CXX_FOUND)
@@ -30,3 +29,7 @@ if(NOT MPI_CXX_VERSION)
 
   set(MPI_CXX_VERSION "${_mpi_major}.${_mpi_minor}")
 endif()
+
+# Add MPI to the Release and Debug lists
+prisms_pf_add_dependency_target(MPI::MPI_CXX DEBUG PUBLIC)
+prisms_pf_add_dependency_target(MPI::MPI_CXX RELEASE PUBLIC)

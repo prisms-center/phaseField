@@ -83,56 +83,23 @@ if(PRISMS_PF_WITH_VTK AND PRISMS_PF_FORCE_BUNDLED_VTK)
   list(APPEND PRISMS_PF_VENDORED_PACKAGES VTK)
 endif()
 if(PRISMS_PF_WITH_CALIPER AND PRISMS_PF_FORCE_BUNDLED_CALIPER)
-  list(APPEND PRISMS_PF_VENDORED_PACKAGES Caliper)
+  list(APPEND PRISMS_PF_VENDORED_PACKAGES caliper)
 endif()
 
-# Once we have the vendored packages, we can define packages that belong
-# to the release and debug targets, if they exist. We follow the same
-# naming convention as above. PRISMS_PF_PACKAGES is shared between
-# the release and debug lists. The exception to this is deal.II since
-# they also have a DebugRelease target. Vendored packages that follow
-# the norm must be built with release and debug configurations in
-# DebugRelease
-set(PRISMS_PF_PACKAGES dealii)
-if(PRISMS_PF_WITH_VTK)
-  list(APPEND PRISMS_PF_PACKAGES VTK)
-endif()
-if(PRISMS_PF_WITH_CALIPER)
-  list(APPEND PRISMS_PF_PACKAGES Caliper)
-endif()
-set(PRISMS_PF_PACKAGES_RELEASE "")
-set(PRISMS_PF_PACKAGES_DEBUG "")
-foreach(pkg IN LISTS PRISMS_PF_VENDORED_PACKAGES)
-  list(APPEND PRISMS_PF_PACKAGES_RELEASE ${pkg})
-  list(APPEND PRISMS_PF_PACKAGES_DEBUG "${pkg}_debug")
-endforeach()
-list(REMOVE_ITEM PRISMS_PF_PACKAGES ${PRISMS_PF_PACKAGES_RELEASE})
+# Define some other variables that we'll fill out later
+set(PRISMS_PF_PUBLIC_PACKAGES_RELEASE "")
+set(PRISMS_PF_PUBLIC_PACKAGES_DEBUG "")
+set(PRISMS_PF_INTERFACE_PACKAGES_RELEASE "")
+set(PRISMS_PF_INTERFACE_PACKAGES_DEBUG "")
+set(PRISMS_PF_PRIVATE_PACKAGES_RELEASE "")
+set(PRISMS_PF_PRIVATE_PACKAGES_DEBUG "")
 
 # TODO: Handle these
-set(PRISMS_PF_CXX_FLAGS "")
-set(PRISMS_PF_CXX_FLAGS_DEBUG "")
-set(PRISMS_PF_CXX_FLAGS_RELEASE "")
-
-set(PRISMS_PF_LINKER_FLAGS "")
-set(PRISMS_PF_LINKER_FLAGS_DEBUG "")
-set(PRISMS_PF_LINKER_FLAGS_RELEASE "")
+# set(PRISMS_PF_CXX_FLAGS "")
+# set(PRISMS_PF_CXX_FLAGS_DEBUG "")
+# set(PRISMS_PF_CXX_FLAGS_RELEASE "")
+# set(PRISMS_PF_LINKER_FLAGS "")
+# set(PRISMS_PF_LINKER_FLAGS_DEBUG "")
+# set(PRISMS_PF_LINKER_FLAGS_RELEASE "")
 
 set(PRISMS_PF_LOG_SUMMARY "") # for summary.log
-
-# TODO: Move this?
-# Write information to log
-file(REMOVE ${CMAKE_BINARY_DIR}/summary.log)
-file(REMOVE ${CMAKE_BINARY_DIR}/detailed.log)
-
-format_subsection(_tmp "prisms-pf cmake summary")
-print_to_both("${_tmp}")
-format_variable(_tmp PRISMS_PF_TARGETS)
-print_to_both("${_tmp}")
-format_variable(_tmp PRISMS_PF_VENDORED_PACKAGES)
-print_to_both("${_tmp}")
-format_variable(_tmp PRISMS_PF_PACKAGES)
-print_to_both("${_tmp}")
-format_variable(_tmp PRISMS_PF_PACKAGES_RELEASE)
-print_to_both("${_tmp}")
-format_variable(_tmp PRISMS_PF_PACKAGES_DEBUG)
-print_to_both("${_tmp}")

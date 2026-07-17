@@ -4,29 +4,27 @@
 # CMake build types or deal.II's DebugRelease
 set(PRISMS_PF_BUILD_TYPE "@CMAKE_BUILD_TYPE@")
 
+# PRISMS-PF Vendored packages. This lets us know where to search when
+# finding dependencies
+set(PRISMS_PF_VENDORED_PACKAGES "@PRISMS_PF_VENDORED_PACKAGES@")
+
 # Dependencies
 include(CMakeFindDependencyMacro)
 
-# Path for other vendored dependencies and put them in the front
-# of the CMake prefix path
+# Path for other vendored dependencies
 get_filename_component(_pkg_prefix
-    "${CMAKE_CURRENT_LIST_DIR}/../../.."
+    "${CMAKE_CURRENT_LIST_DIR}/../../../vendored"
     ABSOLUTE)
 
 # libassert
-# TODO: Unify behavior of libassert between "DebugRelease" and "Debug"/"Release"
-if(PRISMS_PF_BUILD_TYPE STREQUAL "DebugRelease")
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    list(PREPEND CMAKE_PREFIX_PATH "${_pkg_prefix}/vendored/libassert-debug")
-    find_dependency(libassert)
-  else()
-    list(PREPEND CMAKE_PREFIX_PATH "${_pkg_prefix}/vendored/libassert")
-    find_dependency(libassert)
-  endif()
-else()
-  list(PREPEND CMAKE_PREFIX_PATH "${_pkg_prefix}")
-  find_dependency(libassert)
+if(libassert IN_LIST PRISMS_PF_VENDORED_PACKAGES)
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug" AND PRISMS_PF_BUILD_TYPE STREQUAL "DebugRelease")
+        list(PREPEND CMAKE_PREFIX_PATH "${_pkg_prefix}/libassert_debug")
+    else()
+        list(PREPEND CMAKE_PREFIX_PATH "${_pkg_prefix}/libassert")
+    endif()
 endif()
+find_dependency(libassert)
 
 # MPI
 find_dependency(MPI COMPONENTS CXX)

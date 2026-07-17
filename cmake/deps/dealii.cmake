@@ -70,3 +70,31 @@ if(NOT DEAL_II_WITH_HDF5 AND PRISMS_PF_WITH_HDF5)
     "Rebuild deal.II with HDF5 enabled or disable PRISMS_PF_WITH_HDF5."
   )
 endif()
+
+# Add deal.II to the Release and Debug lists
+# Again we run into some more of the uniqueness of deal.II with the way they set
+# up build types. Their default build type is `DebugRelease`, which builds both
+# Debug and Release targets. As such, our project much choose what deal.II target
+# to link to when the user compiles with Debug and Release.
+#
+# When deal.II is built with only Debug or only Release, we link against for all
+# PRISMS-PF builds. For example, if deal.II is built in Release, PRISMS-PF in
+# Debug will only contain assertions and debugging for our library. In most cases,
+# this is sufficient to catch most issues.
+#
+# When deal.II is build with DebugRelease, we link to the target that corresponds
+# to the PRISMS-PF build type. This is recommended for developers.
+
+if(DEAL_II_BUILD_TYPE STREQUAL "DebugRelease")
+  if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    prisms_pf_add_dependency_target(dealii::dealii_debug DEBUG PUBLIC)
+  elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugRelease")
+    prisms_pf_add_dependency_target(dealii::dealii_debug DEBUG PUBLIC)
+    prisms_pf_add_dependency_target(dealii::dealii_release RELEASE PUBLIC)
+  else()
+    prisms_pf_add_dependency_target(dealii::dealii_release RELEASE PUBLIC)
+  endif()
+else()
+  prisms_pf_add_dependency_target(dealii::dealii DEBUG PUBLIC)
+  prisms_pf_add_dependency_target(dealii::dealii RELEASE PUBLIC)
+endif()

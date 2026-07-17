@@ -17,9 +17,10 @@
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_constants.h>
 
+#include <prismspf/utilities/assert.h>
+
 #include <prismspf/config.h>
 
-#include <libassert/assert.hpp>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -44,8 +45,8 @@ struct UserInputParameters : public ParameterBase
     // before we declare the parameters.
     user_constants.file_name = file_name;
 
-    DEBUG_ASSERT(1 == 2, "ebug assert");
-    ASSERT(1 == 2, "assert");
+    DEBUG_ASSERT(1 == 2, "Debug assert");
+    ASSERT(1 == 4, "assert");
 
     dealii::ParameterHandler parameter_handler;
 
