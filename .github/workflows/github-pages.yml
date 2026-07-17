@@ -14,7 +14,7 @@ jobs:
     if: github.repository == 'prisms-center/phaseField' # Don't run on forks
     runs-on: ubuntu-latest
     container:
-      image: landinjm/pagoma-dependencies:alpine-minimal # TODO: Update
+      image: landinjm/prisms-pf-dependencies:alpine-minimal
       options: --user root
     permissions:
       # Write perms to we can copy-paste doxygen docs

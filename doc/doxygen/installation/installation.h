@@ -67,6 +67,10 @@ website](https://docs.docker.com/get-started/get-docker/).
 After you have installed Docker, find a working directory where we can put your files.
 This is where we will clone PRISMS-PF so you can interact with the files and applications
 there.
+
+@note In the Docker image, PRISMS-PF has been installed system-wide. You don't have clone
+PRISMS-PF again if you already have your own applications.
+
 ```
 mkdir ~/prisms_pf_docker
 git clone https://github.com/prisms-center/phaseField.git
@@ -74,21 +78,13 @@ git clone https://github.com/prisms-center/phaseField.git
 
 Next, we will pull the docker image with
 ```
-docker pull prismspf/prismspf:latest
+docker pull landinjm/prisms-pf:alpine-master-minimal
 ```
 
 Finally, we will launch an interactive container with
 ```
-docker run -ti -v
-~/prisms_pf_docker/phaseField/applications:/home/dealii/phaseField/applications
-prismspf/prismspf:latest
-```
-This will link your local applications directory (the one in `prisms_workspace`) to the
-one in the Docker image. If you plan to modify the core library, you should link one
-directory higher to preserve your changes. In other words,
-```
-docker run -ti -v
-~/prisms_pf_docker/phaseField:/home/dealii/phaseField prismspf/prismspf:latest
+docker run -it --user root -v ~/prisms_pf_docker/phaseField:/home/prisms-pf/phaseField
+landinjm/prisms-pf:alpine-master-minimal
 ```
 You can then run the applications in the container as you would normally. See the \ref
 tutorial for more information.
