@@ -40,7 +40,11 @@ option(
   "Whether the user wants to compile PRISMS-PF with VTK, or not"
   OFF
 )
-option(PRISMS_PF_FORCE_BUNDLED_VTK "Whether the user wants to force the bundling on VTK, or not" OFF)
+option(
+  PRISMS_PF_FORCE_BUNDLED_VTK
+  "Whether the user wants to force the bundling on VTK, or not"
+  OFF
+)
 
 option(
   PRISMS_PF_WITH_HDF5
@@ -53,8 +57,11 @@ option(
   "Whether the user wants to compile PRISMS-PF with the profiling code Caliper, or not."
   OFF
 )
-option(PRISMS_PF_FORCE_BUNDLED_CALIPER "Whether the user wants to force the bundling on Caliper, or not" OFF)
-
+option(
+  PRISMS_PF_FORCE_BUNDLED_CALIPER
+  "Whether the user wants to force the bundling on Caliper, or not"
+  OFF
+)
 
 # With all the options out of the way we define some global variables here
 # that we'll use later. These really arise from the fact that we have to
@@ -64,7 +71,7 @@ option(PRISMS_PF_FORCE_BUNDLED_CALIPER "Whether the user wants to force the bund
 # First define targets
 set(PRISMS_PF_TARGETS prisms_pf)
 if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
-	list(APPEND PRISMS_PF_TARGETS prisms_pf_debug)
+  list(APPEND PRISMS_PF_TARGETS prisms_pf_debug)
 endif()
 
 # Next define vendored packages
@@ -73,10 +80,10 @@ if(PRISMS_PF_UNIT_TESTS OR PRISMS_PF_REGRESSION_TESTS OR PRISMS_PF_PERFORMANCE_T
   list(APPEND PRISMS_PF_VENDORED_PACKAGES Catch2)
 endif()
 if(PRISMS_PF_WITH_VTK AND PRISMS_PF_FORCE_BUNDLED_VTK)
-	list(APPEND PRISMS_PF_VENDORED_PACKAGES VTK)
+  list(APPEND PRISMS_PF_VENDORED_PACKAGES VTK)
 endif()
 if(PRISMS_PF_WITH_CALIPER AND PRISMS_PF_FORCE_BUNDLED_CALIPER)
-	list(APPEND PRISMS_PF_VENDORED_PACKAGES Caliper)
+  list(APPEND PRISMS_PF_VENDORED_PACKAGES Caliper)
 endif()
 
 # Once we have the vendored packages, we can define packages that belong
@@ -84,19 +91,19 @@ endif()
 # naming convention as above. PRISMS_PF_PACKAGES is shared between
 # the release and debug lists. The exception to this is deal.II since
 # they also have a DebugRelease target. Vendored packages that follow
-# the norm must be built with release and debug configurations in 
+# the norm must be built with release and debug configurations in
 # DebugRelease
 set(PRISMS_PF_PACKAGES dealii)
 if(PRISMS_PF_WITH_VTK)
   list(APPEND PRISMS_PF_PACKAGES VTK)
 endif()
 if(PRISMS_PF_WITH_CALIPER)
-	list(APPEND PRISMS_PF_PACKAGES Caliper)
+  list(APPEND PRISMS_PF_PACKAGES Caliper)
 endif()
 set(PRISMS_PF_PACKAGES_RELEASE "")
 set(PRISMS_PF_PACKAGES_DEBUG "")
 foreach(pkg IN LISTS PRISMS_PF_VENDORED_PACKAGES)
-	list(APPEND PRISMS_PF_PACKAGES_RELEASE ${pkg})
+  list(APPEND PRISMS_PF_PACKAGES_RELEASE ${pkg})
   list(APPEND PRISMS_PF_PACKAGES_DEBUG "${pkg}_debug")
 endforeach()
 list(REMOVE_ITEM PRISMS_PF_PACKAGES ${PRISMS_PF_PACKAGES_RELEASE})
