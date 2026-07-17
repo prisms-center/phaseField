@@ -28,7 +28,7 @@ jobs:
     runs-on: ${{ matrix.runs-on }}
     timeout-minutes: 120
     container:
-      image: landinjm/pagoma-dependencies:alpine-minimal
+      image: landinjm/prisms-pf-dependencies:alpine-minimal
       options: --user root
     steps:
       - uses: laverdet/alpine-arm64@v1
