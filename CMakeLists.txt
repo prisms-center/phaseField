@@ -25,6 +25,24 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "DebugRelease" CACHE STRING "Build type" FORCE)
 endif()
 
+# Add DebugRelease, Debug, and Release to build types for
+# interactive CMake
+get_property(_types CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS)
+list(
+  APPEND _types
+  DebugRelease
+  Debug
+  Release
+)
+list(REMOVE_DUPLICATES _types)
+set_property(
+  CACHE
+    CMAKE_BUILD_TYPE
+  PROPERTY
+    STRINGS
+      "${_types}"
+)
+
 # Project declaration, language, and version
 project(prisms_pf LANGUAGES CXX VERSION 4.0.0)
 
@@ -46,105 +64,12 @@ include(prisms_pf_cmake_functions)
 # =========================================================
 
 set(PRISMS_PF_VERSION ${PROJECT_VERSION})
-version_decomposition(${PRISMS_PF_VERSION})
 
 print_subsection("Configuring PRISMS-PF v${PRISMS_PF_VERSION}")
 
-prisms_pf_git_version()
+include(prisms_pf_configuration)
 
-print_variables(
-  ""
-  PRISMS_PF_GIT_BRANCH
-  PRISMS_PF_GIT_TAG
-  PRISMS_PF_GIT_REVISION
-  PRISMS_PF_GIT_SHORTREV
-  PRISMS_PF_GIT_TIMESTAMP
-  ""
-)
-
-# TODO: Refactor this somewhere else
-# Configuration options
-option(PRISMS_PF_AUTODETECTION "Autodetection of PRISMS-PF dependencies." ON)
-
-option(PRISMS_PF_UNIT_TESTS "Whether to build the unit tests or not." OFF)
-option(PRISMS_PF_REGRESSION_TESTS "Whether to build the regression tests or not." OFF)
-option(PRISMS_PF_PERFORMANCE_TESTS "Whether to build the performance tests or not." OFF)
-option(PRISMS_PF_EXAMPLES "Whether to build examples or not." OFF)
-option(PRISMS_PF_DOCS "Whether to build documentation or not." OFF)
-option(PRISMS_PF_CLANG_TIDY "Whether to run clang-tidy during the build stage." OFF)
-
-# NOTE: This relies on the fact that deal.II is also compiled with 64-bit indices
-option(PRISMS_PF_64BIT_INDICES "Whether to use 64-bit indices for large simulations" OFF)
-# NOTE: This can only go higher than 6 if deal.II is compiled with >6 for the element degree.
-# TODO: Actually implement a check for deal.II having 6+ element degree
-option(PRISMS_PF_ADDITIONAL_DEGREES "Whether to compile with element degrees of 3+." OFF)
-# NOTE: When on deal.II will try to use the max number of threads with respect to the number
-# of MPI processes.
-option(PRISMS_PF_THREADS "Whether to use threading." ON)
-option(PRISMS_PF_GPU "Whether to use GPU backends" OFF)
-if(PRISMS_PF_GPU)
-  message(WARNING "GPU backends are still under development")
-endif()
-
-option(
-  PRISMS_PF_WITH_VTK
-  "Whether the user wants to compile PRISMS-PF with vtk, or not"
-  OFF
-)
-option(
-  PRISMS_PF_WITH_HDF5
-  "Whether the user wants to compile PRISMS-PF with HDF5, or not"
-  OFF
-)
-option(
-  PRISMS_PF_WITH_CALIPER
-  "Whether the user wants to compile PRISMS-PF with the profiling code Caliper, or not."
-  OFF
-)
-
-print_variables(
-  ""
-  PRISMS_PF_AUTODETECTION
-  ""
-  PRISMS_PF_UNIT_TESTS
-  PRISMS_PF_REGRESSION_TESTS
-  PRISMS_PF_PERFORMANCE_TESTS
-  PRISMS_PF_EXAMPLES
-  ""
-  PRISMS_PF_64BIT_INDICES
-  PRISMS_PF_ADDITIONAL_DEGREES
-  PRISMS_PF_THREADS
-  ""
-  PRISMS_PF_WITH_VTK
-  PRISMS_PF_WITH_CALIPER
-  ""
-)
-
-if(PRISMS_PF_CLANG_TIDY)
-  # NOTE: I've tested clang-tidy-18 and found that it fails. clang-tidy-20 works.
-  find_program(
-    CLANG_TIDY_TOOL
-    NAMES
-      clang-tidy
-      clang-tidy-20
-      clang-tidy-19
-  )
-  execute_process(
-    COMMAND
-      ${CLANG_TIDY_TOOL} --version
-    OUTPUT_VARIABLE CLANG_TIDY_TOOL_VERSION
-    ERROR_VARIABLE CLANG_TIDY_TOOL_VERSION
-  )
-  string(
-    REGEX MATCH
-    "[0-9]+(\\.[0-9]+)+"
-    CLANG_TIDY_TOOL_VERSION
-    "${CLANG_TIDY_TOOL_VERSION}"
-  )
-  message(STATUS "clang-tidy ${CLANG_TIDY_TOOL_VERSION} (${CLANG_TIDY_TOOL})")
-  # NOTE: To avoid linting on the vendored source files we set CXX_CLANG_TIDY
-  # as a property of our targets
-endif()
+message(STATUS "All good!")
 
 # =========================================================
 # Find dependencies
@@ -171,170 +96,27 @@ if(PRISMS_PF_UNIT_TESTS)
   )
 endif()
 
-# TODO: Refactor this
-
 # Find MPI
-# TODO: We should see if there's a minimum version we need to specify
-find_package(MPI REQUIRED COMPONENTS CXX)
+include(deps/mpi)
 
-if(NOT MPI_CXX_FOUND)
-  message(
-    FATAL_ERROR
-    "MPI CXX component not found. Please make sure your MPI installation includes C++ support."
-  )
-endif()
-if(NOT MPI_CXX_COMPILER)
-  message(
-    FATAL_ERROR
-    "MPI CXX compiler wrapper not found. Please make sure you have `mpicxx`"
-  )
-endif()
-
-# Find the MPI CXX version if not already populated
-if(NOT MPI_CXX_VERSION)
-  file(READ "${MPI_CXX_INCLUDE_DIRS}/mpi.h" _mpi_header_content)
-
-  string(REGEX MATCH "#define MPI_MAJOR_VERSION ([0-9]+)" _ "${_mpi_header_content}")
-  set(_mpi_major ${CMAKE_MATCH_1})
-
-  string(REGEX MATCH "#define MPI_MINOR_VERSION ([0-9]+)" _ "${_mpi_header_content}")
-  set(_mpi_major ${CMAKE_MATCH_1})
-
-  set(MPI_CXX_VERSION "${_mpi_major}.${_mpi_minor}")
-endif()
-
-# TODO: Refactor this
-
-# Once we've found MPI, we need to find deal.II. Since deal.II likes to do things
-# a little differently, provide some directory hints.
-find_package(
-  deal.II
-  9.6.0
-  REQUIRED
-  HINTS
-    ${DEAL_II_DIR}
-    $ENV{DEAL_II_DIR}
-)
-
-# Print some information about deal.II configuration
-print_variables(
-  ""
-  DEAL_II_VERSION
-  DEAL_II_BUILD_TYPE
-  DEAL_II_CXX_COMPILER
-  DEAL_II_C_COMPILER
-  ""
-  DEAL_II_WITH_THREADS
-  DEAL_II_WITH_64BIT_INDICES
-  DEAL_II_WITH_BOOST
-  DEAL_II_BOOST_VERSION
-  DEAL_II_WITH_KOKKOS
-  DEAL_II_KOKKOS_VERSION
-  DEAL_II_FEATURE_KOKKOS_BUNDLED_CONFIGURED
-  DEAL_II_WITH_LAPACK
-  DEAL_II_LAPACK_WITH_MKL
-  DEAL_II_WITH_MPI
-  DEAL_II_MPI_VERSION
-  DEAL_II_WITH_P4EST
-  DEAL_II_P4EST_VERSION
-  DEAL_II_P4EST_WITH_VTK_BINARY
-  DEAL_II_WITH_TASKFLOW
-  DEAL_II_TASKFLOW_VERSION
-  DEAL_II_FEATURE_TASKFLOW_BUNDLED_CONFIGURED
-  DEAL_II_WITH_TBB
-  DEAL_II_WITH_VTK
-  DEAL_II_WITH_ZLIB
-  DEAL_II_ZLIB_VERSION
-  ""
-  DEAL_II_CXX_FLAGS
-  DEAL_II_CXX_FLAGS_DEBUG
-  DEAL_II_CXX_FLAGS_RELEASE
-  ""
-  DEAL_II_WARNING_FLAGS
-  ""
-  DEAL_II_LINKER_FLAGS
-  DEAL_II_LINKER_FLAGS_DEBUG
-  DEAL_II_LINKER_FLAGS_RELEASE
-  ""
-)
-
-# TODO: Don't rely on deal.II do stuff ourselves
-
-function(strip_dealii_flags input output)
-  string(REGEX REPLACE "-O[0-9s]|-std=[^ ]+" "" stripped "${input}")
-  string(STRIP "${stripped}" stripped)
-  set(${output} "${stripped}" PARENT_SCOPE)
-endfunction()
-
-strip_dealii_flags("${DEAL_II_CXX_FLAGS}" DEAL_II_CXX_FLAGS)
-strip_dealii_flags("${DEAL_II_CXX_FLAGS_DEBUG}" DEAL_II_CXX_FLAGS_DEBUG)
-strip_dealii_flags("${DEAL_II_CXX_FLAGS_RELEASE}" DEAL_II_CXX_FLAGS_RELEASE)
-
-# TODO: Fix this so it prints with  meaningful variable names
-print_variables(
-  DEAL_II_CXX_FLAGS
-  DEAL_II_CXX_FLAGS_DEBUG
-  DEAL_II_CXX_FLAGS_RELEASE
-  CMAKE_CXX_FLAGS
-  CMAKE_CXX_FLAGS_DEBUG
-  CMAKE_CXX_FLAGS_RELEASE
-)
-
-# Check the deal.II was built with the right dependencies
-if(NOT DEAL_II_WITH_MPI)
-  message(FATAL_ERROR "deal.II was not built with MPI support!")
-endif()
-if(NOT DEAL_II_WITH_LAPACK)
-  message(FATAL_ERROR "deal.II was not built with LAPACK support!")
-endif()
-if(NOT DEAL_II_WITH_ZLIB)
-  message(FATAL_ERROR "deal.II was not built with zlib support!")
-endif()
-if(NOT DEAL_II_WITH_P4EST)
-  message(FATAL_ERROR "deal.II was not built with p4est support!")
-endif()
-
-# Check that deal.II links against the same MPI that we find earlier.
-get_target_property(DEAL_II_MPI_LIBS dealii::interface_mpi INTERFACE_LINK_LIBRARIES)
-get_target_property(PRISMS_PF_MPI_LIBS MPI::MPI_CXX INTERFACE_LINK_LIBRARIES)
-
-if(NOT DEAL_II_MPI_LIBS STREQUAL PRISMS_PF_MPI_LIBS)
-  message(
-    WARNING
-    "deal.II MPI libraries: ${DEAL_II_MPI_LIBS}\n"
-    "Found MPI libraries:   ${PRISMS_PF_MPI_LIBS}\n"
-    "These do not match! This may cause runtime issues."
-  )
-endif()
-
-# Check that deal.II has the same width indices as PRISMS-PF
-if(NOT DEAL_II_WITH_64BIT_INDICES STREQUAL PRISMS_PF_64BIT_INDICES)
-  message(
-    FATAL_ERROR
-    "PRISMS-PF and deal.II must both use the same index width. You have:\n"
-    "  PRISMS_PF_64BIT_INDICES = ${PRISMS_PF_64BIT_INDICES}\n"
-    "  DEAL_II_WITH_64BIT_INDICES = ${DEAL_II_WITH_64BIT_INDICES}\n"
-  )
-endif()
+# Find deal.II
+include(deps/dealii)
 
 # Find Caliper if we've enabled it
 if(PRISMS_PF_WITH_CALIPER)
-  find_package(
-    caliper
-    REQUIRED
-    HINTS
-      ${CALIPER_DIR}
-      $ENV{CALIPER_DIR}
-  )
+  include(deps/caliper)
 endif()
 
 # TODO: Add VTK
 
 # FetchCotent MakeAvailable for the other vendored dependencies
-set(PRISMS_PF_VENDORED_PACKAGES libassert)
-if(PRISMS_PF_UNIT_TESTS OR PRISMS_PF_REGRESSION_TESTS OR PRISMS_PF_PERFORMANCE_TESTS)
-  list(APPEND PRISMS_PF_VENDORED_PACKAGES Catch2)
-endif()
+
+# Okay, now we have to do a bunch of stuff because "DebugRelease" exists. It's
+# nice, don't get me wrong, but it makes things way complicated, especially with
+# vendored dependencies. Sure, we could just build the Release version of the
+# dependencies but that defeats the point.
+#
+# To any future developers I hope you don't have to deal with this CMake :(
 if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
   # If we have DebugRelease as the build type, we want to build
   # libassert with Debug and Release targets to link to later
@@ -362,9 +144,11 @@ if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
     INSTALL_DIR ${CMAKE_BINARY_DIR}/_deps/libassert-release/install
   )
 
+  # Create install directories
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/_deps/libassert-debug/install/include)
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/_deps/libassert-release/install/include)
 
+  # Add a custom library for libassert so we can link properly
   add_library(libassert_imported INTERFACE IMPORTED GLOBAL)
   add_dependencies(
     libassert_imported
@@ -391,7 +175,24 @@ if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
 
   add_library(libassert::assert ALIAS libassert_imported)
 
+  # Custom install for libassert
+  include(GNUInstallDirs)
+
+  install(
+    DIRECTORY
+      ${CMAKE_BINARY_DIR}/_deps/libassert-debug/install/
+    DESTINATION ${CMAKE_INSTALL_BINDIR}/../vendored/libassert-debug
+  )
+
+  install(
+    DIRECTORY
+      ${CMAKE_BINARY_DIR}/_deps/libassert-release/install/
+    DESTINATION ${CMAKE_INSTALL_BINDIR}/../vendored/libassert
+  )
+
   # Still make available other vendored packages (e.g. Catch2)
+  # TODO: How should we have the build type here. Just whatever
+  # the default is?
   list(REMOVE_ITEM PRISMS_PF_VENDORED_PACKAGES libassert)
   FetchContent_MakeAvailable(${PRISMS_PF_VENDORED_PACKAGES})
 else()
@@ -426,17 +227,10 @@ if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
 
   add_library(prisms_pf::prisms_pf_debug ALIAS prisms_pf_debug)
   add_library(prisms_pf::prisms_pf ALIAS prisms_pf)
-
-  set(
-    PRISMS_PF_TARGETS
-    prisms_pf
-    prisms_pf_debug
-  )
 else()
   add_library(prisms_pf)
   prisms_pf_configure_target(prisms_pf ${CMAKE_BUILD_TYPE})
   add_library(prisms_pf::prisms_pf ALIAS prisms_pf)
-  set(PRISMS_PF_TARGETS prisms_pf)
 endif()
 
 add_subdirectory(src)
@@ -504,12 +298,6 @@ install(
   DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-# =========================================================
-# Build exports (find_package with build dir)
-# =========================================================
-
-print_subsection("Configuring build-tree export")
-
 export(
   TARGETS
     ${PRISMS_PF_TARGETS}
@@ -563,3 +351,6 @@ endif()
 # =========================================================
 # Final steps to print some nice messages
 # =========================================================
+
+file(READ ${CMAKE_BINARY_DIR}/summary.log PRISMS_PF_LOG_SUMMARY)
+message("${PRISMS_PF_LOG_SUMMARY}")

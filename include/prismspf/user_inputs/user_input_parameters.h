@@ -19,6 +19,7 @@
 
 #include <prismspf/config.h>
 
+#include <libassert/assert.hpp>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -42,6 +43,9 @@ struct UserInputParameters : public ParameterBase
     // user_constants is a special little princess that needs to know the file contents
     // before we declare the parameters.
     user_constants.file_name = file_name;
+
+    DEBUG_ASSERT(1 == 2, "ebug assert");
+    ASSERT(1 == 2, "assert");
 
     dealii::ParameterHandler parameter_handler;
 

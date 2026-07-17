@@ -149,14 +149,11 @@ function(prisms_pf_configure_target target_name build_type)
   endif()
 
   # Link other dependencies
-  # TODO: We don't need to set everything as public, and we shouldn't.
-  # Ideally, the only public bits need to be MPI and deal.II
   target_link_libraries(
     ${target_name}
     PUBLIC
       MPI::MPI_CXX
       $<$<BOOL:${PRISMS_PF_WITH_CALIPER}>:caliper>
-    PRIVATE
       $<BUILD_LOCAL_INTERFACE:libassert::assert>
   )
 endfunction()
