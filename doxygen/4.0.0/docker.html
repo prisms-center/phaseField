@@ -132,14 +132,13 @@ Introduction to Docker</h2>
 <h2><a class="anchor" id="docker_installation"></a>
 Installation with Docker</h2>
 <p>To install PRISMS-PF with Docker, you will need to have Docker installed on your machine. You can find instructions for installing Docker on the official <a href="https://docs.docker.com/get-started/get-docker/">Docker website</a>.</p>
-<p>After you have installed Docker, find a working directory where we can put your files. This is where we will clone PRISMS-PF so you can interact with the files and applications there. </p><div class="fragment"><div class="line">mkdir ~/prisms_pf_docker</div>
+<p>After you have installed Docker, find a working directory where we can put your files. This is where we will clone PRISMS-PF so you can interact with the files and applications there.</p>
+<dl class="section note"><dt>Note</dt><dd>In the Docker image, PRISMS-PF has been installed system-wide. You don't have clone PRISMS-PF again if you already have your own applications.</dd></dl>
+<div class="fragment"><div class="line">mkdir ~/prisms_pf_docker</div>
 <div class="line">git clone https:<span class="comment">//github.com/prisms-center/phaseField.git</span></div>
-</div><!-- fragment --><p>Next, we will pull the docker image with </p><div class="fragment"><div class="line">docker pull prismspf/prismspf:latest</div>
-</div><!-- fragment --><p>Finally, we will launch an interactive container with </p><div class="fragment"><div class="line">docker run -ti -v</div>
-<div class="line">~/prisms_pf_docker/phaseField/applications:/home/dealii/phaseField/applications</div>
-<div class="line">prismspf/prismspf:latest</div>
-</div><!-- fragment --><p> This will link your local applications directory (the one in <code>prisms_workspace</code>) to the one in the Docker image. If you plan to modify the core library, you should link one directory higher to preserve your changes. In other words, </p><div class="fragment"><div class="line">docker run -ti -v</div>
-<div class="line">~/prisms_pf_docker/phaseField:/home/dealii/phaseField prismspf/prismspf:latest</div>
+</div><!-- fragment --><p>Next, we will pull the docker image with </p><div class="fragment"><div class="line">docker pull landinjm/prisms-pf:alpine-master-minimal</div>
+</div><!-- fragment --><p>Finally, we will launch an interactive container with </p><div class="fragment"><div class="line">docker run -it --user root -v ~/prisms_pf_docker/phaseField:/home/prisms-pf/phaseField</div>
+<div class="line">landinjm/prisms-pf:alpine-master-minimal</div>
 </div><!-- fragment --><p> You can then run the applications in the container as you would normally. See the <a class="el" href="tutorial.html">Tutorial</a> for more information. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
