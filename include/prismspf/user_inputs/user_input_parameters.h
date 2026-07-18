@@ -17,8 +17,6 @@
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_constants.h>
 
-#include <prismspf/utilities/assert.h>
-
 #include <prismspf/config.h>
 
 #include <vector>
@@ -44,9 +42,6 @@ struct UserInputParameters : public ParameterBase
     // user_constants is a special little princess that needs to know the file contents
     // before we declare the parameters.
     user_constants.file_name = file_name;
-
-    DEBUG_ASSERT(1 == 2, "Debug assert");
-    ASSERT(1 == 4, "assert");
 
     dealii::ParameterHandler parameter_handler;
 
