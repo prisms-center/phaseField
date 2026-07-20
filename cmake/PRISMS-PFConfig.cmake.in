@@ -18,10 +18,29 @@ get_filename_component(_pkg_prefix
 )
 
 # Helper function for adding vendored dependency static libraries.
-# This function mirrors how we declare the imported libraries in 
-# the first place.
+# This function mirrors how we declare the imported libraries in
+# the first place. Works with DebugRelease.
 # NOTE: I'm not a fan of this, but oh well
 function(_prisms_pf_import_archive TARGET_NAME PREFIX_DIR ARCHIVE_NAME)
+  if(${PRISMS_PF_BUILD_TYPE} STREQUAL "DebugRelease")
+    if(TARGET "${TARGET_NAME}_debug")
+      return()
+    endif()
+    add_library("${TARGET_NAME}_debug" STATIC IMPORTED GLOBAL)
+    set_target_properties("${TARGET_NAME}_debug"
+      PROPERTIES
+        IMPORTED_LOCATION
+          "${PREFIX_DIR}/lib/${ARCHIVE_NAME}.a"
+    )
+    if(IS_DIRECTORY "${PREFIX_DIR}_debug/include")
+      set_target_properties("${TARGET_NAME}_debug"
+        PROPERTIES
+          INTERFACE_INCLUDE_DIRECTORIES
+            "${PREFIX_DIR}_debug/include"
+      )
+    endif()
+  endif()
+
   if(TARGET ${TARGET_NAME})
     return()
   endif()
@@ -62,11 +81,20 @@ if("libassert" IN_LIST PRISMS_PF_VENDORED_PACKAGES)
     "${_pkg_prefix}/libassert"
     libcpptrace
   )
+
   set_target_properties(imported_cpptrace
     PROPERTIES
       INTERFACE_LINK_LIBRARIES
         "imported_dwarf;imported_zstd;Threads::Threads;${CMAKE_DL_LIBS}"
   )
+  if(${PRISMS_PF_BUILD_TYPE} STREQUAL "DebugRelease")
+    set_target_properties(imported_cpptrace_debug
+      PROPERTIES
+        INTERFACE_LINK_LIBRARIES
+          "imported_dwarf_debug;imported_zstd_debug;Threads::Threads;${CMAKE_DL_LIBS}"
+    )
+  endif()
+
   # libassert
   _prisms_pf_import_archive(
     imported_libassert
@@ -78,40 +106,13 @@ if("libassert" IN_LIST PRISMS_PF_VENDORED_PACKAGES)
       INTERFACE_LINK_LIBRARIES
         imported_cpptrace
   )
-  # dwarf debug
-  _prisms_pf_import_archive(
-    imported_dwarf_debug
-    "${_pkg_prefix}/libassert_debug"
-    libdwarf
-  )
-  # zstd debug
-  _prisms_pf_import_archive(
-    imported_zstd_debug
-    "${_pkg_prefix}/libassert_debug"
-    libzstd
-  )
-  # cpptrace debug
-  _prisms_pf_import_archive(
-    imported_cpptrace_debug
-    "${_pkg_prefix}/libassert_debug"
-    libcpptrace
-  )
-  set_target_properties(imported_cpptrace_debug
-    PROPERTIES
-      INTERFACE_LINK_LIBRARIES
-        "imported_dwarf_debug;imported_zstd_debug;Threads::Threads;${CMAKE_DL_LIBS}"
-  )
-  # libassert debug
-  _prisms_pf_import_archive(
-    imported_libassert_debug
-    "${_pkg_prefix}/libassert_debug"
-    libassert
-  )
-  set_target_properties(imported_libassert_debug
-    PROPERTIES
-      INTERFACE_LINK_LIBRARIES
-        imported_cpptrace_debug
-  )
+  if(${PRISMS_PF_BUILD_TYPE} STREQUAL "DebugRelease")
+    set_target_properties(imported_libassert_debug
+      PROPERTIES
+        INTERFACE_LINK_LIBRARIES
+          imported_cpptrace_debug
+    )
+  endif()
 endif()
 
 # MPI

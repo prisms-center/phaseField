@@ -62,15 +62,6 @@ if(NOT DEAL_II_WITH_64BIT_INDICES STREQUAL PRISMS_PF_64BIT_INDICES)
   )
 endif()
 
-# Check that deal.II has HDF5
-if(NOT DEAL_II_WITH_HDF5 AND PRISMS_PF_WITH_HDF5)
-  message(
-    FATAL_ERROR
-    "PRISMS_PF_WITH_HDF5 is enabled, but deal.II was not built with HDF5 support. "
-    "Rebuild deal.II with HDF5 enabled or disable PRISMS_PF_WITH_HDF5."
-  )
-endif()
-
 # Add deal.II to the Release and Debug lists
 # Again we run into some more of the uniqueness of deal.II with the way they set
 # up build types. Their default build type is `DebugRelease`, which builds both

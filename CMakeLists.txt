@@ -175,7 +175,7 @@ separate_arguments(
 if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
   add_library(prisms_pf_debug)
   add_library(prisms_pf)
-	add_dependencies(prisms_pf_debug prisms_pf)
+  add_dependencies(prisms_pf_debug prisms_pf)
   add_library(prisms_pf::prisms_pf_debug ALIAS prisms_pf_debug)
   add_library(prisms_pf::prisms_pf ALIAS prisms_pf)
 else()

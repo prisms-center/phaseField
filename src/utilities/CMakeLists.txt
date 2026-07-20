@@ -12,7 +12,7 @@ set(
   ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/vectorized_operations.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/symmetry.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/mechanics.h
-	 ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/assert.h
+  ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/assert.h
 )
 
 set(_inst_bases integrator)
