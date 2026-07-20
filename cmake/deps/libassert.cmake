@@ -18,5 +18,9 @@ prisms_pf_add_external_library(libassert libassert)
 prisms_pf_install_external_library(libassert)
 
 # Add libassert to the Release and Debug lists
-prisms_pf_add_dependency_target(imported_libassert_debug DEBUG PUBLIC)
-prisms_pf_add_dependency_target(imported_libassert RELEASE PUBLIC)
+if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
+  prisms_pf_add_dependency_target(imported_libassert_debug DEBUG PUBLIC)
+  prisms_pf_add_dependency_target(imported_libassert RELEASE PUBLIC)
+else()
+  prisms_pf_add_dependency_target(imported_libassert CMAKE_BUILD_TYPE PUBLIC)
+endif()

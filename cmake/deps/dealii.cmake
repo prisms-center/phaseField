@@ -77,9 +77,9 @@ endif()
 # to the PRISMS-PF build type. This is recommended for developers.
 
 if(DEAL_II_BUILD_TYPE STREQUAL "DebugRelease")
-  if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     prisms_pf_add_dependency_target(dealii::dealii_debug DEBUG PUBLIC)
-  elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugRelease")
+  elseif(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
     prisms_pf_add_dependency_target(dealii::dealii_debug DEBUG PUBLIC)
     prisms_pf_add_dependency_target(dealii::dealii_release RELEASE PUBLIC)
   else()
