@@ -1,5 +1,12 @@
 var NAVTREEINDEX2 =
 {
+"classRefinementManager.html#afaa7f742a2854a1422534b5fec9f862e":[8,0,51,15],
+"classSimulationTimer.html":[8,0,53],
+"classSimulationTimer.html#a0af04a55c5a51e3397c4b1a656dd3d98":[8,0,53,0],
+"classSimulationTimer.html#a1a5ad442fdccc94a66e45b54e2ee5668":[8,0,53,12],
+"classSimulationTimer.html#a3d28343aebde65f7a9d08c516025482a":[8,0,53,2],
+"classSimulationTimer.html#a6724468516f95ec5d2d508e0b0b263ea":[8,0,53,6],
+"classSimulationTimer.html#a762954bfcfc82a7bccd572a2d17fea46":[8,0,53,1],
 "classSimulationTimer.html#a91b657a1a2260be48a02130734c25277":[8,0,53,11],
 "classSimulationTimer.html#a92575dd382e7027e0f10731714a73803":[8,0,53,9],
 "classSimulationTimer.html#ab6eb372c9d8cf9e212d4785d2f29ec66":[8,0,53,13],
@@ -242,12 +249,5 @@ var NAVTREEINDEX2 =
 "classUserInputParameters.html#abd382f3e1223b068ba19318664af4548":[8,0,69,5],
 "classUserInputParameters.html#ade674b75d5c2c0ce603576ee1316143c":[8,0,69,11],
 "classUserInputParameters.html#af1a6cb34c8ad976c6e99eec85cf963c9":[8,0,69,0],
-"classUserInputParameters.html#aff16df7f532fd2f58fa2863e63461be9":[8,0,69,15],
-"classes.html":[8,1],
-"conceptStringLike.html":[7,0],
-"concepts.html":[7],
-"conditional__ostreams_8cc.html":[9,0,2,0,0],
-"conditional__ostreams_8h.html":[9,0,1,0,0,1],
-"conditional__ostreams_8h_source.html":[9,0,1,0,0,1],
-"constant__solver_8h.html":[9,0,1,0,4,0]
+"classUserInputParameters.html#aff16df7f532fd2f58fa2863e63461be9":[8,0,69,15]
 };

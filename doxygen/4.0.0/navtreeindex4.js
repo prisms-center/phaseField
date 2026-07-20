@@ -1,5 +1,12 @@
 var NAVTREEINDEX4 =
 {
+"namespacePatterns.html#ad698158ab66e73084dc1e79f75ac9d1b":[6,0,3,5],
+"namespaceSymmetry.html":[6,0,6],
+"namespaceSymmetry.html#a3e19e722b1fbdcc5bc7780337be4f73a":[6,0,6,5],
+"namespaceSymmetry.html#a8695ff296b1ad8ab762fb62f3f72098a":[6,0,6,0],
+"namespaceSymmetry.html#a97f4ed2e6e0d2ca2631ca98d1b3050a3":[6,0,6,3],
+"namespaceSymmetry.html#aa6048cd1b64132621ce379f1cca79e48":[6,0,6,4],
+"namespaceSymmetry.html#ab69588207ec31b4f24b266cd4c9be1fe":[6,0,6,1],
 "namespaceSymmetry.html#ad4b8e9c4ba8384250503c0866419c732":[6,0,6,2],
 "namespaceTypes.html":[6,0,7],
 "namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186":[6,0,7,0],
@@ -242,12 +249,5 @@ var NAVTREEINDEX4 =
 "structMiscellaneousParameters.html#a6d5908d9fe084cbe565acaec334d0b1a":[8,0,29,0],
 "structMiscellaneousParameters.html#a7eeedf3e3c99408c14d6ad70bd856db4":[8,0,29,2],
 "structMiscellaneousParameters.html#aa8114d0eef6e6ba9a052c853ac29ad10":[8,0,29,3],
-"structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93":[8,0,29,5],
-"structMiscellaneousParameters.html#ae99d7228c0ad13341567a084360c6aa7":[8,0,29,4],
-"structNewDependencyExtents.html":[8,0,31],
-"structNewDependencyExtents.html#a25a4ca77ec33f834f5f99c308ced9e54":[8,0,31,2],
-"structNewDependencyExtents.html#a31e82a4a18f0c1ace6f2e14ec9aeddbf":[8,0,31,0],
-"structNewDependencyExtents.html#afc3e613a69246fcfe9a6914aa7893309":[8,0,31,1],
-"structNonlinearSolveParameters.html":[8,0,33],
-"structNonlinearSolveParameters.html#a5e2e24d997fa78364071e61460a759be":[8,0,33,0]
+"structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93":[8,0,29,5]
 };
