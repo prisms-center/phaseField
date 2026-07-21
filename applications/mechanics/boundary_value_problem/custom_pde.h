@@ -49,7 +49,8 @@ private:
                 [[maybe_unused]] number &vector_component_value) const override
   {
     // Zero except for x-component of u on x=0 face
-    if (index == 0 && boundary_id == 0 && component == 0)
+    if (index == 0 && boundary_id == RectangularMesh<dim>::Boundary::Left &&
+        component == 0)
       {
         vector_component_value = -1.0;
         return;

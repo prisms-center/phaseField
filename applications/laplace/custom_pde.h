@@ -40,23 +40,23 @@ public:
     [[maybe_unused]] const double y = (dim > 1) ? point[1] : 0.0;
     [[maybe_unused]] const double z = (dim > 2) ? point[2] : 0.0;
 
-    if (boundary_id == 0) // left
+    if (boundary_id == RectangularMesh<dim>::Boundary::Left)
       {
         using std::cos;
         scalar_value = 50.0 * cos(x / 4.0) * cos(y / 4.0);
         return;
       }
-    if (boundary_id == 1) // right
+    if (boundary_id == RectangularMesh<dim>::Boundary::Right)
       {
         scalar_value = y / 2.0;
         return;
       }
-    if (boundary_id == 2) // bottom
+    if (boundary_id == RectangularMesh<dim>::Boundary::Bottom)
       {
         scalar_value = x * (100.0 - x) / 50.0;
         return;
       }
-    if (boundary_id == 3) // top
+    if (boundary_id == RectangularMesh<dim>::Boundary::Top)
       {
         scalar_value = 0.0;
         return;

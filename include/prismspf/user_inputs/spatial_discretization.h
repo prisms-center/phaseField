@@ -144,6 +144,19 @@ struct RectangularMesh : public Mesh<dim>
   using Triangulation = typename Mesh<dim>::Triangulation;
 
   /**
+   * @brief Simple enum for boundary ids to natural language
+   */
+  enum Boundary
+  {
+    Left   = 0,
+    Right  = 1,
+    Top    = 2,
+    Bottom = 3,
+    Front  = 4,
+    Back   = 5
+  };
+
+  /**
    * @brief Constructor.
    */
   RectangularMesh() = default;
@@ -230,6 +243,14 @@ template <unsigned int dim>
 struct SphericalMesh : public Mesh<dim>
 {
   using Triangulation = typename Mesh<dim>::Triangulation;
+
+  /**
+   * @brief Simple enum for boundary ids to natural language
+   */
+  enum Boundary
+  {
+    Surface = 0
+  };
 
   /**
    * @brief Constructor.
