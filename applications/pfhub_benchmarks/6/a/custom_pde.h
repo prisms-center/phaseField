@@ -70,12 +70,12 @@ private:
     const double y = point[1];
     if (index == 3) // Phi
       {
-        if (boundary_id == 0)
+        if (boundary_id == RectangularMesh<2>::Boundary::Left)
           {
             scalar_value = 0.0;
             return;
           }
-        if (boundary_id == 1)
+        if (boundary_id == RectangularMesh<2>::Boundary::Right)
           {
             scalar_value = sin(y / 7.0);
             return;
