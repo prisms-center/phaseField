@@ -11,16 +11,17 @@ concurrency:
 
 jobs:
   docs:
+    if: github.repository == 'prisms-center/phaseField' # Don't run on forks
     runs-on: ubuntu-latest
     container:
-      image: landinjm/pagoma-dependencies:alpine-minimal
+      image: landinjm/prisms-pf-dependencies:alpine-minimal
       options: --user root
     permissions:
       # Write perms to we can copy-paste doxygen docs
       contents: write
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         submodules: true # Check out submodules so we get doxygen awesome
 
@@ -56,7 +57,7 @@ jobs:
 
     - name: Deploy to GitHub pages
       uses: JamesIves/github-pages-deploy-action@v4
-      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/4.0-dev'
+      if: github.ref == 'refs/heads/master' # Can add other branches here
       with:
         branch: gh-pages
         folder: build/docs/doc

@@ -1,0 +1,3 @@
+exclude_path = [
+  "doc/doxygen/header.html",
+]

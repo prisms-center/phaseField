@@ -16,6 +16,7 @@ permissions: read-all
 
 jobs:
   CI:
+    if: github.repository == 'prisms-center/phaseField' # Don't run on forks
     strategy:
       matrix:
         include:
@@ -27,17 +28,22 @@ jobs:
     runs-on: ${{ matrix.runs-on }}
     timeout-minutes: 120
     container:
-      image: landinjm/pagoma-dependencies:alpine-minimal
+      image: landinjm/prisms-pf-dependencies:alpine-minimal
       options: --user root
     steps:
       - uses: laverdet/alpine-arm64@v1
         if: matrix.platform == 'linux/arm64'
 
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Run tests
         run: |
+          jobs=$(( $(nproc) / 2 ))
+          [ "$jobs" -lt 1 ] && jobs=1
+          export CMAKE_BUILD_PARALLEL_LEVEL=$jobs
+
+          echo "Using $CMAKE_BUILD_PARALLEL_LEVEL build jobs"
           cmake --workflow --preset test
 
       - name: Compile Applications

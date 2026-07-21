@@ -8,6 +8,8 @@
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
+#include <prismspf/user_inputs/constraint_parameters.h>
+
 #include <prismspf/config.h>
 
 #include <map>
@@ -28,10 +30,12 @@ struct FieldAttributes
   explicit FieldAttributes(
     std::string               _name                        = "",
     TensorRank                _field_type                  = TensorRank::Scalar,
+    BoundaryConditionSet      _boundary_conditions         = BoundaryConditionSet(),
     bool                      _is_nucleation_rate_variable = false,
     std::vector<Types::Index> _nucleating_field_indices    = std::vector<Types::Index>())
     : name(std::move(_name))
     , field_type(_field_type)
+    , boundary_conditions(std::move(_boundary_conditions))
     , is_nucleation_rate_variable(_is_nucleation_rate_variable)
     , nucleating_field_indices(std::move(_nucleating_field_indices))
   {}
@@ -45,6 +49,11 @@ struct FieldAttributes
    * @brief Field type (Scalar/Vector).
    */
   TensorRank field_type = TensorRank::Scalar;
+
+  /**
+   * @brief Field type (Scalar/Vector).
+   */
+  BoundaryConditionSet boundary_conditions;
 
   /**
    * @brief Is a nucleation rate

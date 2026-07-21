@@ -3,65 +3,71 @@
 
 #pragma once
 
+#include <deal.II/base/parameter_handler.h>
+
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/solve_block.h>
 
+#include <prismspf/user_inputs/parameter_base.h>
+
 #include <prismspf/config.h>
+
+#include <cfloat>
+#include <limits>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
  * @brief Struct that holds temporal discretization parameters.
  */
-struct TemporalDiscretization
+struct TemporalDiscretization : public ParameterBase
 {
-public:
   /**
-   * @brief Construct from timestep and total number of increments,
+   * @brief Constructor.
    */
-  explicit TemporalDiscretization(double _dt = 1.0, unsigned int _num_increments = 1)
-    : dt(_dt)
-    , num_increments(_num_increments)
-  {}
+  TemporalDiscretization() = default;
 
   /**
-   * @brief Construct from timestep and final time
+   * @brief Constructor.
    */
-  TemporalDiscretization(double _dt, double final_time)
-    : dt(_dt)
-    , num_increments(static_cast<unsigned int>((final_time + dt) / _dt))
-  {}
+  TemporalDiscretization(double       _dt,
+                         unsigned int _n_increments,
+                         double       _initial_time = 0.0);
 
   /**
-   * @brief Postprocess and validate parameters.
+   * @brief Constructor.
+   */
+  TemporalDiscretization(double _dt, double _final_time, double _initial_time = 0.0);
+
+  /**
+   * @brief Declare the parameters to be read from file.
+   */
+  static void
+  declare(dealii::ParameterHandler &parameter_handler,
+          unsigned int              n_subsections = Numbers::default_subsections);
+
+  /**
+   * @brief Assign the parameters from file.
    */
   void
-  validate()
-  {}
+  assign(dealii::ParameterHandler &parameter_handler,
+         unsigned int              n_subsections = Numbers::default_subsections) override;
 
   /**
-   * @brief Print parameters to summary.log
+   * @brief Validate.
    */
   void
-  print_parameter_summary() const;
+  validate(const std::vector<FieldAttributes> &field_attributes,
+           const std::vector<SolveBlock>      &solve_blocks) const override;
 
   // Timestep
   double dt = 1.0;
 
-  // Total number of increments
-  unsigned int num_increments = 0;
-};
+  // Initial time
+  double initial_time = 0.0;
 
-inline void
-TemporalDiscretization::print_parameter_summary() const
-{
-  ConditionalOStreams::pout_summary()
-    << "================================================\n"
-    << "  Temporal Discretization\n"
-    << "================================================\n"
-    << "Timestep: " << dt << "\n"
-    << "Total increments: " << num_increments << "\n\n"
-    << std::flush;
-}
+  // Total number of increments
+  unsigned int n_increments = 0;
+};
 
 PRISMS_PF_END_NAMESPACE

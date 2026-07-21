@@ -62,6 +62,7 @@ private:
                 [[maybe_unused]] const unsigned int     &boundary_id,
                 [[maybe_unused]] const unsigned int     &component,
                 [[maybe_unused]] const dealii::Point<2> &point,
+                [[maybe_unused]] const SimulationTimer  &sim_timer,
                 [[maybe_unused]] number                 &scalar_value,
                 [[maybe_unused]] number &vector_component_value) const override
   {
@@ -69,12 +70,12 @@ private:
     const double y = point[1];
     if (index == 3) // Phi
       {
-        if (boundary_id == 0)
+        if (boundary_id == RectangularMesh<2>::Boundary::Left)
           {
             scalar_value = 0.0;
             return;
           }
-        if (boundary_id == 1)
+        if (boundary_id == RectangularMesh<2>::Boundary::Right)
           {
             scalar_value = sin(y / 7.0);
             return;

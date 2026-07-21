@@ -37,6 +37,7 @@ private:
   {
     const dealii::Tensor<1, dim> &mesh_size =
       get_user_inputs().spatial_discretization.rectangular_mesh.size;
+
     constexpr number center[12][3] = {
       {0.1, 0.3,  0},
       {0.8, 0.7,  0},

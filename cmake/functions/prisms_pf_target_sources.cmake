@@ -15,6 +15,8 @@ function(prisms_pf_target_sources targets headers sources inst_bases)
 
   # Use the first target to drive .inst generation.
   # We don't want this to happen twice.
+  # NOTE: For the documentation target to work the first target must
+  # always be prisms_pf
   list(GET targets 0 _primary_target)
   expand_template_instantiations(${_primary_target} "${_inst}")
 
@@ -36,7 +38,7 @@ function(prisms_pf_target_sources targets headers sources inst_bases)
 
     # Let CMake know that .cc files can't compile until the .inst
     # files exist
-    foreach(_base ${_inst_bases})
+    foreach(_base ${inst_bases})
       set_source_files_properties(
         ${_base}.cc
         PROPERTIES

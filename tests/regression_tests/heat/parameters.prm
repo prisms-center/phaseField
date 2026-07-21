@@ -28,7 +28,7 @@ subsection linear solver parameters: 0
   set tolerance value          = 1.0e-10
 
   #set min mg level             = 0
-  #set preconditioner type      = GMG
+  set preconditioner type      = None
   #set smoother degree          = 5
   #set smoothing range          = 15.0
   #set eigenvalue cg iterations = 10

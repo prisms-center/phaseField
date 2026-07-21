@@ -17,79 +17,110 @@
 #include <prismspf/solvers/solver_base.h>
 #include <prismspf/solvers/solvers.h>
 
-#include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <algorithm>
 #include <filesystem>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim, unsigned int degree, typename number>
-std::vector<std::shared_ptr<SolverBase<dim, degree, number>>>
-make_solvers(const std::vector<SolveBlock>           &solve_blocks,
-             const SolveContext<dim, degree, number> &solve_context)
+namespace
 {
-  // Todo: upgrade to recursive for aux solvers
-  std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> solvers;
-  solvers.reserve(solve_blocks.size());
-  for (const auto &solve_block : solve_blocks)
-    {
-      switch (solve_block.solve_type)
-        {
-          case SolveType::Explicit:
-            solvers.emplace_back(
-              std::make_shared<ExplicitSolver<dim, degree, number>>(solve_block,
+  template <unsigned int dim, unsigned int degree, typename number>
+  std::vector<std::shared_ptr<SolverBase<dim, degree, number>>>
+  make_solvers(const std::vector<SolveBlock>           &solve_blocks,
+               const SolveContext<dim, degree, number> &solve_context)
+  {
+    // Todo: upgrade to recursive for aux solvers
+    std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> solvers;
+    solvers.reserve(solve_blocks.size());
+    for (const auto &solve_block : solve_blocks)
+      {
+        switch (solve_block.solve_type)
+          {
+            case SolveType::Explicit:
+              solvers.emplace_back(
+                std::make_shared<ExplicitSolver<dim, degree, number>>(solve_block,
+                                                                      solve_context));
+              break;
+            case SolveType::Linear:
+              solvers.emplace_back(
+                std::make_shared<LinearSolver<dim, degree, number>>(solve_block,
                                                                     solve_context));
-            break;
-          case SolveType::Linear:
-            solvers.emplace_back(
-              std::make_shared<LinearSolver<dim, degree, number>>(solve_block,
-                                                                  solve_context));
-            break;
-          case SolveType::Newton:
-            solvers.emplace_back(
-              std::make_shared<NewtonSolver<dim, degree, number>>(solve_block,
-                                                                  solve_context));
-            break;
-          case SolveType::Constant:
-            solvers.emplace_back(
-              std::make_shared<ConstantSolver<dim, degree, number>>(solve_block,
+              break;
+            case SolveType::Newton:
+              solvers.emplace_back(
+                std::make_shared<NewtonSolver<dim, degree, number>>(solve_block,
                                                                     solve_context));
-            break;
-          default:
-            AssertThrow(false, dealii::ExcMessage("Unknown solver type"));
-        }
-    }
-  return solvers;
-}
+              break;
+            case SolveType::Constant:
+              solvers.emplace_back(
+                std::make_shared<ConstantSolver<dim, degree, number>>(solve_block,
+                                                                      solve_context));
+              break;
+            default:
+              AssertThrow(false, dealii::ExcMessage("Unknown solver type"));
+          }
+      }
+    return solvers;
+  }
 
-std::list<DependencyMap>
-get_all_dependency_sets(const std::vector<SolveBlock> &solve_blocks)
-{
-  // Todo: upgrade to recursive for aux solvers
-  std::list<DependencyMap> output;
-  for (const auto &solve_block : solve_blocks)
-    {
-      output.push_back(solve_block.dependencies_lhs);
-      output.push_back(solve_block.dependencies_rhs);
-    }
-  return output;
-}
+  std::list<DependencyMap>
+  get_all_dependency_sets(const std::vector<SolveBlock> &solve_blocks)
+  {
+    // Todo: upgrade to recursive for aux solvers
+    std::list<DependencyMap> output;
+    for (const auto &solve_block : solve_blocks)
+      {
+        output.push_back(solve_block.dependencies_lhs);
+        output.push_back(solve_block.dependencies_rhs);
+      }
+    return output;
+  }
 
-template <unsigned int dim, unsigned int degree, typename number>
-std::vector<GroupSolutionHandler<dim, number> *>
-get_solution_managers_from_solvers(
-  const std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> &solvers)
-{
-  // Todo: upgrade to recursive for aux solvers
-  std::vector<GroupSolutionHandler<dim, number> *> solution_managers;
-  solution_managers.reserve(solvers.size());
-  for (const auto &solver : solvers)
-    {
-      solution_managers.push_back(&(solver->get_solution_manager()));
-    }
-  return solution_managers;
-}
+  std::list<SolveBlock>
+  get_all_solve_blocks(const std::vector<SolveBlock> &solve_blocks)
+  {
+    // Todo: upgrade to recursive for aux solvers
+    std::list<SolveBlock> output;
+    for (const auto &solve_block : solve_blocks)
+      {
+        output.push_back(solve_block);
+      }
+    return output;
+  }
+
+  /**
+   * @brief Check if any solve block uses multigrid.
+   * @param solve_blocks The vector of solve blocks to check.
+   * @return True if any solve block uses multigrid, false otherwise.
+   */
+  bool
+  has_multigrid(const std::vector<SolveBlock> &solve_blocks)
+  {
+    return std::any_of(solve_blocks.begin(),
+                       solve_blocks.end(),
+                       [](const SolveBlock &sb)
+                       {
+                         return sb.linear_solver_parameters.preconditioner == GMG;
+                       });
+  }
+
+  template <unsigned int dim, unsigned int degree, typename number>
+  std::vector<GroupSolutionHandler<dim, number> *>
+  get_solution_managers_from_solvers(
+    const std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> &solvers)
+  {
+    // Todo: upgrade to recursive for aux solvers
+    std::vector<GroupSolutionHandler<dim, number> *> solution_managers;
+    solution_managers.reserve(solvers.size());
+    for (const auto &solver : solvers)
+      {
+        solution_managers.push_back(&(solver->get_solution_manager()));
+      }
+    return solution_managers;
+  }
+} // namespace
 
 // *1 Big TODO: Make these classes default-constructible, then use their `init()`
 // functions. Also, it may be wise to make SolveContext the owner of all these as well
@@ -104,16 +135,9 @@ Problem<dim, degree, number>::Problem(
   PhaseFieldTools<dim>                 &_pf_tools,
   PDEOperatorBase<dim, degree, number> &_pde_operator)
   : field_attributes(_field_attributes)
-  , solve_blocks(_solve_blocks)
+  , solve_blocks(validate_solve_blocks(_solve_blocks, _field_attributes))
   , user_inputs_ptr(&_user_inputs)
   , pf_tools(&_pf_tools)
-  , triangulation_manager(_user_inputs.spatial_discretization, false)
-  , dof_manager(field_attributes, triangulation_manager)
-  , constraint_manager(field_attributes,
-                       _user_inputs.boundary_parameters,
-                       _user_inputs.spatial_discretization,
-                       dof_manager,
-                       _pde_operator)
   , solve_context(field_attributes,
                   _user_inputs,
                   triangulation_manager,
@@ -121,10 +145,79 @@ Problem<dim, degree, number>::Problem(
                   constraint_manager,
                   solution_indexer,
                   _pde_operator)
-  , solvers(make_solvers(solve_blocks, solve_context))
-  , solution_indexer(field_attributes.size(), get_solution_managers_from_solvers(solvers))
   , grid_refiner(solve_context)
-{}
+{
+  // Override boundary condition parameters if they are specified in user inputs
+  std::unordered_map<std::string, BoundaryConditionSet> boundary_condition_list =
+    _user_inputs.boundary_parameters.boundary_condition_list;
+  for (auto &field : field_attributes)
+    {
+      if (const auto &bc_it = boundary_condition_list.find(field.name);
+          bc_it != boundary_condition_list.end())
+        {
+          ConditionalOStreams::pout_base()
+            << "Overriding boundary condition parameters for field " << field.name
+            << " with user input parameters.\n";
+          field.boundary_conditions = bc_it->second;
+          boundary_condition_list.erase(bc_it);
+        }
+    }
+  for (const auto &remaining_bc_params : boundary_condition_list)
+    {
+      ConditionalOStreams::pout_base()
+        << "Warning: Boundary condition parameters provided by user inputs for field "
+        << remaining_bc_params.first
+        << " field list. These parameters will be "
+           "ignored.\n";
+    }
+
+  // Override solver parameters if they are specified in user inputs
+  std::map<unsigned int, LinearSolverParameters> linear_solver_parameters_copy =
+    _user_inputs.linear_solve_parameters.linear_solvers;
+  std::map<unsigned int, NonlinearSolverParameters> nonlinear_solver_parameters_copy =
+    _user_inputs.nonlinear_solve_parameters.nonlinear_solvers;
+  for (auto &solve_block : solve_blocks)
+    {
+      solve_block.validate();
+      if (const auto &lin_param_it = linear_solver_parameters_copy.find(solve_block.id);
+          lin_param_it != linear_solver_parameters_copy.end())
+        {
+          ConditionalOStreams::pout_base()
+            << "Overriding linear solver parameters for solve block " << solve_block.id
+            << " with user input parameters.\n";
+          solve_block.linear_solver_parameters = lin_param_it->second;
+          linear_solver_parameters_copy.erase(lin_param_it);
+        }
+      if (const auto &nonlin_param_it =
+            nonlinear_solver_parameters_copy.find(solve_block.id);
+          nonlin_param_it != nonlinear_solver_parameters_copy.end())
+        {
+          ConditionalOStreams::pout_base()
+            << "Overriding newton solver parameters for solve block " << solve_block.id
+            << " with user input parameters.\n";
+          solve_block.nonlinear_solver_parameters = nonlin_param_it->second;
+          nonlinear_solver_parameters_copy.erase(nonlin_param_it);
+        }
+    }
+  for (const auto &remaining_lin_params : linear_solver_parameters_copy)
+    {
+      ConditionalOStreams::pout_base()
+        << "Warning: Linear solver parameters provided by user inputs for solve "
+           "block "
+        << remaining_lin_params.first
+        << " which does not exist in the solve blocks. These parameters will be "
+           "ignored.\n";
+    }
+  for (const auto &remaining_nonlin_params : nonlinear_solver_parameters_copy)
+    {
+      ConditionalOStreams::pout_base()
+        << "Warning: Nonlinear solver parameters provided by user inputs for solve "
+           "block "
+        << remaining_nonlin_params.first
+        << " which does not exist in the solve blocks. These parameters will be "
+           "ignored.\n";
+    }
+}
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
@@ -143,35 +236,56 @@ Problem<dim, degree, number>::init_system()
     << "\n"
     << std::flush;
 
+  bool use_mg = has_multigrid(solve_blocks);
+
   // Create the mesh
-  // See *1
-  /* ConditionalOStreams::pout_base() << "creating triangulation...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "Creating triangulation...\n" << std::flush;
   Timer::start_section("Generate mesh");
   triangulation_manager.generate_mesh(user_inputs.spatial_discretization);
-  Timer::end_section("Generate mesh"); */
+  if (use_mg)
+    {
+      triangulation_manager.init_mg();
+    }
+  Timer::end_section("Generate mesh");
 
   // Create the dof handlers.
-  ConditionalOStreams::pout_base() << "creating DoFHandlers...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "Creating DoFHandlers...\n" << std::flush;
   Timer::start_section("reinitialize DoFHandlers");
-  dof_manager.reinit(triangulation_manager);
+  dof_manager.reinit(triangulation_manager, use_mg);
   dof_manager.reinit_mapping(field_attributes);
   Timer::end_section("reinitialize DoFHandlers");
 
   // Create the constraints
   // See *1
-  ConditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "Creating constraints...\n" << std::flush;
   Timer::start_section("Create constraints");
+  constraint_manager.init(user_inputs.boundary_parameters,
+                          user_inputs.spatial_discretization,
+                          dof_manager,
+                          solve_context.get_pde_operator(),
+                          solve_context.get_simulation_timer());
   constraint_manager.reinit(field_attributes);
   Timer::end_section("Create constraints");
 
+  Timer::start_section("Initialize MatrixFree");
+  solve_context.get_matrix_free_manager().reinit(solve_context.get_dof_manager(),
+                                                 solve_context.get_constraint_manager());
+  Timer::end_section("Initialize MatrixFree");
+
   // InvM
+  Timer::start_section("Initialize InvM");
+  solve_context.get_invm_manager().reinit(solve_context.get_matrix_free_manager());
   solve_context.get_invm_manager().compute_invm();
+  Timer::end_section("Initialize InvM");
 
   // Initialize the solvers
   Timer::start_section("Initialize Solvers");
+  solvers = make_solvers(solve_blocks, solve_context);
+  solution_indexer.init(field_attributes.size(),
+                        get_solution_managers_from_solvers(solvers));
   for (auto &solver : solvers)
     {
-      solver->init(get_all_dependency_sets(solve_blocks));
+      solver->init(get_all_solve_blocks(solve_blocks));
     }
   Timer::end_section("Initialize Solvers");
 
@@ -226,7 +340,7 @@ Problem<dim, degree, number>::solve()
   SimulationTimer                &sim_timer   = solve_context.get_simulation_timer();
   // Main time-stepping loop
   int exit_status = 0;
-  while (sim_timer.get_increment() <= time_info.num_increments && exit_status == 0)
+  while (sim_timer.get_increment() <= time_info.n_increments && exit_status == 0)
     {
       // Solve a single increment
       // Includes nucleation, refinement, constraints, solve, output, and update
@@ -370,7 +484,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   if (is_output_increment || force_output)
     {
       std::filesystem::path output_prefix =
-        std::filesystem::path(user_inputs.output_parameters.directory) /
+        std::filesystem::path(user_inputs.output_parameters.folder) /
         user_inputs.output_parameters.file_name;
       std::filesystem::path output_path = output_prefix;
       output_path.remove_filename();
@@ -408,8 +522,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
             {
               // This is equivalent to integration
               ConditionalOStreams::pout_base()
-                << solution *
-                     solve_context.get_invm_manager().get_jxw(TensorRank::Scalar, 0)
+                << solution * solve_context.get_invm_manager().get_jxw(TensorRank::Scalar)
                 << "\n";
             }
         }
@@ -423,6 +536,13 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
       solver->update();
     }
   return exit_status;
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+const SolveContext<dim, degree, number> &
+Problem<dim, degree, number>::get_solve_context() const
+{
+  return solve_context;
 }
 
 #include "core/problem.inst"

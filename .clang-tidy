@@ -67,6 +67,8 @@ CheckOptions:
     value:           '^[A-Z]+(_[A-Z]+)*_$'
   - key:             readability-identifier-naming.MemberCase
     value:           lower_case
+  - key:             readability-identifier-naming.MemberIgnoredRegexp
+    value:           '^_[a-z]+(_[a-z]+)*$'
   - key:             readability-identifier-naming.NamespaceCase
     value:           CamelCase
   - key:             readability-identifier-naming.ParameterCase
@@ -79,6 +81,8 @@ CheckOptions:
     value:           CamelCase
   - key:             readability-identifier-naming.VariableCase
     value:           lower_case
+  - key:             readability-identifier-naming.VariableIgnoredRegexp
+    value:           '^_[a-z]+(_[a-z]+)*$'
   - key:             readability-identifier-naming.IgnoreMainLikeFunctions
     value:           1
 

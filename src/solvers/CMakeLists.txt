@@ -10,10 +10,8 @@ set(
   _headers
   ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/constant_solver.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/explicit_solver.h
-  ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/linear_helper.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/linear_solver.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/mf_operator.h
-  ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/mg_solver.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/newton_solver.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/solve_context.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/solver_base.h

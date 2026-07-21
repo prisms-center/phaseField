@@ -10,6 +10,7 @@
 #include <prismspf/core/constraint_manager.h>
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
+#include <prismspf/core/matrix_free_manager.h>
 #include <prismspf/core/system_wide.h>
 #include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_manager.h>
@@ -20,8 +21,6 @@
 #include <prismspf/user_inputs/spatial_discretization.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/core/matrix_free_manager.h"
 
 #include <memory>
 
@@ -130,8 +129,7 @@ public:
 
     // Update anything affected by the grid change:
     // Recalculate InvM since the grid has changed
-    solve_context->get_invm_manager().reinit(solve_context->get_dof_manager(),
-                                             solve_context->get_constraint_manager());
+    solve_context->get_invm_manager().reinit(solve_context->get_matrix_free_manager());
     solve_context->get_invm_manager().compute_invm();
     // Update the ghosts
     Timer::start_section("Update ghosts");
@@ -449,8 +447,11 @@ private:
     triangulation_manager.execute_grid_refinement();
 
     // Redistribute DoFs and reinit the solvers
-    triangulation_manager.reinit();
-    dof_manager.reinit(triangulation_manager);
+    if (triangulation_manager.has_mg())
+      {
+        triangulation_manager.init_mg();
+      }
+    dof_manager.reinit(triangulation_manager, dof_manager.has_mg());
     constraint_manager.reinit(solve_context->get_field_attributes());
     matrix_free_manager.reinit(dof_manager, constraint_manager);
 

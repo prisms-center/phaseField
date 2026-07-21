@@ -18,14 +18,199 @@
 #include <prismspf/solvers/mf_operator.h>
 #include <prismspf/solvers/solver_base.h>
 
-#include <prismspf/user_inputs/linear_solve_parameters.h>
+#include <prismspf/user_inputs/solve_parameters.h>
 
 #include <prismspf/config.h>
+
+#include <memory>
+#include <string>
+//
+#include <deal.II/lac/precondition_block.h>
+#include <deal.II/multigrid/mg_coarse.h>
+#include <deal.II/multigrid/mg_constrained_dofs.h>
+#include <deal.II/multigrid/mg_matrix.h>
+#include <deal.II/multigrid/mg_smoother.h>
+#include <deal.II/multigrid/mg_tools.h>
+#include <deal.II/multigrid/mg_transfer_global_coarsening.h>
+#include <deal.II/multigrid/mg_transfer_matrix_free.h>
+#include <deal.II/multigrid/multigrid.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 class SolveContext;
+
+/**
+ * @brief Multigrid context. Everything multigrid needs to be alive to use.
+ */
+template <unsigned int dim, unsigned int degree, typename number>
+class MGContext
+{
+public:
+  using PreconditionChebyshev =
+    dealii::PreconditionChebyshev<MFOperator<dim, degree, number>,
+                                  BlockVector<number>,
+                                  dealii::DiagonalMatrix<BlockVector<number>>>;
+  using SmootherPrecond = PreconditionChebyshev;
+  using Smoother        = dealii::MGSmootherPrecondition<MFOperator<dim, degree, number>,
+                                                         SmootherPrecond,
+                                                         BlockVector<number>>;
+  using MGTransferType =
+    dealii::MGTransferBlockGlobalCoarsening<dim, BlockVector<number>>;
+  // dc = default constructible, ndc = not default constructible
+  dealii::MGLevelObject<MFOperator<dim, degree, number>> mg_lhs_operators; // dc
+  std::vector<dealii::MGConstrainedDoFs>                 mg_constraints;   // dc
+  MGTransferType                                         mg_transfer;      // ndc
+  Smoother                                               mg_smoother;      // dc
+  dealii::MGCoarseGridApplySmoother<BlockVector<number>> mg_coarse_solver; // dc
+  dealii::mg::Matrix<BlockVector<number>>                mg_matrix;        // dc
+  dealii::Multigrid<BlockVector<number>>                 multigrid;        // ndc
+  dealii::PreconditionMG<dim, BlockVector<number>, MGTransferType>
+    multigrid_preconditioner; // ndc
+
+  MGContext()
+    : mg_transfer(mg_constraints)
+    , multigrid(mg_matrix,
+                mg_coarse_solver,
+                mg_transfer,
+                mg_smoother,
+                mg_smoother,
+                0,
+                0,
+                dealii::Multigrid<BlockVector<number>>::Cycle::v_cycle)
+    , multigrid_preconditioner(std::vector<const dealii::DoFHandler<dim> *>(),
+                               multigrid,
+                               mg_transfer)
+  {}
+
+  void
+  init(unsigned int                             min_level,
+       unsigned int                             max_level,
+       const SolveBlock                        &solve_block,
+       const LinearSolverParameters            &lin_params,
+       const SolveContext<dim, degree, number> &solve_context,
+       const GroupSolutionHandler<dim, number> &solutions)
+  {
+    // 1. Level operators
+    mg_lhs_operators =
+      dealii::MGLevelObject<MFOperator<dim, degree, number>>(min_level, max_level);
+    for (unsigned level = min_level; level <= max_level; ++level)
+      {
+        const unsigned int relative_level = max_level - level;
+        mg_lhs_operators[level].init(solve_context.get_pde_operator(),
+                                     &PDEOperatorBase<dim, degree, number>::compute_lhs,
+                                     solve_context.get_field_attributes(),
+                                     solve_context.get_solution_indexer(),
+                                     solve_context.get_matrix_free_manager(),
+                                     solve_context.get_simulation_timer(),
+                                     solve_block,
+                                     solve_block.dependencies_lhs);
+        mg_lhs_operators[level].set_scaling_diagonal(
+          lin_params.tolerance_type != AbsoluteResidual,
+          solve_context.get_invm_manager().get_invm_sqrt(
+            solve_context.get_field_attributes(),
+            solve_block.field_indices,
+            relative_level));
+        mg_lhs_operators[level].set_relative_level(relative_level);
+      }
+
+    // 2. MG Constraints (homogeneous)
+    mg_constraints = make_mg_constraints(solve_block, solve_context, solutions);
+
+    // 3. MG Transfer
+    mg_transfer.initialize_constraints(mg_constraints);
+    mg_transfer.build(
+      solve_context.get_dof_manager().get_block_dof_handlers(solve_block.field_indices));
+
+    // 4. MG Smoother
+    dealii::MGLevelObject<typename SmootherPrecond::AdditionalData> smoother_data(
+      min_level,
+      max_level);
+    const auto &chebyshev_params = lin_params.chebyshev_parameters;
+    for (unsigned int level = min_level; level <= max_level; ++level)
+      {
+        unsigned int relative_level              = level - min_level;
+        smoother_data[level].smoothing_range     = chebyshev_params.smoothing_range;
+        smoother_data[level].degree              = chebyshev_params.degree;
+        smoother_data[level].eig_cg_n_iterations = chebyshev_params.eig_cg_n_iterations;
+        smoother_data[level].constraints.close(); // todo
+
+        mg_lhs_operators[level].reinit_matrix_diagonal();
+        smoother_data[level].preconditioner =
+          mg_lhs_operators[level].get_matrix_diagonal_inverse();
+      }
+    mg_smoother.initialize(mg_lhs_operators, smoother_data);
+
+    // 5. Coarse grid solver
+    mg_coarse_solver.initialize(mg_smoother);
+
+    // 6. Multigrid object
+    mg_matrix = dealii::mg::Matrix<BlockVector<number>>(mg_lhs_operators);
+    multigrid = dealii::Multigrid<BlockVector<number>>(
+      mg_matrix,
+      mg_coarse_solver,
+      mg_transfer,
+      mg_smoother,
+      mg_smoother,
+      min_level,
+      max_level,
+      dealii::Multigrid<BlockVector<number>>::Cycle::v_cycle);
+
+    // multigrid_preconditioner =
+    //   dealii::PreconditionMG<dim, BlockVector<number>, MGTransferType>(
+    //     solve_context.get_dof_manager()
+    //       .get_block_dof_handlers(solve_block.field_indices),
+    //     multigrid,
+    //     mg_transfer);
+  }
+
+  /**
+   * @brief Multigrid constraints.
+   */
+  static std::vector<dealii::MGConstrainedDoFs>
+  make_mg_constraints(const SolveBlock                        &solve_block,
+                      const SolveContext<dim, degree, number> &solve_context,
+                      const GroupSolutionHandler<dim, number> &solutions)
+  {
+    std::vector<dealii::MGConstrainedDoFs> mg_constraints(
+      solve_block.field_indices.size());
+    for (unsigned int block_index = 0; block_index < solve_block.field_indices.size();
+         block_index++)
+      {
+        unsigned int field_index = solutions.get_block_to_global_index()[block_index];
+        mg_constraints[block_index].initialize(
+          solve_context.get_dof_manager().get_field_dof_handler(field_index));
+      }
+    const std::vector<FieldAttributes> &field_attributes =
+      solve_context.get_field_attributes();
+    for (unsigned int block_index = 0; block_index < solve_block.field_indices.size();
+         block_index++)
+      {
+        unsigned int field_index     = solutions.get_block_to_global_index()[block_index];
+        const FieldAttributes &field = field_attributes[field_index];
+        unsigned int num_comps       = (field.field_type == TensorRank::Vector) ? dim : 1;
+        for (const auto &[comp, comp_bcs] :
+             field.boundary_conditions.component_constraints)
+          {
+            std::set<unsigned int> constrained_boundary_ids;
+            for (const auto &[boundary_id, boundary_type] : comp_bcs)
+              {
+                if (boundary_type == Condition::Dirichlet)
+                  {
+                    constrained_boundary_ids.insert(boundary_id);
+                  }
+              }
+            mg_constraints[block_index].make_zero_boundary_constraints(
+              solve_context.get_dof_manager().get_field_dof_handler(field_index),
+              constrained_boundary_ids,
+              num_comps == 1
+                ? ConstraintManager<dim, degree, number>::scalar_empty_mask
+                : ConstraintManager<dim, degree, number>::vector_component_mask.at(comp));
+          }
+      }
+    return mg_constraints;
+  }
+};
 
 /**
  * @brief This class handles the explicit solves of all explicit fields
@@ -51,55 +236,50 @@ public:
   LinearSolver(SolveBlock                               _solve_block,
                const SolveContext<dim, degree, number> &_solve_context)
     : SolverBase<dim, degree, number>(_solve_block, _solve_context)
-    , lin_params(
-        solve_context->get_user_inputs().linear_solve_parameters.linear_solvers.at(
-          solve_block.id))
-    , rhs_operator(solve_context->get_pde_operator(),
-                   &PDEOperatorBase<dim, degree, number>::compute_rhs,
-                   solve_context->get_field_attributes(),
-                   solve_context->get_solution_indexer(),
-                   solve_context->get_matrix_free_manager(),
-                   solve_block.dependencies_rhs,
-                   solve_context->get_simulation_timer())
-    , lhs_operator(solve_context->get_pde_operator(),
-                   &PDEOperatorBase<dim, degree, number>::compute_lhs,
-                   solve_context->get_field_attributes(),
-                   solve_context->get_solution_indexer(),
-                   solve_context->get_matrix_free_manager(),
-                   solve_block.dependencies_lhs,
-                   solve_context->get_simulation_timer())
   {}
 
   /**
    * @brief Initialize the solver.
    */
   void
-  init(const std::list<DependencyMap> &all_dependeny_sets) override
+  init(const std::list<SolveBlock> &all_solve_blocks) override
   {
-    SolverBase<dim, degree, number>::init(all_dependeny_sets);
-    rhs_vector.reinit(solutions.get_solution_full_vector(0));
+    SolverBase<dim, degree, number>::init(all_solve_blocks);
+    rhs_vector.reinit(solutions.get_solution_full_vector());
 
     // Initialize rhs_operator
-    rhs_operator.initialize(solutions);
-    rhs_operator.set_scaling_diagonal(lin_params.tolerance_type != AbsoluteResidual,
+    rhs_operator.init(solve_context->get_pde_operator(),
+                      &PDEOperatorBase<dim, degree, number>::compute_rhs,
+                      solve_context->get_field_attributes(),
+                      solve_context->get_solution_indexer(),
+                      solve_context->get_matrix_free_manager(),
+                      solve_context->get_simulation_timer(),
+                      solve_block,
+                      solve_block.dependencies_rhs);
+    rhs_operator.set_scaling_diagonal(lin_params().tolerance_type != AbsoluteResidual,
                                       solve_context->get_invm_manager().get_invm_sqrt(
                                         solve_context->get_field_attributes(),
-                                        solve_block.field_indices,
-                                        0));
+                                        solve_block.field_indices));
     // Initialize lhs_operator
-    lhs_operator.initialize(solutions);
-    lhs_operator.set_scaling_diagonal(lin_params.tolerance_type != AbsoluteResidual,
+    lhs_operator.init(solve_context->get_pde_operator(),
+                      &PDEOperatorBase<dim, degree, number>::compute_lhs,
+                      solve_context->get_field_attributes(),
+                      solve_context->get_solution_indexer(),
+                      solve_context->get_matrix_free_manager(),
+                      solve_context->get_simulation_timer(),
+                      solve_block,
+                      solve_block.dependencies_lhs);
+    lhs_operator.set_scaling_diagonal(lin_params().tolerance_type != AbsoluteResidual,
                                       solve_context->get_invm_manager().get_invm_sqrt(
                                         solve_context->get_field_attributes(),
-                                        solve_block.field_indices,
-                                        0));
+                                        solve_block.field_indices));
 
-    linear_solver_control.set_max_steps(lin_params.max_iterations);
-    linear_solver_control.set_tolerance(lin_params.tolerance * normalization_value());
+    linear_solver_control.set_max_steps(lin_params().max_iterations);
+    linear_solver_control.set_tolerance(lin_params().tolerance * normalization_value());
     initialize_solver();
-    inhomogeneous_values.reinit(solutions.get_solution_full_vector(0));
-    solutions.apply_constraints(inhomogeneous_values, 0);
-    inhomogeneous_rhs.reinit(solutions.get_solution_full_vector(0));
+    inhomogeneous_values.reinit(solutions.get_solution_full_vector());
+    solutions.apply_constraints(inhomogeneous_values);
+    inhomogeneous_rhs.reinit(solutions.get_solution_full_vector());
     initialize_preconditioner();
   }
 
@@ -110,11 +290,12 @@ public:
   reinit() override
   {
     SolverBase<dim, degree, number>::reinit();
-    rhs_vector.reinit(solutions.get_solution_full_vector(0));
+    rhs_vector.reinit(solutions.get_solution_full_vector());
 
-    inhomogeneous_values.reinit(solutions.get_solution_full_vector(0));
-    solutions.apply_constraints(inhomogeneous_values, 0);
-    inhomogeneous_rhs.reinit(solutions.get_solution_full_vector(0));
+    inhomogeneous_values.reinit(solutions.get_solution_full_vector());
+    solutions.apply_constraints(inhomogeneous_values);
+    inhomogeneous_rhs.reinit(solutions.get_solution_full_vector());
+    initialize_preconditioner();
   }
 
   /**
@@ -125,17 +306,20 @@ public:
   {
     // Zero out the ghosts
     Timer::start_section("Zero ghosts");
-    solutions.zero_out_ghosts(0);
+    solutions.zero_out_ghosts();
     Timer::end_section("Zero ghosts");
 
     // Set up rhs vector
     rhs_operator.compute_operator(rhs_vector);
 
+    // Set inhomogeneous Dirichlet values. TODO: only update if time-dependent
+    solutions.apply_constraints(inhomogeneous_values);
+
     // Note 1. Use the previous result of the linear solve without nonzero dirichlet
     // as the initial guess in the next increment. See Note 2. `inhomogeneous_rhs` is
     // not actually what it is being used as here, we just don't want to allocate a
     // whole new vector for this purpose
-    solutions.get_solution_full_vector(0).swap(inhomogeneous_rhs);
+    solutions.get_solution_full_vector().swap(inhomogeneous_rhs);
     // Get the homogeneous rhs
     lhs_operator.read_plain = true;
     lhs_operator.compute_operator(inhomogeneous_rhs, inhomogeneous_values);
@@ -143,22 +327,22 @@ public:
     rhs_vector -= inhomogeneous_rhs;
 
     // Linear solve
-    do_linear_solve(rhs_vector, lhs_operator, solutions.get_solution_full_vector(0));
+    do_linear_solve(rhs_vector, lhs_operator, solutions.get_solution_full_vector());
 
     // Note 2. Make a copy of the solution to use as the initial guess in the next
     // increment. See Note 1. `inhomogeneous_rhs` is not actually what it is being
     // used as here, we just don't want to allocate a whole new vector for this
     // purpose
-    inhomogeneous_rhs = solutions.get_solution_full_vector(0);
+    inhomogeneous_rhs = solutions.get_solution_full_vector();
     // Add back in nonzero dirichlet conditions
-    solutions.get_solution_full_vector(0) += inhomogeneous_values;
+    solutions.get_solution_full_vector() += inhomogeneous_values;
 
     // Apply constraints
-    solutions.apply_constraints(0);
+    solutions.apply_constraints();
 
     // Update the ghosts
     Timer::start_section("Update ghosts");
-    solutions.update_ghosts(0);
+    solutions.update_ghosts();
     Timer::end_section("Update ghosts");
   }
 
@@ -170,29 +354,40 @@ public:
     // Linear solve
     try
       {
-        if (lin_params.preconditioner == None)
+        if (lin_params().preconditioner == None)
           {
             lin_solver.solve(lhs_matrix,
                              x_vector,
                              b_vector,
                              dealii::PreconditionIdentity());
           }
-        if (lin_params.preconditioner == Chebyshev)
+        else if (lin_params().preconditioner == Chebyshev)
           {
-            lhs_matrix.reinit_matrix_diagonal(x_vector);
+            lhs_matrix.reinit_matrix_diagonal();
             lhs_matrix.eval_matrix_diagonal();
 
             lin_solver.solve(lhs_matrix, x_vector, b_vector, precond_chebyshev);
           }
+        else if (lin_params().preconditioner == GMG)
+          {
+            // TODO: recalculate diagonals
+            auto &lhs_ops = mg_context.mg_lhs_operators;
+            for (unsigned int level = lhs_ops.min_level(); level <= lhs_ops.max_level();
+                 ++level)
+              {
+                lhs_ops[level].reinit_matrix_diagonal(); // todo
+                lhs_ops[level].eval_matrix_diagonal();
+              }
+            lin_solver.solve(lhs_operator, x_vector, b_vector, *multigrid_preconditioner);
+          }
       }
-    catch (...) // TODO: more specific catch so that we dont ignore
-                // non-convergence-related errors.
+    catch (dealii::SolverControl::NoConvergence &exc)
       {
         ConditionalOStreams::pout_base()
           << "[Increment " << solve_context->get_simulation_timer().get_increment()
           << "] "
           << "Warning: linear solver did not converge as per set tolerances before "
-          << lin_params.max_iterations << " iterations.\n";
+          << lin_params().max_iterations << " iterations.\n";
       }
     if (solve_context->get_user_inputs().output_parameters.should_output(
           solve_context->get_simulation_timer().get_increment()))
@@ -218,7 +413,7 @@ protected:
   double
   normalization_value()
   {
-    SolverToleranceType type  = lin_params.tolerance_type;
+    SolverToleranceType type  = lin_params().tolerance_type;
     double              value = 1.0;
     if (type == RMSEPerField || type == RMSETotal)
       {
@@ -234,26 +429,30 @@ protected:
   void
   initialize_preconditioner()
   {
-    if (lin_params.preconditioner == None)
+    if (lin_params().preconditioner == None)
       {
         void(0); // do nothing
       }
-    if (lin_params.preconditioner == Chebyshev)
+    if (lin_params().preconditioner == Chebyshev)
       {
         initialize_chebyshev();
+      }
+    if (lin_params().preconditioner == GMG)
+      {
+        initialize_multigrid();
       }
   }
 
   void
   initialize_chebyshev()
   {
-    const auto &chebyshev_params = lin_params.chebyshev_parameters;
+    const auto &chebyshev_params = lin_params().chebyshev_parameters;
     precond_data.degree          = chebyshev_params.degree;
-    precond_data.smoothing_range = chebyshev_params.smoothing_range; // ≈ λ_min / λ_max
+    precond_data.smoothing_range = chebyshev_params.smoothing_range; // ≈ λ_max / λ_min
     precond_data.eig_cg_n_iterations = chebyshev_params.eig_cg_n_iterations;
 
+    lhs_operator.reinit_matrix_diagonal();
     precond_data.preconditioner = lhs_operator.get_matrix_diagonal_inverse();
-    lhs_operator.reinit_matrix_diagonal(solutions.get_solution_full_vector(0));
 
     precond_chebyshev.initialize(lhs_operator, precond_data);
   }
@@ -261,9 +460,9 @@ protected:
   void
   initialize_solver()
   {
-    const auto &richardson_parameters = lin_params.richardson_parameters;
-    const auto &bicgstab_parameters   = lin_params.bicgstab_parameters;
-    const auto &gmres_parameters      = lin_params.gmres_parameters;
+    const auto &richardson_parameters = lin_params().richardson_parameters;
+    const auto &bicgstab_parameters   = lin_params().bicgstab_parameters;
+    const auto &gmres_parameters      = lin_params().gmres_parameters;
     const typename dealii::SolverRichardson<BlockVector<number>>::AdditionalData
       local_richardson_parameters(richardson_parameters.omega,
                                   richardson_parameters.use_preconditioned_residual);
@@ -286,7 +485,7 @@ protected:
     lin_solver.set_data(local_gmres_parameters);
     lin_solver.set_data(local_fgmres_parameters);
 
-    lin_solver.select(lin_params.solver_type);
+    lin_solver.select(lin_params().solver_type);
     lin_solver.set_control(linear_solver_control);
   }
 
@@ -294,7 +493,11 @@ private:
   /**
    * @brief Linear solver parameters
    */
-  LinearSolverParameters lin_params;
+  const LinearSolverParameters &
+  lin_params() const
+  {
+    return solve_block.linear_solver_parameters;
+  }
 
   /**
    * @brief Solver control. Contains max iterations and tolerance.
@@ -319,6 +522,32 @@ private:
 
   PreconditionChebyshev                 precond_chebyshev;
   PreconditionChebyshev::AdditionalData precond_data;
+
+  MGContext<dim, degree, number> mg_context;
+
+  using PreconditionMG =
+    dealii::PreconditionMG<dim,
+                           BlockVector<number>,
+                           typename MGContext<dim, degree, number>::MGTransferType>;
+  /**
+   * @brief Multigrid preconditioner
+   */
+  std::shared_ptr<PreconditionMG> multigrid_preconditioner = nullptr;
+
+  void
+  initialize_multigrid()
+  {
+    const unsigned int global_refinement =
+      solve_context->get_user_inputs().spatial_discretization.global_refinement;
+    const unsigned int min_level = global_refinement - (lin_params().mg_depth) + 1;
+    const unsigned int max_level = global_refinement;
+    mg_context
+      .init(min_level, max_level, solve_block, lin_params(), *solve_context, solutions);
+    multigrid_preconditioner = std::make_shared<PreconditionMG>(
+      solve_context->get_dof_manager().get_block_dof_handlers(solve_block.field_indices),
+      mg_context.multigrid,
+      mg_context.mg_transfer);
+  }
 };
 
 PRISMS_PF_END_NAMESPACE

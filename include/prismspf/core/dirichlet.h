@@ -4,9 +4,8 @@
 #pragma once
 
 #include <deal.II/base/function.h>
-#include <deal.II/base/point.h>
-#include <deal.II/lac/vector.h>
 
+#include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
@@ -32,6 +31,7 @@ public:
   DirichletConditions(unsigned int                                _index,
                       unsigned int                                _boundary_id,
                       const PDEOperatorBase<dim, degree, number> &_pde_operator,
+                      const SimulationTimer                      &_sim_timer,
                       unsigned int                                spacedim);
 
   // NOLINTBEGIN(readability-identifier-length, readability-avoid-const-params-in-decls)
@@ -55,7 +55,9 @@ private:
 
   unsigned int boundary_id;
 
-  const PDEOperatorBase<dim, degree, number> *pde_operator;
+  const PDEOperatorBase<dim, degree, number> *pde_operator = nullptr;
+
+  const SimulationTimer *sim_timer = nullptr;
 };
 
 PRISMS_PF_END_NAMESPACE

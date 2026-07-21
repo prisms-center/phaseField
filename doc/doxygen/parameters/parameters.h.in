@@ -1,0 +1,18 @@
+/** \page parameters Parameters
+
+This page is a list of all user parameters in PRISMS-PF. Here, we document them in tables
+organized by subsection with names, default values, acceptable values (patterns),
+descriptions, and aliases.
+
+Subsections that end in 0 are number in the parameter file. You can as many of these as
+you would like. By default you have `Numbers::default_subsections`. To change have many
+subsections you have, you can write something like the following.
+@code{.cpp}
+UserInputParameters<dim>(cli_options.get_parameters_filename(), 10);
+@endcode
+
+@note You can copy parameter names to clipboard by clicking on them!
+
+@parameter_list
+
+*/

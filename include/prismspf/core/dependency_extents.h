@@ -4,9 +4,12 @@
 #pragma once
 
 #include <prismspf/core/dependencies.h>
+#include <prismspf/core/solve_block.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
+
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 inline unsigned int
@@ -21,6 +24,24 @@ oldest(Dependency dependencies)
         }
     }
   return 0;
+}
+
+inline int
+oldest2(Dependency dependencies)
+{
+  for (long int age_index = long(dependencies.old_flags.size()) - 1; age_index >= 0;
+       age_index--)
+    {
+      if (dependencies.old_flags[age_index])
+        {
+          return age_index + 1;
+        }
+    }
+  if (dependencies.flag)
+    {
+      return 0;
+    }
+  return -1;
 }
 
 /**
@@ -46,6 +67,66 @@ struct DependencyExtents
               {
                 oldest_age = std::max(oldest_age, oldest(dep_pair_it->second));
               }
+          }
+      }
+  }
+};
+
+struct NewDependencyExtents
+{
+  unsigned int              max_age = 0;
+  std::vector<unsigned int> max_age_per_level;
+
+  NewDependencyExtents(const std::set<unsigned int> &field_indices,
+                       const std::list<SolveBlock>  &solve_blocks)
+  {
+    for (const SolveBlock &solve_block : solve_blocks)
+      {
+        const unsigned int num_levels =
+          solve_block.linear_solver_parameters.preconditioner == GMG
+            ? solve_block.linear_solver_parameters.mg_depth
+            : 0;
+        for (unsigned int field_index : field_indices)
+          {
+            {
+              const auto &dep_pair_it = solve_block.dependencies_rhs.find(field_index);
+              if (dep_pair_it != solve_block.dependencies_rhs.end())
+                {
+                  unsigned int age = oldest2(dep_pair_it->second);
+                  if (age != -1)
+                    {
+                      max_age = std::max(max_age, age);
+                    }
+                  // ignore mg_dependencies for rhs
+                }
+            }
+            {
+              const auto &dep_pair_it = solve_block.dependencies_lhs.find(field_index);
+              if (dep_pair_it != solve_block.dependencies_lhs.end())
+                {
+                  // mg dependencies TODO: when issue #1182 is closed, remove this
+                  if (solve_block.field_indices.contains(field_index) &&
+                      num_levels > max_age_per_level.size())
+                    {
+                      max_age_per_level.resize(num_levels, 0);
+                    }
+                  unsigned int age = oldest2(dep_pair_it->second);
+                  if (age != -1)
+                    {
+                      max_age = std::max(max_age, age);
+                      if (num_levels > max_age_per_level.size())
+                        {
+                          max_age_per_level.resize(num_levels, 0);
+                        }
+                      for (unsigned int relative_level = 0; relative_level < num_levels;
+                           ++relative_level)
+                        {
+                          max_age_per_level[relative_level] =
+                            std::max(max_age_per_level[relative_level], age);
+                        }
+                    }
+                }
+            }
           }
       }
   }

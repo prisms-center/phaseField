@@ -39,7 +39,7 @@ public:
     , solve_context(&_solve_context)
     , solutions(solve_block,
                 solve_context->get_field_attributes(),
-                solve_context->get_matrix_free_manager().get_shared_matrix_free_levels())
+                solve_context->get_matrix_free_manager())
   {}
 
   /**
@@ -81,13 +81,18 @@ public:
    * @brief Initialize the solver.
    */
   virtual void
-  init(const std::list<DependencyMap> &all_dependeny_sets)
+  init(const std::list<SolveBlock> &all_solve_blocks)
   {
-    DependencyExtents extents(solve_block.field_indices, all_dependeny_sets);
-    solutions.init(extents.oldest_age);
+    NewDependencyExtents extents(solve_block.field_indices, all_solve_blocks);
+    solutions.init(extents);
 
     // Apply constraints.
     solutions.apply_constraints();
+
+    if (solutions.num_levels() > 0)
+      {
+        solutions.reinit_mg_transfer(solve_context->get_dof_manager());
+      }
   }
 
   /**
@@ -99,6 +104,14 @@ public:
     // Apply constraints.
     solutions.reinit();
     solutions.apply_constraints();
+    if (solutions.num_levels() > 0)
+      {
+        solutions.reinit_mg_transfer(solve_context->get_dof_manager());
+        solutions.mg_transfer_down(
+          solve_context->get_dof_manager(),
+          solve_context->get_user_inputs().spatial_discretization.global_refinement,
+          true);
+      }
   }
 
   /**
@@ -119,12 +132,21 @@ public:
       {
         // Set the initial condition
         set_initial_condition();
-        return;
       }
-    this->solve_impl();
+    else
+      {
+        this->solve_impl();
+      }
     if (solve_context->get_simulation_timer().get_increment() == 0)
       {
         solutions.apply_initial_condition_for_old_fields();
+      }
+    if (solutions.num_levels() > 0)
+      {
+        solutions.mg_transfer_down(
+          solve_context->get_dof_manager(),
+          solve_context->get_user_inputs().spatial_discretization.global_refinement,
+          false);
       }
   }
 
@@ -183,10 +205,10 @@ public:
 
         // First, try to find this variable in IC files
         const auto &initial_condition_parameters =
-          solve_context->get_user_inputs().load_ic_parameters;
+          solve_context->get_user_inputs().input_parameters;
 
         for (const auto &initial_condition_file :
-             initial_condition_parameters.get_initial_condition_files())
+             initial_condition_parameters.initial_condition_files)
           {
             auto name_it =
               std::find(initial_condition_file.simulation_variable_names.begin(),

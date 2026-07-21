@@ -9,6 +9,7 @@ on:
 
 jobs:
   link-checker:
+    if: github.repository == 'prisms-center/phaseField' # Don't run on forks
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -18,7 +19,7 @@ jobs:
       issues: write
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ matrix.branch }}
 

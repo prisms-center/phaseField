@@ -214,10 +214,8 @@ public:
           return result;
         }();
 
-        ScalarValue dist = distance<dim, ScalarValue>(
-          q_point_loc,
-          loc_as_arr,
-          get_user_inputs().spatial_discretization.rectangular_mesh);
+        ScalarValue dist =
+          get_user_inputs().spatial_discretization.distance(q_point_loc, loc_as_arr);
         // Seed a nucleus if it was added to the list of nuclei recently
         if (current_time < nucleus.seed_time + seeding_duration)
           {

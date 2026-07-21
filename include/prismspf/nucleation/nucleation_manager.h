@@ -21,8 +21,6 @@
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <prismspf/utilities/periodic_distance.h>
-
 #include <prismspf/config.h>
 
 #include <algorithm>
@@ -101,7 +99,7 @@ NucleationManager<dim, degree, number>::attempt_nucleation(
   const UserInputParameters<dim> &user_inputs = solve_context.get_user_inputs();
   const NucleationParameters     &nuc_params  = user_inputs.nucleation_parameters;
   const SimulationTimer          &time_info   = solve_context.get_simulation_timer();
-  const double delta_t = nuc_params.get_nucleation_period() * time_info.get_timestep();
+  const double delta_t = nuc_params.nucleation_period * time_info.get_timestep();
   auto        &rng     = user_inputs.misc_parameters.rng;
 
   // Set up FEValues
@@ -220,22 +218,21 @@ NucleationManager<dim, degree, number>::gather_exclude_broadcast_nuclei(
 
       while (!new_nuclei.empty())
         {
-          const Nucleus<dim> &nuc = new_nuclei.back();
-          bool                valid =
-            std::none_of(global_nuclei.begin(),
-                         global_nuclei.end(),
-                         [&](const Nucleus<dim> &existing_nucleus)
-                         {
-                           const double distance = prismspf::distance<dim, double>(
-                             nuc.location,
-                             existing_nucleus.location,
-                             user_inputs.spatial_discretization.rectangular_mesh);
-                           return nuc_params.check_active(existing_nucleus, time_info) &&
-                                  (distance < nuc_params.get_exclusion_distance() ||
-                                   (nuc.field_index == existing_nucleus.field_index &&
-                                    distance <
-                                      nuc_params.get_same_field_exclusion_distance()));
-                         });
+          const Nucleus<dim> &nuc   = new_nuclei.back();
+          bool                valid = std::none_of(
+            global_nuclei.begin(),
+            global_nuclei.end(),
+            [&](const Nucleus<dim> &existing_nucleus)
+            {
+              const double distance =
+                user_inputs.spatial_discretization.distance(nuc.location,
+                                                            existing_nucleus.location);
+
+              return nuc_params.check_active(existing_nucleus, time_info) &&
+                     (distance < nuc_params.nucleus_exclusion_distance ||
+                      (nuc.field_index == existing_nucleus.field_index &&
+                       distance < nuc_params.same_field_nucleus_exclusion_distance));
+            });
           if (valid)
             {
               // Note: Using push_back() in a loop is not good use for

@@ -4,13 +4,16 @@
 #pragma once
 
 #include <deal.II/base/data_out_base.h>
+#include <deal.II/base/parameter_handler.h>
+#include <deal.II/base/patterns.h>
 #include <deal.II/base/utilities.h>
+
+#include <boost/serialization/vector.hpp>
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
-#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/user_inputs/parameter_base.h>
 
@@ -19,6 +22,7 @@
 #include <prismspf/config.h>
 
 #include <climits>
+#include <concepts>
 #include <execution>
 #include <set>
 #include <string>
@@ -26,11 +30,128 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+inline void
+add_equal_spacing_outputs(unsigned int            n_outputs,
+                          unsigned int            n_increments,
+                          std::set<unsigned int> &output_list)
+{
+  output_list.clear();
+  if (n_increments == 0)
+    {
+      output_list.insert(0);
+      return;
+    }
+  if (!n_outputs)
+    {
+      return;
+    }
+
+  unsigned int period = std::max(1U, n_increments / n_outputs);
+  for (unsigned int output = 0; output <= n_increments; output += period)
+    {
+      output_list.insert(output);
+    }
+}
+
+inline void
+add_log_spacing_outputs(unsigned int            n_outputs,
+                        unsigned int            n_increments,
+                        std::set<unsigned int> &output_list)
+{
+  output_list.clear();
+  if (n_increments == 0)
+    {
+      output_list.insert(0);
+      return;
+    }
+  if (!n_outputs)
+    {
+      return;
+    }
+
+  for (unsigned int output = 1; output <= n_outputs; output++)
+    {
+      output_list.insert((unsigned int) (std::round(
+        std::pow(double(n_increments), double(output) / double(n_outputs)))));
+    }
+}
+
+inline void
+add_n_per_decade_outputs(unsigned int            n_outputs,
+                         unsigned int            n_increments,
+                         std::set<unsigned int> &output_list)
+{
+  output_list.clear();
+  if (n_increments == 0)
+    {
+      output_list.insert(0);
+      return;
+    }
+  if (!n_outputs)
+    {
+      return;
+    }
+
+  output_list.insert(0);
+  output_list.insert(1);
+  for (unsigned int iteration = 2; iteration <= n_increments; iteration++)
+    {
+      const auto decade    = (unsigned int) (std::ceil(std::log10(iteration)));
+      const auto step_size = (unsigned int) (std::pow(10, decade) / n_outputs);
+      if (iteration % step_size == 0)
+        {
+          output_list.insert(iteration);
+        }
+    }
+}
+
+template <typename T1, typename T2>
+requires std::convertible_to<T1, T2>
+inline void
+add_list_outputs(const std::vector<T1> &list, std::set<T2> &output_list)
+{
+  for (const auto &val : list)
+    {
+      output_list.insert(T2(val));
+    }
+}
+
 /**
  * @brief Simple struct for field output.
  */
-struct FieldOutputParameters
+struct FieldOutputParameters : public ParameterBase
 {
+  /**
+   * @brief Declare the parameters to be read from file.
+   */
+  static void
+  declare(dealii::ParameterHandler &parameter_handler,
+          unsigned int              n_subsections = Numbers::default_subsections);
+
+  /**
+   * @brief Assign the parameters from file.
+   *
+   * WARN: This one should not be used
+   */
+  void
+  assign(dealii::ParameterHandler &parameter_handler,
+         unsigned int              n_subsections = Numbers::default_subsections) override;
+
+  /**
+   * @brief Assign the parameters from file.
+   */
+  void
+  assign(dealii::ParameterHandler &parameter_handler,
+         unsigned int              n_increments,
+         unsigned int              n_subsections = Numbers::default_subsections);
+
+  /**
+   * @brief Validate.
+   */
+  void
+  validate(const std::vector<FieldAttributes> &field_attributes,
+           const std::vector<SolveBlock>      &solve_blocks) const override;
+
   /**
    * @brief VTK output types.
    */
@@ -38,8 +159,15 @@ struct FieldOutputParameters
   {
     VTU,
     VTK,
-    PVTU
+    PVTU,
+    XDMF
   };
+
+  /**
+   * @brief Whether a given increment should be outputted.
+   */
+  [[nodiscard]] bool
+  should_output(unsigned int increment) const;
 
   /**
    * @brief File type for field output.
@@ -74,9 +202,9 @@ struct FieldOutputParameters
   /**
    * @brief Folder for field output.
    *
-   * Choosing this will give you your results like outputs/solution-*.vtu
+   * Choosing this will give you your results like solutions/solution-*.vtu
    */
-  std::string folder;
+  std::string folder = "solutions";
 
   /**
    * @brief Base filename for field output.
@@ -84,7 +212,7 @@ struct FieldOutputParameters
    * This is the base filename for the outputs. For example, solution-*.vtu or
    * file_name-*.vtu
    */
-  std::string file_name;
+  std::string file_name = "solution";
 
   /**
    * @brief A list of output steps.
@@ -92,7 +220,7 @@ struct FieldOutputParameters
    * This is determined by a combination of the number of outputs and the total number of
    * steps. When we reach a step contained in the list, we output.
    */
-  std::set<unsigned int> output_list;
+  std::set<unsigned int> output_list = {0};
 
   /**
    * @brief A list of fields that are output.
@@ -106,244 +234,153 @@ struct FieldOutputParameters
    * we only care about combined fields (e.g., grain ids). When we don't output all of the
    * order parameters we save lots of disk space because we go from n fields to 1.
    */
-  std::set<std::pair<Types::Index, DependencyType>> output_fields;
+  std::set<std::string> output_fields;
 };
 
 /**
- * @brief A class that determines how often and what fields are output.
+ * @brief Simple struct for restart output.
  */
-class FieldOutputParameterLoader : ParameterBase
+struct RestartOutputParameters : public ParameterBase
 {
-public:
   /**
-   * @brief Declare parameters.
+   * @brief Declare the parameters to be read from file.
    */
-  void
-  declare(dealii::ParameterHandler &parameter_handler) const override
-  {
-    parameter_handler.enter_subsection("field output");
-
-    parameter_handler.declare_entry("folder",
-                                    "",
-                                    dealii::Patterns::Anything(),
-                                    "The folder where output files are stored.");
-    parameter_handler.declare_entry("file name",
-                                    "solution",
-                                    dealii::Patterns::Anything(),
-                                    "The base name for the output file, before the time "
-                                    "step and processor info are added.");
-    parameter_handler.declare_entry(
-      "file type",
-      "vtu",
-      dealii::Patterns::Selection("vtu|vtk|pvtu|xdmf"),
-      "The output file type (either vtu, pvtu, vtk, or xdmf).");
-    parameter_handler.declare_entry(
-      "subdivisions",
-      "0",
-      dealii::Patterns::Integer(0, INT_MAX),
-      "The number of subdivisions to apply to the mesh when building output patches. If "
-      "0, the degree is used.");
-    parameter_handler.declare_entry("compression level",
-                                    "default",
-                                    dealii::Patterns::Selection(
-                                      "default|best speed|best size|none"),
-                                    "The compression level of the output (either "
-                                    "default, best speed, best size, or none).");
-
-    parameter_handler.declare_entry(
-      "condition",
-      "EQUAL_SPACING",
-      dealii::Patterns::Selection("EQUAL_SPACING|LOG_SPACING|N_PER_DECADE|LIST"),
-      "The spacing type for outputting the solution fields (either EQUAL_SPACING, "
-      "LOG_SPACING, N_PER_DECADE, or LIST).");
-    parameter_handler.declare_entry(
-      "list",
-      "0",
-      dealii::Patterns::List(dealii::Patterns::Integer(0, INT_MAX), 0, INT_MAX, ","),
-      "The list of time steps to output. Used for the LIST type only and must be comma "
-      "delimited.");
-    parameter_handler.declare_entry("number",
-                                    "10",
-                                    dealii::Patterns::Integer(0, INT_MAX),
-                                    "The number of outputs (or number of outputs "
-                                    "per decade for the N_PER_DECADE type).");
-
-    parameter_handler.declare_entry(
-      "fields",
-      "",
-      dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
-      "The list of fields to output. Must be comma delimited. Additionally, for the "
-      "output of change and old fields, they must follow the same delimiters in "
-      "VariableAttributes. In other words, something like `set fields = n1, old_1(n1), "
-      "change(n1)`.");
-
-    parameter_handler.leave_subsection();
-  }
+  static void
+  declare(dealii::ParameterHandler &parameter_handler,
+          unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
-   * @brief Read parameters.
+   * @brief Assign the parameters from file.
+   *
+   * WARN: This one should not be used
    */
   void
-  read(dealii::ParameterHandler &parameter_handler) override
-  {
-    const std::unordered_map<std::string, FieldOutputParameters::OutputType>
-      output_type_table = {
-        {"vtu",  FieldOutputParameters::OutputType::VTU },
-        {"vtk",  FieldOutputParameters::OutputType::VTK },
-        {"pvtu", FieldOutputParameters::OutputType::PVTU}
-    };
-    const std::unordered_map<std::string, dealii::DataOutBase::CompressionLevel>
-      compression_level_table = {
-        {"default",    dealii::DataOutBase::CompressionLevel::default_compression},
-        {"best speed", dealii::DataOutBase::CompressionLevel::best_speed         },
-        {"best size",  dealii::DataOutBase::CompressionLevel::best_compression   },
-        {"none",       dealii::DataOutBase::CompressionLevel::no_compression     }
-    };
-
-    parameter_handler.enter_subsection("field output");
-
-    parameters.folder    = parameter_handler.get("folder");
-    parameters.file_name = parameter_handler.get("file name");
-    parameters.file_type =
-      string_to_type(parameter_handler.get("file type"), output_type_table);
-    parameters.patch_subdivisions = parameter_handler.get_integer("subdivisions");
-    parameters.compression_level =
-      string_to_type(parameter_handler.get("compression level"), compression_level_table);
-
-    condition        = parameter_handler.get("condition");
-    user_output_list = dealii::Utilities::string_to_int(
-      dealii::Utilities::split_string_list(parameter_handler.get("list")));
-    n_outputs  = parameter_handler.get_integer("number");
-    field_list = dealii::Utilities::split_string_list(parameter_handler.get("fields"));
-
-    parameter_handler.leave_subsection();
-  }
+  assign(dealii::ParameterHandler &parameter_handler,
+         unsigned int              n_subsections = Numbers::default_subsections) override;
 
   /**
-   * @brief Postprocess parameters.
+   * @brief Assign the parameters from file.
    */
   void
-  postprocess(unsigned int n_increments)
-  {
-    fill_out_output_list(n_increments);
-
-    // Determine which fields we are outputting.
-  }
+  assign(dealii::ParameterHandler &parameter_handler,
+         unsigned int              n_increments,
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
-   * @brief Validate parameters.
+   * @brief Validate.
    */
   void
-  validate(const std::vector<VariableAttributes> &field_attributes) const override
-  {}
+  validate(const std::vector<FieldAttributes> &field_attributes,
+           const std::vector<SolveBlock>      &solve_blocks) const override;
 
   /**
-   * @brief Package parameters.
+   * @brief Whether a given increment should be outputted.
    */
-  [[nodiscard]] FieldOutputParameters
-  package() const
-  {
-    return parameters;
-  }
+  [[nodiscard]] bool
+  should_output(unsigned int increment) const;
 
   /**
-   * @brief Print parameters to summary.log
+   * @brief Whether to load from a checkpoint
+   *
+   * TODO: This doesn't really belong here. Maybe it does? With loading from restart it
+   * overrides any other input conditions so it might not fit super well in the input
+   * section either. I don't see a good place to put it and it somewhat fits here so
+   * leaving it.
+   */
+  bool load_from_checkpoint = false;
+
+  /**
+   * @brief Folder for checkpoint output.
+   *
+   * Choosing this will give you your results like solutions/solution-*.vtu
+   */
+  std::string folder = "solutions";
+
+  /**
+   * @brief Base filename for checkpoint output.
+   *
+   * This is the base filename for the outputs. For example, solution-*.vtu or
+   * file_name-*.vtu
+   */
+  std::string file_name = "checkpoint";
+
+  /**
+   * @brief A list of output steps.
+   *
+   * This is determined by a combination of the number of outputs and the total number of
+   * steps. When we reach a step contained in the list, we output.
+   */
+  std::set<unsigned int> output_list = {0};
+};
+
+/**
+ * @brief Initial condition file
+ */
+struct InitialConditionFile
+{
+  /**
+   * @brief Data formats for input initial conditions.
+   */
+  enum DataFormatType : std::uint8_t
+  {
+    FlatBinary,
+    VTKUnstructuredGrid,
+    VTKXMLUnstructuredGrid,
+    VTKPXMLUnstructuredGrid,
+    VTKXMLImageData
+  };
+
+  // File name
+  std::string file_name;
+
+  // Data format
+  DataFormatType format;
+
+  // File variable names
+  std::vector<std::string> file_variable_names;
+
+  // Simulation variable names
+  std::vector<std::string> simulation_variable_names;
+
+  // Number of data points in each direction
+  std::array<unsigned int, 3> n_data_points = {
+    {0, 0, 0}
+  };
+};
+
+/**
+ * @brief Simple struct for field input.
+ */
+struct FieldInputParameters : public ParameterBase
+{
+  /**
+   * @brief Declare the parameters to be read from file.
+   */
+  static void
+  declare(dealii::ParameterHandler &parameter_handler,
+          unsigned int              n_subsections = Numbers::default_subsections);
+
+  /**
+   * @brief Assign the parameters from file.
    */
   void
-  print_parameter_summary() const override
-  {
-    ConditionalOStreams::pout_summary()
-      << "================================================\n"
-      << "  Field Output Parameter Class\n"
-      << "================================================\n"
-      << std::flush;
-  }
+  assign(dealii::ParameterHandler &parameter_handler,
+         unsigned int              n_subsections = Numbers::default_subsections) override;
 
-private:
+  /**
+   * @brief Validate.
+   */
   void
-  fill_out_output_list(unsigned int n_increments)
-  {
-    // If the user has specified a list and we have list output use that and return early
-    if (condition == "LIST")
-      {
-        for (const auto &increment : user_output_list)
-          {
-            parameters.output_list.insert(static_cast<unsigned int>(increment));
-          }
-        return;
-      }
+  validate(const std::vector<FieldAttributes> &field_attributes,
+           const std::vector<SolveBlock>      &solve_blocks) const override;
 
-    // If the number of outputs is 0 return early
-    if (n_outputs == 0)
-      {
-        return;
-      }
+  /**
+   * @brief Whether to load initial conditions from file
+   */
+  bool load_from_file = false;
 
-    // If the number of outputs is greater than the number of increments, force them to be
-    // equivalent
-    n_outputs = std::min(n_outputs, n_increments);
-
-    // If the number of increments is 0, we only output the initial condition. We can set
-    // that and return early.
-    if (n_increments == 0)
-      {
-        parameters.output_list.insert(0);
-        return;
-      }
-
-    // Determine the output list from the other criteria
-    if (condition == "EQUAL_SPACING")
-      {
-        for (unsigned int iteration = 0; iteration <= n_increments;
-             iteration += n_increments / n_outputs)
-          {
-            parameters.output_list.insert(iteration);
-          }
-      }
-    else if (condition == "LOG_SPACING")
-      {
-        parameters.output_list.insert(0);
-        for (unsigned int output = 1; output <= n_outputs; output++)
-          {
-            parameters.output_list.insert(static_cast<unsigned int>(std::round(
-              std::pow(static_cast<double>(n_increments),
-                       static_cast<double>(output) / static_cast<double>(n_outputs)))));
-          }
-      }
-    else if (condition == "N_PER_DECADE")
-      {
-        AssertThrow(n_increments > 1,
-                    dealii::ExcMessage("For n per decaded spaced outputs, the number of "
-                                       "increments must be greater than 1."));
-        parameters.output_list.insert(0);
-        parameters.output_list.insert(1);
-        for (unsigned int iteration = 2; iteration <= n_increments; iteration++)
-          {
-            const auto decade =
-              static_cast<unsigned int>(std::ceil(std::log10(iteration)));
-            const auto step_size =
-              static_cast<unsigned int>(std::pow(10, decade) / n_outputs);
-            if (iteration % step_size == 0)
-              {
-                parameters.output_list.insert(iteration);
-              }
-          }
-      }
-    else
-      {
-        AssertThrow(false, UnreachableCode());
-      }
-  }
-
-  FieldOutputParameters parameters;
-
-  std::string condition;
-
-  std::vector<int> user_output_list;
-
-  unsigned int n_outputs = 0;
-
-  std::vector<std::string> field_list;
+  // Collection of initial condition files
+  std::vector<InitialConditionFile> initial_condition_files;
 };
 
 PRISMS_PF_END_NAMESPACE
