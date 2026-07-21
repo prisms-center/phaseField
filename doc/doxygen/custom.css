@@ -31,9 +31,9 @@ html.dark-mode {
 
 .alias-badge {
     display: inline-block;
-    background-color: #d8f5d0;
-    color: #176b17;
-    border: 1px solid #9bd18b;
+    background-color: #325c3d;
+    color: #59ab6f;
+    border: 1px solid #59ab6f;
     border-radius: 10px;
     padding: 2px 8px;
     margin: 2px;
