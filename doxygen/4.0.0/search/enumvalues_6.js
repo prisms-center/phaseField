@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['initialized_0',['Initialized',['../solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5daae32940b344dab2f4e31be660ce1ab02',1,'solve_block.h']]],
-  ['integratedperfield_1',['IntegratedPerField',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700ad78fca036136942a30423b5f23c53ac2',1,'type_enums.h']]],
-  ['integratedtotal_2',['IntegratedTotal',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a4c2ac2bcb88e4a20e5a6310bbc39a294',1,'type_enums.h']]],
-  ['isotropic_3',['Isotropic',['../type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa986e31cfc4be5610bf8955fda1928b13',1,'type_enums.h']]]
+  ['gmg_0',['GMG',['../type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bae1fe899e8d7d383afcd7fddaf2399c53',1,'type_enums.h']]],
+  ['gradient_1',['Gradient',['../grid__refiner__criterion_8h.html#a6c93453a9993c7ade7cae9a8232426d5aadd31e0ae0bc3c65905fdbb5b2c2633d',1,'grid_refiner_criterion.h']]]
 ];

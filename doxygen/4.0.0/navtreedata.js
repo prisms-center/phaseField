@@ -82,7 +82,8 @@ var NAVTREEINDEX =
 "classRefinementManager.html#afaa7f742a2854a1422534b5fec9f862e",
 "classes.html",
 "namespacePatterns.html#ad698158ab66e73084dc1e79f75ac9d1b",
-"structMiscellaneousParameters.html#ae99d7228c0ad13341567a084360c6aa7"
+"structMiscellaneousParameters.html#ae99d7228c0ad13341567a084360c6aa7",
+"utilities_8h.html#a6900a956ef14d53b30c0616e7cf7b930"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

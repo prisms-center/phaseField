@@ -1,6 +1,14 @@
 var structRectangularMesh =
 [
     [ "Triangulation", "structRectangularMesh.html#a42ea1781af37eb5310326a1d30f6aa03", null ],
+    [ "Boundary", "structRectangularMesh.html#a09ad825f654f798d5b7126d42cc7599e", [
+      [ "Left", "structRectangularMesh.html#a09ad825f654f798d5b7126d42cc7599eab822a23853fd5bbb847a0fe422ae8434", null ],
+      [ "Right", "structRectangularMesh.html#a09ad825f654f798d5b7126d42cc7599ea6afe1aa722dd4794a4ff5a46fb1ce617", null ],
+      [ "Top", "structRectangularMesh.html#a09ad825f654f798d5b7126d42cc7599eaddbf41be6c3bbbbcb72ae65044415eaf", null ],
+      [ "Bottom", "structRectangularMesh.html#a09ad825f654f798d5b7126d42cc7599ea86231dc20bbecba20121bf806454ff5e", null ],
+      [ "Front", "structRectangularMesh.html#a09ad825f654f798d5b7126d42cc7599ea63e3fa62121fc74a94abf31f0b5616a2", null ],
+      [ "Back", "structRectangularMesh.html#a09ad825f654f798d5b7126d42cc7599ea5ddfe743f88a971dc268d39062210aa0", null ]
+    ] ],
     [ "RectangularMesh", "structRectangularMesh.html#ac67b7b4b89f8c29f84b711365cb84ea9", null ],
     [ "RectangularMesh", "structRectangularMesh.html#a148911db79df182d7105ba1afa23ce3a", null ],
     [ "assign_parameters", "structRectangularMesh.html#a3f3f9c5fe6ac39b4bbbe27ccb79b230b", null ],

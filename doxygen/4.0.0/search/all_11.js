@@ -44,11 +44,12 @@ var searchData=
   ['rhs_5fvector_41',['rhs_vector',['../classLinearSolver.html#a32eab3de4f0a4c01e3b9ee4b33f3b563',1,'LinearSolver']]],
   ['richardson_42',['linear solver parameters: 0.Richardson',['../parameters.html#p_list_linear_solver_parameters__0_richardson',1,'']]],
   ['richardson_5fparameters_43',['richardson_parameters',['../structLinearSolverParameters.html#ab9c8dea40aa9980414ad69d19b9d5c7b',1,'LinearSolverParameters']]],
-  ['rmseperfield_44',['RMSEPerField',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a429ddc9697410939181b58898469d8a9',1,'type_enums.h']]],
-  ['rmsetotal_45',['RMSETotal',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a97a89bb2ce90ae05d35fc96471c3d33c',1,'type_enums.h']]],
-  ['rng_46',['rng',['../structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93',1,'MiscellaneousParameters']]],
-  ['rngengine_47',['RNGEngine',['../miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93',1,'miscellaneous_parameters.h']]],
-  ['root_48',['root',['../parameters.html#p_list_root',1,'']]],
-  ['rotation_5fmatrix_49',['rotation_matrix',['../structPeriodicPair.html#a23e2e9e06580470edd22972e5d097c8d',1,'PeriodicPair']]],
-  ['run_20a_20simulation_50',['Run a simulation',['../structure.html#problem',1,'']]]
+  ['right_44',['Right',['../structRectangularMesh.html#a09ad825f654f798d5b7126d42cc7599ea6afe1aa722dd4794a4ff5a46fb1ce617',1,'RectangularMesh']]],
+  ['rmseperfield_45',['RMSEPerField',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a429ddc9697410939181b58898469d8a9',1,'type_enums.h']]],
+  ['rmsetotal_46',['RMSETotal',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a97a89bb2ce90ae05d35fc96471c3d33c',1,'type_enums.h']]],
+  ['rng_47',['rng',['../structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93',1,'MiscellaneousParameters']]],
+  ['rngengine_48',['RNGEngine',['../miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93',1,'miscellaneous_parameters.h']]],
+  ['root_49',['root',['../parameters.html#p_list_root',1,'']]],
+  ['rotation_5fmatrix_50',['rotation_matrix',['../structPeriodicPair.html#a23e2e9e06580470edd22972e5d097c8d',1,'PeriodicPair']]],
+  ['run_20a_20simulation_51',['Run a simulation',['../structure.html#problem',1,'']]]
 ];

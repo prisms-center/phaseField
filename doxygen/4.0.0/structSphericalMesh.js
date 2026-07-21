@@ -1,6 +1,9 @@
 var structSphericalMesh =
 [
     [ "Triangulation", "structSphericalMesh.html#afb34b8e979451a4fd88506a35c899bd8", null ],
+    [ "Boundary", "structSphericalMesh.html#a1fd1a4e27f93e09948f096087ab54fb3", [
+      [ "Surface", "structSphericalMesh.html#a1fd1a4e27f93e09948f096087ab54fb3a958a4180b6f20071530eb7dcbb2c1959", null ]
+    ] ],
     [ "SphericalMesh", "structSphericalMesh.html#a38656f8ae89b5fc27c56178f4950abdd", null ],
     [ "SphericalMesh", "structSphericalMesh.html#ad6da88a01ab53c2630c7f1f74ead6ca1", null ],
     [ "assign_parameters", "structSphericalMesh.html#a039ec29135a6bcf0b76fc878796eae8e", null ],

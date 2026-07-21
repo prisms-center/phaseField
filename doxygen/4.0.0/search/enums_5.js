@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['refinementflags_0',['RefinementFlags',['../grid__refiner__criterion_8h.html#a6c93453a9993c7ade7cae9a8232426d5',1,'grid_refiner_criterion.h']]]
+  ['preconditionertype_0',['PreconditionerType',['../type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700b',1,'type_enums.h']]]
 ];

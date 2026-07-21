@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['threedimension_0',['ThreeDimension',['../type__enums_8h.html#a36f00fd02174a32129b7da95c568d799a3ecdce43b54d3ec77dd4f578b19821d1',1,'type_enums.h']]],
-  ['transverse_1',['Transverse',['../type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa166ba25013d18e883657ccd4aee51c29',1,'type_enums.h']]],
-  ['trial_2',['Trial',['../type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca1b4a937f6e6574be48ecb4e7bdc0c04a',1,'type_enums.h']]]
+  ['scalar_0',['Scalar',['../type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9ad589986008e8fea1b1726f564d17dd13',1,'type_enums.h']]],
+  ['secondary_1',['Secondary',['../solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5dacdd030c6485c7b0801d32116fd9d7103',1,'solve_block.h']]],
+  ['solution_2',['Solution',['../type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca87329574aeb01527c06aa8f61d87533c',1,'type_enums.h']]],
+  ['spherical_3',['Spherical',['../spatial__discretization_8h.html#aa998d1d441b49d044cf53118328c0db3abbb451f6aaf6fec9a9ee6eeb2c872c5c',1,'spatial_discretization.h']]],
+  ['src_4',['SRC',['../type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfcaafc38ae6a337625b99d6cd83fe7de226',1,'type_enums.h']]],
+  ['surface_5',['Surface',['../structSphericalMesh.html#a1fd1a4e27f93e09948f096087ab54fb3a958a4180b6f20071530eb7dcbb2c1959',1,'SphericalMesh']]]
 ];
