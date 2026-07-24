@@ -317,8 +317,19 @@ private:
 
     std::ostringstream ss;
 
+    // Builds root section first and without title
+    auto root_it = sections.find("root");
+    if (root_it != sections.end())
+      {
+        ss << build_table(root_it->second);
+      }
+
     for (const auto &[section, params] : sections)
       {
+        if (section == "root" || section == "Root")
+          {
+            continue;
+          }
         ss << build_section(section, params);
       }
 
@@ -326,14 +337,9 @@ private:
   }
 
   [[nodiscard]] std::string
-  build_section(const std::string                        &section,
-                const std::vector<const ParameterNode *> &params) const
+  build_table(const std::vector<const ParameterNode *> &params) const
   {
     std::ostringstream ss;
-
-    // Doxygen section heading
-    ss << "\\section " << to_anchor(section) << " " << section << "\n\n";
-
     // Open the HTML table
     ss << "<table>\n"
        << "<tr>\n"
@@ -350,6 +356,20 @@ private:
       }
 
     ss << "</table>\n\n";
+
+    return ss.str();
+  }
+
+  [[nodiscard]] std::string
+  build_section(const std::string                        &section,
+                const std::vector<const ParameterNode *> &params) const
+  {
+    std::ostringstream ss;
+
+    // Doxygen section heading
+    ss << "\\section " << to_anchor(section) << " " << section << "\n\n";
+
+    ss << build_table(params);
 
     return ss.str();
   }
