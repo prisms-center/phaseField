@@ -326,7 +326,7 @@ private:
 
     for (const auto &[section, params] : sections)
       {
-        if (section == "root" || section == "Root")
+        if (section == "root")
           {
             continue;
           }
