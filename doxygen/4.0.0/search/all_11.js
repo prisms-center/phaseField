@@ -49,7 +49,6 @@ var searchData=
   ['rmsetotal_46',['RMSETotal',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a97a89bb2ce90ae05d35fc96471c3d33c',1,'type_enums.h']]],
   ['rng_47',['rng',['../structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93',1,'MiscellaneousParameters']]],
   ['rngengine_48',['RNGEngine',['../miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93',1,'miscellaneous_parameters.h']]],
-  ['root_49',['root',['../parameters.html#p_list_root',1,'']]],
-  ['rotation_5fmatrix_50',['rotation_matrix',['../structPeriodicPair.html#a23e2e9e06580470edd22972e5d097c8d',1,'PeriodicPair']]],
-  ['run_20a_20simulation_51',['Run a simulation',['../structure.html#problem',1,'']]]
+  ['rotation_5fmatrix_49',['rotation_matrix',['../structPeriodicPair.html#a23e2e9e06580470edd22972e5d097c8d',1,'PeriodicPair']]],
+  ['run_20a_20simulation_50',['Run a simulation',['../structure.html#problem',1,'']]]
 ];
