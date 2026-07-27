@@ -83,7 +83,7 @@ docker pull landinjm/prisms-pf:alpine-master-minimal
 
 Finally, we will launch an interactive container with
 ```
-docker run -it --user root -v ~/prisms_pf_docker/phaseField:/home/prisms-pf/phaseField
+docker run -it -v ~/prisms_pf_docker/phaseField:/home/prisms-pf/phaseField
 landinjm/prisms-pf:alpine-master-minimal
 ```
 You can then run the applications in the container as you would normally. See the \ref
