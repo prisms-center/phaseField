@@ -40,6 +40,11 @@ jobs:
       run: |
         cmake --workflow --preset docs
         rm -rf build/docs/doc/doxygen
+        rm -rf build/docs/doc/scripts
+        rm -rf build/docs/doc/CMakeFiles
+        rm -rf build/docs/doc/cmake_install.cmake
+        rm -rf build/docs/doc/CTestTestfile.cmake
+        rm -rf build/docs/doc/parameters.json
 
     - name: Update version selector
       run: |
