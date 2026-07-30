@@ -2,7 +2,7 @@ var searchData=
 [
   ['a_20prisms_20pf_20application_0',['Structure of a PRISMS-PF application',['../structure.html',1,'']]],
   ['a_20simulation_1',['Run a simulation',['../structure.html#problem',1,'']]],
-  ['absoluteresidual_2',['AbsoluteResidual',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a8a7b4434d8968e3e5ee9910b43a1a4a0',1,'type_enums.h']]],
+  ['absoluteresidual_2',['AbsoluteResidual',['../type__enums_8h.html#a97d35dcc408b10c4fb4081fec6edf2d9a8a7b4434d8968e3e5ee9910b43a1a4a0',1,'type_enums.h']]],
   ['access_5fvalid_3',['access_valid',['../classFieldContainer.html#a262de7f0be80667de20f7ccb51b57518',1,'FieldContainer']]],
   ['active_4',['active',['../structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a97747e29d4cd8de575f95e91f7ac7058',1,'PRISMS_PF_BEGIN_NAMESPACE::TimerStack']]],
   ['add_5fequal_5fspacing_5foutputs_5',['add_equal_spacing_outputs',['../io__parameters_8h.html#ae7378b9f6e68cf0d61f4fea3e9a5dddd',1,'io_parameters.h']]],
@@ -11,7 +11,7 @@ var searchData=
   ['add_5fn_5fper_5fdecade_5foutputs_8',['add_n_per_decade_outputs',['../io__parameters_8h.html#af3fd6c855e9a1deb14b023ad3e102226',1,'io_parameters.h']]],
   ['add_5frefinement_5fmarker_9',['add_refinement_marker',['../classRefinementManager.html#aa0f82ad24167e5e40f5ff9bccb167786',1,'RefinementManager']]],
   ['add_5fuser_5fconstant_10',['add_user_constant',['../classUserConstants.html#a5579bbb1335c38ae05a523b9572af082',1,'UserConstants']]],
-  ['anisotropic_11',['Anisotropic',['../type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa22690afbc2ee3a3ba2a141ab906f273c',1,'type_enums.h']]],
+  ['anisotropic_11',['Anisotropic',['../type__enums_8h.html#afb65dffc43b1f0e550ca9370a7631284a22690afbc2ee3a3ba2a141ab906f273c',1,'type_enums.h']]],
   ['anything_12',['Anything',['../namespacePatterns.html#a7d487302ac9a171935a32a3e82e90ab4',1,'Patterns']]],
   ['application_13',['Structure of a PRISMS-PF application',['../structure.html',1,'']]],
   ['applications_14',['Applications',['../applications.html',1,'']]],

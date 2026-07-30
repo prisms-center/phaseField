@@ -1,11 +1,11 @@
 var structInitialConditionFile =
 [
-    [ "DataFormatType", "structInitialConditionFile.html#a496111adfcaaf6f5f2ba3dfa3ded8fd8", [
-      [ "FlatBinary", "structInitialConditionFile.html#a496111adfcaaf6f5f2ba3dfa3ded8fd8a98292b57b5f89f02a67fa6eb21b18fac", null ],
-      [ "VTKUnstructuredGrid", "structInitialConditionFile.html#a496111adfcaaf6f5f2ba3dfa3ded8fd8aedfa203df5b961810494e668614f8c9b", null ],
-      [ "VTKXMLUnstructuredGrid", "structInitialConditionFile.html#a496111adfcaaf6f5f2ba3dfa3ded8fd8aa478ece98a13ef2b2499ae0c51fb0192", null ],
-      [ "VTKPXMLUnstructuredGrid", "structInitialConditionFile.html#a496111adfcaaf6f5f2ba3dfa3ded8fd8a341efcfad2b3398c1bd30a50611984fb", null ],
-      [ "VTKXMLImageData", "structInitialConditionFile.html#a496111adfcaaf6f5f2ba3dfa3ded8fd8a245263e01516722fdf524dfe109ff937", null ]
+    [ "DataFormatType", "structInitialConditionFile.html#afe5913e5485124b6056345cc3e41eb4d", [
+      [ "FlatBinary", "structInitialConditionFile.html#afe5913e5485124b6056345cc3e41eb4da98292b57b5f89f02a67fa6eb21b18fac", null ],
+      [ "VTKUnstructuredGrid", "structInitialConditionFile.html#afe5913e5485124b6056345cc3e41eb4daedfa203df5b961810494e668614f8c9b", null ],
+      [ "VTKXMLUnstructuredGrid", "structInitialConditionFile.html#afe5913e5485124b6056345cc3e41eb4daa478ece98a13ef2b2499ae0c51fb0192", null ],
+      [ "VTKPXMLUnstructuredGrid", "structInitialConditionFile.html#afe5913e5485124b6056345cc3e41eb4da341efcfad2b3398c1bd30a50611984fb", null ],
+      [ "VTKXMLImageData", "structInitialConditionFile.html#afe5913e5485124b6056345cc3e41eb4da245263e01516722fdf524dfe109ff937", null ]
     ] ],
     [ "file_name", "structInitialConditionFile.html#a513ea241c71a115e54a9dda54a83765a", null ],
     [ "file_variable_names", "structInitialConditionFile.html#a2e94b523e7ae1d5d49aee48768997338", null ],

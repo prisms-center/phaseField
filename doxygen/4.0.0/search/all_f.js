@@ -21,7 +21,7 @@ var searchData=
   ['pde_5foperator_18',['pde_operator',['../classConstraintManager.html#a1814f0ca6f0cdb9225f818a888dbe9c2',1,'ConstraintManager::pde_operator'],['../classDirichletConditions.html#acf649390d2c458bce4e3a62a8a9dee53',1,'DirichletConditions::pde_operator'],['../classInitialCondition.html#a63ea5eafa5b72f24fc9c09e17f41c13b',1,'InitialCondition::pde_operator'],['../classMFOperator.html#ac3220b503b15611bd4a37ba5d832ce7d',1,'MFOperator::pde_operator'],['../classSolveContext.html#a0868de97a3daef4759b4699e5a80c8ca',1,'SolveContext::pde_operator']]],
   ['pde_5foperator_5fbase_2eh_19',['pde_operator_base.h',['../pde__operator__base_8h.html',1,'']]],
   ['pdeoperatorbase_20',['PDEOperatorBase',['../classPDEOperatorBase.html',1,'PDEOperatorBase&lt; dim, degree, number &gt;'],['../classPDEOperatorBase.html#a14ffe673408df03b3d7344e151ded933',1,'PDEOperatorBase::PDEOperatorBase()']]],
-  ['periodic_21',['Periodic',['../constraint__parameters_8h.html#a3a2d1de630bc61d956c09d7c1b9965fea6db09e3bc054df6f996a45de2ccfeacd',1,'constraint_parameters.h']]],
+  ['periodic_21',['Periodic',['../constraint__parameters_8h.html#ab6d907c41d48048e1eb203e15f2fc9a8a6db09e3bc054df6f996a45de2ccfeacd',1,'constraint_parameters.h']]],
   ['periodic_5fdirections_22',['periodic_directions',['../structRectangularMesh.html#a83e44eff521a0ff235ae14f0924ed587',1,'RectangularMesh']]],
   ['periodicity_5fset_23',['periodicity_set',['../structMesh.html#a1061d787966f24fee58a5fd511c14f78',1,'Mesh::periodicity_set()'],['../structRectangularMesh.html#a72443fbcf531f7fb6417c915b9f51d11',1,'RectangularMesh::periodicity_set()'],['../structSpatialDiscretization.html#ab031b46e6f5acf13e075f26468377d74',1,'SpatialDiscretization::periodicity_set()']]],
   ['periodicpair_24',['PeriodicPair',['../structPeriodicPair.html',1,'']]],
@@ -32,8 +32,8 @@ var searchData=
   ['phase_5ffield_5ftools_2ecc_29',['phase_field_tools.cc',['../phase__field__tools_8cc.html',1,'']]],
   ['phase_5ffield_5ftools_2eh_30',['phase_field_tools.h',['../phase__field__tools_8h.html',1,'']]],
   ['phasefieldtools_31',['PhaseFieldTools',['../structPhaseFieldTools.html',1,'']]],
-  ['planestrain_32',['PlaneStrain',['../type__enums_8h.html#a36f00fd02174a32129b7da95c568d799adec17294735cc46d1363f5b0e0ebeb3f',1,'type_enums.h']]],
-  ['planestress_33',['PlaneStress',['../type__enums_8h.html#a36f00fd02174a32129b7da95c568d799a7839c036e366958ed63a76f35f6bfb26',1,'type_enums.h']]],
+  ['planestrain_32',['PlaneStrain',['../type__enums_8h.html#a17bc53e9e9f11a9a90eb8cc303a189d4adec17294735cc46d1363f5b0e0ebeb3f',1,'type_enums.h']]],
+  ['planestress_33',['PlaneStress',['../type__enums_8h.html#a17bc53e9e9f11a9a90eb8cc303a189d4a7839c036e366958ed63a76f35f6bfb26',1,'type_enums.h']]],
   ['pmod_34',['pmod',['../utilities_8h.html#aa82813cf82bc07c48bf1e91eb5d7f381',1,'utilities.h']]],
   ['pop_35',['pop',['../structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a0d7465c7a139fc897146ca50ac69653a',1,'PRISMS_PF_BEGIN_NAMESPACE::TimerStack']]],
   ['positivedouble_36',['PositiveDouble',['../namespacePatterns.html#aa72e1c79fe36a56686b58adc49988b9b',1,'Patterns']]],
@@ -49,7 +49,7 @@ var searchData=
   ['precond_5fdata_46',['precond_data',['../classLinearSolver.html#a58f4b26d4aa77d68f2deda2703587068',1,'LinearSolver']]],
   ['preconditionchebyshev_47',['PreconditionChebyshev',['../classMGContext.html#a4a0c752ba3aad3fb88409711471e3f7d',1,'MGContext::PreconditionChebyshev'],['../classLinearSolver.html#a978c802315f6716d0c013da3290a8dbe',1,'LinearSolver::PreconditionChebyshev']]],
   ['preconditioner_48',['preconditioner',['../structLinearSolverParameters.html#a7ce3a6e58fc1f327502450351cb1a986',1,'LinearSolverParameters']]],
-  ['preconditionertype_49',['PreconditionerType',['../type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700b',1,'type_enums.h']]],
+  ['preconditionertype_49',['PreconditionerType',['../type__enums_8h.html#a8b341faac6531c4543c9dc6e5e4592cf',1,'type_enums.h']]],
   ['preconditionmg_50',['PreconditionMG',['../classLinearSolver.html#a7f5975de58ca49779d89ed91c7b62dc6',1,'LinearSolver']]],
   ['prepare_5ffor_5fgrid_5frefinement_51',['prepare_for_grid_refinement',['../classTriangulationManager.html#abada2f6faeb7e79814fa5e142e072848',1,'TriangulationManager']]],
   ['prepare_5ffor_5fsolution_5ftransfer_52',['prepare_for_solution_transfer',['../classGroupSolutionHandler.html#a7221007eaafaaf3931454c31019d554e',1,'GroupSolutionHandler::prepare_for_solution_transfer()'],['../classSolverBase.html#a48d1c39930199ac1f32aaba5ed296afe',1,'SolverBase::prepare_for_solution_transfer()']]],
@@ -70,5 +70,5 @@ var searchData=
   ['problem_2ecc_67',['problem.cc',['../problem_8cc.html',1,'']]],
   ['problem_2eh_68',['problem.h',['../problem_8h.html',1,'']]],
   ['push_69',['push',['../structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a1da3c8ed78d53955c2dee85a351866b3',1,'PRISMS_PF_BEGIN_NAMESPACE::TimerStack']]],
-  ['pvtu_70',['PVTU',['../structFieldOutputParameters.html#a1128666379341734b577d01836ced617a45642507a931bfe14e4a49e951036034',1,'FieldOutputParameters']]]
+  ['pvtu_70',['PVTU',['../structFieldOutputParameters.html#aeb06d893f288d52bea97b48cb1a09240a45642507a931bfe14e4a49e951036034',1,'FieldOutputParameters']]]
 ];

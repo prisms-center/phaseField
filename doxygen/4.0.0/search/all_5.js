@@ -2,7 +2,7 @@ var searchData=
 [
   ['edge_5fconstrained_5findices_0',['edge_constrained_indices',['../classMFOperator.html#ab0bfa67fb856a88caa5fcc03056107f3',1,'MFOperator']]],
   ['el_1',['el',['../classMFOperator.html#af39bdaf8d61e5a1fa5c6c820394f1fb5',1,'MFOperator']]],
-  ['elasticitymodel_2',['ElasticityModel',['../type__enums_8h.html#a1a86717d44634f6efc9531d43737590a',1,'type_enums.h']]],
+  ['elasticitymodel_2',['ElasticityModel',['../type__enums_8h.html#afb65dffc43b1f0e550ca9370a7631284',1,'type_enums.h']]],
   ['end_5fsection_3',['end_section',['../classTimer.html#ae1dc504d4bd75188b95693a4951149fd',1,'Timer']]],
   ['equations_4',['Equations',['../structure.html#equations',1,'']]],
   ['erase_5fscreen_5',['ERASE_SCREEN',['../classTerminalColor.html#a8c262dddfadfd360b6e04db735ee1034',1,'TerminalColor']]],
@@ -17,7 +17,7 @@ var searchData=
   ['excnan_14',['ExcNaN',['../classExcNaN.html',1,'ExcNaN'],['../classExcNaN.html#ad119b3218a8031bbd92d96b319bcab1e',1,'ExcNaN::ExcNaN()']]],
   ['execute_5fgrid_5frefinement_15',['execute_grid_refinement',['../classTriangulationManager.html#a7bb857b9b31d0c8ff36a42281190f84a',1,'TriangulationManager']]],
   ['execute_5fsolution_5ftransfer_16',['execute_solution_transfer',['../classGroupSolutionHandler.html#aab67ca948ec1e0d3d0f53c645878a5ab',1,'GroupSolutionHandler::execute_solution_transfer()'],['../classSolverBase.html#a014e7fc567c422256eb895622a82c875',1,'SolverBase::execute_solution_transfer()']]],
-  ['explicit_17',['Explicit',['../type__enums_8h.html#a072e94d49e31cd51e8c341714bf265f9ad2dd6ed7eca9210b09941bee2c62735f',1,'type_enums.h']]],
+  ['explicit_17',['Explicit',['../type__enums_8h.html#aa78dc7cb076d143b360a4b5aa1a8e7f9ad2dd6ed7eca9210b09941bee2c62735f',1,'type_enums.h']]],
   ['explicit_5fsolver_2eh_18',['explicit_solver.h',['../explicit__solver_8h.html',1,'']]],
   ['explicitsolver_19',['ExplicitSolver',['../classExplicitSolver.html',1,'ExplicitSolver&lt; dim, degree, number &gt;'],['../classExplicitSolver.html#a7b1568d7be5ce26453a262bd81e19064',1,'ExplicitSolver::ExplicitSolver()']]],
   ['export_5ftriangulation_5fas_5fvtk_20',['export_triangulation_as_vtk',['../classTriangulationManager.html#aa2ab608f86964043ab3ec2a13ab06c6f',1,'TriangulationManager']]]

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['data_0',['data',['../classReadBinary.html#a0dbc42c34fa79933645a46ef85149064',1,'ReadBinary::data'],['../classMFOperator.html#af447371f8d326e9a9a55b47ff527f12d',1,'MFOperator::data']]],
-  ['dataformattype_1',['DataFormatType',['../structInitialConditionFile.html#a496111adfcaaf6f5f2ba3dfa3ded8fd8',1,'InitialConditionFile']]],
+  ['dataformattype_1',['DataFormatType',['../structInitialConditionFile.html#afe5913e5485124b6056345cc3e41eb4d',1,'InitialConditionFile']]],
   ['dealii_5fpoint_5fto_5fvector_2',['dealii_point_to_vector',['../utilities_8h.html#a6900a956ef14d53b30c0616e7cf7b930',1,'utilities.h']]],
   ['debug_5fassert_3',['DEBUG_ASSERT',['../assert_8h.html#aa583c348c858a7681f097347158598fb',1,'assert.h']]],
   ['declare_4',['declare',['../structBoundaryParameters.html#ab9b39b586f2a44885b36e5806974af28',1,'BoundaryParameters::declare()'],['../structFieldOutputParameters.html#aed2fc9b47afca5902c90240cb5c8d198',1,'FieldOutputParameters::declare()'],['../structRestartOutputParameters.html#afb091b8345f62c39bc1b05e9a5fd5864',1,'RestartOutputParameters::declare()'],['../structFieldInputParameters.html#a9ba37b20a530ff0c7c54df9a5c591f44',1,'FieldInputParameters::declare()'],['../structMiscellaneousParameters.html#a026114cd14cbdd478c45e5c64f5c6516',1,'MiscellaneousParameters::declare()'],['../structNucleationParameters.html#a200efaed44433420f36b0b1edcc2a6e3',1,'NucleationParameters::declare()'],['../structLinearSolverParameters.html#acd9135d608955403cbe8bf09341cec87',1,'LinearSolverParameters::declare()'],['../structLinearSolveParameters.html#ac886617f9647361fee28d8a3df84fd98',1,'LinearSolveParameters::declare()'],['../structNonlinearSolverParameters.html#a013d3916c0874d62a34f59c7c7ce3656',1,'NonlinearSolverParameters::declare()'],['../structNonlinearSolveParameters.html#a739532467fce44357d9807e3ae38e661',1,'NonlinearSolveParameters::declare()'],['../structSpatialDiscretization.html#a024bd404c5113f2770a6b514b6969fe8',1,'SpatialDiscretization::declare()'],['../structTemporalDiscretization.html#a7268f28f9c3e218c6ccd663153276409',1,'TemporalDiscretization::declare()'],['../classUserInputParameters.html#a7158b63d6ae69224e557201ca5fbfd99',1,'UserInputParameters::declare()']]],
@@ -31,13 +31,13 @@ var searchData=
   ['dependency_5ftype_5fto_5fstring_28',['dependency_type_to_string',['../field__container_8h.html#a95bd416dd495bcf385aa83adf63cb40b',1,'field_container.h']]],
   ['dependencyextents_29',['DependencyExtents',['../structDependencyExtents.html',1,'DependencyExtents'],['../structDependencyExtents.html#addc3abb2dd1bf40f40e514881a6bcdf4',1,'DependencyExtents::DependencyExtents()']]],
   ['dependencymap_30',['DependencyMap',['../dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d',1,'dependencies.h']]],
-  ['dependencytype_31',['DependencyType',['../type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc',1,'type_enums.h']]],
+  ['dependencytype_31',['DependencyType',['../type__enums_8h.html#a32a9df8204905869318d78e338240fc4',1,'type_enums.h']]],
   ['depth_32',['depth',['../structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html#aef5534cbc948f0ccd67806e4a62d9a7f',1,'PRISMS_PF_BEGIN_NAMESPACE::TimerStack::Meta']]],
   ['developers_33',['Developers',['../dev_docs.html',1,'']]],
   ['diagonal_5fentries_34',['diagonal_entries',['../classMFOperator.html#a8aba2fa7cd8ba402793660ec44ca6311',1,'MFOperator']]],
   ['dim_35',['DIM',['../classTerminalColor.html#a6f956a804bda3f30d9da43149f187cea',1,'TerminalColor']]],
   ['direction_36',['direction',['../structPeriodicPair.html#a21b7eb2be21de009796f29f5eaaf7213',1,'PeriodicPair']]],
-  ['dirichlet_37',['Dirichlet',['../constraint__parameters_8h.html#a3a2d1de630bc61d956c09d7c1b9965fead2ba0bf65961bac8373de60a7e6571b9',1,'constraint_parameters.h']]],
+  ['dirichlet_37',['Dirichlet',['../constraint__parameters_8h.html#ab6d907c41d48048e1eb203e15f2fc9a8ad2ba0bf65961bac8373de60a7e6571b9',1,'constraint_parameters.h']]],
   ['dirichlet_2ecc_38',['dirichlet.cc',['../dirichlet_8cc.html',1,'']]],
   ['dirichlet_2eh_39',['dirichlet.h',['../dirichlet_8h.html',1,'']]],
   ['dirichletconditions_40',['DirichletConditions',['../classDirichletConditions.html',1,'DirichletConditions&lt; dim, degree, number &gt;'],['../classDirichletConditions.html#af2779d05863ac23a617bb79ef710c5c3',1,'DirichletConditions::DirichletConditions()']]],
@@ -53,6 +53,6 @@ var searchData=
   ['dofmanager_50',['DoFManager',['../classDoFManager.html',1,'DoFManager&lt; dim, degree &gt;'],['../classDoFManager.html#a6893a207746e57c9b8719199e22a82a9',1,'DoFManager::DoFManager()=default'],['../classDoFManager.html#a0aef68f1480180a71ad697e090d728a3',1,'DoFManager::DoFManager(const DoFManager &amp;)=delete'],['../classDoFManager.html#a28323004ed5f363ae72f4a88151c76fd',1,'DoFManager::DoFManager(const DoFManager &amp;&amp;)=delete']]],
   ['dofs_5fper_5fcomponent_51',['dofs_per_component',['../classFieldContainer.html#a663baa5a1fb584a560e6a3527260dd64',1,'FieldContainer']]],
   ['double_52',['Double',['../namespacePatterns.html#a5d0cdbdfe7517a344be4c035421b4a6f',1,'Patterns']]],
-  ['dst_53',['DST',['../type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca7a1970158a695340fdc76c8424740233',1,'type_enums.h']]],
+  ['dst_53',['DST',['../type__enums_8h.html#a32a9df8204905869318d78e338240fc4a7a1970158a695340fdc76c8424740233',1,'type_enums.h']]],
   ['dt_54',['dt',['../structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a',1,'TemporalDiscretization']]]
 ];
