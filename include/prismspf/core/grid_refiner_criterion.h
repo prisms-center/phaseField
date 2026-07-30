@@ -18,7 +18,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * @brief Flags for refinement criterion.
  */
-enum RefinementFlags : std::uint8_t
+enum RefinementFlags
 {
   /**
    * @brief No adaptive refinement criterion.
