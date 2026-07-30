@@ -9,7 +9,7 @@
 # ./contrib/utilities/update_doc_version_selector.sh FILE_PATH
 #
 
-REMOTE="upstream"
+REMOTE="origin"
 BRANCH="gh-pages"
 FILE_PATH="$1"
 
