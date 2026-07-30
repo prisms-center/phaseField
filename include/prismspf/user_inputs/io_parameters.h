@@ -155,7 +155,7 @@ struct FieldOutputParameters : public ParameterBase
   /**
    * @brief VTK output types.
    */
-  enum OutputType : std::uint8_t
+  enum OutputType
   {
     VTU,
     VTK,
@@ -321,7 +321,7 @@ struct InitialConditionFile
   /**
    * @brief Data formats for input initial conditions.
    */
-  enum DataFormatType : std::uint8_t
+  enum DataFormatType
   {
     FlatBinary,
     VTKUnstructuredGrid,

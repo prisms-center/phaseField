@@ -31,7 +31,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * @brief Internal enum for various triangulation types.
  */
-enum TriangulationType : std::uint8_t
+enum TriangulationType
 {
   Rectangular,
   Spherical,

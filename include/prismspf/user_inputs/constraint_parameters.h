@@ -28,7 +28,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * @brief Condition of boundary condition.
  */
-enum Condition : std::uint8_t
+enum Condition
 {
   Natural,
   Dirichlet,

@@ -13,6 +13,7 @@ Checks: >
   -modernize-use-trailing-return-type,
   mpi-*,
   performance-*,
+  -performance-enum-size,
   readability-*,
   -readability-convert-member-functions-to-static,
   -readability-math-missing-parentheses,

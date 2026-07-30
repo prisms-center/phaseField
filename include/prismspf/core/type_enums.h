@@ -13,7 +13,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * @brief Type of PDE that is being solved.
  */
-enum SolveType : std::uint8_t
+enum SolveType
 {
   /**
    * Fields remain constant in time. Be sure to set the solve_timing to `Initialized`.
@@ -48,7 +48,7 @@ enum SolveType : std::uint8_t
  *
  * Currently, only scalar and vectors are supported.
  */
-enum TensorRank : unsigned int
+enum TensorRank
 {
   Undefined = static_cast<unsigned int>(-1),
   Scalar    = 0,
@@ -58,7 +58,7 @@ enum TensorRank : unsigned int
 /**
  * @brief Symmetry of elastic tensor.
  */
-enum ElasticityModel : std::uint8_t
+enum ElasticityModel
 {
   Isotropic,
   Transverse,
@@ -69,7 +69,7 @@ enum ElasticityModel : std::uint8_t
 /**
  * @brief State of stress.
  */
-enum StressState : std::uint8_t
+enum StressState
 {
   /**
    * General 3D stress state.
@@ -90,7 +90,7 @@ enum StressState : std::uint8_t
 /**
  * @brief Internal classification for types of variable dependencies.
  */
-enum DependencyType : int
+enum DependencyType
 {
   DST      = -2,
   SRC      = -1,
@@ -108,7 +108,7 @@ enum DependencyType : int
 /**
  * @brief Solver tolerance type.
  */
-enum SolverToleranceType : std::uint8_t
+enum SolverToleranceType
 {
   /**
    * @brief Legacy
@@ -139,7 +139,7 @@ enum SolverToleranceType : std::uint8_t
 /**
  * @brief Preconditioner type.
  */
-enum PreconditionerType : std::uint8_t
+enum PreconditionerType
 {
   None,
   Chebyshev,
