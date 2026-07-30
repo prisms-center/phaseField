@@ -1,0 +1,73 @@
+html {
+    /* override light-mode variables here */
+}
+
+html.dark-mode {
+    /* define dark-mode variable overrides here if you DO use doxygen-awesome-darkmode-toggle.js */
+}
+
+.parameter-badge {
+    display: inline-block;
+    background-color: #eadcff;
+    color: #5b21b6;
+    border: 1px solid #c4a1ff;
+    border-radius: 10px;
+    padding: 2px 8px;
+    margin: 2px;
+    font-family: monospace;
+    font-size: 90%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.parameter-badge:hover {
+    background-color: #d8bfff;
+}
+
+.parameter-badge.copied {
+    background-color: #7c3aed;
+    color: white;
+}
+
+.alias-badge {
+    display: inline-block;
+    background-color: #325c3d;
+    color: #59ab6f;
+    border: 1px solid #59ab6f;
+    border-radius: 10px;
+    padding: 2px 8px;
+    margin: 2px;
+    font-family: monospace;
+    font-size: 80%;
+    cursor: pointer;
+    user-select: none;
+}
+
+
+.alias-badge:hover {
+    background-color: #b8e6a8;
+}
+
+.alias-badge.copied {
+    background-color: #4caf50;
+    color: white;
+}
+
+#projectalign {
+    display: flex;
+    justify-content: space-between;
+    /* project title left, selector right */
+    align-items: center;
+    gap: 10px;
+}
+
+#versionSelector {
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 2px solid #888;
+    background-color: #f0f0f0;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}

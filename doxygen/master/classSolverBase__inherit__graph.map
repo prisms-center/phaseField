@@ -1,0 +1,9 @@
+<map id="SolverBase&lt; dim, degree, number &gt;" name="SolverBase&lt; dim, degree, number &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="74,5,265,50"/>
+<area shape="rect" id="Node000002" href="$classExplicitSolver.html" title="This class handles the explicit solves of all explicit fields." alt="" coords="5,98,160,143"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,63,105,100,101,96,136,59"/>
+<area shape="rect" id="Node000003" href="$classLinearSolver.html" title="This class handles the explicit solves of all explicit fields." alt="" coords="184,98,330,143"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="202,59,238,96,235,100,199,63"/>
+<area shape="rect" id="Node000004" href="$classNewtonSolver.html" title="This class handles the explicit solves of all explicit fields." alt="" coords="179,191,335,235"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="260,158,260,190,254,190,254,158"/>
+</map>
