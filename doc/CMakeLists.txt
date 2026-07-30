@@ -23,7 +23,7 @@ set(PRISMS_PF_DOXYGEN_INPUT ${CMAKE_CURRENT_SOURCE_DIR}/doxygen/Doxyfile)
 set(PRISMS_PF_DOXYGEN_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/doxygen/Doxyfile.out)
 
 # The directory where the documentation will be generated
-set(DOXYGEN_HTML_OUTPUT "${PRISMS_PF_VERSION}")
+set(DOXYGEN_HTML_OUTPUT "${PRISMS_PF_GIT_BRANCH}")
 set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 # Copy input to output
