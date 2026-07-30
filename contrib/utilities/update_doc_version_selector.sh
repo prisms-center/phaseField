@@ -24,7 +24,7 @@ echo ""
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 echo "Current branch: $current_branch"
 
-# Add the latest version to the top of the list if it's not already there
+# Add the branch to the top of the list if it's not already there
 if ! echo "$dirs" | grep -q "^$current_branch$"; then
   dirs="$current_branch"$'\n'"$dirs"
 fi
