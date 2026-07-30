@@ -20,28 +20,27 @@ echo "Found directories under doxygen/:"
 echo "$dirs"
 echo ""
 
-# Grab the latest version from the config.h file
-config_h="${1%doc/}include/prismspf/config.h"
-latest_version=$(sed -n 's/^#define PRISMS_PF_VERSION "\(.*\)"/\1/p' "$config_h" | tr -d ' \n')
-echo "Latest version found: $latest_version"
+# Get the current git branch
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+echo "Current branch: $current_branch"
 
-# Add the latest version to the top of the list if it's not already there
-if ! echo "$dirs" | grep -q "^$latest_version$"; then
-	dirs="$latest_version"$'\n'"$dirs"
+# Add the branch to the top of the list if it's not already there
+if ! echo "$dirs" | grep -q "^$current_branch$"; then
+  dirs="$current_branch"$'\n'"$dirs"
 fi
 echo "Final list of versions:"
 echo "$dirs"
 echo ""
 
 # Create HTML
-echo '<select id="versionSelector">' > $FILE_PATH/version_selector.html
+echo '<select id="versionSelector">' >$FILE_PATH/version_selector.html
 for dir in $dirs; do
-	if [[ "$(basename "$dir")" != .* ]]; then
-		version=$(basename "$dir")
-		echo "    <option value=\"$version\">$version</option>" >> $FILE_PATH/version_selector.html
-	fi
+  if [[ "$(basename "$dir")" != .* ]]; then
+    version=$(basename "$dir")
+    echo "    <option value=\"$version\">$version</option>" >>$FILE_PATH/version_selector.html
+  fi
 done
-echo '</select>' >> $FILE_PATH/version_selector.html
+echo '</select>' >>$FILE_PATH/version_selector.html
 
 echo "Done"
 exit 0
