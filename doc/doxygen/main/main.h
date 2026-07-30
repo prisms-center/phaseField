@@ -1,8 +1,5 @@
 /** \mainpage PRISMS-PF
 
-\warning This is the documentation for v4.0.0, which is still actively under development.
-Use the version selector to switch to v3.0.0 for a stable version.
-
 \warning When updating your applications to newer versions of PRISMS-PF make sure to
 remove all CMake files before trying to configure and compile!
 

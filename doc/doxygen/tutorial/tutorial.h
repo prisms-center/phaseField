@@ -163,7 +163,7 @@ cmake --build build/docs --target doc -j <nprocs>
 Once the build is complete you can visualize the local documentation by navigating to the
 doxygen folder in the build directory and starting a python HTTP server.
 @code
-cd build/docs/doc/4.0.0
+cd build/docs/doc/<branch_name>
 python3 -m http.server 8000
 @endcode
 You can open the `http://localhost:8000/` on whatever web browser you use.
