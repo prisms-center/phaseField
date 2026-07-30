@@ -24,6 +24,7 @@ jobs:
       uses: actions/checkout@v7
       with:
         submodules: true # Check out submodules so we get doxygen awesome
+        fetch-tags: true # Fetch tags to determine default doc version
 
     - name: Install dependencies
       run: |
