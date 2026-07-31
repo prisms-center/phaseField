@@ -309,6 +309,17 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 Problem<dim, degree, number>::solve()
 {
+  const UserInputParameters<dim> &user_inputs = *user_inputs_ptr;
+
+  // TODO: Remove these asserts as the features/bugs are fixed
+  AssertThrow(!user_inputs.spatial_discretization.has_adaptivity || dim != 1,
+              dealii::ExcMessage(
+                "AMR cannot be enable for 1D in deal.II 9.7.0 and below."));
+  AssertThrow(!user_inputs.spatial_discretization.has_adaptivity ||
+                !has_multigrid(solve_blocks),
+              dealii::ExcMessage(
+                "AMR cannot be enabled when using multigrid preconditioners currently."));
+
   Timer::start_section("Problem Solve");
   // Print a warning if running in DEBUG mode
   ConditionalOStreams::pout_verbose()
@@ -335,9 +346,8 @@ Problem<dim, degree, number>::solve()
     << "================================================\n"
     << std::flush;
 
-  const UserInputParameters<dim> &user_inputs = *user_inputs_ptr;
-  const TemporalDiscretization   &time_info   = user_inputs.temporal_discretization;
-  SimulationTimer                &sim_timer   = solve_context.get_simulation_timer();
+  const TemporalDiscretization &time_info = user_inputs.temporal_discretization;
+  SimulationTimer              &sim_timer = solve_context.get_simulation_timer();
   // Main time-stepping loop
   int exit_status = 0;
   while (sim_timer.get_increment() <= time_info.n_increments && exit_status == 0)
