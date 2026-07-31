@@ -30,7 +30,7 @@ function(_prisms_pf_import_archive TARGET_NAME PREFIX_DIR ARCHIVE_NAME)
     set_target_properties("${TARGET_NAME}_debug"
       PROPERTIES
         IMPORTED_LOCATION
-          "${PREFIX_DIR}/lib/${ARCHIVE_NAME}.a"
+          "${PREFIX_DIR}/@CMAKE_INSTALL_LIBDIR@/${ARCHIVE_NAME}.a"
     )
     if(IS_DIRECTORY "${PREFIX_DIR}_debug/include")
       set_target_properties("${TARGET_NAME}_debug"
@@ -48,7 +48,7 @@ function(_prisms_pf_import_archive TARGET_NAME PREFIX_DIR ARCHIVE_NAME)
   set_target_properties(${TARGET_NAME}
     PROPERTIES
       IMPORTED_LOCATION
-        "${PREFIX_DIR}/lib/${ARCHIVE_NAME}.a"
+        "${PREFIX_DIR}/@CMAKE_INSTALL_LIBDIR@/${ARCHIVE_NAME}.a"
   )
   if(IS_DIRECTORY "${PREFIX_DIR}/include")
     set_target_properties(${TARGET_NAME}

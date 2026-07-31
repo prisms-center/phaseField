@@ -56,7 +56,7 @@ function(prisms_pf_add_external_library NAME LIB_NAME)
       "imported_${NAME}"
       PROPERTIES
         IMPORTED_LOCATION
-          "${CMAKE_BINARY_DIR}/_deps/${NAME}/install/lib/${LIB_NAME}.a"
+          "${CMAKE_BINARY_DIR}/_deps/${NAME}/install/${CMAKE_INSTALL_LIBDIR}/${LIB_NAME}.a"
         INTERFACE_INCLUDE_DIRECTORIES
           "${CMAKE_BINARY_DIR}/_deps/${NAME}/install/include"
     )
@@ -68,7 +68,7 @@ function(prisms_pf_add_external_library NAME LIB_NAME)
       "imported_${NAME}_debug"
       PROPERTIES
         IMPORTED_LOCATION
-          "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug/install/lib/${LIB_NAME}.a"
+          "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug/install/${CMAKE_INSTALL_LIBDIR}/${LIB_NAME}.a"
         INTERFACE_INCLUDE_DIRECTORIES
           "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug/install/include"
     )
@@ -80,7 +80,7 @@ function(prisms_pf_add_external_library NAME LIB_NAME)
       "imported_${NAME}"
       PROPERTIES
         IMPORTED_LOCATION
-          "${CMAKE_BINARY_DIR}/_deps/${NAME}/install/lib/${LIB_NAME}.a"
+          "${CMAKE_BINARY_DIR}/_deps/${NAME}/install/${CMAKE_INSTALL_LIBDIR}/${LIB_NAME}.a"
         INTERFACE_INCLUDE_DIRECTORIES
           "${CMAKE_BINARY_DIR}/_deps/${NAME}/install/include"
     )
