@@ -1,0 +1,9 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,83,126,111"/>
+<area shape="rect" id="Node000001" href="$classDirichletConditions.html" title="Function for user&#45;implemented Dirichlet boundary condition." alt="" coords="174,5,361,50"/>
+<area shape="poly" id="edge4_Node000000_Node000001" title=" " alt="" coords="122,75,199,48,201,53,123,80"/>
+<area shape="rect" id="Node000002" href="$classInitialCondition.html" title="Function for user&#45;implemented initial conditions. These are only ever calculated for explicit time de..." alt="" coords="185,75,350,119"/>
+<area shape="poly" id="edge5_Node000000_Node000002" title=" " alt="" coords="141,94,185,94,185,100,141,100"/>
+<area shape="rect" id="Node000003" href="$classReadInitialCondition.html" title="Function for read&#45;in of initial conditions." alt="" coords="191,144,344,189"/>
+<area shape="poly" id="edge6_Node000000_Node000003" title=" " alt="" coords="123,114,201,141,199,146,122,119"/>
+</map>
