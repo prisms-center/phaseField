@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: © 2026 PRISMS Center at the University of Michigan
+// SPDX-License-Identifier: GNU Lesser General Public Version 2.1
+
 #include <prismspf/user_inputs/constraint_parameters.h>
 #include <prismspf/user_inputs/parameter_base.h>
 

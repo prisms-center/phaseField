@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: © 2026 PRISMS Center at the University of Michigan
+// SPDX-License-Identifier: GNU Lesser General Public Version 2.1
+
 #include <prismspf/core/solve_block.h>
 
 #include <prismspf/user_inputs/parameter_base.h>
