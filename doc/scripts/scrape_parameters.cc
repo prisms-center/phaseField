@@ -356,9 +356,9 @@ private:
         std::sort(params.begin(),
                   params.end(),
                   [](const ParameterNode *a, const ParameterNode *b)
-                    {
-                      return a->name < b->name;
-                    });
+                  {
+                    return a->name < b->name;
+                  });
       }
 
     return groups;
@@ -502,13 +502,13 @@ private:
                    anchor.end(),
                    anchor.begin(),
                    [](const unsigned char c) -> char
-                     {
-                       if (c == ' ' || c == '.' || c == ':')
-                         {
-                           return '_';
-                         }
-                       return (char) std::tolower(c);
-                     });
+                   {
+                     if (c == ' ' || c == '.' || c == ':')
+                       {
+                         return '_';
+                       }
+                     return (char) std::tolower(c);
+                   });
 
     // also prefix the section label with p_list_
     return "p_list_" + anchor;
