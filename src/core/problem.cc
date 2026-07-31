@@ -19,8 +19,6 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <prismspf/utilities/assert.h>
-
 #include <algorithm>
 #include <filesystem>
 
@@ -314,11 +312,13 @@ Problem<dim, degree, number>::solve()
   const UserInputParameters<dim> &user_inputs = *user_inputs_ptr;
 
   // TODO: Remove these asserts as the features/bugs are fixed
-  ASSERT(!user_inputs.spatial_discretization.has_adaptivity || dim != 1,
-         "AMR cannot be enable for 1D in deal.II 9.7.0 and below.");
-  ASSERT(!user_inputs.spatial_discretization.has_adaptivity ||
-           !has_multigrid(solve_blocks),
-         "AMR cannot be enabled when using multigrid preconditioners currently.");
+  dealii::AssertThrow(!user_inputs.spatial_discretization.has_adaptivity || dim != 1,
+                      dealii::ExcMessage(
+                        "AMR cannot be enable for 1D in deal.II 9.7.0 and below."));
+  dealii::AssertThrow(
+    !user_inputs.spatial_discretization.has_adaptivity || !has_multigrid(solve_blocks),
+    dealii::ExcMessage(
+      "AMR cannot be enabled when using multigrid preconditioners currently."));
 
   Timer::start_section("Problem Solve");
   // Print a warning if running in DEBUG mode
