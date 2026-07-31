@@ -5,10 +5,16 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <algorithm>
+#include <cctype>
 #include <filesystem>
 #include <fstream>
+#include <list>
 #include <string>
 
+/**
+ * Parameter documentation struct
+ */
 struct ParameterNode
 {
   std::string            section;
@@ -22,6 +28,9 @@ struct ParameterNode
   bool                   deprecated = false;
 };
 
+/**
+ * Parse the deal.II ParameterHandler json output and format into our own parameter struct
+ */
 class DocumentationParser
 {
 public:
@@ -114,6 +123,46 @@ private:
     return str.substr(start, end - start + 1);
   }
 };
+
+/**
+ * Determine if a given string is the canonical case style (i.e., all lower case a space
+ * separated)
+ */
+static bool
+is_canonical_case(const std::string &str)
+{
+  if (str.empty())
+    {
+      return false;
+    }
+
+  bool previous_was_space = false;
+
+  for (unsigned char c : str)
+    {
+      if (std::isupper(c) || c == '_')
+        {
+          return false;
+        }
+
+      if (c == ' ')
+        {
+          // no consecutive spaces
+          if (previous_was_space)
+            {
+              return false;
+            }
+          previous_was_space = true;
+        }
+      else
+        {
+          previous_was_space = false;
+        }
+    }
+
+  // no trailing space
+  return !previous_was_space;
+}
 
 class ParameterParser
 {
@@ -233,7 +282,12 @@ private:
           }
 
         ParameterNode &target = _parameters[canonical_it->second];
-        target.aliases.push_back(alias_name);
+
+        // Only keep the canonical case
+        if (is_canonical_case(alias_name))
+          {
+            target.aliases.push_back(alias_name);
+          }
       }
   }
 

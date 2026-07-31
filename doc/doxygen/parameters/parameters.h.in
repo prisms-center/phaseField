@@ -11,6 +11,9 @@ subsections you have, you can write something like the following.
 UserInputParameters<dim>(cli_options.get_parameters_filename(), 10);
 @endcode
 
+Additionally, all the parameters have aliases for a handful of common case styles (e.g.,
+PascalCase, snake_case, Upper Case, and Pascal_Snake_Case).
+
 @note You can copy parameter names to clipboard by clicking on them!
 
 @parameter_list
