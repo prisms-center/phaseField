@@ -5,12 +5,16 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <filesystem>
-#include <fstream>
-#include <string>
 #include <algorithm>
 #include <cctype>
+#include <filesystem>
+#include <fstream>
+#include <list>
+#include <string>
 
+/**
+ * Parameter documentation struct
+ */
 struct ParameterNode
 {
   std::string            section;
@@ -24,6 +28,9 @@ struct ParameterNode
   bool                   deprecated = false;
 };
 
+/**
+ * Parse the deal.II ParameterHandler json output and format into our own parameter struct
+ */
 class DocumentationParser
 {
 public:
@@ -117,72 +124,45 @@ private:
   }
 };
 
-class CaseStyle
+/**
+ * Determine if a given string is the canonical case style (i.e., all lower case a space
+ * separated)
+ */
+static bool
+is_canonical_case(const std::string &str)
 {
-public:
-  enum class Style
-  {
-    camel_case,
-    snake_case,
-    kebab_case,
-    title_case,
-    upper_case,
-    lower_case,
-    other
-  };
+  if (str.empty())
+    {
+      return false;
+    }
 
-  static Style
-  classify(const std::string &str)
-  {
-    if (str.empty())
-      {
-        return Style::other;
-      }
+  bool previous_was_space = false;
 
-    const bool has_underscore = str.find('_') != std::string::npos;
-    const bool has_hyphen     = str.find('-') != std::string::npos;
-    const bool has_space      = str.find(' ') != std::string::npos;
-    const bool has_upper      = std::any_of(str.begin(), str.end(), ::isupper);
-    const bool has_lower      = std::any_of(str.begin(), str.end(), ::islower);
-    const bool all_upper      = has_upper && !has_lower;
-    const bool all_lower      = has_lower && !has_upper;
+  for (unsigned char c : str)
+    {
+      if (std::isupper(c) || c == '_')
+        {
+          return false;
+        }
 
-    if (has_underscore)
-      {
-        return Style::snake_case;
-      }
-    if (has_hyphen)
-      {
-        return Style::kebab_case;
-      }
-    if (has_space)
-      {
-        return Style::title_case;
-      }
-    if (all_upper)
-      {
-        return Style::upper_case;
-      }
-    if (all_lower)
-      {
-        return Style::lower_case;
-      }
+      if (c == ' ')
+        {
+          // no consecutive spaces
+          if (previous_was_space)
+            {
+              return false;
+            }
+          previous_was_space = true;
+        }
+      else
+        {
+          previous_was_space = false;
+        }
+    }
 
-    // Mixed case, no separators, starts lowercase -> camelCase
-    if (std::islower(static_cast<unsigned char>(str.front())) && has_upper)
-      {
-        return Style::camel_case;
-      }
-
-    return Style::other;
-  }
-
-  static bool
-  is_camel_case(const std::string &str)
-  {
-    return classify(str) == Style::camel_case;
-  }
-};
+  // no trailing space
+  return !previous_was_space;
+}
 
 class ParameterParser
 {
@@ -303,12 +283,8 @@ private:
 
         ParameterNode &target = _parameters[canonical_it->second];
 
-        // Only keep aliases camelCase and the canonical case
-        const bool alias_is_camel = CaseStyle::is_camel_case(alias_name);
-        const bool alias_matches_canonical_style =
-          CaseStyle::classify(alias_name) == CaseStyle::classify(target.name);
-
-        if (alias_is_camel || alias_matches_canonical_style)
+        // Only keep the canonical case
+        if (is_canonical_case(alias_name))
           {
             target.aliases.push_back(alias_name);
           }
@@ -320,7 +296,6 @@ private:
   std::map<std::string, std::pair<std::string, std::string>> _raw_aliases;
 
   std::map<std::string, std::size_t> _parameter_index;
-  
 };
 
 class HTMLGenerator
@@ -381,9 +356,9 @@ private:
         std::sort(params.begin(),
                   params.end(),
                   [](const ParameterNode *a, const ParameterNode *b)
-                  {
-                    return a->name < b->name;
-                  });
+                    {
+                      return a->name < b->name;
+                    });
       }
 
     return groups;
@@ -426,7 +401,7 @@ private:
        << "<th>Default</th>\n"
        << "<th>Pattern</th>\n"
        << "<th>Description</th>\n"
-       << "<th>Alias examples (most common aliases work)</th>\n"
+       << "<th>Aliases</th>\n"
        << "</tr>\n";
 
     for (const auto *param : params)
@@ -527,13 +502,13 @@ private:
                    anchor.end(),
                    anchor.begin(),
                    [](const unsigned char c) -> char
-                   {
-                     if (c == ' ' || c == '.' || c == ':')
-                       {
-                         return '_';
-                       }
-                     return (char) std::tolower(c);
-                   });
+                     {
+                       if (c == ' ' || c == '.' || c == ':')
+                         {
+                           return '_';
+                         }
+                       return (char) std::tolower(c);
+                     });
 
     // also prefix the section label with p_list_
     return "p_list_" + anchor;
