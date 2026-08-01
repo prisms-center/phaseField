@@ -19,8 +19,6 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <prismspf/utilities/logger.h>
-
 #include <algorithm>
 #include <filesystem>
 
@@ -103,9 +101,9 @@ namespace
     return std::any_of(solve_blocks.begin(),
                        solve_blocks.end(),
                        [](const SolveBlock &sb)
-                         {
-                           return sb.linear_solver_parameters.preconditioner == GMG;
-                         });
+                       {
+                         return sb.linear_solver_parameters.preconditioner == GMG;
+                       });
   }
 
   template <unsigned int dim, unsigned int degree, typename number>
@@ -149,9 +147,6 @@ Problem<dim, degree, number>::Problem(
                   _pde_operator)
   , grid_refiner(solve_context)
 {
-  Logger::set_file("sim.log");
-  Logger::instance() << std::endl;
-
   // Override boundary condition parameters if they are specified in user inputs
   std::unordered_map<std::string, BoundaryConditionSet> boundary_condition_list =
     _user_inputs.boundary_parameters.boundary_condition_list;

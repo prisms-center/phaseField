@@ -154,18 +154,28 @@ private:
 class LogStream
 {
 public:
+  struct BlankOutputTag
+  {};
+
+  /**
+   * Blank output
+   */
+  explicit LogStream([[maybe_unused]] BlankOutputTag tag)
+    : LogStream(std::nullopt, std::nullopt, false)
+  {}
+
   /**
    * Output to std::cout on all MPI processes.
    */
   LogStream()
-    : LogStream(std::nullopt, std::nullopt)
+    : LogStream(std::nullopt, std::nullopt, true)
   {}
 
   /**
    * Output to std::cout on a given MPI process.
    */
   explicit LogStream(unsigned int process_id)
-    : LogStream(std::nullopt, std::optional<unsigned int> {process_id})
+    : LogStream(std::nullopt, std::optional<unsigned int> {process_id}, true)
   {}
 
   /**
@@ -174,7 +184,7 @@ public:
    * The file name is appended by the MPI process id.
    */
   explicit LogStream(const std::string &file)
-    : LogStream(std::optional<std::string> {file}, std::nullopt)
+    : LogStream(std::optional<std::string> {file}, std::nullopt, true)
   {}
 
   /**
@@ -182,7 +192,8 @@ public:
    */
   LogStream(const std::string &file, unsigned int process_id)
     : LogStream(std::optional<std::string> {file},
-                std::optional<unsigned int> {process_id})
+                std::optional<unsigned int> {process_id},
+                true)
   {}
 
   void
@@ -194,6 +205,10 @@ public:
         return;
       }
     file_stream = open_file_if_needed(file, process_id);
+    if (file_stream)
+      {
+        fanout.add_stream(*file_stream);
+      }
   }
 
   void
@@ -274,11 +289,15 @@ private:
   }
 
   LogStream(const std::optional<std::string> &file,
-            std::optional<unsigned int>       process_id)
+            std::optional<unsigned int>       process_id,
+            bool                              enable_cout)
     : rank_is_enabled(rank_matches(process_id))
     , file_stream(open_file_if_needed(file, process_id))
   {
-    fanout.add_stream(std::cout);
+    if (enable_cout)
+      {
+        fanout.add_stream(std::cout);
+      }
     if (file_stream)
       {
         fanout.add_stream(*file_stream);
@@ -318,7 +337,7 @@ public:
     Error,            // Yellow
     Success,          // Green
     Debug,            // Grey
-    RainbowTessellate // Rainbow tesselation
+    RainbowTessellate // Rainbow tessellation
   };
 
   /**
@@ -370,13 +389,60 @@ public:
     return {Section::Section, Style::Normal, std::move(string)};
   }
 
-  friend std::ostream &
-  operator<<(std::ostream &stream, const Manipulator &manip)
+  /**
+   * @brief Format text as a subsection heading.
+   */
+  static Manipulator
+  subsection(std::string string)
   {
-    return stream << format(manip.section, manip.style, manip.text);
+    return {Section::Subsection, Style::Normal, std::move(string)};
   }
 
-private:
+  /**
+   * @brief Format text as info.
+   */
+  static Manipulator
+  info(std::string string)
+  {
+    return {Section::Normal, Style::Info, std::move(string)};
+  }
+
+  /**
+   * @brief Format text as warning.
+   */
+  static Manipulator
+  warning(std::string string)
+  {
+    return {Section::Normal, Style::Warning, std::move(string)};
+  }
+
+  /**
+   * @brief Format text as error.
+   */
+  static Manipulator
+  error(std::string string)
+  {
+    return {Section::Normal, Style::Error, std::move(string)};
+  }
+
+  /**
+   * @brief Format text as success.
+   */
+  static Manipulator
+  success(std::string string)
+  {
+    return {Section::Normal, Style::Success, std::move(string)};
+  }
+
+  /**
+   * @brief Format text as debug.
+   */
+  static Manipulator
+  debug(std::string string)
+  {
+    return {Section::Normal, Style::Debug, std::move(string)};
+  }
+
   static std::string
   style(const std::string_view &string, Style _style)
   {
@@ -437,45 +503,72 @@ private:
   }
 
   static std::string
-  format(Section _section, Style _style, const std::string_view &text);
+  format(Section                 _section,
+         Style                   _style,
+         const std::string_view &text,
+         bool                    use_ansi = true);
+
+  friend std::ostream &
+  operator<<(std::ostream &stream, const LogFormatter::Manipulator &manip)
+  {
+    return stream << LogFormatter::format(manip.section, manip.style, manip.text);
+  }
 };
 
 /**
  * @brief Main logging class
  *
- * This class manages two static instances of the LogStream class: one for std::cout and
- * one fanout stream for std::cout and some log file. Both of these only run on the 0th
- * process.
+ * This class manages two static instances of the LogStream class: one for std::cout one
+ * for some log file. Both of these only run on the 0th process.
  *
  * We must also consider that certain information is only relevant when certain CMake
  * flags are on (e.g., DEBUG and VERBOSE). This produces a lot of separate ostreams that
  * would have to be managed in the code. Rather than do that, we rely on manipulators to
  * tell us what strings go where and how they should be formatted.
  *
+ * @note Indents are only applied when starting on a newline. For now, this is only
+ * detected after using `std::endl`.
+ *
  * Thus, this code here:
  *
  * @code{.cpp}
  * @endcode
  *
- * Would produce the following resuts:
+ * Would produce the following results:
  *
  */
 class Logger
 {
 public:
   /**
+   * @brief Scope indents
+   */
+  class IndentScope
+  {
+  public:
+    IndentScope()
+    {
+      increment_indent();
+    }
+
+    ~IndentScope()
+    {
+      decrement_indent();
+    }
+  };
+
+  /**
    * @brief Clear terminal and print logo upon construction
    */
   Logger()
   {
-    // NOTE: This won't print to the log file because the class gets constructed before it
-    // is set. Since it's just the logo it doesn't matter.
+    // NOTE: We must check that the terminal supports color codes before printing with
+    // them to cout
     if (colorize())
       {
-        conditional_file_stream << TerminalColor::ERASE_SCREEN;
+        cout << TerminalColor::ERASE_SCREEN;
       }
-    conditional_file_stream << LogFormatter::title() << LogFormatter::subtitle()
-                            << std::flush;
+    cout << LogFormatter::title() << LogFormatter::subtitle() << std::flush;
   }
 
   /**
@@ -484,11 +577,13 @@ public:
   static void
   set_file(const std::string &file)
   {
-    conditional_file_stream.add_file(file, 0);
+    log_file.add_file(file, 0);
   }
 
   /**
    * @brief Static instance
+   *
+   * Use this to access the logger in the code.
    */
   static Logger &
   instance()
@@ -498,13 +593,79 @@ public:
   }
 
   /**
+   * @brief Increment indentation level
+   */
+  static void
+  increment_indent()
+  {
+    ++indent_level;
+  }
+
+  /**
+   * @brief Decrement indentation level
+   */
+  static void
+  decrement_indent()
+  {
+    if (indent_level > 0)
+      {
+        --indent_level;
+      }
+  }
+
+  /**
+   * @brief Reset indentation level
+   *
+   * @note This gets called when you use a section or subsection manipulator
+   */
+  static void
+  reset_indent()
+  {
+    indent_level = 0;
+  }
+
+  /**
+   * @brief Stream operator
+   */
+  Logger &
+  operator<<(const LogFormatter::Manipulator &manip)
+  {
+    if (manip.section == LogFormatter::Section::Section ||
+        manip.section == LogFormatter::Section::Subsection)
+      {
+        reset_indent();
+      }
+
+    if (at_line_start)
+      {
+        write_indent();
+        at_line_start = false;
+      }
+
+    if (manip.style != LogFormatter::Style::Debug)
+      {
+        cout << LogFormatter::format(manip.section, manip.style, manip.text);
+      }
+    log_file << LogFormatter::format(manip.section, manip.style, manip.text, false);
+
+    return *this;
+  }
+
+  /**
    * @brief Stream operator
    */
   template <typename T>
   Logger &
   operator<<(const T &type)
   {
-    conditional_stream << type;
+    if (at_line_start)
+      {
+        write_indent();
+        at_line_start = false;
+      }
+
+    cout << type;
+    log_file << type;
     return *this;
   }
 
@@ -514,7 +675,9 @@ public:
   Logger &
   operator<<(std::ostream &(*manip)(std::ostream &) )
   {
-    conditional_stream << manip;
+    cout << manip;
+    log_file << manip;
+    at_line_start = true;
     return *this;
   }
 
@@ -528,17 +691,29 @@ public:
   }
 
 private:
+  static void
+  write_indent()
+  {
+    cout << std::string(2 * indent_level, ' ');
+    log_file << std::string(2 * indent_level, ' ');
+  }
+
   inline static bool         term_supports_color {TerminalColor::is_supported()};
-  inline static unsigned int indent_level = 0;
-  inline static LogStream    conditional_stream {0};
-  inline static LogStream    conditional_file_stream {0};
+  inline static unsigned int indent_level  = 0;
+  inline static bool         at_line_start = true;
+
+  inline static LogStream cout {0};
+  inline static LogStream log_file {LogStream::BlankOutputTag {}};
 };
 
 // TODO: Move this
 inline std::string
-LogFormatter::format(Section _section, Style _style, const std::string_view &text)
+LogFormatter::format(Section                 _section,
+                     Style                   _style,
+                     const std::string_view &text,
+                     bool                    use_ansi)
 {
-  if (Logger::colorize())
+  if (Logger::colorize() && use_ansi)
     {
       return style(section(text, _section), _style);
     }

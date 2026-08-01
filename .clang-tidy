@@ -14,6 +14,7 @@ Checks: >
   mpi-*,
   performance-*,
   -performance-enum-size,
+  -performance-avoid-endl,
   readability-*,
   -readability-convert-member-functions-to-static,
   -readability-math-missing-parentheses,
