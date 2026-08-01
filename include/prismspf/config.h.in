@@ -34,6 +34,18 @@
 #define PRISMS_PF_DEAL_II_VERSION_MINOR @DEAL_II_VERSION_MINOR@
 #define PRISMS_PF_DEAL_II_VERSION_SUBMINOR @DEAL_II_VERSION_SUBMINOR@
 
+/**
+ * ASCII art from https://patorjk.com/software/taag/
+ */
+#define PRISMS_PF_ASCII R"(\
+██████╗ ██████╗ ██╗███████╗███╗   ███╗███████╗      ██████╗ ███████╗
+██╔══██╗██╔══██╗██║██╔════╝████╗ ████║██╔════╝      ██╔══██╗██╔════╝
+██████╔╝██████╔╝██║███████╗██╔████╔██║███████╗█████╗██████╔╝█████╗
+██╔═══╝ ██╔══██╗██║╚════██║██║╚██╔╝██║╚════██║╚════╝██╔═══╝ ██╔══╝
+██║     ██║  ██║██║███████║██║ ╚═╝ ██║███████║      ██║     ██║
+╚═╝     ╚═╝  ╚═╝╚═╝╚══════╝╚═╝     ╚═╝╚══════╝      ╚═╝     ╚═╝
+)"
+
 // clang-format on
 
 // Macros for opening and closing prisms namespace

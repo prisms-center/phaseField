@@ -14,6 +14,7 @@ set(
   ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/mechanics.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/assert.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/logger.h
+  ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/terminal.h
 )
 
 set(_inst_bases integrator)
