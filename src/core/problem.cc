@@ -11,13 +11,14 @@
 #include <prismspf/core/solution_output.h>
 #include <prismspf/core/solve_block.h>
 #include <prismspf/core/system_wide.h>
-#include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_manager.h>
 
 #include <prismspf/solvers/solver_base.h>
 #include <prismspf/solvers/solvers.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/utilities/timer.h>
 
 #include <algorithm>
 #include <filesystem>
@@ -101,9 +102,9 @@ namespace
     return std::any_of(solve_blocks.begin(),
                        solve_blocks.end(),
                        [](const SolveBlock &sb)
-                       {
-                         return sb.linear_solver_parameters.preconditioner == GMG;
-                       });
+                         {
+                           return sb.linear_solver_parameters.preconditioner == GMG;
+                         });
   }
 
   template <unsigned int dim, unsigned int degree, typename number>

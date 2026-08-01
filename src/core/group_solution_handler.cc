@@ -10,7 +10,8 @@
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/solve_block.h>
 #include <prismspf/core/system_wide.h>
-#include <prismspf/core/timer.h>
+
+#include <prismspf/utilities/timer.h>
 
 #include <prismspf/config.h>
 

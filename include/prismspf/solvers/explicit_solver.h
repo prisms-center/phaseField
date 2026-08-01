@@ -3,11 +3,12 @@
 
 #pragma once
 
-#include <prismspf/core/timer.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/solvers/mf_operator.h>
 #include <prismspf/solvers/solver_base.h>
+
+#include <prismspf/utilities/timer.h>
 
 #include <prismspf/config.h>
 

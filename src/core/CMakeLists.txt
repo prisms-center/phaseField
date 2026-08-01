@@ -1,7 +1,6 @@
 # Manually specify files to be included
 set(
   _sources
-  conditional_ostreams.cc
   constraint_manager.cc
   dof_manager.cc
   field_container.cc
@@ -12,7 +11,6 @@ set(
   group_solution_handler.cc
   solution_indexer.cc
   solution_output.cc
-  timer.cc
   triangulation_manager.cc
 )
 
@@ -24,15 +22,12 @@ set(
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/invm_manager.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/phase_field_tools.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/solution_indexer.h
-  ${PROJECT_SOURCE_DIR}/include/prismspf/core/tee_stream.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/types.h
-  ${PROJECT_SOURCE_DIR}/include/prismspf/core/conditional_ostreams.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/dof_manager.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/grid_refiner_criterion.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/dirichlet.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/problem.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/solution_output.h
-  ${PROJECT_SOURCE_DIR}/include/prismspf/core/timer.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/constraint_manager.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/matrix_free_manager.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/exceptions.h

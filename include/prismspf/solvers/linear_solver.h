@@ -11,7 +11,6 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/invm_manager.h>
-#include <prismspf/core/timer.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
@@ -19,6 +18,8 @@
 #include <prismspf/solvers/solver_base.h>
 
 #include <prismspf/user_inputs/solve_parameters.h>
+
+#include <prismspf/utilities/timer.h>
 
 #include <prismspf/config.h>
 

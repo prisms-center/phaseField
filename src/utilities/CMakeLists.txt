@@ -3,6 +3,7 @@ set(
   _sources
   integrator.cc
   utilities.cc
+  timer.cc
 )
 
 set(
@@ -15,6 +16,7 @@ set(
   ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/assert.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/logger.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/terminal.h
+  ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/timer.h
 )
 
 set(_inst_bases integrator)

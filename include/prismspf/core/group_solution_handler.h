@@ -17,11 +17,11 @@
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/matrix_free_manager.h>
 #include <prismspf/core/solve_block.h>
-#include <prismspf/core/timer.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
+#include <prismspf/utilties/timer.h>
 
 #include <vector>
 

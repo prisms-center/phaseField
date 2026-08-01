@@ -6,7 +6,8 @@
 #include <deal.II/base/timer.h>
 
 #include <prismspf/core/conditional_ostreams.h>
-#include <prismspf/core/timer.h>
+
+#include <prismspf/utilities/timer.h>
 
 #include <prismspf/config.h>
 
@@ -182,10 +183,10 @@ Timer::print_summary()
 
   auto lookup = [](const std::map<std::string, double> &data,
                    const std::string                   &key) -> double
-  {
-    const auto iterator = data.find(key);
-    return iterator != data.end() ? iterator->second : 0.0;
-  };
+    {
+      const auto iterator = data.find(key);
+      return iterator != data.end() ? iterator->second : 0.0;
+    };
 
   // Compute the max depth to adjust column widths
   unsigned int max_depth = 0;

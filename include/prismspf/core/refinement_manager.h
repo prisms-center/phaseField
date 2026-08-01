@@ -12,13 +12,14 @@
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/matrix_free_manager.h>
 #include <prismspf/core/system_wide.h>
-#include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_manager.h>
 
 #include <prismspf/solvers/solve_context.h>
 #include <prismspf/solvers/solver_base.h>
 
 #include <prismspf/user_inputs/spatial_discretization.h>
+
+#include <prismspf/utilities/timer.h>
 
 #include <prismspf/config.h>
 
@@ -398,10 +399,10 @@ private:
                   marker_functions.begin(),
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
-                  {
-                    return marker_function->flag(*cell,
-                                                 solve_context->get_simulation_timer());
-                  }))
+                    {
+                      return marker_function->flag(*cell,
+                                                   solve_context->get_simulation_timer());
+                    }))
               {
                 cell->set_user_flag();
                 cell->clear_coarsen_flag();
