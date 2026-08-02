@@ -9,6 +9,7 @@ prisms_pf_add_external_project(
   libassert
   https://github.com/jeremy-rifkin/libassert.git
   v2.2.1
+  libassert
 )
 
 # Create the libraries
@@ -22,5 +23,5 @@ if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
   prisms_pf_add_dependency_target(imported_libassert_debug DEBUG PUBLIC)
   prisms_pf_add_dependency_target(imported_libassert RELEASE PUBLIC)
 else()
-  prisms_pf_add_dependency_target(imported_libassert CMAKE_BUILD_TYPE PUBLIC)
+  prisms_pf_add_dependency_target(imported_libassert "${CMAKE_BUILD_TYPE}" PUBLIC)
 endif()
