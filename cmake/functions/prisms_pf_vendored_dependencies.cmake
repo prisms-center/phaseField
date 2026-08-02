@@ -95,6 +95,55 @@ function(prisms_pf_add_external_library NAME LIB_NAME)
 endfunction()
 
 #
+# Add imported library for transitive dependencies that works with DebugRelease
+#
+# NOTE: This is meant for dependencies that imported by other projects. For example,
+# libassert relies on cpptrace and a few other packages. To ensure that the links
+# are intact for our unit tests we have to use this function.
+#
+function(prisms_pf_import_archive TARGET_NAME PREFIX_DIR ARCHIVE_NAME)
+  if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
+    if(TARGET "${TARGET_NAME}_debug")
+      return()
+    endif()
+    add_library("${TARGET_NAME}_debug" STATIC IMPORTED GLOBAL)
+    set_target_properties(
+      "${TARGET_NAME}_debug"
+      PROPERTIES
+        IMPORTED_LOCATION
+          "${PREFIX_DIR}/${CMAKE_INSTALL_LIBDIR}/${ARCHIVE_NAME}.a"
+    )
+    if(IS_DIRECTORY "${PREFIX_DIR}_debug/include")
+      set_target_properties(
+        "${TARGET_NAME}_debug"
+        PROPERTIES
+          INTERFACE_INCLUDE_DIRECTORIES
+            "${PREFIX_DIR}_debug/include"
+      )
+    endif()
+  endif()
+
+  if(TARGET ${TARGET_NAME})
+    return()
+  endif()
+  add_library(${TARGET_NAME} STATIC IMPORTED GLOBAL)
+  set_target_properties(
+    ${TARGET_NAME}
+    PROPERTIES
+      IMPORTED_LOCATION
+        "${PREFIX_DIR}/${CMAKE_INSTALL_LIBDIR}/${ARCHIVE_NAME}.a"
+  )
+  if(IS_DIRECTORY "${PREFIX_DIR}/include")
+    set_target_properties(
+      ${TARGET_NAME}
+      PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES
+          "${PREFIX_DIR}/include"
+    )
+  endif()
+endfunction()
+
+#
 # Add an external project install targets that works with DebugRelease
 #
 function(prisms_pf_install_external_library NAME)

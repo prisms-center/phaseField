@@ -17,6 +17,7 @@ get_filename_component(_pkg_prefix
   ABSOLUTE
 )
 
+# TODO: We have a mirrored function. Should consolidate them.
 # Helper function for adding vendored dependency static libraries.
 # This function mirrors how we declare the imported libraries in
 # the first place. Works with DebugRelease.
