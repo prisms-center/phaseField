@@ -568,9 +568,9 @@ UserConstants<dim>::get_cij_tensor(std::vector<double> elastic_constants,
                      indices_2d.end(),
                      std::back_inserter(elastic_constants),
                      [&elastic_constants_temp](unsigned int index)
-                       {
-                         return elastic_constants_temp.at(index);
-                       });
+                     {
+                       return elastic_constants_temp.at(index);
+                     });
     }
 
   return get_cij_matrix(mat_model, elastic_constants, stress_state);

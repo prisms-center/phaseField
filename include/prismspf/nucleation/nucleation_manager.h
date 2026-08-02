@@ -218,16 +218,16 @@ NucleationManager<dim, degree, number>::gather_exclude_broadcast_nuclei(
             global_nuclei.begin(),
             global_nuclei.end(),
             [&](const Nucleus<dim> &existing_nucleus)
-              {
-                const double distance =
-                  user_inputs.spatial_discretization.distance(nuc.location,
-                                                              existing_nucleus.location);
+            {
+              const double distance =
+                user_inputs.spatial_discretization.distance(nuc.location,
+                                                            existing_nucleus.location);
 
-                return nuc_params.check_active(existing_nucleus, time_info) &&
-                       (distance < nuc_params.nucleus_exclusion_distance ||
-                        (nuc.field_index == existing_nucleus.field_index &&
-                         distance < nuc_params.same_field_nucleus_exclusion_distance));
-              });
+              return nuc_params.check_active(existing_nucleus, time_info) &&
+                     (distance < nuc_params.nucleus_exclusion_distance ||
+                      (nuc.field_index == existing_nucleus.field_index &&
+                       distance < nuc_params.same_field_nucleus_exclusion_distance));
+            });
           if (valid)
             {
               // Note: Using push_back() in a loop is not good use for

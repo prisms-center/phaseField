@@ -417,10 +417,10 @@ private:
                   marker_functions.begin(),
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
-                    {
-                      return marker_function->flag(*cell,
-                                                   solve_context->get_simulation_timer());
-                    }))
+                  {
+                    return marker_function->flag(*cell,
+                                                 solve_context->get_simulation_timer());
+                  }))
               {
                 cell->set_user_flag();
                 cell->clear_coarsen_flag();
