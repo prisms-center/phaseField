@@ -642,10 +642,8 @@ public:
         at_line_start = false;
       }
 
-    if (manip.style != LogFormatter::Style::Debug)
-      {
-        cout << LogFormatter::format(manip.section, manip.style, manip.text);
-      }
+    // TODO: Add a verbose log flag that we can route to only the log file
+    cout << LogFormatter::format(manip.section, manip.style, manip.text);
     log_file << LogFormatter::format(manip.section, manip.style, manip.text, false);
 
     return *this;

@@ -103,9 +103,10 @@ namespace
   {
     return std::any_of(solve_blocks.begin(),
                        solve_blocks.end(),
-                       [](const SolveBlock &sb)
+                       [](const SolveBlock &solve_block)
                          {
-                           return sb.linear_solver_parameters.preconditioner == GMG;
+                           return solve_block.linear_solver_parameters.preconditioner ==
+                                  GMG;
                          });
   }
 
@@ -212,7 +213,7 @@ Problem<dim, degree, number>::init_system()
 
     Logger::instance() << LogFormatter::section("Initialization") << std::endl;
 #ifdef DEBUG
-    Logger::instance() << LogFormatter::warning("Running in debug") << std::endl;
+    Logger::instance() << LogFormatter::warning("Running in debug!") << std::endl;
 #endif
     Logger::instance() << LogFormatter::info("Number of processes " +
                                              std::to_string(n_proc))

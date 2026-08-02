@@ -110,10 +110,6 @@ TriangulationManager<dim>::generate_mesh(
   discretization_params.mark_boundaries(triangulation);
   discretization_params.mark_periodic(triangulation);
 
-  // TODO: Once we move to a pattern of manual initialization after default construction,
-  // call this separately using the user_inputs output directory.
-  export_triangulation_as_vtk("triangulation");
-
   // Global refinement
   triangulation.refine_global(discretization_params.global_refinement);
 

@@ -292,6 +292,8 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::update_ghosts() const
 {
+  Timer::Scope timer("Update Ghosts");
+
   primary_solutions.solutions.update_ghost_values();
   for (const BlockVector<number> &old_solution : primary_solutions.old_solutions)
     {
@@ -303,6 +305,8 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::zero_out_ghosts() const
 {
+  Timer::Scope timer("Update Ghosts");
+
   primary_solutions.solutions.zero_out_ghost_values();
 }
 
