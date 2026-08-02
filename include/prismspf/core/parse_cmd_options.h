@@ -81,7 +81,7 @@ public:
                                  "` does not exist.");
       }
 
-    Logger::instance() << LogFormatter::info("using parameter file " +
+    Logger::instance() << LogFormatter::info("Using parameter file " +
                                              parameters_filename)
                        << std::endl;
 
@@ -121,7 +121,7 @@ public:
       }
 
     // Log the filename being used
-    Logger::instance() << LogFormatter::info("using caliper configuration " + config)
+    Logger::instance() << LogFormatter::info("Using caliper configuration " + config)
                        << std::endl;
     return config;
   }

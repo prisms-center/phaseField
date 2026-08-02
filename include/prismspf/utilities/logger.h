@@ -489,7 +489,7 @@ public:
         case Section::Title:
           return std::string {PRISMS_PF_ASCII};
         case Section::Subtitle:
-          return "version " + std::string {PRISMS_PF_VERSION} + "\n" + "git revision " +
+          return "Version " + std::string {PRISMS_PF_VERSION} + "\n" + "Git revision " +
                  std::string {PRISMS_PF_GIT_VERSION} + "\n";
         case Section::Section:
           return "\n" + std::string(79, '=') + "\n" + std::string {string} + "\n" +

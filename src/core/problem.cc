@@ -159,8 +159,8 @@ Problem<dim, degree, number>::Problem(
       if (const auto &bc_it = boundary_condition_list.find(field.name);
           bc_it != boundary_condition_list.end())
         {
-          Logger::instance() << LogFormatter::warning(
-                                  "Overriding boundary condition parameter for field " +
+          Logger::instance() << LogFormatter::info(
+                                  "Overriding boundary condition parameters for field " +
                                   field.name + " with user input parameters")
                              << std::endl;
           field.boundary_conditions = bc_it->second;
@@ -169,6 +169,11 @@ Problem<dim, degree, number>::Problem(
     }
   for (const auto &remaining_bc_params : boundary_condition_list)
     {
+      Logger::instance()
+        << LogFormatter::warning(
+             "Boundary condition parameters provided by user inputs for field " +
+             remaining_bc_params.first + " will be ignored!")
+        << std::endl;
     }
 
   // Override solver parameters if they are specified in user inputs
@@ -182,6 +187,11 @@ Problem<dim, degree, number>::Problem(
       if (const auto &lin_param_it = linear_solver_parameters_copy.find(solve_block.id);
           lin_param_it != linear_solver_parameters_copy.end())
         {
+          Logger::instance() << LogFormatter::info(
+                                  "Overriding linear solver parameters for solve block " +
+                                  std::to_string(solve_block.id) +
+                                  " with user input parameters")
+                             << std::endl;
           solve_block.linear_solver_parameters = lin_param_it->second;
           linear_solver_parameters_copy.erase(lin_param_it);
         }
@@ -189,15 +199,30 @@ Problem<dim, degree, number>::Problem(
             nonlinear_solver_parameters_copy.find(solve_block.id);
           nonlin_param_it != nonlinear_solver_parameters_copy.end())
         {
+          Logger::instance()
+            << LogFormatter::info(
+                 "Overriding nonlinear solver parameters for solve block " +
+                 std::to_string(solve_block.id) + " with user input parameters")
+            << std::endl;
           solve_block.nonlinear_solver_parameters = nonlin_param_it->second;
           nonlinear_solver_parameters_copy.erase(nonlin_param_it);
         }
     }
   for (const auto &remaining_lin_params : linear_solver_parameters_copy)
     {
+      Logger::instance()
+        << LogFormatter::warning(
+             "Linear solver parameters provided by user inputs for solve block " +
+             std::to_string(remaining_lin_params.first) + " will be ignored!")
+        << std::endl;
     }
   for (const auto &remaining_nonlin_params : nonlinear_solver_parameters_copy)
     {
+      Logger::instance()
+        << LogFormatter::warning(
+             "Nonlinear solver parameters provided by user inputs for solve block " +
+             std::to_string(remaining_nonlin_params.first) + " will be ignored!")
+        << std::endl;
     }
 }
 
@@ -205,6 +230,8 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 Problem<dim, degree, number>::init_system()
 {
+  Timer::Scope problem("Init");
+
   // Print some basic initialization stuff
   {
     const unsigned int n_proc = dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
@@ -231,70 +258,60 @@ Problem<dim, degree, number>::init_system()
   bool                            use_mg      = has_multigrid(solve_blocks);
 
   // Create the mesh
+  Logger::instance() << "Generating mesh...\n" << std::flush;
   {
-    Logger::instance() << "Generating mesh...\n" << std::flush;
-
+    // TODO: Consolidate these two methods
     triangulation_manager.generate_mesh(user_inputs.spatial_discretization);
     if (use_mg)
       {
         triangulation_manager.init_mg();
       }
-
-    Logger::instance() << LogFormatter::success("Mesh generation succeeded") << std::endl;
   }
+  Logger::instance() << LogFormatter::success("Mesh generation succeeded") << std::endl;
 
   // Create the dof handlers.
+  Logger::instance() << "Creating DoFHandlers...\n" << std::flush;
   {
-    Logger::instance() << "Creating DoFHandlers...\n" << std::flush;
-
     dof_manager.reinit(triangulation_manager, use_mg);
     dof_manager.reinit_mapping(field_attributes);
-
-    Logger::instance() << LogFormatter::success("DoFHandler creation succeeded")
-                       << std::endl;
   }
+  Logger::instance() << LogFormatter::success("DoFHandler creation succeeded")
+                     << std::endl;
 
   // Create the constraints
   // See *1
+  Logger::instance() << "Creating constraints...\n" << std::flush;
   {
-    Logger::instance() << "Creating constraints...\n" << std::flush;
-
     constraint_manager.init(user_inputs.boundary_parameters,
                             user_inputs.spatial_discretization,
                             dof_manager,
                             solve_context.get_pde_operator(),
                             solve_context.get_simulation_timer());
     constraint_manager.reinit(field_attributes);
-
-    Logger::instance() << LogFormatter::success("Constraint creation succeeded")
-                       << std::endl;
   }
+  Logger::instance() << LogFormatter::success("Constraint creation succeeded")
+                     << std::endl;
 
   // Create MatrixFree
+  Logger::instance() << "Creating MatrixFree...\n" << std::flush;
   {
-    Logger::instance() << "Creating MatrixFree...\n" << std::flush;
-
     solve_context.get_matrix_free_manager()
       .reinit(solve_context.get_dof_manager(), solve_context.get_constraint_manager());
-
-    Logger::instance() << LogFormatter::success("MatrixFree creation succeeded")
-                       << std::endl;
   }
+  Logger::instance() << LogFormatter::success("MatrixFree creation succeeded")
+                     << std::endl;
 
   // Create InvM
+  Logger::instance() << "Creating InvM...\n" << std::flush;
   {
-    Logger::instance() << "Creating InvM...\n" << std::flush;
-
     solve_context.get_invm_manager().reinit(solve_context.get_matrix_free_manager());
     solve_context.get_invm_manager().compute_invm();
-
-    Logger::instance() << LogFormatter::success("InvM creation succeeded") << std::endl;
   }
+  Logger::instance() << LogFormatter::success("InvM creation succeeded") << std::endl;
 
   // Initialize the solvers
+  Logger::instance() << "Initializing solvers...\n" << std::flush;
   {
-    Logger::instance() << "Initializing solvers...\n" << std::flush;
-
     solvers = make_solvers(solve_blocks, solve_context);
     solution_indexer.init(field_attributes.size(),
                           get_solution_managers_from_solvers(solvers));
@@ -303,18 +320,17 @@ Problem<dim, degree, number>::init_system()
         solver->init(get_all_solve_blocks(solve_blocks));
       }
 
-    Logger::instance() << LogFormatter::success("Solve initialization succeeded")
-                       << std::endl;
+    // Update the ghosts
+    // TODO: Log this?
+    {
+      for (auto &solver : solvers)
+        {
+          solver->update_ghosts();
+        }
+    }
   }
-
-  // Update the ghosts
-  // TODO: Log this?
-  {
-    for (auto &solver : solvers)
-      {
-        solver->update_ghosts();
-      }
-  }
+  Logger::instance() << LogFormatter::success("Solve initialization succeeded")
+                     << std::endl;
 
   // Attach refinement function for nucleation
   // TODO: Log this?
@@ -329,7 +345,7 @@ Problem<dim, degree, number>::solve()
 {
   int exit_status = 0;
   {
-    Timer::Scope problem("Problem Solve");
+    Timer::Scope problem("Problem");
 
     const UserInputParameters<dim> &user_inputs = *user_inputs_ptr;
     const TemporalDiscretization   &time_info   = user_inputs.temporal_discretization;
@@ -357,7 +373,24 @@ Problem<dim, degree, number>::solve()
         sim_timer.increment();
       }
 
-    // Print summary of nuclei seeded during the simulation
+    Logger::instance() << LogFormatter::section("Post-simulation Details") << std::endl;
+    {
+      // Print summary of nuclei seeded during the simulation
+
+      // TODO: I'm not sure I see the utility in having this. @fractalsbyx comments?
+      Logger::instance() << LogFormatter::subsection("Nuclei Seeded") << std::endl;
+      {
+        Logger::instance() << "Total nuclei seeded " << pf_tools->nuclei_list.size()
+                           << std::endl;
+        // TODO: This only belongs in the log file
+        // TODO: Add stream operator for nucleus
+        // Logger::IndentScope nuclei_scope;
+        // for (const Nucleus<dim> &nucleus : pf_tools->nuclei_list)
+        //   {
+        //     Logger::instance() << nucleus << std::endl;
+        //   }
+      }
+    }
   }
   Timer::print_summary();
 
@@ -368,13 +401,15 @@ Problem<dim, degree, number>::solve()
       case 1: // exit early as normal behavior
         break;
       case 2: // exit early because NaN
+              // TODO: Use assertion to throw
         if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
           {
             throw ExcNaN("Exiting early.\n");
           }
         break;
       case 3: // exit triggered by user
-        Logger::instance() << LogFormatter::error("Exit triggered by user") << std::endl;
+        Logger::reset_indent();
+        Logger::instance() << LogFormatter::error("Exit triggered by user!") << std::endl;
         break;
       default:
         break;
@@ -385,6 +420,8 @@ template <unsigned int dim, unsigned int degree, typename number>
 int
 Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
 {
+  Timer::Scope problem("Solve Increment");
+
   int                             exit_status  = 0;
   bool                            force_output = false;
   const UserInputParameters<dim> &user_inputs  = *user_inputs_ptr;
@@ -459,6 +496,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
            (user_inputs.spatial_discretization.should_refine_mesh(increment) ||
             any_nucleation_occurred))
     {
+      // TODO: Add logger here or in the function
       // Perform grid refinement
       grid_refiner.do_adaptive_refinement(solvers);
     }
@@ -480,20 +518,38 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
                                           user_inputs);
 
       // Print the l2-norms and integrals of each solution
+      Logger::instance() << "Iteration " << sim_timer.get_increment() << " Time "
+                         << sim_timer.get_time() << std::endl;
       for (unsigned int index = 0; index < field_attributes.size(); ++index)
         {
+          Logger::IndentScope output_scope;
+
           const auto &solution =
             solve_context.get_solution_indexer().get_solution_vector(index);
+
+          Logger::instance() << "Field index " << index << " name "
+                             << field_attributes[index].name << " l2-norm "
+                             << solution.l2_norm() << " integrated value ";
 
           const auto tensor_rank = field_attributes[index].field_type;
 
           if (tensor_rank == TensorRank::Vector)
             {
+              Logger::instance()
+                << Integrator<dim, degree, number>::template integrate<1>(
+                     dof_manager.get_field_dof_handler(index),
+                     solution)
+                << std::endl;
             }
           else if (tensor_rank == TensorRank::Scalar)
             {
+              // This is equivalent to integration
+              Logger::instance()
+                << solution * solve_context.get_invm_manager().get_jxw(TensorRank::Scalar)
+                << std::endl;
             }
         }
+      Logger::instance() << std::endl;
     }
 
   // Update the field labels in preparation for next increment (c_n -> c_n-1)
