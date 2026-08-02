@@ -1,11 +1,20 @@
 #
 # Add an external project that works with DebugRelease
 #
-function(prisms_pf_add_external_project NAME GIT_REPO GIT_TAG LIB_NAME)
+function(prisms_pf_add_external_project NAME GIT_REPO GIT_TAG)
   if(NOT NAME IN_LIST PRISMS_PF_VENDORED_PACKAGES)
     message(FATAL_ERROR "Invalid vendored package name")
     return()
   endif()
+
+  set(LIB_NAMES ${ARGN})
+  set(BUILD_BYPRODUCTS_ARGS "")
+  foreach(LIB_NAME IN LISTS LIB_NAMES)
+    list(
+      APPEND BUILD_BYPRODUCTS_ARGS
+      "<INSTALL_DIR>/${CMAKE_INSTALL_LIBDIR}/${LIB_NAME}.a"
+    )
+  endforeach()
 
   if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
     ExternalProject_Add(
@@ -17,7 +26,7 @@ function(prisms_pf_add_external_project NAME GIT_REPO GIT_TAG LIB_NAME)
       CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${ARGN}
       BUILD_BYPRODUCTS
-        <INSTALL_DIR>/${CMAKE_INSTALL_LIBDIR}/${LIB_NAME}.a
+        ${BUILD_BYPRODUCTS_ARGS}
     )
     ExternalProject_Add(
       "${NAME}_debug"
@@ -28,7 +37,7 @@ function(prisms_pf_add_external_project NAME GIT_REPO GIT_TAG LIB_NAME)
       CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${ARGN}
       BUILD_BYPRODUCTS
-        <INSTALL_DIR>/${CMAKE_INSTALL_LIBDIR}/${LIB_NAME}.a
+        ${BUILD_BYPRODUCTS_ARGS}
     )
   else()
     ExternalProject_Add(
@@ -41,7 +50,7 @@ function(prisms_pf_add_external_project NAME GIT_REPO GIT_TAG LIB_NAME)
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
         ${ARGN}
       BUILD_BYPRODUCTS
-        <INSTALL_DIR>/${CMAKE_INSTALL_LIBDIR}/${LIB_NAME}.a
+        ${BUILD_BYPRODUCTS_ARGS}
     )
   endif()
 endfunction()
