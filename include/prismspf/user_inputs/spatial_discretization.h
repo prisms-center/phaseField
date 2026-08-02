@@ -15,7 +15,6 @@
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/lac/full_matrix.h>
 
-#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/grid_refiner_criterion.h>
 #include <prismspf/core/types.h>

@@ -4,7 +4,6 @@
 #pragma once
 
 #include <deal.II/base/config.h>
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/point.h>
@@ -389,14 +388,10 @@ dealii_point_to_vector(const dealii::Point<dim, number> &point)
 
   std::vector<number> vec(3, 0.0);
 
-  // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
-
   for (unsigned int i = 0; i < dim; ++i)
     {
       vec[i] = point[i];
     }
-
-  // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
 
   return vec;
 }

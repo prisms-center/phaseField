@@ -1,9 +1,6 @@
 // SPDX-FileCopyrightText: © 2026 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/exceptions.h>
-
-#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/system_wide.h>

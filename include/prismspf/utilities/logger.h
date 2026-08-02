@@ -537,7 +537,7 @@ public:
  * Would produce the following results:
  *
  */
-class Logger
+class Logger : public std::ostream
 {
 public:
   /**

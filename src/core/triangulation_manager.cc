@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: © 2026 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/geometry_info.h>
 #include <deal.II/base/point.h>
 #include <deal.II/distributed/tria.h>
@@ -14,7 +13,6 @@
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/multigrid/mg_transfer_global_coarsening.h>
 
-#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/triangulation_manager.h>
 
 #include <prismspf/user_inputs/spatial_discretization.h>
@@ -129,7 +127,6 @@ TriangulationManager<dim>::export_triangulation_as_vtk(const std::string &filena
   const dealii::GridOut grid_out;
   std::ofstream         out(filename + ".vtk");
   grid_out.write_vtk(triangulation, out);
-  ConditionalOStreams::pout_base() << "Triangulation written to " << filename << ".vtk\n";
 }
 
 #include "core/triangulation_manager.inst"

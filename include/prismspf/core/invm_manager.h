@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/vectorization.h>
 #include <deal.II/matrix_free/fe_evaluation.h>
 
@@ -260,14 +259,14 @@ private: // todo: move to outside class body
   const MatrixFreeManager<dim, number> *mf_manager_ptr = nullptr;
 
   inline static const VectorValue one = []()
-  {
-    VectorValue one1;
-    for (unsigned int i = 0; i < dim; ++i)
-      {
-        one1[i] = 1.0;
-      }
-    return one1;
-  }();
+    {
+      VectorValue one1;
+      for (unsigned int i = 0; i < dim; ++i)
+        {
+          one1[i] = 1.0;
+        }
+      return one1;
+    }();
 };
 
 template <unsigned int dim, unsigned int degree, typename number>

@@ -99,9 +99,7 @@ public:
         solutions.update_ghosts();
 
         // Solve for Newton-residual (r)
-        Timer::start_section("Zero ghosts");
         newton_residual.zero_out_ghost_values();
-        Timer::end_section("Zero ghosts");
         rhs_op.compute_operator(newton_residual);
         newton_residual.update_ghost_values();
 
@@ -131,9 +129,7 @@ public:
         solutions.get_solution_full_vector().add(newton_step_length, newton_update);
 
         // Update the ghosts
-        Timer::start_section("Update ghosts");
         solutions.update_ghosts();
-        Timer::end_section("Update ghosts");
 
         iter++;
         // Todo: implement some super simple backtracking. Something like if the residual
@@ -142,19 +138,9 @@ public:
     if (solve_context->get_user_inputs().output_parameters.should_output(
           solve_context->get_simulation_timer().get_increment()))
       {
-        ConditionalOStreams::pout_summary()
-          << " Newton solve final residual : " << l2_norm / normalization_value()
-          << " Newton steps: " << iter << " Total linear steps: " << total_lin_iters
-          << "\n"
-          << std::flush;
       }
     if (iter >= newton_max_iterations)
       {
-        ConditionalOStreams::pout_base()
-          << "[Increment " << solve_context->get_simulation_timer().get_increment()
-          << "] "
-          << "Warning: Newton solver did not converge before " << newton_max_iterations
-          << " iterations.\n\n";
       }
   }
 

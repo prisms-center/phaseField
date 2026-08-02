@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
 #include <deal.II/lac/vector.h>
 
@@ -435,13 +434,7 @@ template <unsigned int dim, typename number>
 inline void
 ReadBinary<dim, number>::print_file()
 {
-  for (dealii::types::global_dof_index i : std::views::iota(0U, n_values))
-    {
-      Assert(i < data.size(),
-             dealii::ExcMessage("Index out of bounds in ReadBinary::print_file"));
-      ConditionalOStreams::pout_summary() << this->data.at(i) << "\n";
-    }
-  ConditionalOStreams::pout_summary() << std::flush;
+  // TODO: Implement
 }
 
 PRISMS_PF_END_NAMESPACE

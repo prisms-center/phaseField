@@ -8,7 +8,6 @@
 #include <deal.II/lac/solver_control.h>
 #include <deal.II/lac/solver_selector.h>
 
-#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/invm_manager.h>
 #include <prismspf/core/type_enums.h>
@@ -306,9 +305,7 @@ public:
   solve_impl() override
   {
     // Zero out the ghosts
-    Timer::start_section("Zero ghosts");
     solutions.zero_out_ghosts();
-    Timer::end_section("Zero ghosts");
 
     // Set up rhs vector
     rhs_operator.compute_operator(rhs_vector);
@@ -342,9 +339,7 @@ public:
     solutions.apply_constraints();
 
     // Update the ghosts
-    Timer::start_section("Update ghosts");
     solutions.update_ghosts();
-    Timer::end_section("Update ghosts");
   }
 
   int
@@ -383,21 +378,10 @@ public:
           }
       }
     catch (dealii::SolverControl::NoConvergence &exc)
-      {
-        ConditionalOStreams::pout_base()
-          << "[Increment " << solve_context->get_simulation_timer().get_increment()
-          << "] "
-          << "Warning: linear solver did not converge as per set tolerances before "
-          << lin_params().max_iterations << " iterations.\n";
-      }
+      {}
     if (solve_context->get_user_inputs().output_parameters.should_output(
           solve_context->get_simulation_timer().get_increment()))
       {
-        ConditionalOStreams::pout_summary()
-          << " Linear solve final residual : "
-          << linear_solver_control.last_value() / normalization_value()
-          << " Linear steps: " << linear_solver_control.last_step() << "\n"
-          << std::flush;
       }
     return linear_solver_control.last_step();
   }

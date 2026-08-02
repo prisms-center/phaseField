@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include <deal.II/base/exceptions.h>
-
 #include <prismspf/core/field_container.h>
 #include <prismspf/core/phase_field_tools.h>
 #include <prismspf/core/simulation_timer.h>

@@ -6,7 +6,6 @@
 #include <deal.II/base/mpi.h>
 #include <deal.II/fe/fe_values.h>
 
-#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/phase_field_tools.h>
 #include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/system_wide.h>
@@ -207,10 +206,6 @@ NucleationManager<dim, degree, number>::gather_exclude_broadcast_nuclei(
   if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
     {
       // Remove nuclei within their exclusion distance and add to nuclei list
-      ConditionalOStreams::pout_base()
-        << "[Increment " << time_info.get_increment() << "] : Nucleation\n"
-        << "  " << new_nuclei.size() << " nuclei generated before exclusion.\n"
-        << "  Excluding nuclei...\n";
       unsigned int count = 0;
 
       // remove bias from cell order
@@ -223,16 +218,16 @@ NucleationManager<dim, degree, number>::gather_exclude_broadcast_nuclei(
             global_nuclei.begin(),
             global_nuclei.end(),
             [&](const Nucleus<dim> &existing_nucleus)
-            {
-              const double distance =
-                user_inputs.spatial_discretization.distance(nuc.location,
-                                                            existing_nucleus.location);
+              {
+                const double distance =
+                  user_inputs.spatial_discretization.distance(nuc.location,
+                                                              existing_nucleus.location);
 
-              return nuc_params.check_active(existing_nucleus, time_info) &&
-                     (distance < nuc_params.nucleus_exclusion_distance ||
-                      (nuc.field_index == existing_nucleus.field_index &&
-                       distance < nuc_params.same_field_nucleus_exclusion_distance));
-            });
+                return nuc_params.check_active(existing_nucleus, time_info) &&
+                       (distance < nuc_params.nucleus_exclusion_distance ||
+                        (nuc.field_index == existing_nucleus.field_index &&
+                         distance < nuc_params.same_field_nucleus_exclusion_distance));
+              });
           if (valid)
             {
               // Note: Using push_back() in a loop is not good use for
@@ -244,18 +239,11 @@ NucleationManager<dim, degree, number>::gather_exclude_broadcast_nuclei(
               // assume that the total number of nuclei is not enough to
               // cause significant performance issues.
               global_nuclei.push_back(nuc);
-              ConditionalOStreams::pout_base()
-                << "  New nucleus at: " << nuc.location << "\n";
               ++count;
               any_nucleation_occurred = true;
             }
           new_nuclei.pop_back();
         }
-      ConditionalOStreams::pout_base() << "  " << count
-                                       << " new nuclei after exclusion.\n"
-                                          "  "
-                                       << global_nuclei.size() << " total nuclei.\n\n"
-                                       << std::flush;
     }
   MPI_Bcast(&any_nucleation_occurred, 1, MPI_CXX_BOOL, 0, MPI_COMM_WORLD);
   mpi_broadcast_nuclei(global_nuclei);

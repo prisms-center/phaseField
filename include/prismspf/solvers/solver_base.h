@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <deal.II/base/exceptions.h>
 #include <deal.II/numerics/vector_tools.h>
 
 #include <boost/geometry/core/cs.hpp>

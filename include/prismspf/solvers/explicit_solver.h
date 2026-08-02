@@ -63,9 +63,7 @@ public:
   solve_impl() override
   {
     // Zero out the ghosts
-    Timer::start_section("Zero ghosts");
     solutions.zero_out_ghosts();
-    Timer::end_section("Zero ghosts");
 
     rhs_operator.compute_operator(solutions.get_solution_full_vector());
 
@@ -73,9 +71,7 @@ public:
     solutions.apply_constraints();
 
     // Update the ghosts
-    Timer::start_section("Update ghosts");
     solutions.update_ghosts();
-    Timer::end_section("Update ghosts");
   }
 
 private:

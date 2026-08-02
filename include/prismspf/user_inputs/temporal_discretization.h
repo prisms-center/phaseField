@@ -5,7 +5,6 @@
 
 #include <deal.II/base/parameter_handler.h>
 
-#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/solve_block.h>
 
 #include <prismspf/user_inputs/parameter_base.h>

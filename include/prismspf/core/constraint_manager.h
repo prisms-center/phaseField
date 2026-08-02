@@ -90,8 +90,6 @@ public:
   [[nodiscard]] const dealii::AffineConstraints<number> &
   get_generic_constraint(unsigned int rank) const;
 
-  //-------------------------------------------------------------------------------------
-
   /**
    * @brief Getter function for a selection of the constraints.
    */
@@ -242,16 +240,16 @@ private:
 template <unsigned int dim, unsigned int degree, typename number>
 inline const std::array<dealii::ComponentMask, dim>
   ConstraintManager<dim, degree, number>::vector_component_mask = []()
-{
-  std::array<dealii::ComponentMask, dim> masks {};
-  for (unsigned int i = 0; i < dim; ++i)
-    {
-      dealii::ComponentMask temp_mask(dim, false);
-      temp_mask.set(i, true);
-      masks.at(i) = temp_mask;
-    }
-  return masks;
-}();
+  {
+    std::array<dealii::ComponentMask, dim> masks {};
+    for (unsigned int i = 0; i < dim; ++i)
+      {
+        dealii::ComponentMask temp_mask(dim, false);
+        temp_mask.set(i, true);
+        masks.at(i) = temp_mask;
+      }
+    return masks;
+  }();
 
 template <unsigned int dim, unsigned int degree, typename number>
 inline const dealii::ComponentMask

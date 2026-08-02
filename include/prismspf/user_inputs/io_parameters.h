@@ -10,7 +10,6 @@
 
 #include <boost/serialization/vector.hpp>
 
-#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>

@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: © 2026 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/mg_level_object.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
@@ -170,11 +169,6 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::init(const NewDependencyExtents &extents)
 {
-  ConditionalOStreams::pout_base()
-    << "Initializing solution set for solver " << solve_block.id << "...\n"
-    << std::flush;
-  Timer::start_section("Initialize solution set");
-
   primary_solutions.old_solutions.resize(extents.max_age);
 
   // Create solution levels
@@ -193,8 +187,6 @@ GroupSolutionHandler<dim, number>::init(const NewDependencyExtents &extents)
   reinit();
   // Initialize solution transfer
   init_solution_transfer();
-
-  Timer::end_section("Initialize solution set");
 }
 
 template <unsigned int dim, typename number>

@@ -23,6 +23,8 @@
 
 #include <prismspf/config.h>
 
+#include "prismspf/utilities/logger.h"
+
 #include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -133,12 +135,10 @@ public:
     solve_context->get_invm_manager().reinit(solve_context->get_matrix_free_manager());
     solve_context->get_invm_manager().compute_invm();
     // Update the ghosts
-    Timer::start_section("Update ghosts");
     for (auto &solver : solvers)
       {
         solver->update_ghosts();
       }
-    Timer::end_section("Update ghosts");
   }
 
   void
@@ -180,16 +180,15 @@ public:
          remesh_index++)
       {
         // Perform grid refinement
-        ConditionalOStreams::pout_base() << "performing grid refinement...\n"
-                                         << std::flush;
+        Logger::instance() << LogFormatter::info("Performing grid refinement...\n")
+                           << std::flush;
         do_adaptive_refinement(solvers);
+
         // Update the ghosts
-        Timer::start_section("Update ghosts");
         for (auto &solver : solvers)
           {
             solver->update_ghosts();
           }
-        Timer::end_section("Update ghosts");
 
         // Recalculate the total DoFs
         new_dofs = dof_manager.get_total_dofs();
@@ -201,6 +200,8 @@ public:
           }
         old_dofs = new_dofs;
       }
+
+    Logger::instance() << LogFormatter::success("Refinement succeeded") << std::endl;
   }
 
 private:
@@ -354,9 +355,11 @@ private:
                   }
               }
 
-            Assert(cell->level() > 0,
-                   dealii::ExcMessage("Cell refinement level is less than one, which "
-                                      "will lead to underflow."));
+            DEBUG_ASSERT(
+              cell->level() > 0,
+              "Cell refinement level is less than one, which will lead to underflow",
+              cell->level());
+
             const auto cell_refinement = static_cast<unsigned int>(cell->level());
             if (should_refine && cell_refinement < max_refinement)
               {
