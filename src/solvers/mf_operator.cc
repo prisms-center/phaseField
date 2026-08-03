@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: © 2026 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/types.h>
 #include <deal.II/base/vectorization.h>
 
@@ -10,6 +9,8 @@
 #include <prismspf/core/group_solution_handler.h>
 
 #include <prismspf/solvers/mf_operator.h>
+
+#include <prismspf/utilities/assert.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -269,7 +270,7 @@ number
 MFOperator<dim, degree, number>::el([[maybe_unused]] const unsigned int &row,
                                     [[maybe_unused]] const unsigned int &col) const
 {
-  AssertThrow(false, FeatureNotImplemented("el()"));
+  ASSERT(false, "el() hasn't been implemented");
   return 0.0;
 }
 
@@ -306,8 +307,6 @@ MFOperator<dim, degree, number>::vmult(BlockVector<number>       &dst,
   compute_operator(dst, src);
 }
 
-// NOLINTBEGIN(readability-identifier-naming)
-
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MFOperator<dim, degree, number>::Tvmult(BlockVector<number>       &dst,
@@ -315,8 +314,6 @@ MFOperator<dim, degree, number>::Tvmult(BlockVector<number>       &dst,
 {
   vmult(dst, src);
 }
-
-// NOLINTEND(readability-identifier-naming)
 
 #include "solvers/mf_operator.inst"
 

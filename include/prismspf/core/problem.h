@@ -14,6 +14,7 @@
 #include <prismspf/solvers/solve_context.h>
 
 #include <prismspf/utilities/integrator.h>
+#include <prismspf/utilities/logger.h>
 
 #include <prismspf/config.h>
 

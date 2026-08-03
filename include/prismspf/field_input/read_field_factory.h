@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include <deal.II/base/exceptions.h>
-
 #include <prismspf/core/types.h>
 
 #include <prismspf/field_input/read_binary.h>
@@ -12,6 +10,7 @@
 
 #include <prismspf/user_inputs/spatial_discretization.h>
 
+#include <prismspf/utilities/assert.h>
 #include <prismspf/utilities/utilities.h>
 
 #ifdef PRISMS_PF_WITH_VTK
@@ -52,7 +51,7 @@ create_reader(const InitialConditionFile       &ic_file,
       case InitialConditionFile::DataFormatType::FlatBinary:
         return std::make_shared<ReadBinary<dim, number>>(ic_file, spatial_discretization);
       default:
-        AssertThrow(false, UnreachableCode());
+        UNREACHABLE("Invalid DataFormatType", ic_file.format);
     }
 }
 

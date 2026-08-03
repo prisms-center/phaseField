@@ -11,13 +11,14 @@
 #include <prismspf/core/solution_output.h>
 #include <prismspf/core/solve_block.h>
 #include <prismspf/core/system_wide.h>
-#include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_manager.h>
 
 #include <prismspf/solvers/solver_base.h>
 #include <prismspf/solvers/solvers.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/utilities/timer.h>
 
 #include <algorithm>
 #include <filesystem>
@@ -100,9 +101,10 @@ namespace
   {
     return std::any_of(solve_blocks.begin(),
                        solve_blocks.end(),
-                       [](const SolveBlock &sb)
+                       [](const SolveBlock &solve_block)
                        {
-                         return sb.linear_solver_parameters.preconditioner == GMG;
+                         return solve_block.linear_solver_parameters.preconditioner ==
+                                GMG;
                        });
   }
 
@@ -155,20 +157,21 @@ Problem<dim, degree, number>::Problem(
       if (const auto &bc_it = boundary_condition_list.find(field.name);
           bc_it != boundary_condition_list.end())
         {
-          ConditionalOStreams::pout_base()
-            << "Overriding boundary condition parameters for field " << field.name
-            << " with user input parameters.\n";
+          Logger::instance() << LogFormatter::info(
+                                  "Overriding boundary condition parameters for field " +
+                                  field.name + " with user input parameters")
+                             << std::endl;
           field.boundary_conditions = bc_it->second;
           boundary_condition_list.erase(bc_it);
         }
     }
   for (const auto &remaining_bc_params : boundary_condition_list)
     {
-      ConditionalOStreams::pout_base()
-        << "Warning: Boundary condition parameters provided by user inputs for field "
-        << remaining_bc_params.first
-        << " field list. These parameters will be "
-           "ignored.\n";
+      Logger::instance()
+        << LogFormatter::warning(
+             "Boundary condition parameters provided by user inputs for field " +
+             remaining_bc_params.first + " will be ignored!")
+        << std::endl;
     }
 
   // Override solver parameters if they are specified in user inputs
@@ -182,9 +185,11 @@ Problem<dim, degree, number>::Problem(
       if (const auto &lin_param_it = linear_solver_parameters_copy.find(solve_block.id);
           lin_param_it != linear_solver_parameters_copy.end())
         {
-          ConditionalOStreams::pout_base()
-            << "Overriding linear solver parameters for solve block " << solve_block.id
-            << " with user input parameters.\n";
+          Logger::instance() << LogFormatter::info(
+                                  "Overriding linear solver parameters for solve block " +
+                                  std::to_string(solve_block.id) +
+                                  " with user input parameters")
+                             << std::endl;
           solve_block.linear_solver_parameters = lin_param_it->second;
           linear_solver_parameters_copy.erase(lin_param_it);
         }
@@ -192,30 +197,30 @@ Problem<dim, degree, number>::Problem(
             nonlinear_solver_parameters_copy.find(solve_block.id);
           nonlin_param_it != nonlinear_solver_parameters_copy.end())
         {
-          ConditionalOStreams::pout_base()
-            << "Overriding newton solver parameters for solve block " << solve_block.id
-            << " with user input parameters.\n";
+          Logger::instance()
+            << LogFormatter::info(
+                 "Overriding nonlinear solver parameters for solve block " +
+                 std::to_string(solve_block.id) + " with user input parameters")
+            << std::endl;
           solve_block.nonlinear_solver_parameters = nonlin_param_it->second;
           nonlinear_solver_parameters_copy.erase(nonlin_param_it);
         }
     }
   for (const auto &remaining_lin_params : linear_solver_parameters_copy)
     {
-      ConditionalOStreams::pout_base()
-        << "Warning: Linear solver parameters provided by user inputs for solve "
-           "block "
-        << remaining_lin_params.first
-        << " which does not exist in the solve blocks. These parameters will be "
-           "ignored.\n";
+      Logger::instance()
+        << LogFormatter::warning(
+             "Linear solver parameters provided by user inputs for solve block " +
+             std::to_string(remaining_lin_params.first) + " will be ignored!")
+        << std::endl;
     }
   for (const auto &remaining_nonlin_params : nonlinear_solver_parameters_copy)
     {
-      ConditionalOStreams::pout_base()
-        << "Warning: Nonlinear solver parameters provided by user inputs for solve "
-           "block "
-        << remaining_nonlin_params.first
-        << " which does not exist in the solve blocks. These parameters will be "
-           "ignored.\n";
+      Logger::instance()
+        << LogFormatter::warning(
+             "Nonlinear solver parameters provided by user inputs for solve block " +
+             std::to_string(remaining_nonlin_params.first) + " will be ignored!")
+        << std::endl;
     }
 }
 
@@ -223,83 +228,110 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 Problem<dim, degree, number>::init_system()
 {
+  Timer::Scope problem("Init");
+
+  // Print some basic initialization stuff
+  {
+    const unsigned int n_proc = dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
+    const unsigned int n_vect_doubles = dealii::VectorizedArray<number>::size();
+    const unsigned int n_vect_bits    = 8 * sizeof(number) * n_vect_doubles;
+
+    Logger::instance() << LogFormatter::section("Initialization") << std::endl;
+#ifdef DEBUG
+    Logger::instance() << LogFormatter::warning("Running in debug!") << std::endl;
+#endif
+    Logger::instance() << LogFormatter::info("Number of processes " +
+                                             std::to_string(n_proc))
+                       << std::endl;
+    Logger::instance() << LogFormatter::info(
+                            "Vectorization over " + std::to_string(n_vect_doubles) +
+                            " doubles = " + std::to_string(n_vect_bits) + " bits (" +
+                            dealii::Utilities::System::get_current_vectorization_level() +
+                            ")")
+                       << std::endl
+                       << std::endl;
+  }
+
   const UserInputParameters<dim> &user_inputs = *user_inputs_ptr;
-  const unsigned int n_proc = dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
-  const unsigned int n_vect_doubles = dealii::VectorizedArray<number>::size();
-  const unsigned int n_vect_bits    = 8 * sizeof(number) * n_vect_doubles;
-
-  ConditionalOStreams::pout_base() << "number of processes: " << n_proc << "\n"
-                                   << std::flush;
-  ConditionalOStreams::pout_base()
-    << "vectorization over " << n_vect_doubles << " doubles = " << n_vect_bits
-    << " bits (" << dealii::Utilities::System::get_current_vectorization_level() << ')'
-    << "\n"
-    << std::flush;
-
-  bool use_mg = has_multigrid(solve_blocks);
+  bool                            use_mg      = has_multigrid(solve_blocks);
 
   // Create the mesh
-  ConditionalOStreams::pout_base() << "Creating triangulation...\n" << std::flush;
-  Timer::start_section("Generate mesh");
-  triangulation_manager.generate_mesh(user_inputs.spatial_discretization);
-  if (use_mg)
-    {
-      triangulation_manager.init_mg();
-    }
-  Timer::end_section("Generate mesh");
+  Logger::instance() << "Generating mesh...\n" << std::flush;
+  {
+    // TODO: Consolidate these two methods
+    triangulation_manager.generate_mesh(user_inputs.spatial_discretization);
+    if (use_mg)
+      {
+        triangulation_manager.init_mg();
+      }
+  }
+  Logger::instance() << LogFormatter::success("Mesh generation succeeded") << std::endl;
 
   // Create the dof handlers.
-  ConditionalOStreams::pout_base() << "Creating DoFHandlers...\n" << std::flush;
-  Timer::start_section("reinitialize DoFHandlers");
-  dof_manager.reinit(triangulation_manager, use_mg);
-  dof_manager.reinit_mapping(field_attributes);
-  Timer::end_section("reinitialize DoFHandlers");
+  Logger::instance() << "Creating DoFHandlers...\n" << std::flush;
+  {
+    dof_manager.reinit(triangulation_manager, use_mg);
+    dof_manager.reinit_mapping(field_attributes);
+  }
+  Logger::instance() << LogFormatter::success("DoFHandler creation succeeded")
+                     << std::endl;
 
   // Create the constraints
   // See *1
-  ConditionalOStreams::pout_base() << "Creating constraints...\n" << std::flush;
-  Timer::start_section("Create constraints");
-  constraint_manager.init(user_inputs.boundary_parameters,
-                          user_inputs.spatial_discretization,
-                          dof_manager,
-                          solve_context.get_pde_operator(),
-                          solve_context.get_simulation_timer());
-  constraint_manager.reinit(field_attributes);
-  Timer::end_section("Create constraints");
+  Logger::instance() << "Creating constraints...\n" << std::flush;
+  {
+    constraint_manager.init(user_inputs.boundary_parameters,
+                            user_inputs.spatial_discretization,
+                            dof_manager,
+                            solve_context.get_pde_operator(),
+                            solve_context.get_simulation_timer());
+    constraint_manager.reinit(field_attributes);
+  }
+  Logger::instance() << LogFormatter::success("Constraint creation succeeded")
+                     << std::endl;
 
-  Timer::start_section("Initialize MatrixFree");
-  solve_context.get_matrix_free_manager().reinit(solve_context.get_dof_manager(),
-                                                 solve_context.get_constraint_manager());
-  Timer::end_section("Initialize MatrixFree");
+  // Create MatrixFree
+  Logger::instance() << "Creating MatrixFree...\n" << std::flush;
+  {
+    solve_context.get_matrix_free_manager()
+      .reinit(solve_context.get_dof_manager(), solve_context.get_constraint_manager());
+  }
+  Logger::instance() << LogFormatter::success("MatrixFree creation succeeded")
+                     << std::endl;
 
-  // InvM
-  Timer::start_section("Initialize InvM");
-  solve_context.get_invm_manager().reinit(solve_context.get_matrix_free_manager());
-  solve_context.get_invm_manager().compute_invm();
-  Timer::end_section("Initialize InvM");
+  // Create InvM
+  Logger::instance() << "Creating InvM...\n" << std::flush;
+  {
+    solve_context.get_invm_manager().reinit(solve_context.get_matrix_free_manager());
+    solve_context.get_invm_manager().compute_invm();
+  }
+  Logger::instance() << LogFormatter::success("InvM creation succeeded") << std::endl;
 
   // Initialize the solvers
-  Timer::start_section("Initialize Solvers");
-  solvers = make_solvers(solve_blocks, solve_context);
-  solution_indexer.init(field_attributes.size(),
-                        get_solution_managers_from_solvers(solvers));
-  for (auto &solver : solvers)
-    {
-      solver->init(get_all_solve_blocks(solve_blocks));
-    }
-  Timer::end_section("Initialize Solvers");
+  Logger::instance() << "Initializing solvers...\n" << std::flush;
+  {
+    solvers = make_solvers(solve_blocks, solve_context);
+    solution_indexer.init(field_attributes.size(),
+                          get_solution_managers_from_solvers(solvers));
+    for (auto &solver : solvers)
+      {
+        solver->init(get_all_solve_blocks(solve_blocks));
+      }
 
-  // Update the ghosts
-  Timer::start_section("Update ghosts");
-  for (auto &solver : solvers)
+    // Update the ghosts
+    // TODO: Log this?
     {
-      solver->update_ghosts();
+      for (auto &solver : solvers)
+        {
+          solver->update_ghosts();
+        }
     }
-  Timer::end_section("Update ghosts");
+  }
+  Logger::instance() << LogFormatter::success("Solve initialization succeeded")
+                     << std::endl;
 
-  // Perform the initial grid refinement. For this one, we have to do a loop to sufficient
-  // coarsen cells to the minimum level
-  ConditionalOStreams::pout_base() << "initializing grid refiner..." << std::flush;
+  // Attach refinement function for nucleation
+  // TODO: Log this?
   grid_refiner.add_refinement_marker(
     std::make_shared<NucleusRefinementFunction<dim>>(user_inputs.nucleation_parameters,
                                                      pf_tools->nuclei_list));
@@ -309,70 +341,55 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 Problem<dim, degree, number>::solve()
 {
-  const UserInputParameters<dim> &user_inputs = *user_inputs_ptr;
-
-  // TODO: Remove these asserts as the features/bugs are fixed
-  AssertThrow(!user_inputs.spatial_discretization.has_adaptivity || dim != 1,
-              dealii::ExcMessage(
-                "AMR cannot be enable for 1D in deal.II 9.7.0 and below."));
-  AssertThrow(!user_inputs.spatial_discretization.has_adaptivity ||
-                !has_multigrid(solve_blocks),
-              dealii::ExcMessage(
-                "AMR cannot be enabled when using multigrid preconditioners currently."));
-
-  Timer::start_section("Problem Solve");
-  // Print a warning if running in DEBUG mode
-  ConditionalOStreams::pout_verbose()
-    << "\n\n"
-    << "================================================\n"
-       "  Warning: running in DEBUG mode \n"
-    << "================================================\n\n\n"
-    << std::flush;
-  ConditionalOStreams::pout_summary()
-    << "================================================\n"
-       "  Initialization\n"
-    << "================================================\n"
-    << std::flush;
-
-  Timer::start_section("Initialization");
-  init_system();
-  Timer::end_section("Initialization");
-
-  ConditionalOStreams::pout_base() << "\nSolving...\n\n" << std::flush;
-
-  ConditionalOStreams::pout_summary()
-    << "================================================\n"
-       "  Solve\n"
-    << "================================================\n"
-    << std::flush;
-
-  const TemporalDiscretization &time_info = user_inputs.temporal_discretization;
-  SimulationTimer              &sim_timer = solve_context.get_simulation_timer();
-  // Main time-stepping loop
   int exit_status = 0;
-  while (sim_timer.get_increment() <= time_info.n_increments && exit_status == 0)
-    {
-      // Solve a single increment
-      // Includes nucleation, refinement, constraints, solve, output, and update
-      exit_status = solve_increment(sim_timer);
-      // Update time
-      sim_timer.increment();
-    }
+  {
+    Timer::Scope problem("Problem");
 
-  // Print summary of nuclei seeded during the simulation
-  ConditionalOStreams::pout_summary()
-    << "================================================\n"
-       "  Nuclei Seeded\n"
-    << "================================================\n"
-    << std::to_string(pf_tools->nuclei_list.size()) << " total nuclei seeded.\n";
-  for (const Nucleus<dim> nucleus : pf_tools->nuclei_list)
-    {
-      ConditionalOStreams::pout_summary() << nucleus << "\n";
-    }
-  ConditionalOStreams::pout_summary() << "\n" << std::flush;
+    const UserInputParameters<dim> &user_inputs = *user_inputs_ptr;
+    const TemporalDiscretization   &time_info   = user_inputs.temporal_discretization;
+    SimulationTimer                &sim_timer   = solve_context.get_simulation_timer();
 
-  Timer::end_section("Problem Solve");
-  // Print timer summary
+    // TODO: Remove these asserts as the features/bugs are fixed
+    AssertThrow(!user_inputs.spatial_discretization.has_adaptivity || dim != 1,
+                dealii::ExcMessage(
+                  "AMR cannot be enable for 1D in deal.II 9.7.0 and below."));
+    AssertThrow(
+      !user_inputs.spatial_discretization.has_adaptivity || !has_multigrid(solve_blocks),
+      dealii::ExcMessage(
+        "AMR cannot be enabled when using multigrid preconditioners currently."));
+
+    init_system();
+
+    // Main time-stepping loop
+    Logger::instance() << LogFormatter::section("Time-stepping Loop") << std::endl;
+    while (sim_timer.get_increment() <= time_info.n_increments && exit_status == 0)
+      {
+        // Solve a single increment
+        // Includes nucleation, refinement, constraints, solve, output, and update
+        exit_status = solve_increment(sim_timer);
+        // Update time
+        sim_timer.increment();
+      }
+
+    Logger::instance() << LogFormatter::section("Post-simulation Details") << std::endl;
+    {
+      // Print summary of nuclei seeded during the simulation
+
+      // TODO: I'm not sure I see the utility in having this. @fractalsbyx comments?
+      Logger::instance() << LogFormatter::subsection("Nuclei Seeded") << std::endl;
+      {
+        Logger::instance() << "Total nuclei seeded " << pf_tools->nuclei_list.size()
+                           << std::endl;
+        // TODO: This only belongs in the log file
+        // TODO: Add stream operator for nucleus
+        // Logger::IndentScope nuclei_scope;
+        // for (const Nucleus<dim> &nucleus : pf_tools->nuclei_list)
+        //   {
+        //     Logger::instance() << nucleus << std::endl;
+        //   }
+      }
+    }
+  }
   Timer::print_summary();
 
   // Throw exception if we exitied for a bad reason
@@ -382,13 +399,15 @@ Problem<dim, degree, number>::solve()
       case 1: // exit early as normal behavior
         break;
       case 2: // exit early because NaN
+              // TODO: Use assertion to throw
         if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
           {
             throw ExcNaN("Exiting early.\n");
           }
         break;
       case 3: // exit triggered by user
-        ConditionalOStreams::pout_base() << "\nExiting triggered by user.\n";
+        Logger::reset_indent();
+        Logger::instance() << LogFormatter::error("Exit triggered by user!") << std::endl;
         break;
       default:
         break;
@@ -399,6 +418,8 @@ template <unsigned int dim, unsigned int degree, typename number>
 int
 Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
 {
+  Timer::Scope problem("Solve Increment");
+
   int                             exit_status  = 0;
   bool                            force_output = false;
   const UserInputParameters<dim> &user_inputs  = *user_inputs_ptr;
@@ -408,13 +429,10 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
     user_inputs.nucleation_parameters.should_attempt_nucleation(increment);
 
   // Update the time-dependent constraints
-  Timer::start_section("Update time-dependent constraints");
   // TODO: Loop over levels, pass in current time
   constraint_manager.update_time_dependent_constraints(field_attributes);
-  Timer::end_section("Update time-dependent constraints");
 
   // Solve a single increment
-  Timer::start_section("Solvers");
   for (auto &solver : solvers)
     {
       SolveTiming solve_timing = solver->get_solve_block().solve_timing;
@@ -431,7 +449,6 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
       solve_context.get_pde_operator().post_solve_block(solve_context,
                                                         solver->get_solve_block().id);
     }
-  Timer::end_section("Solvers");
 
   // Check for NaN. This isn't an exhaustive search. Just a quick check on specific
   // values.
@@ -463,31 +480,23 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   bool any_nucleation_occurred = false;
   if (is_nucleation_increment)
     {
-      Timer::start_section("Check for nucleation");
       any_nucleation_occurred =
         NucleationManager<dim, degree, number>::attempt_nucleation(solve_context,
                                                                    pf_tools->nuclei_list);
-      Timer::end_section("Check for nucleation");
     }
 
   // Perform grid refinement if necessary
   if (user_inputs.spatial_discretization.has_adaptivity && increment == 0)
     {
-      Timer::start_section("Grid refinement");
       grid_refiner.do_initial_refinement(solvers);
-      Timer::end_section("Grid refinement");
     }
   else if (user_inputs.spatial_discretization.has_adaptivity &&
            (user_inputs.spatial_discretization.should_refine_mesh(increment) ||
             any_nucleation_occurred))
     {
+      // TODO: Add logger here or in the function
       // Perform grid refinement
-      ConditionalOStreams::pout_base()
-        << "[Increment " << sim_timer.get_increment() << "] : Grid Refinement\n";
-      Timer::start_section("Grid refinement");
       grid_refiner.do_adaptive_refinement(solvers);
-      Timer::end_section("Grid refinement");
-      ConditionalOStreams::pout_base() << "\n" << std::flush;
     }
 
   // Output results if needed
@@ -499,7 +508,6 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
       std::filesystem::path output_path = output_prefix;
       output_path.remove_filename();
       std::filesystem::create_directories(output_path);
-      Timer::start_section("Output");
       SolutionOutput<dim, degree, number>(field_attributes,
                                           solve_context.get_solution_indexer(),
                                           sim_timer,
@@ -508,36 +516,38 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
                                           user_inputs);
 
       // Print the l2-norms and integrals of each solution
-      ConditionalOStreams::pout_base()
-        << "Iteration: " << sim_timer.get_increment() << "\n";
+      Logger::instance() << "Iteration " << sim_timer.get_increment() << " Time "
+                         << sim_timer.get_time() << std::endl;
       for (unsigned int index = 0; index < field_attributes.size(); ++index)
         {
+          Logger::IndentScope output_scope;
+
           const auto &solution =
             solve_context.get_solution_indexer().get_solution_vector(index);
-          ConditionalOStreams::pout_base()
-            << " Solution index " << index << " l2-norm: " << solution.l2_norm()
-            << " integrated value: ";
+
+          Logger::instance() << "Field index " << index << " name "
+                             << field_attributes[index].name << " l2-norm "
+                             << solution.l2_norm() << " integrated value ";
 
           const auto tensor_rank = field_attributes[index].field_type;
 
           if (tensor_rank == TensorRank::Vector)
             {
-              ConditionalOStreams::pout_base()
+              Logger::instance()
                 << Integrator<dim, degree, number>::template integrate<1>(
                      dof_manager.get_field_dof_handler(index),
                      solution)
-                << "\n";
+                << std::endl;
             }
           else if (tensor_rank == TensorRank::Scalar)
             {
               // This is equivalent to integration
-              ConditionalOStreams::pout_base()
+              Logger::instance()
                 << solution * solve_context.get_invm_manager().get_jxw(TensorRank::Scalar)
-                << "\n";
+                << std::endl;
             }
         }
-      ConditionalOStreams::pout_base() << "\n" << std::flush;
-      Timer::end_section("Output");
+      Logger::instance() << std::endl;
     }
 
   // Update the field labels in preparation for next increment (c_n -> c_n-1)

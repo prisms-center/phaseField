@@ -3,12 +3,12 @@
 
 #pragma once
 
-#include <deal.II/base/exceptions.h>
-
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/user_inputs/constraint_parameters.h>
+
+#include <prismspf/utilities/assert.h>
 
 #include <prismspf/config.h>
 
@@ -75,9 +75,9 @@ field_index_map(const std::vector<FieldAttributes> &fields)
   std::map<std::string, Types::Index> map;
   for (unsigned int i = 0; i < fields.size(); ++i)
     {
-      AssertThrow(map.find(fields[i].name) == map.end(),
-                  dealii::ExcMessage(
-                    "The names of the fields are not unique. This is not allowed."));
+      ASSERT(!map.contains(fields[i].name),
+             "The names of the fields must be unique",
+             fields[i].name);
       map[fields[i].name] = i;
     }
   return map;
@@ -92,9 +92,9 @@ field_map(const std::vector<FieldAttributes> &fields)
   std::map<std::string, FieldAttributes> map;
   for (const FieldAttributes &field : fields)
     {
-      AssertThrow(map.find(field.name) == map.end(),
-                  dealii::ExcMessage(
-                    "The names of the fields are not unique. This is not allowed."));
+      ASSERT(!map.contains(field.name),
+             "The names of the fields must be unique",
+             field.name);
       map[field.name] = field;
     }
   return map;

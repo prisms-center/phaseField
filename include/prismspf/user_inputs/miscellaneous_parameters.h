@@ -6,7 +6,6 @@
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/parameter_handler.h>
 
-#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 
 #include <prismspf/user_inputs/parameter_base.h>

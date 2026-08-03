@@ -250,15 +250,11 @@ public:
   void
   vmult(BlockVector<number> &dst, const BlockVector<number> &src) const;
 
-  // NOLINTBEGIN(readability-identifier-naming)
-
   /**
    * @brief Transpose matrix-vector multiplication.
    */
   void
   Tvmult(BlockVector<number> &dst, const BlockVector<number> &src) const;
-
-  // NOLINTEND(readability-identifier-naming)
 
   /**
    * @brief Reinit diagonal matrix to have the correct shape.

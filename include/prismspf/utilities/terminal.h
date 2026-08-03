@@ -7,8 +7,7 @@
 
 #include <concepts>
 #include <cstdlib>
-#include <iostream>
-#include <ostream>
+#include <initializer_list>
 #include <random>
 #include <span>
 #include <string>
@@ -19,6 +18,9 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <typename T>
 concept StringLike = std::convertible_to<T, std::string_view>;
 
+/**
+ * Colorize text with certain terminal codes
+ */
 class TerminalColor
 {
 public:
@@ -75,11 +77,6 @@ public:
   static constexpr std::string_view BG_BRIGHT_CYAN    = "\033[106m";
   static constexpr std::string_view BG_BRIGHT_WHITE   = "\033[107m";
 
-  static constexpr std::string_view MY_ORANGE = "\033[38;5;166m";
-  static constexpr std::string_view MY_PURPLE = "\033[38;5;91m";
-  static constexpr std::string_view MY_BLUE   = "\033[38;5;33m";
-  static constexpr std::string_view MY_GRAY   = "\033[38;5;240m";
-
   // NOLINTEND(readability-identifier-naming)
 
   /**
@@ -88,7 +85,16 @@ public:
   static std::string
   colorize(const StringLike auto &text, std::string_view code)
   {
-    return std::string(code) + std::string(text) + std::string(RESET);
+    const std::string_view str_v {text};
+
+    std::string result;
+    result.reserve(code.size() + str_v.size() + RESET.size());
+
+    result += code;
+    result += str_v;
+    result += RESET;
+
+    return result;
   }
 
   /**
@@ -97,12 +103,25 @@ public:
   static std::string
   colorize(const StringLike auto &text, std::initializer_list<std::string_view> codes)
   {
-    std::string prefix;
+    const std::string_view str_v {text};
+
+    std::size_t prefix_size = 0;
     for (auto code : codes)
       {
-        prefix += code;
+        prefix_size += code.size();
       }
-    return prefix + std::string(text) + std::string(RESET);
+
+    std::string result;
+    result.reserve(prefix_size + str_v.size() + RESET.size());
+
+    for (auto code : codes)
+      {
+        result += code;
+      }
+    result += str_v;
+    result += RESET;
+
+    return result;
   }
 
   /**
@@ -113,9 +132,19 @@ public:
   static std::string
   colorize(const StringLike auto &text, [[maybe_unused]] Codes &&...codes)
   {
-    std::string prefix;
-    ((prefix += std::string_view(codes)), ...);
-    return prefix + std::string(text) + std::string(RESET);
+    const std::string_view str_v {text};
+
+    const std::size_t prefix_size = (std::string_view(codes).size() + ... + 0);
+
+    std::string result;
+    result.reserve(prefix_size + str_v.size() + RESET.size());
+
+    ((result += std::string_view(codes)), ...);
+
+    result += str_v;
+    result += RESET;
+
+    return result;
   }
 
   /**

@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include <deal.II/base/exceptions.h>
-
 #include <prismspf/core/types.h>
 
 #include <prismspf/config.h>

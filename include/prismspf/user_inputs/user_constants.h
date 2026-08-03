@@ -11,9 +11,10 @@
 #include <boost/range/algorithm_ext/erase.hpp>
 #include <boost/variant.hpp>
 
-#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
+
+#include <prismspf/utilities/assert.h>
 
 #include <prismspf/config.h>
 
@@ -116,12 +117,6 @@ public:
     model_constants[constant_name] = construct_user_constant(model_constants_strings);
   };
 
-  /**
-   * @brief Print all user-specified constants
-   */
-  void
-  print() const;
-
   static void
   strip_spaces(std::string &line);
 
@@ -212,76 +207,6 @@ private:
    * @brief List of user-defined constants.
    */
   std::map<std::string, InputVariant> model_constants;
-
-  /**
-   * @brief Class for printing of variant types. This is bad practice and should be fixed.
-   */
-  class VariantPrinter : public boost::static_visitor<>
-  {
-  public:
-    void
-    operator()(double value) const
-    {
-      ConditionalOStreams::pout_summary() << value;
-    }
-
-    void
-    operator()(int value) const
-    {
-      ConditionalOStreams::pout_summary() << value;
-    }
-
-    void
-    operator()(bool value) const
-    {
-      ConditionalOStreams::pout_summary() << std::boolalpha << value;
-    }
-
-    void
-    operator()(const std::string &value) const
-    {
-      ConditionalOStreams::pout_summary() << value;
-    }
-
-    void
-    operator()(const dealii::Tensor<1, dim> &value) const
-    {
-      ConditionalOStreams::pout_summary() << "Tensor<1, " << dim << ">: ";
-      for (unsigned int i = 0; i < dim; ++i)
-        {
-          ConditionalOStreams::pout_summary() << value[i] << ' ';
-        }
-    }
-
-    void
-    operator()(const dealii::Tensor<2, dim> &value) const
-    {
-      ConditionalOStreams::pout_summary() << "Tensor<2, " << dim << ">: ";
-      for (unsigned int i = 0; i < dim; ++i)
-        {
-          for (unsigned int j = 0; j < dim; ++j)
-            {
-              ConditionalOStreams::pout_summary() << value[i][j] << ' ';
-            }
-        }
-    }
-
-    template <unsigned int D = dim>
-    void
-    operator()(const dealii::Tensor<2, (2 * D) - 1 + (D / 3)> &value) const
-    requires((D != ((2 * D) - 1 + (D / 3))))
-    {
-      constexpr unsigned int dimension = (2 * D) - 1 + (D / 3);
-      ConditionalOStreams::pout_summary() << "Tensor<2, " << dimension << ">: ";
-      for (unsigned int i = 0; i < dimension; ++i)
-        {
-          for (unsigned int j = 0; j < dimension; ++j)
-            {
-              ConditionalOStreams::pout_summary() << value[i][j] << ' ';
-            }
-        }
-    }
-  };
 };
 
 template <unsigned int dim>
@@ -493,9 +418,8 @@ UserConstants<dim>::construct_user_constant(
       const unsigned int open_parentheses =
         compute_tensor_parentheses(n_elements, model_constants_strings);
 
-      AssertThrow(open_parentheses <= 4,
-                  FeatureNotImplemented("3rd rank tensors and above"));
-
+      ASSERT(open_parentheses <= 4,
+             "3rd rank tensors and above haven't been implemented for model constants");
       remove_parentheses(model_constants_strings);
 
       // Rank 1 tensor
@@ -799,8 +723,6 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                   // constraints). Also, ignore magic numbers because it is simpler to
                   // hardcode this.
 
-                  // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-
                   stiffness[xx_dir][xx_dir] = constants.at(0);
                   stiffness[yy_dir][yy_dir] = constants.at(1);
                   stiffness[xy_dir][xy_dir] = constants.at(2);
@@ -808,7 +730,6 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                   stiffness[xx_dir][xy_dir] = stiffness[xy_dir][xx_dir] = constants.at(4);
                   stiffness[yy_dir][xy_dir] = stiffness[xy_dir][yy_dir] = constants.at(5);
 
-                  // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
                   break;
                 }
               default:
@@ -858,8 +779,6 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                   // constraints). Also, ignore magic numbers because it is simpler to
                   // hardcode this.
 
-                  // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-
                   stiffness[xx_dir][xx_dir] = constants[0];
                   stiffness[yy_dir][yy_dir] = constants[1];
                   stiffness[zz_dir][zz_dir] = constants[2];
@@ -882,13 +801,14 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                   stiffness[yz_dir][xy_dir] = stiffness[xy_dir][yz_dir] = constants[19];
                   stiffness[xz_dir][xy_dir] = stiffness[xy_dir][xz_dir] = constants[20];
 
-                  // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
                   break;
                 }
               case Transverse:
                 {
                   // TODO (landinjm): implement
-                  AssertThrow(false, FeatureNotImplemented("Transverse material"));
+                  ASSERT(false,
+                         "Transverse elastic tensors haven't been implemented for model "
+                         "constants");
                   break;
                 }
               case Orthotropic:
@@ -936,27 +856,6 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
     }
 
   return stiffness;
-}
-
-template <unsigned int dim>
-void
-UserConstants<dim>::print() const
-{
-  if (!model_constants.empty())
-    {
-      ConditionalOStreams::pout_summary()
-        << "================================================\n"
-        << "  User Constants\n"
-        << "================================================\n";
-
-      for (const auto &[constant_name, variant] : model_constants)
-        {
-          ConditionalOStreams::pout_summary() << constant_name << ": ";
-          boost::apply_visitor(VariantPrinter(), variant);
-          ConditionalOStreams::pout_summary() << "\n";
-        }
-      ConditionalOStreams::pout_summary() << "\n" << std::flush;
-    }
 }
 
 template <unsigned int dim>

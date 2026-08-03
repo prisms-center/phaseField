@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
 #include <deal.II/lac/vector.h>
 
@@ -272,12 +271,10 @@ ReadUnstructuredVTK<dim, number>::get_scalar_value(const dealii::Point<dim> &poi
   bool interpolate = false;
   for (unsigned int i = 0; i < dim; i++)
     {
-      // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
       if (std::abs(point_in_dataset[i] - point_vector[i]) > Defaults::mesh_tolerance)
         {
           interpolate = true;
         }
-      // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
   // Get the data array
@@ -297,15 +294,13 @@ ReadUnstructuredVTK<dim, number>::get_scalar_value(const dealii::Point<dim> &poi
 
       int sub_id = 0;
 
-      vtkGenericCell *cell = vtkGenericCell::New();
-      // NOLINTBEGIN(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
+      vtkGenericCell *cell    = vtkGenericCell::New();
       const vtkIdType cell_id = cell_locator->FindCell(point_vector.data(),
                                                        Defaults::mesh_tolerance,
                                                        cell,
                                                        sub_id,
                                                        pcoords.data(),
                                                        weights.data());
-      // NOLINTEND(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 
       AssertThrow(cell_id >= 0,
                   dealii::ExcMessage("Point not inside any cell for interpolation"));
@@ -316,9 +311,7 @@ ReadUnstructuredVTK<dim, number>::get_scalar_value(const dealii::Point<dim> &poi
       for (vtkIdType id = 0; id < point_ids->GetNumberOfIds(); ++id)
         {
           const vtkIdType pt_id = point_ids->GetId(id);
-          // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
           interpolated_value += weights[id] * data_array->GetComponent(pt_id, 0);
-          // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
         }
 
       return interpolated_value;
@@ -365,12 +358,10 @@ ReadUnstructuredVTK<dim, number>::get_vector_value(const dealii::Point<dim> &poi
   bool interpolate = false;
   for (unsigned int i = 0; i < dim; i++)
     {
-      // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
       if (std::abs(point_in_dataset[i] - point_vector[i]) > Defaults::mesh_tolerance)
         {
           interpolate = true;
         }
-      // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
   // Get the data array
@@ -394,15 +385,13 @@ ReadUnstructuredVTK<dim, number>::get_vector_value(const dealii::Point<dim> &poi
 
           int sub_id = 0;
 
-          vtkGenericCell *cell = vtkGenericCell::New();
-          // NOLINTBEGIN(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
+          vtkGenericCell *cell    = vtkGenericCell::New();
           const vtkIdType cell_id = cell_locator->FindCell(point_vector.data(),
                                                            Defaults::mesh_tolerance,
                                                            cell,
                                                            sub_id,
                                                            pcoords.data(),
                                                            weights.data());
-          // NOLINTEND(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 
           AssertThrow(cell_id >= 0,
                       dealii::ExcMessage("Point not inside any cell for interpolation"));
@@ -415,10 +404,8 @@ ReadUnstructuredVTK<dim, number>::get_vector_value(const dealii::Point<dim> &poi
               Assert(id < data_array->GetNumberOfComponents(),
                      dealii::ExcMessage("Index out of bounds for data array components"));
               const vtkIdType pt_id = point_ids->GetId(id);
-              // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
               interpolated_value +=
                 weights[id] * data_array->GetComponent(pt_id, static_cast<int>(id));
-              // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
             }
 
           vector_value[i] = interpolated_value;

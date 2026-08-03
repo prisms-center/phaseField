@@ -3,13 +3,11 @@
 
 #pragma once
 
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/lac/precondition.h>
 #include <deal.II/lac/solver_minres.h>
 #include <deal.II/lac/solver_selector.h>
 
-#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 

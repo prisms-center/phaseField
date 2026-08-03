@@ -43,15 +43,11 @@ public:
                    const TensorRank                           &_field_type,
                    const PDEOperatorBase<dim, degree, number> &_pde_operator);
 
-  // NOLINTBEGIN(readability-identifier-length)
-
   /**
    * @brief Scalar/Vector value.
    */
   void
   vector_value(const dealii::Point<dim> &p, dealii::Vector<number> &value) const override;
-
-  // NOLINTEND(readability-identifier-length)
 
 private:
   unsigned int index;
@@ -76,15 +72,11 @@ public:
                        const InitialConditionFile       &ic_file,
                        const SpatialDiscretization<dim> &spatial_discretization);
 
-  // NOLINTBEGIN(readability-identifier-length)
-
   /**
    * @brief Scalar/Vector value.
    */
   void
   vector_value(const dealii::Point<dim> &p, dealii::Vector<number> &value) const override;
-
-  // NOLINTEND(readability-identifier-length)
 
 private:
   std::string field_name;

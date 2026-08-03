@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <deal.II/base/config.h>
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/timer.h>
 
-#include <prismspf/core/conditional_ostreams.h>
-#include <prismspf/core/timer.h>
+#include <prismspf/utilities/logger.h>
+#include <prismspf/utilities/timer.h>
 
 #include <prismspf/config.h>
 
@@ -146,7 +145,7 @@ Timer::end_section(const char *name)
 dealii::TimerOutput &
 Timer::serial_timer()
 {
-  static dealii::TimerOutput instance(ConditionalOStreams::pout_base(),
+  static dealii::TimerOutput instance(Logger::instance(),
                                       dealii::TimerOutput::never,
                                       dealii::TimerOutput::wall_times);
 
@@ -211,7 +210,7 @@ Timer::print_summary()
   const int w_pct   = static_cast<int>(parent.size()) + 2;
   const int total_w = w_label + w_calls + w_wall + w_cpu + w_pct;
 
-  auto &out = ConditionalOStreams::pout_base();
+  auto &out = Logger::instance();
 
   out << "\n"
       << std::string(total_w, '=') << "\n"

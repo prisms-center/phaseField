@@ -1,8 +1,6 @@
 // SPDX-FileCopyrightText: © 2026 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/exceptions.h>
-
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/solution_indexer.h>
 

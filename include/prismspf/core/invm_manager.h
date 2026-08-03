@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/vectorization.h>
 #include <deal.II/matrix_free/fe_evaluation.h>
 

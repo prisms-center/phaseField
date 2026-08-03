@@ -12,11 +12,21 @@ set(PRISMS_PF_VENDORED_PACKAGES "@PRISMS_PF_VENDORED_PACKAGES@")
 include(CMakeFindDependencyMacro)
 
 # Path for other vendored dependencies
-get_filename_component(_pkg_prefix
-  "${CMAKE_CURRENT_LIST_DIR}/../../../vendored"
-  ABSOLUTE
-)
+# Two different paths: the build and install directories.
+# The build directory should have a CMakeCache.
+if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/../CMakeCache.txt")
+  get_filename_component(_pkg_prefix
+    "${CMAKE_CURRENT_LIST_DIR}/../_deps"
+    ABSOLUTE
+  )
+else()
+  get_filename_component(_pkg_prefix
+    "${CMAKE_CURRENT_LIST_DIR}/../../../vendored"
+    ABSOLUTE
+  )
+endif()
 
+# TODO: We have a mirrored function. Should consolidate them.
 # Helper function for adding vendored dependency static libraries.
 # This function mirrors how we declare the imported libraries in
 # the first place. Works with DebugRelease.
@@ -122,7 +132,7 @@ find_dependency(MPI COMPONENTS CXX)
 find_dependency(deal.II HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR})
 
 # Caliper
-find_package(caliper HINTS ${CALIPER_DIR} $ENV{CALIPER_DIR})
+find_package(caliper QUIET HINTS ${CALIPER_DIR} $ENV{CALIPER_DIR})
 
 # Exported targets
 include(${CMAKE_CURRENT_LIST_DIR}/prisms_pf_targets.cmake)

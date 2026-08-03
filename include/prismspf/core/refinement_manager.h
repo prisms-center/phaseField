@@ -12,13 +12,14 @@
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/matrix_free_manager.h>
 #include <prismspf/core/system_wide.h>
-#include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_manager.h>
 
 #include <prismspf/solvers/solve_context.h>
 #include <prismspf/solvers/solver_base.h>
 
 #include <prismspf/user_inputs/spatial_discretization.h>
+
+#include <prismspf/utilities/timer.h>
 
 #include <prismspf/config.h>
 
@@ -132,12 +133,10 @@ public:
     solve_context->get_invm_manager().reinit(solve_context->get_matrix_free_manager());
     solve_context->get_invm_manager().compute_invm();
     // Update the ghosts
-    Timer::start_section("Update ghosts");
     for (auto &solver : solvers)
       {
         solver->update_ghosts();
       }
-    Timer::end_section("Update ghosts");
   }
 
   void
@@ -168,38 +167,54 @@ public:
   do_initial_refinement(
     std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> &solvers)
   {
-    const SpatialDiscretization<dim> &space_parameters =
-      solve_context->get_user_inputs().spatial_discretization;
-    const DoFManager<dim, degree> &dof_manager = solve_context->get_dof_manager();
+    Logger::instance() << "Refining grid..." << std::endl;
+    {
+      Logger::IndentScope indent;
 
-    dealii::types::global_dof_index old_dofs = dof_manager.get_total_dofs();
-    dealii::types::global_dof_index new_dofs = 0;
-    for (unsigned int remesh_index = 0; remesh_index < (space_parameters.max_refinement -
-                                                        space_parameters.min_refinement);
-         remesh_index++)
-      {
-        // Perform grid refinement
-        ConditionalOStreams::pout_base() << "performing grid refinement...\n"
-                                         << std::flush;
-        do_adaptive_refinement(solvers);
-        // Update the ghosts
-        Timer::start_section("Update ghosts");
-        for (auto &solver : solvers)
-          {
-            solver->update_ghosts();
-          }
-        Timer::end_section("Update ghosts");
+      const SpatialDiscretization<dim> &space_parameters =
+        solve_context->get_user_inputs().spatial_discretization;
+      const DoFManager<dim, degree> &dof_manager = solve_context->get_dof_manager();
 
-        // Recalculate the total DoFs
-        new_dofs = dof_manager.get_total_dofs();
+      dealii::types::global_dof_index old_dofs = dof_manager.get_total_dofs();
+      dealii::types::global_dof_index new_dofs = 0;
 
-        // Check for convergence
-        if (old_dofs == new_dofs)
-          {
-            break;
-          }
-        old_dofs = new_dofs;
-      }
+      Logger::instance() << "Initial DoFs " << old_dofs << std::endl;
+
+      for (unsigned int remesh_index = 0;
+           remesh_index <
+           (space_parameters.max_refinement - space_parameters.min_refinement);
+           remesh_index++)
+        {
+          Logger::instance() << "Performing grid refinement..." << std::endl;
+          Logger::IndentScope indent_2;
+
+          // Perform grid refinement
+          do_adaptive_refinement(solvers);
+
+          // Update the ghosts
+          for (auto &solver : solvers)
+            {
+              solver->update_ghosts();
+            }
+
+          // Recalculate the total DoFs
+          new_dofs = dof_manager.get_total_dofs();
+
+          Logger::instance() << LogFormatter::debug("New DoFs " +
+                                                    std::to_string(new_dofs))
+                             << std::endl;
+
+          // Check for convergence
+          if (old_dofs == new_dofs)
+            {
+              break;
+            }
+          old_dofs = new_dofs;
+        }
+
+      Logger::instance() << "Final DoFs " << old_dofs << std::endl;
+    }
+    Logger::instance() << LogFormatter::success("Refinement succeeded") << std::endl;
   }
 
 private:
@@ -353,9 +368,11 @@ private:
                   }
               }
 
-            Assert(cell->level() > 0,
-                   dealii::ExcMessage("Cell refinement level is less than one, which "
-                                      "will lead to underflow."));
+            DEBUG_ASSERT(
+              cell->level() > 0,
+              "Cell refinement level is less than one, which will lead to underflow",
+              cell->level());
+
             const auto cell_refinement = static_cast<unsigned int>(cell->level());
             if (should_refine && cell_refinement < max_refinement)
               {

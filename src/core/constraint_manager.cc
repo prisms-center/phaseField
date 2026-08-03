@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: © 2026 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/function.h>
 #include <deal.II/base/geometry_info.h>
 #include <deal.II/dofs/dof_handler.h>
@@ -21,6 +20,8 @@
 
 #include <prismspf/user_inputs/constraint_parameters.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/utilities/assert.h>
 
 #include <prismspf/config.h>
 
@@ -366,12 +367,12 @@ ConstraintManager<dim, degree, number>::make_one_boundary_constraint(
         }
       case Condition::Neumann:
         {
-          Assert(false, FeatureNotImplemented("Neumann boundary conditions"));
+          ASSERT(false, "Neumann boundary conditions haven't been implemented");
           break;
         }
       default:
         {
-          AssertThrow(false, UnreachableCode());
+          UNREACHABLE("Invalid Condition", boundary_type);
         }
     }
 }

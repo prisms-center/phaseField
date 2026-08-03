@@ -34,8 +34,6 @@ public:
                       const SimulationTimer                      &_sim_timer,
                       unsigned int                                spacedim);
 
-  // NOLINTBEGIN(readability-identifier-length, readability-avoid-const-params-in-decls)
-
   /**
    * @brief Scalar value.
    */
@@ -47,8 +45,6 @@ public:
    */
   void
   vector_value(const dealii::Point<dim> &p, dealii::Vector<number> &value) const override;
-
-  // NOLINTEND(readability-identifier-length, readability-avoid-const-params-in-decls)
 
 private:
   unsigned int index;

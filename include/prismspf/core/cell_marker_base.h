@@ -24,8 +24,8 @@ template <unsigned int dim>
 class CellMarkerBase
 {
 public:
-  using CellIterator =
-    dealii::CellAccessor<dim>; // dealii::TriaActiveIterator<dealii::CellAccessor<dim>>;
+  using CellIterator = dealii::CellAccessor<dim>;
+
   /**
    * @brief Destructor.
    */

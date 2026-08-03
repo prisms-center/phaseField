@@ -5,7 +5,7 @@
 
 #include <deal.II/base/mpi.h>
 
-#include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/utilities/logger.h>
 
 #include <prismspf/config.h>
 
@@ -21,8 +21,6 @@ PRISMS_PF_BEGIN_NAMESPACE
 class ParseCMDOptions
 {
 public:
-  // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-
   ParseCMDOptions(int &_argc, char **argv)
     : argc(_argc)
   {
@@ -31,8 +29,6 @@ public:
         tokens.emplace_back(argv[i]);
       }
   }
-
-  // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
   std::string
   get_parameters_filename()
@@ -85,9 +81,9 @@ public:
                                  "` does not exist.");
       }
 
-    // Log the filename being used
-    ConditionalOStreams::pout_base()
-      << "Using the input parameter file: " << parameters_filename << "\n";
+    Logger::instance() << LogFormatter::info("Using parameter file " +
+                                             parameters_filename)
+                       << std::endl;
 
     return parameters_filename;
   }
@@ -125,9 +121,8 @@ public:
       }
 
     // Log the filename being used
-    ConditionalOStreams::pout_base()
-      << "Using the caliper configuration: " << config << "\n";
-
+    Logger::instance() << LogFormatter::info("Using caliper configuration " + config)
+                       << std::endl;
     return config;
   }
 #endif

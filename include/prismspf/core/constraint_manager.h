@@ -90,8 +90,6 @@ public:
   [[nodiscard]] const dealii::AffineConstraints<number> &
   get_generic_constraint(unsigned int rank) const;
 
-  //-------------------------------------------------------------------------------------
-
   /**
    * @brief Getter function for a selection of the constraints.
    */

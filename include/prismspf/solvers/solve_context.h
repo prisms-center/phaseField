@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include <deal.II/base/exceptions.h>
-
 #include <prismspf/core/constraint_manager.h>
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>

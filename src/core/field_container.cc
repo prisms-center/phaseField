@@ -1,10 +1,9 @@
 // SPDX-FileCopyrightText: © 2026 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/exceptions.h>
-
-#include <prismspf/core/exceptions.h>
 #include <prismspf/core/field_container.h>
+
+#include <prismspf/utilities/assert.h>
 
 #include <vector>
 
@@ -59,7 +58,7 @@ FieldContainer<dim, degree, number>::FieldContainer(
         }
       else
         {
-          Assert(false, UnreachableCode());
+          UNREACHABLE("Invalid TensorRank", field_attributes[field_index].field_type);
         }
     }
 }

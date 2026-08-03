@@ -22,8 +22,6 @@ DirichletConditions<dim, degree, number>::DirichletConditions(
   , sim_timer(&_sim_timer)
 {}
 
-// NOLINTBEGIN(readability-identifier-length)
-
 template <unsigned int dim, unsigned int degree, typename number>
 number
 DirichletConditions<dim, degree, number>::value(
@@ -73,8 +71,6 @@ DirichletConditions<dim, degree, number>::vector_value(
 
   value = temp_vector_value;
 }
-
-// NOLINTEND(readability-identifier-length)
 
 #include "core/dirichlet.inst"
 

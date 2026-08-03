@@ -3,25 +3,26 @@
 
 #pragma once
 
-#include <deal.II/base/exceptions.h>
 #include <deal.II/base/utilities.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 
-#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
+#include <prismspf/utilities/assert.h>
+#include <prismspf/utilities/logger.h>
+
 #include <prismspf/config.h>
 
 #include <array>
+#include <map>
+#include <ostream>
 #include <set>
 #include <string>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
-
-// NOLINTBEGIN(misc-non-private-member-variables-in-classes, hicpp-explicit-conversions)
 
 /**
  * @brief Dependency struct containing evaluation flags for each field.
@@ -49,9 +50,9 @@ struct Dependency
   /**
    * @brief Construct with given flags.
    */
-  Dependency(EvalFlags                     _flag      = EvalFlags::nothing,
-             EvalFlags                     _src_flag  = EvalFlags::nothing,
-             const std::vector<EvalFlags> &_old_flags = {})
+  explicit Dependency(EvalFlags                     _flag      = EvalFlags::nothing,
+                      EvalFlags                     _src_flag  = EvalFlags::nothing,
+                      const std::vector<EvalFlags> &_old_flags = {})
     : flag(_flag)
     , src_flag(_src_flag)
     , old_flags(_old_flags)
@@ -124,10 +125,10 @@ struct Dependency
   }
 };
 
-// NOLINTEND(misc-non-private-member-variables-in-classes, hicpp-explicit-conversions)
-
+// TODO: Move this
 using DependencyMap = std::map<Types::Index, Dependency>;
 
+// TODO: Move this
 constexpr unsigned int default_max_checked_age = 6;
 
 inline DependencyMap
@@ -204,10 +205,9 @@ make_dependency_set(const std::vector<FieldAttributes> &field_attributes,
         }
       error_message.pop_back();
       error_message.pop_back();
-#ifndef DEBUG
-      ConditionalOStreams::pout_base() << "Warning: " << error_message << std::endl;
-#endif
-      Assert(false, dealii::ExcMessage(error_message));
+
+      Logger::instance() << LogFormatter::error(error_message) << std::endl;
+      DEBUG_ASSERT(false, "Unrecognized dependencies are present", error_message);
     }
   return result;
 }

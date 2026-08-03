@@ -30,14 +30,14 @@ public:
   DoFManager() = default;
 
   /**
-   * @brief Disable copying.
+   * @brief Disable copying & moving.
    */
-  DoFManager(const DoFManager &)  = delete;
-  DoFManager(const DoFManager &&) = delete;
-  DoFManager
+  DoFManager(const DoFManager &) = delete;
+  DoFManager(DoFManager &&)      = delete;
+  DoFManager &
   operator=(const DoFManager &) = delete;
   DoFManager &
-  operator=(DoFManager &&other) = delete;
+  operator=(DoFManager &&) = delete;
 
   /**
    * @brief Destructor.

@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <deal.II/base/exceptions.h>
 #include <deal.II/numerics/vector_tools.h>
 
 #include <boost/geometry/core/cs.hpp>
@@ -48,34 +47,14 @@ public:
   virtual ~SolverBase() = default;
 
   /**
-   * @brief Copy constructor.
-   *
-   * Deleted so solver instances aren't copied.
+   * @brief Disable copying & moving.
    */
-  SolverBase(const SolverBase &solver_base) = delete;
-
-  /**
-   * @brief Copy assignment.
-   *
-   * Deleted so solver instances aren't copied.
-   */
+  SolverBase(const SolverBase &) = delete;
+  SolverBase(SolverBase &&)      = delete;
   SolverBase &
-  operator=(const SolverBase &solver_base) = delete;
-
-  /**
-   * @brief Move constructor.
-   *
-   * Deleted so solver instances aren't moved.
-   */
-  SolverBase(SolverBase &&solver_base) noexcept = delete;
-
-  /**
-   * @brief Move assignment.
-   *
-   * Deleted so solver instances aren't moved.
-   */
+  operator=(const SolverBase &) = delete;
   SolverBase &
-  operator=(SolverBase &&solver_base) noexcept = delete;
+  operator=(SolverBase &&) = delete;
 
   /**
    * @brief Initialize the solver.
