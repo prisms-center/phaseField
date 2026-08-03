@@ -26,5 +26,10 @@ var searchData=
   ['load_5ffrom_5ffile_23',['load_from_file',['../structFieldInputParameters.html#aa141091ae989699f40c9e0bf441dc61b',1,'FieldInputParameters']]],
   ['location_24',['location',['../structNucleus.html#addb86426dbd7ded2fc1cb9f1e624788f',1,'Nucleus']]],
   ['location_5fvectorized_25',['location_vectorized',['../structNucleus.html#a65645a28ec2c1d62dbae42e288c1cf6b',1,'Nucleus']]],
-  ['lower_5fbound_26',['lower_bound',['../structRectangularMesh.html#a2d9983893c8ed8dfaf90845075906d39',1,'RectangularMesh']]]
+  ['log_5ffile_26',['log_file',['../classLogger.html#a20bfa1c139e4e4ee40ad694293d1c9d4',1,'Logger']]],
+  ['logformatter_27',['LogFormatter',['../classLogFormatter.html',1,'LogFormatter'],['../classLogFormatter.html#a209df3a2b5df277b9f804751e02fa644',1,'LogFormatter::LogFormatter()']]],
+  ['logger_28',['Logger',['../classLogger.html',1,'Logger'],['../classLogger.html#abc41bfb031d896170c7675fa96a6b30c',1,'Logger::Logger()']]],
+  ['logger_2eh_29',['logger.h',['../logger_8h.html',1,'']]],
+  ['logstream_30',['LogStream',['../classLogStream.html',1,'LogStream'],['../classLogStream.html#a767bece30e914207551ca62005f92dc0',1,'LogStream::LogStream(BlankOutputTag tag)'],['../classLogStream.html#a7ab8f760f95a23b156f74b5b4ca91857',1,'LogStream::LogStream()'],['../classLogStream.html#a399c905d8f1a7f85a8786499980d11d0',1,'LogStream::LogStream(unsigned int process_id)'],['../classLogStream.html#a4318f2803e1dfb9333c0cf789d3cc8f0',1,'LogStream::LogStream(const std::string &amp;file)'],['../classLogStream.html#a47507452fa41482cb29d3de5b7ef76b6',1,'LogStream::LogStream(const std::string &amp;file, unsigned int process_id)'],['../classLogStream.html#a3770a684c710aceceac40fa521926ce2',1,'LogStream::LogStream(const std::optional&lt; std::string &gt; &amp;file, std::optional&lt; unsigned int &gt; process_id, bool enable_cout)']]],
+  ['lower_5fbound_31',['lower_bound',['../structRectangularMesh.html#a2d9983893c8ed8dfaf90845075906d39',1,'RectangularMesh']]]
 ];

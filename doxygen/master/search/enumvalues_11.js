@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xdmf_0',['XDMF',['../structFieldOutputParameters.html#aeb06d893f288d52bea97b48cb1a09240a35cce43659df24591aa65b7c86948693',1,'FieldOutputParameters']]]
+  ['warning_0',['Warning',['../classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9a0eaadb4fcb48a0a0ed7bc9868be9fbaa',1,'LogFormatter']]]
 ];

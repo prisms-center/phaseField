@@ -129,12 +129,12 @@ $(function(){initNavTree('field__attributes_8h_source.html',''); initResizable(t
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;deal.II/base/exceptions.h&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;<a class="code" href="type__enums_8h.html">prismspf/core/type_enums.h</a>&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">prismspf/core/types.h</a>&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;<a class="code" href="type__enums_8h.html">prismspf/core/type_enums.h</a>&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">prismspf/core/types.h</a>&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;<a class="code" href="constraint__parameters_8h.html">prismspf/user_inputs/constraint_parameters.h</a>&gt;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;<a class="code" href="constraint__parameters_8h.html">prismspf/user_inputs/constraint_parameters.h</a>&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;<a class="code" href="assert_8h.html">prismspf/utilities/assert.h</a>&gt;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
@@ -181,9 +181,9 @@ $(function(){initNavTree('field__attributes_8h_source.html',''); initResizable(t
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  std::map&lt;std::string, Types::Index&gt; map;</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; fields.size(); ++i)</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    {</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      AssertThrow(map.find(fields[i].name) == map.end(),</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                  dealii::ExcMessage(</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                    <span class="stringliteral">&quot;The names of the fields are not unique. This is not allowed.&quot;</span>));</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      <a class="code hl_define" href="assert_8h.html#af343b20373ba49a92fce523e948f2ab3">ASSERT</a>(!map.contains(fields[i].name),</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>             <span class="stringliteral">&quot;The names of the fields must be unique&quot;</span>,</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>             fields[i].name);</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      map[fields[i].name] = i;</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    }</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keywordflow">return</span> map;</div>
@@ -197,9 +197,9 @@ $(function(){initNavTree('field__attributes_8h_source.html',''); initResizable(t
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  std::map&lt;std::string, FieldAttributes&gt; map;</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <a class="code hl_struct" href="structFieldAttributes.html">FieldAttributes</a> &amp;field : fields)</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    {</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      AssertThrow(map.find(field.name) == map.end(),</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                  dealii::ExcMessage(</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                    <span class="stringliteral">&quot;The names of the fields are not unique. This is not allowed.&quot;</span>));</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      <a class="code hl_define" href="assert_8h.html#af343b20373ba49a92fce523e948f2ab3">ASSERT</a>(!map.contains(field.name),</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>             <span class="stringliteral">&quot;The names of the fields must be unique&quot;</span>,</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>             field.name);</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      map[field.name] = field;</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    }</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keywordflow">return</span> map;</div>
@@ -211,12 +211,14 @@ $(function(){initNavTree('field__attributes_8h_source.html',''); initResizable(t
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">// EvalFlags::gradients;</span></div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="ttc" id="aassert_8h_html"><div class="ttname"><a href="assert_8h.html">assert.h</a></div></div>
+<div class="ttc" id="aassert_8h_html_af343b20373ba49a92fce523e948f2ab3"><div class="ttname"><a href="assert_8h.html#af343b20373ba49a92fce523e948f2ab3">ASSERT</a></div><div class="ttdeci">#define ASSERT</div><div class="ttdef"><b>Definition</b> assert.h:25</div></div>
 <div class="ttc" id="aconstraint__parameters_8h_html"><div class="ttname"><a href="constraint__parameters_8h.html">constraint_parameters.h</a></div></div>
 <div class="ttc" id="afield__attributes_8h_html_a59664838f232a382119cacc52670b0d0"><div class="ttname"><a href="field__attributes_8h.html#a59664838f232a382119cacc52670b0d0">field_index_map</a></div><div class="ttdeci">std::map&lt; std::string, Types::Index &gt; field_index_map(const std::vector&lt; FieldAttributes &gt; &amp;fields)</div><div class="ttdoc">Make a map that maps field names to field indices.</div><div class="ttdef"><b>Definition</b> field_attributes.h:73</div></div>
 <div class="ttc" id="afield__attributes_8h_html_adaa6e313c2945ec95eca03bf754510a6"><div class="ttname"><a href="field__attributes_8h.html#adaa6e313c2945ec95eca03bf754510a6">field_map</a></div><div class="ttdeci">std::map&lt; std::string, FieldAttributes &gt; field_map(const std::vector&lt; FieldAttributes &gt; &amp;fields)</div><div class="ttdoc">Make a map that maps field names to field attributes.</div><div class="ttdef"><b>Definition</b> field_attributes.h:90</div></div>
-<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> problem.cc:29</div></div>
 <div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> vectorized_operations.h:17</div></div>
-<div class="ttc" id="astructBoundaryConditionSet_html"><div class="ttname"><a href="structBoundaryConditionSet.html">BoundaryConditionSet</a></div><div class="ttdef"><b>Definition</b> constraint_parameters.h:73</div></div>
+<div class="ttc" id="astructBoundaryConditionSet_html"><div class="ttname"><a href="structBoundaryConditionSet.html">BoundaryConditionSet</a></div><div class="ttdef"><b>Definition</b> constraint_parameters.h:72</div></div>
 <div class="ttc" id="astructFieldAttributes_html"><div class="ttname"><a href="structFieldAttributes.html">FieldAttributes</a></div><div class="ttdoc">Structure to hold the attributes of a field. This includes things like the name, rank,...</div><div class="ttdef"><b>Definition</b> field_attributes.h:26</div></div>
 <div class="ttc" id="astructFieldAttributes_html_a3cae2a412a6282457907b0a082152c1f"><div class="ttname"><a href="structFieldAttributes.html#a3cae2a412a6282457907b0a082152c1f">FieldAttributes::field_type</a></div><div class="ttdeci">TensorRank field_type</div><div class="ttdoc">Field type (Scalar/Vector).</div><div class="ttdef"><b>Definition</b> field_attributes.h:51</div></div>
 <div class="ttc" id="astructFieldAttributes_html_a526154d2afc31a567667fc4924f238e5"><div class="ttname"><a href="structFieldAttributes.html#a526154d2afc31a567667fc4924f238e5">FieldAttributes::nucleating_field_indices</a></div><div class="ttdeci">std::vector&lt; Types::Index &gt; nucleating_field_indices</div><div class="ttdoc">If this is a nucleation rate, the indices of the nucleating fields.</div><div class="ttdef"><b>Definition</b> field_attributes.h:66</div></div>

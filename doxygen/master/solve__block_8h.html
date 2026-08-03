@@ -123,18 +123,18 @@ $(function(){initNavTree('solve__block_8h.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">solve_block.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;deal.II/base/exceptions.h&gt;</code><br />
-<code>#include &lt;deal.II/matrix_free/evaluation_flags.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;deal.II/matrix_free/evaluation_flags.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="dependencies_8h_source.html">prismspf/core/dependencies.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="type__enums_8h_source.html">prismspf/core/type_enums.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="types_8h_source.html">prismspf/core/types.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="solve__parameters_8h_source.html">prismspf/user_inputs/solve_parameters.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="assert_8h_source.html">prismspf/utilities/assert.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="logger_8h_source.html">prismspf/utilities/logger.h</a>&gt;</code><br />
 <code>#include &lt;prismspf/config.h&gt;</code><br />
 <code>#include &lt;set&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
@@ -142,7 +142,7 @@ $(function(){initNavTree('solve__block_8h.html',''); initResizable(true); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for solve_block.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="solve__block_8h__incl.svg" width="3710" height="687"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="solve__block_8h__incl.svg" width="4924" height="687"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -157,11 +157,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html">SolveBlock</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to hold the attributes of a solve-block.  <a href="classSolveBlock.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a2e2b40c8a7e6e221a9e7586cfadea934" id="r_a2e2b40c8a7e6e221a9e7586cfadea934"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e2b40c8a7e6e221a9e7586cfadea934">SolveGroup</a> = <a class="el" href="classSolveBlock.html">SolveBlock</a></td></tr>
-<tr class="separator:a2e2b40c8a7e6e221a9e7586cfadea934"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -183,21 +178,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ae1c97b02149d0ddada518e50a41a5b72" id="r_ae1c97b02149d0ddada518e50a41a5b72"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1c97b02149d0ddada518e50a41a5b72">validate_solve_blocks</a> (const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;solve_blocks, const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;field_attributes)</td></tr>
 <tr class="separator:ae1c97b02149d0ddada518e50a41a5b72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="a2e2b40c8a7e6e221a9e7586cfadea934" name="a2e2b40c8a7e6e221a9e7586cfadea934"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e2b40c8a7e6e221a9e7586cfadea934">&#9670;&#160;</a></span>SolveGroup</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="#a2e2b40c8a7e6e221a9e7586cfadea934">SolveGroup</a> = <a class="el" href="classSolveBlock.html">SolveBlock</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a9ad39c03995e9a9abf3766c96d65cc5d" name="a9ad39c03995e9a9abf3766c96d65cc5d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ad39c03995e9a9abf3766c96d65cc5d">&#9670;&#160;</a></span>SolveTiming</h2>

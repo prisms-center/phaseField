@@ -1,11 +1,11 @@
 var hierarchy =
 [
+    [ "LogStream::BlankOutputTag", "structLogStream_1_1BlankOutputTag.html", null ],
     [ "BoundaryConditionSet", "structBoundaryConditionSet.html", null ],
     [ "BoundaryParameters", "structBoundaryParameters.html", null ],
     [ "CellMarkerBase< dim >", "classCellMarkerBase.html", [
       [ "NucleusRefinementFunction< dim >", "classNucleusRefinementFunction.html", null ]
     ] ],
-    [ "ConditionalOStreams", "classConditionalOStreams.html", null ],
     [ "ConstraintManager< dim, degree, number >", "classConstraintManager.html", null ],
     [ "Dependency", "structDependency.html", null ],
     [ "DependencyExtents", "structDependencyExtents.html", null ],
@@ -16,6 +16,7 @@ var hierarchy =
     [ "dealii::ExceptionBase", null, [
       [ "ExcDepNotInitialized", "classExcDepNotInitialized.html", null ]
     ] ],
+    [ "FanoutOStream", "classFanoutOStream.html", null ],
     [ "FieldContainer< dim, degree, number >::FEEValuationDeps< Rank >", "structFieldContainer_1_1FEEValuationDeps.html", null ],
     [ "FieldAttributes", "structFieldAttributes.html", null ],
     [ "FieldContainer< dim, degree, number >", "classFieldContainer.html", null ],
@@ -25,9 +26,13 @@ var hierarchy =
       [ "ReadInitialCondition< dim, number >", "classReadInitialCondition.html", null ]
     ] ],
     [ "GroupSolutionHandler< dim, number >", "classGroupSolutionHandler.html", null ],
+    [ "Logger::IndentScope", "classLogger_1_1IndentScope.html", null ],
     [ "InitialConditionFile", "structInitialConditionFile.html", null ],
     [ "Integrator< dim, degree, number >", "classIntegrator.html", null ],
     [ "InvMManager< dim, degree, number >", "classInvMManager.html", null ],
+    [ "LogFormatter", "classLogFormatter.html", null ],
+    [ "LogStream", "classLogStream.html", null ],
+    [ "LogFormatter::Manipulator", "structLogFormatter_1_1Manipulator.html", null ],
     [ "MATRIX_FREE_OPERATOR_BASE", null, [
       [ "MFOperator< dim, degree, number >", "classMFOperator.html", null ]
     ] ],
@@ -46,7 +51,7 @@ var hierarchy =
     [ "NucleationManager< dim, degree, number >", "classNucleationManager.html", null ],
     [ "Nucleus< dim >", "structNucleus.html", null ],
     [ "std::ostream", null, [
-      [ "TeeStream", "classTeeStream.html", null ]
+      [ "Logger", "classLogger.html", null ]
     ] ],
     [ "ParameterBase", "structParameterBase.html", [
       [ "FieldInputParameters", "structFieldInputParameters.html", null ],
@@ -86,11 +91,8 @@ var hierarchy =
         [ "NewtonSolver< dim, degree, number >", "classNewtonSolver.html", null ]
       ] ]
     ] ],
-    [ "boost::static_visitor", null, [
-      [ "UserConstants< dim >::VariantPrinter", "classUserConstants_1_1VariantPrinter.html", null ]
-    ] ],
     [ "std::streambuf", null, [
-      [ "TeeStream::TeeBuffer", "classTeeStream_1_1TeeBuffer.html", null ]
+      [ "FanoutStreamBuf", "classFanoutStreamBuf.html", null ]
     ] ],
     [ "SystemWide< dim, degree >", "classSystemWide.html", null ],
     [ "TerminalColor", "classTerminalColor.html", null ],

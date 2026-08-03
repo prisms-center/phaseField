@@ -1,0 +1,13 @@
+<map id="Logger" name="Logger">
+<area shape="rect" id="Node000001" title="Main logging class." alt="" coords="66,377,131,405"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,268,109,295"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,309,96,376,91,378,65,311"/>
+<area shape="rect" id="Node000003" href="$classLogStream.html" title="Logging of data to a given ostream." alt="" coords="133,268,224,295"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="162,310,110,379,106,376,157,307"/>
+<area shape="rect" id="Node000004" href="$classFanoutOStream.html" title=" " alt="" coords="118,175,239,203"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="181,218,181,267,176,267,176,218"/>
+<area shape="rect" id="Node000005" href="$classFanoutStreamBuf.html" title=" " alt="" coords="112,82,245,110"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="181,125,181,175,176,175,176,125"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="120,5,236,33"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="181,48,181,82,176,82,176,48"/>
+</map>

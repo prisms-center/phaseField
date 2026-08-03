@@ -10,5 +10,6 @@ var searchData=
   ['load_5ffrom_5fcheckpoint_7',['load_from_checkpoint',['../structRestartOutputParameters.html#a9fa866f53899f0e71586d4cefc063134',1,'RestartOutputParameters']]],
   ['load_5ffrom_5ffile_8',['load_from_file',['../structFieldInputParameters.html#aa141091ae989699f40c9e0bf441dc61b',1,'FieldInputParameters']]],
   ['location_9',['location',['../structNucleus.html#addb86426dbd7ded2fc1cb9f1e624788f',1,'Nucleus']]],
-  ['lower_5fbound_10',['lower_bound',['../structRectangularMesh.html#a2d9983893c8ed8dfaf90845075906d39',1,'RectangularMesh']]]
+  ['log_5ffile_10',['log_file',['../classLogger.html#a20bfa1c139e4e4ee40ad694293d1c9d4',1,'Logger']]],
+  ['lower_5fbound_11',['lower_bound',['../structRectangularMesh.html#a2d9983893c8ed8dfaf90845075906d39',1,'RectangularMesh']]]
 ];

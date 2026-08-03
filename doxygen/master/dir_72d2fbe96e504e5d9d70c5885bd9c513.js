@@ -1,7 +1,6 @@
 var dir_72d2fbe96e504e5d9d70c5885bd9c513 =
 [
     [ "cell_marker_base.h", "cell__marker__base_8h.html", "cell__marker__base_8h" ],
-    [ "conditional_ostreams.h", "conditional__ostreams_8h.html", "conditional__ostreams_8h" ],
     [ "constraint_manager.h", "constraint__manager_8h.html", "constraint__manager_8h" ],
     [ "dependencies.h", "dependencies_8h.html", "dependencies_8h" ],
     [ "dependency_extents.h", "dependency__extents_8h.html", "dependency__extents_8h" ],
@@ -25,8 +24,6 @@ var dir_72d2fbe96e504e5d9d70c5885bd9c513 =
     [ "solution_output.h", "solution__output_8h.html", "solution__output_8h" ],
     [ "solve_block.h", "solve__block_8h.html", "solve__block_8h" ],
     [ "system_wide.h", "system__wide_8h.html", "system__wide_8h" ],
-    [ "tee_stream.h", "tee__stream_8h.html", "tee__stream_8h" ],
-    [ "timer.h", "timer_8h.html", "timer_8h" ],
     [ "triangulation_manager.h", "triangulation__manager_8h.html", "triangulation__manager_8h" ],
     [ "type_enums.h", "type__enums_8h.html", "type__enums_8h" ],
     [ "types.h", "types_8h.html", "types_8h" ]

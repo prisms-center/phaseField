@@ -34,9 +34,5 @@ var searchData=
   ['misc_5fparameters_31',['misc_parameters',['../classUserInputParameters.html#a6f0fcf43c69787009be290550403e4ec',1,'UserInputParameters']]],
   ['model_5fconstants_32',['model_constants',['../classUserConstants.html#a57cdd0e2ae29f6f27bc1f4cb3e370d21',1,'UserConstants']]],
   ['multigrid_33',['multigrid',['../classMGContext.html#a9e773d131029e93bfa8f7e66470c9aed',1,'MGContext']]],
-  ['multigrid_5fpreconditioner_34',['multigrid_preconditioner',['../classMGContext.html#ab251afda634416949ef09848e360e9ea',1,'MGContext::multigrid_preconditioner'],['../classLinearSolver.html#ab17deb0767566dfcf052e5d215cbdf79',1,'LinearSolver::multigrid_preconditioner']]],
-  ['my_5fblue_35',['MY_BLUE',['../classTerminalColor.html#a34da6054aa0a0fedd8c6ec908bcaae40',1,'TerminalColor']]],
-  ['my_5fgray_36',['MY_GRAY',['../classTerminalColor.html#a1486a91501b99e6ef224b0c3d137805d',1,'TerminalColor']]],
-  ['my_5forange_37',['MY_ORANGE',['../classTerminalColor.html#a0ba2ffebb602deedd6d3cca37e7333b4',1,'TerminalColor']]],
-  ['my_5fpurple_38',['MY_PURPLE',['../classTerminalColor.html#a103b4edae858554664b9023a9104a4e0',1,'TerminalColor']]]
+  ['multigrid_5fpreconditioner_34',['multigrid_preconditioner',['../classMGContext.html#ab251afda634416949ef09848e360e9ea',1,'MGContext::multigrid_preconditioner'],['../classLinearSolver.html#ab17deb0767566dfcf052e5d215cbdf79',1,'LinearSolver::multigrid_preconditioner']]]
 ];

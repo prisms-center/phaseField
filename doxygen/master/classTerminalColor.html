@@ -249,21 +249,15 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:aa74c4841dbe4d19d21cb9db4b788c29a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af433cdd18b6f94ab87c992c11bbbea8b" id="r_af433cdd18b6f94ab87c992c11bbbea8b"><td class="memItemLeft" align="right" valign="top">static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af433cdd18b6f94ab87c992c11bbbea8b">BG_BRIGHT_WHITE</a> = &quot;\033[107m&quot;</td></tr>
 <tr class="separator:af433cdd18b6f94ab87c992c11bbbea8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ba2ffebb602deedd6d3cca37e7333b4" id="r_a0ba2ffebb602deedd6d3cca37e7333b4"><td class="memItemLeft" align="right" valign="top">static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ba2ffebb602deedd6d3cca37e7333b4">MY_ORANGE</a> = &quot;\033[38;5;166m&quot;</td></tr>
-<tr class="separator:a0ba2ffebb602deedd6d3cca37e7333b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a103b4edae858554664b9023a9104a4e0" id="r_a103b4edae858554664b9023a9104a4e0"><td class="memItemLeft" align="right" valign="top">static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a103b4edae858554664b9023a9104a4e0">MY_PURPLE</a> = &quot;\033[38;5;91m&quot;</td></tr>
-<tr class="separator:a103b4edae858554664b9023a9104a4e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34da6054aa0a0fedd8c6ec908bcaae40" id="r_a34da6054aa0a0fedd8c6ec908bcaae40"><td class="memItemLeft" align="right" valign="top">static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34da6054aa0a0fedd8c6ec908bcaae40">MY_BLUE</a> = &quot;\033[38;5;33m&quot;</td></tr>
-<tr class="separator:a34da6054aa0a0fedd8c6ec908bcaae40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1486a91501b99e6ef224b0c3d137805d" id="r_a1486a91501b99e6ef224b0c3d137805d"><td class="memItemLeft" align="right" valign="top">static constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1486a91501b99e6ef224b0c3d137805d">MY_GRAY</a> = &quot;\033[38;5;240m&quot;</td></tr>
-<tr class="separator:a1486a91501b99e6ef224b0c3d137805d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
 <tr class="memitem:a99624df89df2421ea414cde9a6565ca3" id="r_a99624df89df2421ea414cde9a6565ca3"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99624df89df2421ea414cde9a6565ca3">tessellate_impl</a> (std::string_view text, std::span&lt; const std::string_view &gt; codes, std::size_t block_size, std::string_view modifier=&quot;&quot;)</td></tr>
 <tr class="separator:a99624df89df2421ea414cde9a6565ca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Colorize text with certain terminal codes </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a607f2a03fe15f6cfb6edb1e1a6877a67" name="a607f2a03fe15f6cfb6edb1e1a6877a67"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a607f2a03fe15f6cfb6edb1e1a6877a67">&#9670;&#160;</a></span>TerminalColor()</h2>
 
@@ -1319,94 +1313,6 @@ requires (std::convertible_to&lt;Codes, std::string_view&gt; &amp;&amp; ...)</di
       <table class="memname">
         <tr>
           <td class="memname">std::string_view TerminalColor::MAGENTA = &quot;\033[35m&quot;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a34da6054aa0a0fedd8c6ec908bcaae40" name="a34da6054aa0a0fedd8c6ec908bcaae40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34da6054aa0a0fedd8c6ec908bcaae40">&#9670;&#160;</a></span>MY_BLUE</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string_view TerminalColor::MY_BLUE = &quot;\033[38;5;33m&quot;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a1486a91501b99e6ef224b0c3d137805d" name="a1486a91501b99e6ef224b0c3d137805d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1486a91501b99e6ef224b0c3d137805d">&#9670;&#160;</a></span>MY_GRAY</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string_view TerminalColor::MY_GRAY = &quot;\033[38;5;240m&quot;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a0ba2ffebb602deedd6d3cca37e7333b4" name="a0ba2ffebb602deedd6d3cca37e7333b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ba2ffebb602deedd6d3cca37e7333b4">&#9670;&#160;</a></span>MY_ORANGE</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string_view TerminalColor::MY_ORANGE = &quot;\033[38;5;166m&quot;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a103b4edae858554664b9023a9104a4e0" name="a103b4edae858554664b9023a9104a4e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a103b4edae858554664b9023a9104a4e0">&#9670;&#160;</a></span>MY_PURPLE</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string_view TerminalColor::MY_PURPLE = &quot;\033[38;5;91m&quot;</td>
         </tr>
       </table>
   </td>

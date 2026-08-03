@@ -7,9 +7,10 @@ var searchData=
   ['constraint_5fmanager_4',['constraint_manager',['../classProblem.html#a8c8b80bf8d60855c1ca66c9c991fb3b2',1,'Problem::constraint_manager'],['../classSolveContext.html#abfcc062b426cfa5d0fca411b0cbe22ef',1,'SolveContext::constraint_manager']]],
   ['constraintmanager_3c_20dim_2c_20degree_2c_20number_20_3e_3a_3ascalar_5fempty_5fmask_5',['scalar_empty_mask',['../constraint__manager_8h.html#ad9297b6224919bdeda61235d0b62f5e4',1,'constraint_manager.h']]],
   ['constraintmanager_3c_20dim_2c_20degree_2c_20number_20_3e_3a_3avector_5fcomponent_5fmask_6',['vector_component_mask',['../constraint__manager_8h.html#ad943f27f751cca70e05172da70bffcdc',1,'constraint_manager.h']]],
-  ['criterion_7',['criterion',['../structRefinementCriterion.html#adeae4819de1d5357043678bb9352619b',1,'RefinementCriterion']]],
-  ['current_5fincrement_8',['current_increment',['../classSimulationTimer.html#a91b657a1a2260be48a02130734c25277',1,'SimulationTimer']]],
-  ['current_5ftime_9',['current_time',['../classSimulationTimer.html#a1a5ad442fdccc94a66e45b54e2ee5668',1,'SimulationTimer']]],
-  ['custom_5fmesh_10',['custom_mesh',['../structSpatialDiscretization.html#ae13c5c2b504118752fc57968be19d390',1,'SpatialDiscretization']]],
-  ['cyan_11',['CYAN',['../classTerminalColor.html#af982a643d8e363759c1454a757387581',1,'TerminalColor']]]
+  ['cout_7',['cout',['../classLogger.html#ac6faa2068b8b400fa138b1c917835a91',1,'Logger']]],
+  ['criterion_8',['criterion',['../structRefinementCriterion.html#adeae4819de1d5357043678bb9352619b',1,'RefinementCriterion']]],
+  ['current_5fincrement_9',['current_increment',['../classSimulationTimer.html#a91b657a1a2260be48a02130734c25277',1,'SimulationTimer']]],
+  ['current_5ftime_10',['current_time',['../classSimulationTimer.html#a1a5ad442fdccc94a66e45b54e2ee5668',1,'SimulationTimer']]],
+  ['custom_5fmesh_11',['custom_mesh',['../structSpatialDiscretization.html#ae13c5c2b504118752fc57968be19d390',1,'SpatialDiscretization']]],
+  ['cyan_12',['CYAN',['../classTerminalColor.html#af982a643d8e363759c1454a757387581',1,'TerminalColor']]]
 ];

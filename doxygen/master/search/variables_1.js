@@ -39,5 +39,7 @@ var searchData=
   ['bright_5fmagenta_36',['BRIGHT_MAGENTA',['../classTerminalColor.html#a2c6cd63c02c3dcb0a343b5243a2997aa',1,'TerminalColor']]],
   ['bright_5fred_37',['BRIGHT_RED',['../classTerminalColor.html#a309913254844ec3701d52fe80eefa1df',1,'TerminalColor']]],
   ['bright_5fwhite_38',['BRIGHT_WHITE',['../classTerminalColor.html#a8b94c33cf02876eaabe8ddb7c1fed74f',1,'TerminalColor']]],
-  ['bright_5fyellow_39',['BRIGHT_YELLOW',['../classTerminalColor.html#a29ac20b1698b4854078c5ff9f1acd0fc',1,'TerminalColor']]]
+  ['bright_5fyellow_39',['BRIGHT_YELLOW',['../classTerminalColor.html#a29ac20b1698b4854078c5ff9f1acd0fc',1,'TerminalColor']]],
+  ['buffer_40',['buffer',['../classFanoutOStream.html#a3b45165475d7e4335a3ae32c76ac5d83',1,'FanoutOStream']]],
+  ['buffers_41',['buffers',['../classFanoutStreamBuf.html#a1e0ef3789e7069daf2a65eac8db1caa5',1,'FanoutStreamBuf']]]
 ];

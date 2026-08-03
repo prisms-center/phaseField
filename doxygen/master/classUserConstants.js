@@ -1,6 +1,5 @@
 var classUserConstants =
 [
-    [ "VariantPrinter", "classUserConstants_1_1VariantPrinter.html", "classUserConstants_1_1VariantPrinter" ],
     [ "InputVariant", "classUserConstants.html#a7d33694ac1e1d4690d35c88c71608378", null ],
     [ "add_user_constant", "classUserConstants.html#a5579bbb1335c38ae05a523b9572af082", null ],
     [ "assign_parameters", "classUserConstants.html#aefc6cfff323bb520e40f67ea5f7a1638", null ],
@@ -22,7 +21,6 @@ var classUserConstants =
     [ "get_string", "classUserConstants.html#adc5f0ec32ce7c6074de86223317996f8", null ],
     [ "parse_line", "classUserConstants.html#ad1f20ed4c709eccd97e3439a89068c56", null ],
     [ "primitive_model_constant", "classUserConstants.html#a69d613be0a7bf23d387729f3af6e1214", null ],
-    [ "print", "classUserConstants.html#adc1db15a0df4d6603bbafe3e6c426aad", null ],
     [ "remove_parentheses", "classUserConstants.html#afb4d4b8a027a3611d044b85a7567ecb6", null ],
     [ "strip_spaces", "classUserConstants.html#ae5833a3b79c639faafa5e99a791dc245", null ],
     [ "file_name", "classUserConstants.html#ab64829c591a81af44b41bc9292fabbc9", null ],

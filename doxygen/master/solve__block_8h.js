@@ -1,7 +1,6 @@
 var solve__block_8h =
 [
     [ "SolveBlock", "classSolveBlock.html", "classSolveBlock" ],
-    [ "SolveGroup", "solve__block_8h.html#a2e2b40c8a7e6e221a9e7586cfadea934", null ],
     [ "SolveTiming", "solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5d", [
       [ "Primary", "solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5da35c33effed98e564ad1bd10ef61d302c", null ],
       [ "Initialized", "solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5daae32940b344dab2f4e31be660ce1ab02", null ],

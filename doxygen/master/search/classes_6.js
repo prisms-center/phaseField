@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['initialcondition_0',['InitialCondition',['../classInitialCondition.html',1,'']]],
-  ['initialconditionfile_1',['InitialConditionFile',['../structInitialConditionFile.html',1,'']]],
-  ['integrator_2',['Integrator',['../classIntegrator.html',1,'']]],
-  ['invmmanager_3',['InvMManager',['../classInvMManager.html',1,'']]]
+  ['indentscope_0',['IndentScope',['../classLogger_1_1IndentScope.html',1,'Logger']]],
+  ['initialcondition_1',['InitialCondition',['../classInitialCondition.html',1,'']]],
+  ['initialconditionfile_2',['InitialConditionFile',['../structInitialConditionFile.html',1,'']]],
+  ['integrator_3',['Integrator',['../classIntegrator.html',1,'']]],
+  ['invmmanager_4',['InvMManager',['../classInvMManager.html',1,'']]]
 ];
