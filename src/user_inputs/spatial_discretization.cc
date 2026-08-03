@@ -188,7 +188,7 @@ RectangularMesh<dim>::distance(const dealii::Point<dim> &point_1,
   double dist = 0.0;
   for (unsigned int d = 0; d < dim; ++d)
     {
-      double delta = point_2[d] - point_2[d];
+      double delta = point_2[d] - point_1[d];
       // TODO: This is poorly optimized
       for (const auto &periodic_pair : pair_set)
         {

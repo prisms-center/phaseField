@@ -28,7 +28,6 @@ set number steps = 50000
 subsection output
   set condition = EQUAL_SPACING
   set number = 80
-  set file type = pvtu
 end
 
 subsection nucleation
