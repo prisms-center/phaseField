@@ -47,6 +47,15 @@ public:
 
   static MPI_Datatype
   mpi_datatype();
+
+  friend std::ostream &
+  operator<<(std::ostream &stream, const Nucleus<dim> &nucleus)
+  {
+    return stream << "Field Index: " << std::to_string(nucleus.field_index)
+                  << " ; Location: " << nucleus.location
+                  << " ; Seed Time: " << std::to_string(nucleus.seed_time)
+                  << " ; Seed Increment: " << std::to_string(nucleus.seed_increment);
+  }
 };
 
 template <unsigned int dim>
@@ -59,17 +68,6 @@ Nucleus<dim>::location_vectorized() const
       result[d] = dealii::VectorizedArray<double>(location[d]);
     }
   return result;
-}
-
-template <unsigned int dim, typename OStream>
-OStream &
-operator<<(OStream &ost, const Nucleus<dim> &nucleus)
-{
-  ost << "Field Index: " << std::to_string(nucleus.field_index)
-      << " ; Location: " << nucleus.location
-      << " ; Seed Time: " << std::to_string(nucleus.seed_time)
-      << " ; Seed Increment: " << std::to_string(nucleus.seed_increment);
-  return ost;
 }
 
 template <unsigned int dim>

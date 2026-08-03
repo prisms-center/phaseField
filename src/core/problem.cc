@@ -102,10 +102,10 @@ namespace
     return std::any_of(solve_blocks.begin(),
                        solve_blocks.end(),
                        [](const SolveBlock &solve_block)
-                       {
-                         return solve_block.linear_solver_parameters.preconditioner ==
-                                GMG;
-                       });
+                         {
+                           return solve_block.linear_solver_parameters.preconditioner ==
+                                  GMG;
+                         });
   }
 
   template <unsigned int dim, unsigned int degree, typename number>
@@ -374,19 +374,16 @@ Problem<dim, degree, number>::solve()
     Logger::instance() << LogFormatter::section("Post-simulation Details") << std::endl;
     {
       // Print summary of nuclei seeded during the simulation
-
-      // TODO: I'm not sure I see the utility in having this. @fractalsbyx comments?
       Logger::instance() << LogFormatter::subsection("Nuclei Seeded") << std::endl;
       {
         Logger::instance() << "Total nuclei seeded " << pf_tools->nuclei_list.size()
                            << std::endl;
         // TODO: This only belongs in the log file
-        // TODO: Add stream operator for nucleus
-        // Logger::IndentScope nuclei_scope;
-        // for (const Nucleus<dim> &nucleus : pf_tools->nuclei_list)
-        //   {
-        //     Logger::instance() << nucleus << std::endl;
-        //   }
+        Logger::IndentScope nuclei_scope;
+        for (const Nucleus<dim> &nucleus : pf_tools->nuclei_list)
+          {
+            Logger::instance() << nucleus << std::endl;
+          }
       }
     }
   }
