@@ -378,10 +378,23 @@ public:
           }
       }
     catch (dealii::SolverControl::NoConvergence &exc)
-      {}
+      {
+        // TODO: Redo logger to adhere to standards
+        Logger::instance()
+          << "[Increment " << solve_context->get_simulation_timer().get_increment()
+          << "] "
+          << "Warning: linear solver did not converge as per set tolerances before "
+          << lin_params().max_iterations << " iterations.\n";
+      }
     if (solve_context->get_user_inputs().output_parameters.should_output(
           solve_context->get_simulation_timer().get_increment()))
       {
+        // TODO: Redo logger to adhere to standards
+        Logger::instance() << " Linear solve final residual : "
+                           << linear_solver_control.last_value() / normalization_value()
+                           << " Linear steps: " << linear_solver_control.last_step()
+                           << "\n"
+                           << std::flush;
       }
     return linear_solver_control.last_step();
   }
