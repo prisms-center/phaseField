@@ -20,8 +20,6 @@
 
 #include <prismspf/utilities/timer.h>
 
-#include "prismspf/utilities/logger.h"
-
 #include <algorithm>
 #include <filesystem>
 

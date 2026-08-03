@@ -28,7 +28,6 @@
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
-#include <libassert/assert.hpp>
 #include <mpi.h>
 #include <sstream>
 #include <string>

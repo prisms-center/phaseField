@@ -45,7 +45,3 @@ jobs:
 
           echo "Using $CMAKE_BUILD_PARALLEL_LEVEL build jobs"
           cmake --workflow --preset test
-
-      - name: Compile Applications
-        run: |
-          cmake --install build/test --prefix install

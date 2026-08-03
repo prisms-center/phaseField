@@ -23,8 +23,6 @@
 
 #include <prismspf/config.h>
 
-#include "prismspf/utilities/logger.h"
-
 #include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE

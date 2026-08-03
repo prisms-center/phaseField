@@ -16,9 +16,24 @@ set(
   pfhub_benchmarks/6/a
 )
 
-# For each example install the source files, configure, and compile
-foreach(_example ${_examples})
-  # Install source files
+# Create a target for each example and feed them into a big target
+set(_example_targets)
+
+foreach(_example IN LISTS _examples)
+  string(REPLACE "/" "_" _example_name ${_example})
+
+  add_custom_target(
+    ${_example_name}
+    COMMAND
+      ${CMAKE_COMMAND} --log-level=NOTICE -S ${CMAKE_SOURCE_DIR}/applications/${_example}
+      -B ${CMAKE_BINARY_DIR}/applications/${_example}
+      -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX} -DPRISMS_PF_DIR=${CMAKE_BINARY_DIR}
+    COMMAND
+      ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/applications/${_example}
+    DEPENDS
+      ${PRISMS_PF_TARGETS}
+  )
+
   install(
     DIRECTORY
       ${_example}/
@@ -36,33 +51,13 @@ foreach(_example ${_examples})
     PATTERN "CMakeLists.txt"
   )
 
-  # Compile during installation
-  # OUTPUT_QUIET on the configure step so we don't get extra verbosity.
-  # CMAKE_INSTALL_MESSAGE NEVER so we don't print install and up-to-date
-  # messages
-  set(CMAKE_INSTALL_MESSAGE NEVER)
   install(
-    CODE
-      "
-      execute_process(
-        COMMAND ${CMAKE_COMMAND} -S . -B build
-          -D PRISMS_PF_DIR=${CMAKE_BINARY_DIR}
-        WORKING_DIRECTORY applications/${_example}
-        RESULT_VARIABLE configure_result
-        OUTPUT_QUIET
-      )
-      if(configure_result)
-        message(FATAL_ERROR \"Failed to configure application: ${_example}\")
-      else()
-        execute_process(
-          COMMAND ${CMAKE_COMMAND} --build build
-          WORKING_DIRECTORY applications/${_example}
-          RESULT_VARIABLE build_result
-        )
-        if(build_result)
-          message(FATAL_ERROR \"Failed to build application: ${_example}\")
-        endif()
-      endif()
-      "
+    PROGRAMS
+      ${CMAKE_BINARY_DIR}/applications/${_example}/main
+    DESTINATION applications/${_example}
   )
+
+  list(APPEND _example_targets ${_example_name})
 endforeach()
+
+add_custom_target(build_examples ALL DEPENDS ${_example_targets})

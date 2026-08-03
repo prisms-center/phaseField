@@ -23,21 +23,13 @@ prisms_pf_add_external_library(libassert libassert)
 # directly to the prisms_pf target (e.g., unit tests).
 find_package(Threads)
 # dwarf
-prisms_pf_import_archive(
-  imported_dwarf
-  "${CMAKE_BINARY_DIR}/_deps/libassert/install"
-  libdwarf
-)
+prisms_pf_import_archive(imported_dwarf "${CMAKE_BINARY_DIR}/_deps/libassert" libdwarf)
 # zstd
-prisms_pf_import_archive(
-  imported_zstd
-  "${CMAKE_BINARY_DIR}/_deps/libassert/install"
-  libzstd
-)
+prisms_pf_import_archive(imported_zstd "${CMAKE_BINARY_DIR}/_deps/libassert" libzstd)
 # cpptrace
 prisms_pf_import_archive(
   imported_cpptrace
-  "${CMAKE_BINARY_DIR}/_deps/libassert/install"
+  "${CMAKE_BINARY_DIR}/_deps/libassert"
   libcpptrace
 )
 set_target_properties(

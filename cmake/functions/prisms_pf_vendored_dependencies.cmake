@@ -22,7 +22,7 @@ function(prisms_pf_add_external_project NAME GIT_REPO GIT_TAG)
       GIT_REPOSITORY ${GIT_REPO}
       GIT_TAG ${GIT_TAG}
       PREFIX "${CMAKE_BINARY_DIR}/_deps/${NAME}"
-      INSTALL_DIR "${CMAKE_BINARY_DIR}/_deps/${NAME}/install"
+      INSTALL_DIR "${CMAKE_BINARY_DIR}/_deps/${NAME}"
       CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${ARGN}
       BUILD_BYPRODUCTS
@@ -33,7 +33,7 @@ function(prisms_pf_add_external_project NAME GIT_REPO GIT_TAG)
       GIT_REPOSITORY ${GIT_REPO}
       GIT_TAG ${GIT_TAG}
       PREFIX "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug"
-      INSTALL_DIR "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug/install"
+      INSTALL_DIR "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug"
       CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${ARGN}
       BUILD_BYPRODUCTS
@@ -45,7 +45,7 @@ function(prisms_pf_add_external_project NAME GIT_REPO GIT_TAG)
       GIT_REPOSITORY ${GIT_REPO}
       GIT_TAG ${GIT_TAG}
       PREFIX "${CMAKE_BINARY_DIR}/_deps/${NAME}"
-      INSTALL_DIR "${CMAKE_BINARY_DIR}/_deps/${NAME}/install"
+      INSTALL_DIR "${CMAKE_BINARY_DIR}/_deps/${NAME}"
       CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
         ${ARGN}
@@ -66,38 +66,38 @@ function(prisms_pf_add_external_library NAME LIB_NAME)
 
   if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
     add_library("imported_${NAME}" STATIC IMPORTED GLOBAL)
-    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/_deps/${NAME}/install/include")
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/_deps/${NAME}/include")
     set_target_properties(
       "imported_${NAME}"
       PROPERTIES
         IMPORTED_LOCATION
-          "${CMAKE_BINARY_DIR}/_deps/${NAME}/install/${CMAKE_INSTALL_LIBDIR}/${LIB_NAME}.a"
+          "${CMAKE_BINARY_DIR}/_deps/${NAME}/${CMAKE_INSTALL_LIBDIR}/${LIB_NAME}.a"
         INTERFACE_INCLUDE_DIRECTORIES
-          "${CMAKE_BINARY_DIR}/_deps/${NAME}/install/include"
+          "${CMAKE_BINARY_DIR}/_deps/${NAME}/include"
     )
     add_dependencies("imported_${NAME}" "${NAME}")
 
     add_library("imported_${NAME}_debug" STATIC IMPORTED GLOBAL)
-    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug/install/include")
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug/include")
     set_target_properties(
       "imported_${NAME}_debug"
       PROPERTIES
         IMPORTED_LOCATION
-          "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug/install/${CMAKE_INSTALL_LIBDIR}/${LIB_NAME}.a"
+          "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug/${CMAKE_INSTALL_LIBDIR}/${LIB_NAME}.a"
         INTERFACE_INCLUDE_DIRECTORIES
-          "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug/install/include"
+          "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug/include"
     )
     add_dependencies("imported_${NAME}_debug" "${NAME}_debug")
   else()
     add_library("imported_${NAME}" STATIC IMPORTED GLOBAL)
-    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/_deps/${NAME}/install/include")
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/_deps/${NAME}/include")
     set_target_properties(
       "imported_${NAME}"
       PROPERTIES
         IMPORTED_LOCATION
-          "${CMAKE_BINARY_DIR}/_deps/${NAME}/install/${CMAKE_INSTALL_LIBDIR}/${LIB_NAME}.a"
+          "${CMAKE_BINARY_DIR}/_deps/${NAME}/${CMAKE_INSTALL_LIBDIR}/${LIB_NAME}.a"
         INTERFACE_INCLUDE_DIRECTORIES
-          "${CMAKE_BINARY_DIR}/_deps/${NAME}/install/include"
+          "${CMAKE_BINARY_DIR}/_deps/${NAME}/include"
     )
     add_dependencies("imported_${NAME}" "${NAME}")
   endif()
@@ -164,19 +164,31 @@ function(prisms_pf_install_external_library NAME)
   if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
     install(
       DIRECTORY
-        "${CMAKE_BINARY_DIR}/_deps/${NAME}/install/"
+        "${CMAKE_BINARY_DIR}/_deps/${NAME}/"
       DESTINATION "${CMAKE_INSTALL_BINDIR}/../vendored/${NAME}"
+      PATTERN "src"
+        EXCLUDE
+      PATTERN "tmp"
+        EXCLUDE
     )
     install(
       DIRECTORY
-        "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug/install/"
+        "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug/"
       DESTINATION "${CMAKE_INSTALL_BINDIR}/../vendored/${NAME}_debug"
+      PATTERN "src"
+        EXCLUDE
+      PATTERN "tmp"
+        EXCLUDE
     )
   else()
     install(
       DIRECTORY
-        "${CMAKE_BINARY_DIR}/_deps/${NAME}/install/"
+        "${CMAKE_BINARY_DIR}/_deps/${NAME}/"
       DESTINATION "${CMAKE_INSTALL_BINDIR}/../vendored/${NAME}"
+      PATTERN "src"
+        EXCLUDE
+      PATTERN "tmp"
+        EXCLUDE
     )
   endif()
 endfunction()

@@ -5,7 +5,6 @@
 
 #include <prismspf/utilities/assert.h>
 
-#include <libassert/assert.hpp>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
