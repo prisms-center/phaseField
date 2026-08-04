@@ -83,7 +83,7 @@ var NAVTREEINDEX =
 "classProblem.html#a76ff86e08030a3bf222fdc2289220eb0",
 "classTriangulationManager.html#a7184924c29371fd6aa8d26c4d9eef949",
 "io__parameters_8cc.html",
-"structInitialConditionFile.html#afbb5d18e39e5911f4ec777efe2e54863",
+"structInitialConditionFile.html#afe5913e5485124b6056345cc3e41eb4d",
 "type__enums_8h.html#a17bc53e9e9f11a9a90eb8cc303a189d4"
 ];
 

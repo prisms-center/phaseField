@@ -83,7 +83,6 @@ var NAVTREEINDEX4 =
 "nucleation__parameters_8h.html":[9,0,1,0,5,3],
 "nucleation__parameters_8h_source.html":[9,0,1,0,5,3],
 "nucleus_8h.html":[9,0,1,0,3,1],
-"nucleus_8h.html#a339452e658a71f2adac32af0d5ba7f96":[9,0,1,0,3,1,1],
 "nucleus_8h_source.html":[9,0,1,0,3,1],
 "nucleus__refinement__function_8h.html":[9,0,1,0,3,2],
 "nucleus__refinement__function_8h_source.html":[9,0,1,0,3,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "structInitialConditionFile.html#a1085d0ad3f23744df264a18ee789f0c9":[8,0,20,5],
 "structInitialConditionFile.html#a2359ea131696e39515d60df0dd241208":[8,0,20,3],
 "structInitialConditionFile.html#a2e94b523e7ae1d5d49aee48768997338":[8,0,20,2],
-"structInitialConditionFile.html#a513ea241c71a115e54a9dda54a83765a":[8,0,20,1]
+"structInitialConditionFile.html#a513ea241c71a115e54a9dda54a83765a":[8,0,20,1],
+"structInitialConditionFile.html#afbb5d18e39e5911f4ec777efe2e54863":[8,0,20,4]
 };
