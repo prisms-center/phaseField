@@ -2,7 +2,7 @@ var searchData=
 [
   ['identity_0',['identity',['../classMFOperator.html#a146efea4e7863b76454d240c46858ef7',1,'MFOperator']]],
   ['increment_1',['increment',['../classSimulationTimer.html#a6724468516f95ec5d2d508e0b0b263ea',1,'SimulationTimer::increment(double step_size)'],['../classSimulationTimer.html#acf38206b9709584f9c8084d7543bcdaf',1,'SimulationTimer::increment()']]],
-  ['increment_5findent_2',['increment_indent',['../classLogger.html#aee07cb42009f5d6d83e2464211489614',1,'Logger']]],
+  ['increment_5findent_2',['increment_indent',['../classLogger.html#a778a4607b1ee74485e7115026fbfdb44',1,'Logger']]],
   ['indentscope_3',['IndentScope',['../classLogger_1_1IndentScope.html#a276e2a0b5d0b168380235bfaae0b76de',1,'Logger::IndentScope']]],
   ['info_4',['info',['../classLogFormatter.html#a1a62aeb14f1f11f73a7fa22e1d4dec62',1,'LogFormatter']]],
   ['init_5',['init',['../classConstraintManager.html#aabe3981c80352c37e2fbf4cf2b5fab21',1,'ConstraintManager::init()'],['../classGroupSolutionHandler.html#a4c4071fdce5b83de11587fbe05449025',1,'GroupSolutionHandler::init()'],['../classSolutionIndexer.html#a948fb2485049a689024e232b2a919425',1,'SolutionIndexer::init()'],['../classExplicitSolver.html#afff52eb536882c34af0b8485da6c8a9f',1,'ExplicitSolver::init()'],['../classMGContext.html#ad55e0f3f4b932aea7a7e1ed096692672',1,'MGContext::init()'],['../classLinearSolver.html#a757f4bb146ea81ef2d5b3cab92505b73',1,'LinearSolver::init()'],['../classMFOperator.html#af6f551171f07dea75c80b47c1670dbe2',1,'MFOperator::init()'],['../classNewtonSolver.html#aface87b82971da2cfb5d9cbfd303a15a',1,'NewtonSolver::init()'],['../classSolverBase.html#a241912622484936ad4601a3bd14ff869',1,'SolverBase::init()']]],
@@ -17,7 +17,7 @@ var searchData=
   ['initialize_5fmultigrid_14',['initialize_multigrid',['../classLinearSolver.html#aa4a925f898de2f1462e3861fd05d16ca',1,'LinearSolver']]],
   ['initialize_5fpreconditioner_15',['initialize_preconditioner',['../classLinearSolver.html#a19aa1bd667f6d8e78bfbf65e2490478e',1,'LinearSolver']]],
   ['initialize_5fsolver_16',['initialize_solver',['../classLinearSolver.html#a2f4ed8dbe6a14461d458144cce52e374',1,'LinearSolver']]],
-  ['instance_17',['instance',['../classLogger.html#aebb248e608f8e2724de20b482cb2a15f',1,'Logger']]],
+  ['instance_17',['instance',['../classLogger.html#a4aa4d7c3b98f6e12e7ea8253da5ea0cd',1,'Logger']]],
   ['integer_18',['Integer',['../namespacePatterns.html#a7a9be59c2d5785c55fedf599be29b35f',1,'Patterns']]],
   ['integrate_19',['integrate',['../structFieldContainer_1_1FEEValuationDeps.html#a419ad4e46ade2ce497141916a97387d1',1,'FieldContainer::FEEValuationDeps::integrate()'],['../classFieldContainer.html#a6b7f0f176d59695d0770cb85c59f4888',1,'FieldContainer::integrate()'],['../classIntegrator.html#ab49b0feb1acc51106acf14361a7088b6',1,'Integrator::integrate()']]],
   ['integrate_5fand_5fdistribute_20',['integrate_and_distribute',['../structFieldContainer_1_1FEEValuationDeps.html#acad46cf09446961fc4441d88b687e7e6',1,'FieldContainer::FEEValuationDeps::integrate_and_distribute()'],['../classFieldContainer.html#aa819a5fcb462c6253a5aebbc3def745d',1,'FieldContainer::integrate_and_distribute()']]],

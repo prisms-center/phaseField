@@ -18,7 +18,7 @@ var searchData=
   ['declexception1_15',['DeclException1',['../exceptions_8h.html#af272af578fc89a269c2755b84af53962',1,'exceptions.h']]],
   ['declexception2_16',['DeclException2',['../exceptions_8h.html#ab27ff3a391d6de427c4c5317b62999a8',1,'exceptions.h']]],
   ['declexceptionmsg_17',['DeclExceptionMsg',['../exceptions_8h.html#a8d86451113c706c6d08508cfafc6380f',1,'exceptions.h']]],
-  ['decrement_5findent_18',['decrement_indent',['../classLogger.html#a5ab01ed1a03be24aed9ddcc45d1eae24',1,'Logger']]],
+  ['decrement_5findent_18',['decrement_indent',['../classLogger.html#a3335b4f599b6e2c5686a891799821a90',1,'Logger']]],
   ['default_19',['DEFAULT',['../classTerminalColor.html#a2f8c79b0d150d154e4d8a36a773745f6',1,'TerminalColor']]],
   ['default_5fmax_5fchecked_5fage_20',['default_max_checked_age',['../dependencies_8h.html#ae357b09033ff9072efd8e54943a635c2',1,'dependencies.h']]],
   ['default_5fsubsections_21',['default_subsections',['../namespaceNumbers.html#a02636074a0888f7a252ed9ece2013bba',1,'Numbers']]],

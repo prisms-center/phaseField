@@ -125,7 +125,6 @@ $(function(){initNavTree('classLogStream.html',''); initResizable(true); });
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classLogStream-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">LogStream Class Reference</div></div>
@@ -161,8 +160,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a47507452fa41482cb29d3de5b7ef76b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6333519b25331fc9655aee32670718d0" id="r_a6333519b25331fc9655aee32670718d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6333519b25331fc9655aee32670718d0">add_file</a> (const std::string &amp;file, unsigned int process_id)</td></tr>
 <tr class="separator:a6333519b25331fc9655aee32670718d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4342642f71cf11fbadbebef67373be45" id="r_a4342642f71cf11fbadbebef67373be45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4342642f71cf11fbadbebef67373be45">set_condition</a> (const bool condition)</td></tr>
-<tr class="separator:a4342642f71cf11fbadbebef67373be45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e8cf8e9eac6e68e5dbc9ad7a4a14b43" id="r_a0e8cf8e9eac6e68e5dbc9ad7a4a14b43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e8cf8e9eac6e68e5dbc9ad7a4a14b43">set_condition</a> (bool condition)</td></tr>
+<tr class="separator:a0e8cf8e9eac6e68e5dbc9ad7a4a14b43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a946c2b1f28fed104c697f798c6203104" id="r_a946c2b1f28fed104c697f798c6203104"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a946c2b1f28fed104c697f798c6203104">is_active</a> () const</td></tr>
 <tr class="separator:a946c2b1f28fed104c697f798c6203104"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60027fa09c4a10980cd5db7ec45a1c7b" id="r_a60027fa09c4a10980cd5db7ec45a1c7b"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60027fa09c4a10980cd5db7ec45a1c7b">get</a> ()</td></tr>
@@ -175,17 +174,14 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
+<tr class="memitem:a6103ce28cd647a6233e1a1d7ef7da792" id="r_a6103ce28cd647a6233e1a1d7ef7da792"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6103ce28cd647a6233e1a1d7ef7da792">this_rank</a> () const</td></tr>
+<tr class="separator:a6103ce28cd647a6233e1a1d7ef7da792"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14d86d6164fc9f80fc290a019344dd4a" id="r_a14d86d6164fc9f80fc290a019344dd4a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14d86d6164fc9f80fc290a019344dd4a">rank_matches</a> (std::optional&lt; unsigned int &gt; process_id) const</td></tr>
+<tr class="separator:a14d86d6164fc9f80fc290a019344dd4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7e5158cc8581e446277d2e97c0524c3" id="r_ae7e5158cc8581e446277d2e97c0524c3"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::ofstream &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae7e5158cc8581e446277d2e97c0524c3">open_file_if_needed</a> (const std::optional&lt; std::string &gt; &amp;file, std::optional&lt; unsigned int &gt; process_id) const</td></tr>
+<tr class="separator:ae7e5158cc8581e446277d2e97c0524c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3770a684c710aceceac40fa521926ce2" id="r_a3770a684c710aceceac40fa521926ce2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3770a684c710aceceac40fa521926ce2">LogStream</a> (const std::optional&lt; std::string &gt; &amp;file, std::optional&lt; unsigned int &gt; process_id, bool enable_cout)</td></tr>
 <tr class="separator:a3770a684c710aceceac40fa521926ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:ae5d233e22d39a8efe0c2dbf6c49853b9" id="r_ae5d233e22d39a8efe0c2dbf6c49853b9"><td class="memItemLeft" align="right" valign="top">static unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae5d233e22d39a8efe0c2dbf6c49853b9">this_rank</a> ()</td></tr>
-<tr class="separator:ae5d233e22d39a8efe0c2dbf6c49853b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51e1240a1214c20be2da645d5102d182" id="r_a51e1240a1214c20be2da645d5102d182"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51e1240a1214c20be2da645d5102d182">rank_matches</a> (std::optional&lt; unsigned int &gt; process_id)</td></tr>
-<tr class="separator:a51e1240a1214c20be2da645d5102d182"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f4c5d1f27b38c353574fd05b024c8d2" id="r_a1f4c5d1f27b38c353574fd05b024c8d2"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; std::ofstream &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f4c5d1f27b38c353574fd05b024c8d2">open_file_if_needed</a> (const std::optional&lt; std::string &gt; &amp;file, std::optional&lt; unsigned int &gt; process_id)</td></tr>
-<tr class="separator:a1f4c5d1f27b38c353574fd05b024c8d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -219,7 +215,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+<span class="mlabels"><span class="mlabel explicit">explicit</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -232,9 +228,6 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">LogStream::LogStream </td>
@@ -243,11 +236,6 @@ Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Output to std::cout on all MPI processes. </p>
 
@@ -271,7 +259,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+<span class="mlabels"><span class="mlabel explicit">explicit</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -297,7 +285,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+<span class="mlabels"><span class="mlabel explicit">explicit</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -311,9 +299,6 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">LogStream::LogStream </td>
@@ -326,11 +311,6 @@ Private Attributes</h2></td></tr>
           <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>process_id</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Output to std::cout and one file on a given MPI process. </p>
 
@@ -363,7 +343,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel private">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -376,9 +356,6 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void LogStream::add_file </td>
@@ -391,11 +368,6 @@ Private Attributes</h2></td></tr>
           <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>process_id</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -405,9 +377,6 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::ostream &amp; LogStream::get </td>
@@ -416,11 +385,6 @@ Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -430,9 +394,6 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool LogStream::is_active </td>
@@ -441,17 +402,12 @@ Private Attributes</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a1f4c5d1f27b38c353574fd05b024c8d2" name="a1f4c5d1f27b38c353574fd05b024c8d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f4c5d1f27b38c353574fd05b024c8d2">&#9670;&#160;</a></span>open_file_if_needed()</h2>
+<a id="ae7e5158cc8581e446277d2e97c0524c3" name="ae7e5158cc8581e446277d2e97c0524c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7e5158cc8581e446277d2e97c0524c3">&#9670;&#160;</a></span>open_file_if_needed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -460,19 +416,19 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static std::optional&lt; std::ofstream &gt; LogStream::open_file_if_needed </td>
+          <td class="memname">std::optional&lt; std::ofstream &gt; LogStream::open_file_if_needed </td>
           <td>(</td>
           <td class="paramtype">const std::optional&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>file</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::optional&lt; unsigned int &gt;</td>          <td class="paramname"><span class="paramname"><em>process_id</em></span>&#160;)</td>
+          <td class="paramtype">std::optional&lt; unsigned int &gt;</td>          <td class="paramname"><span class="paramname"><em>process_id</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -531,8 +487,8 @@ template&lt;typename T&gt; </div>
 
 </div>
 </div>
-<a id="a51e1240a1214c20be2da645d5102d182" name="a51e1240a1214c20be2da645d5102d182"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51e1240a1214c20be2da645d5102d182">&#9670;&#160;</a></span>rank_matches()</h2>
+<a id="a14d86d6164fc9f80fc290a019344dd4a" name="a14d86d6164fc9f80fc290a019344dd4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14d86d6164fc9f80fc290a019344dd4a">&#9670;&#160;</a></span>rank_matches()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -541,48 +497,40 @@ template&lt;typename T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool LogStream::rank_matches </td>
+          <td class="memname">bool LogStream::rank_matches </td>
           <td>(</td>
           <td class="paramtype">std::optional&lt; unsigned int &gt;</td>          <td class="paramname"><span class="paramname"><em>process_id</em></span></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a4342642f71cf11fbadbebef67373be45" name="a4342642f71cf11fbadbebef67373be45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4342642f71cf11fbadbebef67373be45">&#9670;&#160;</a></span>set_condition()</h2>
+<a id="a0e8cf8e9eac6e68e5dbc9ad7a4a14b43" name="a0e8cf8e9eac6e68e5dbc9ad7a4a14b43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e8cf8e9eac6e68e5dbc9ad7a4a14b43">&#9670;&#160;</a></span>set_condition()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void LogStream::set_condition </td>
           <td>(</td>
-          <td class="paramtype">const bool</td>          <td class="paramname"><span class="paramname"><em>condition</em></span></td><td>)</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>condition</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="ae5d233e22d39a8efe0c2dbf6c49853b9" name="ae5d233e22d39a8efe0c2dbf6c49853b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5d233e22d39a8efe0c2dbf6c49853b9">&#9670;&#160;</a></span>this_rank()</h2>
+<a id="a6103ce28cd647a6233e1a1d7ef7da792" name="a6103ce28cd647a6233e1a1d7ef7da792"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6103ce28cd647a6233e1a1d7ef7da792">&#9670;&#160;</a></span>this_rank()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -591,15 +539,15 @@ template&lt;typename T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static unsigned int LogStream::this_rank </td>
+          <td class="memname">unsigned int LogStream::this_rank </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -695,8 +643,9 @@ template&lt;typename T&gt; </div>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/__w/phaseField/phaseField/include/prismspf/utilities/<a class="el" href="logger_8h_source.html">logger.h</a></li>
+<li>/__w/phaseField/phaseField/src/utilities/<a class="el" href="logger_8cc.html">logger.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

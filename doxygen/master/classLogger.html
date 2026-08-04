@@ -126,7 +126,7 @@ $(function(){initNavTree('classLogger.html',''); initResizable(true); });
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classLogger-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Logger Class Reference</div></div>
 </div><!--header-->
@@ -171,41 +171,36 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ad82d05211a113d17b53affa1bd76156f" id="r_ad82d05211a113d17b53affa1bd76156f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad82d05211a113d17b53affa1bd76156f">set_file</a> (const std::string &amp;file)</td></tr>
-<tr class="memdesc:ad82d05211a113d17b53affa1bd76156f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the log file to write to.  <br /></td></tr>
-<tr class="separator:ad82d05211a113d17b53affa1bd76156f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebb248e608f8e2724de20b482cb2a15f" id="r_aebb248e608f8e2724de20b482cb2a15f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classLogger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebb248e608f8e2724de20b482cb2a15f">instance</a> ()</td></tr>
-<tr class="memdesc:aebb248e608f8e2724de20b482cb2a15f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static instance.  <br /></td></tr>
-<tr class="separator:aebb248e608f8e2724de20b482cb2a15f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee07cb42009f5d6d83e2464211489614" id="r_aee07cb42009f5d6d83e2464211489614"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee07cb42009f5d6d83e2464211489614">increment_indent</a> ()</td></tr>
-<tr class="memdesc:aee07cb42009f5d6d83e2464211489614"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment indentation level.  <br /></td></tr>
-<tr class="separator:aee07cb42009f5d6d83e2464211489614"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ab01ed1a03be24aed9ddcc45d1eae24" id="r_a5ab01ed1a03be24aed9ddcc45d1eae24"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ab01ed1a03be24aed9ddcc45d1eae24">decrement_indent</a> ()</td></tr>
-<tr class="memdesc:a5ab01ed1a03be24aed9ddcc45d1eae24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement indentation level.  <br /></td></tr>
-<tr class="separator:a5ab01ed1a03be24aed9ddcc45d1eae24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0eb0ee496bb5ea993be5fec7560c0cf8" id="r_a0eb0ee496bb5ea993be5fec7560c0cf8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0eb0ee496bb5ea993be5fec7560c0cf8">reset_indent</a> ()</td></tr>
-<tr class="memdesc:a0eb0ee496bb5ea993be5fec7560c0cf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset indentation level.  <br /></td></tr>
-<tr class="separator:a0eb0ee496bb5ea993be5fec7560c0cf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1d9220ace718e98a90c97f9d4321e7d" id="r_ab1d9220ace718e98a90c97f9d4321e7d"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1d9220ace718e98a90c97f9d4321e7d">colorize</a> ()</td></tr>
-<tr class="memdesc:ab1d9220ace718e98a90c97f9d4321e7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the terminal supports color.  <br /></td></tr>
-<tr class="separator:ab1d9220ace718e98a90c97f9d4321e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a501e19230279be27244b866cb6b3b3d7" id="r_a501e19230279be27244b866cb6b3b3d7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a501e19230279be27244b866cb6b3b3d7">set_file</a> (const std::string &amp;file)</td></tr>
+<tr class="memdesc:a501e19230279be27244b866cb6b3b3d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the log file to write to.  <br /></td></tr>
+<tr class="separator:a501e19230279be27244b866cb6b3b3d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aa4d7c3b98f6e12e7ea8253da5ea0cd" id="r_a4aa4d7c3b98f6e12e7ea8253da5ea0cd"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classLogger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4aa4d7c3b98f6e12e7ea8253da5ea0cd">instance</a> ()</td></tr>
+<tr class="memdesc:a4aa4d7c3b98f6e12e7ea8253da5ea0cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static instance.  <br /></td></tr>
+<tr class="separator:a4aa4d7c3b98f6e12e7ea8253da5ea0cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a778a4607b1ee74485e7115026fbfdb44" id="r_a778a4607b1ee74485e7115026fbfdb44"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a778a4607b1ee74485e7115026fbfdb44">increment_indent</a> ()</td></tr>
+<tr class="memdesc:a778a4607b1ee74485e7115026fbfdb44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment indentation level.  <br /></td></tr>
+<tr class="separator:a778a4607b1ee74485e7115026fbfdb44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3335b4f599b6e2c5686a891799821a90" id="r_a3335b4f599b6e2c5686a891799821a90"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3335b4f599b6e2c5686a891799821a90">decrement_indent</a> ()</td></tr>
+<tr class="memdesc:a3335b4f599b6e2c5686a891799821a90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrement indentation level.  <br /></td></tr>
+<tr class="separator:a3335b4f599b6e2c5686a891799821a90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17777959da26fcaca0f532ce1893a430" id="r_a17777959da26fcaca0f532ce1893a430"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17777959da26fcaca0f532ce1893a430">reset_indent</a> ()</td></tr>
+<tr class="memdesc:a17777959da26fcaca0f532ce1893a430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset indentation level.  <br /></td></tr>
+<tr class="separator:a17777959da26fcaca0f532ce1893a430"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a5da53aa414d5ae016af11e79430b7e7b" id="r_a5da53aa414d5ae016af11e79430b7e7b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5da53aa414d5ae016af11e79430b7e7b">write_indent</a> ()</td></tr>
-<tr class="separator:a5da53aa414d5ae016af11e79430b7e7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf079a98806cc56a1a0883603e99c904" id="r_abf079a98806cc56a1a0883603e99c904"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf079a98806cc56a1a0883603e99c904">write_indent</a> ()</td></tr>
+<tr class="separator:abf079a98806cc56a1a0883603e99c904"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:a065cfa856fc55691c867c5eba9341b01" id="r_a065cfa856fc55691c867c5eba9341b01"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a065cfa856fc55691c867c5eba9341b01">term_supports_color</a> {<a class="el" href="classTerminalColor.html#af3188275fba832421adc9ed88dab517c">TerminalColor::is_supported</a>()}</td></tr>
-<tr class="separator:a065cfa856fc55691c867c5eba9341b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5bc8cbb453694ff59e48a6ee8d4839b7" id="r_a5bc8cbb453694ff59e48a6ee8d4839b7"><td class="memItemLeft" align="right" valign="top">static unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5bc8cbb453694ff59e48a6ee8d4839b7">indent_level</a> = 0</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a5bc8cbb453694ff59e48a6ee8d4839b7" id="r_a5bc8cbb453694ff59e48a6ee8d4839b7"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5bc8cbb453694ff59e48a6ee8d4839b7">indent_level</a> = 0</td></tr>
 <tr class="separator:a5bc8cbb453694ff59e48a6ee8d4839b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af269f53706eb19be133da0b513c24b31" id="r_af269f53706eb19be133da0b513c24b31"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af269f53706eb19be133da0b513c24b31">at_line_start</a> = true</td></tr>
+<tr class="memitem:af269f53706eb19be133da0b513c24b31" id="r_af269f53706eb19be133da0b513c24b31"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af269f53706eb19be133da0b513c24b31">at_line_start</a> = true</td></tr>
 <tr class="separator:af269f53706eb19be133da0b513c24b31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6faa2068b8b400fa138b1c917835a91" id="r_ac6faa2068b8b400fa138b1c917835a91"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classLogStream.html">LogStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6faa2068b8b400fa138b1c917835a91">cout</a> {0}</td></tr>
+<tr class="memitem:ac6faa2068b8b400fa138b1c917835a91" id="r_ac6faa2068b8b400fa138b1c917835a91"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLogStream.html">LogStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6faa2068b8b400fa138b1c917835a91">cout</a> {0}</td></tr>
 <tr class="separator:ac6faa2068b8b400fa138b1c917835a91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20bfa1c139e4e4ee40ad694293d1c9d4" id="r_a20bfa1c139e4e4ee40ad694293d1c9d4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classLogStream.html">LogStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20bfa1c139e4e4ee40ad694293d1c9d4">log_file</a> {<a class="el" href="structLogStream_1_1BlankOutputTag.html">LogStream::BlankOutputTag</a> {}}</td></tr>
+<tr class="memitem:a20bfa1c139e4e4ee40ad694293d1c9d4" id="r_a20bfa1c139e4e4ee40ad694293d1c9d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLogStream.html">LogStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20bfa1c139e4e4ee40ad694293d1c9d4">log_file</a> {<a class="el" href="structLogStream_1_1BlankOutputTag.html">LogStream::BlankOutputTag</a> {}}</td></tr>
 <tr class="separator:a20bfa1c139e4e4ee40ad694293d1c9d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -221,9 +216,6 @@ Static Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Logger::Logger </td>
@@ -232,11 +224,6 @@ Static Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Clear terminal and print logo upon construction. </p>
@@ -244,8 +231,8 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab1d9220ace718e98a90c97f9d4321e7d" name="ab1d9220ace718e98a90c97f9d4321e7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1d9220ace718e98a90c97f9d4321e7d">&#9670;&#160;</a></span>colorize()</h2>
+<a id="a3335b4f599b6e2c5686a891799821a90" name="a3335b4f599b6e2c5686a891799821a90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3335b4f599b6e2c5686a891799821a90">&#9670;&#160;</a></span>decrement_indent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -254,7 +241,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool Logger::colorize </td>
+          <td class="memname">void Logger::decrement_indent </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -262,34 +249,7 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Whether the terminal supports color. </p>
-
-</div>
-</div>
-<a id="a5ab01ed1a03be24aed9ddcc45d1eae24" name="a5ab01ed1a03be24aed9ddcc45d1eae24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ab01ed1a03be24aed9ddcc45d1eae24">&#9670;&#160;</a></span>decrement_indent()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void Logger::decrement_indent </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -298,8 +258,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aee07cb42009f5d6d83e2464211489614" name="aee07cb42009f5d6d83e2464211489614"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee07cb42009f5d6d83e2464211489614">&#9670;&#160;</a></span>increment_indent()</h2>
+<a id="a778a4607b1ee74485e7115026fbfdb44" name="a778a4607b1ee74485e7115026fbfdb44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a778a4607b1ee74485e7115026fbfdb44">&#9670;&#160;</a></span>increment_indent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -308,7 +268,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void Logger::increment_indent </td>
+          <td class="memname">void Logger::increment_indent </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -316,7 +276,7 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -325,8 +285,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aebb248e608f8e2724de20b482cb2a15f" name="aebb248e608f8e2724de20b482cb2a15f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebb248e608f8e2724de20b482cb2a15f">&#9670;&#160;</a></span>instance()</h2>
+<a id="a4aa4d7c3b98f6e12e7ea8253da5ea0cd" name="a4aa4d7c3b98f6e12e7ea8253da5ea0cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4aa4d7c3b98f6e12e7ea8253da5ea0cd">&#9670;&#160;</a></span>instance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -335,7 +295,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="classLogger.html">Logger</a> &amp; Logger::instance </td>
+          <td class="memname"><a class="el" href="classLogger.html">Logger</a> &amp; Logger::instance </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -343,7 +303,7 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -436,8 +396,8 @@ template&lt;typename T&gt; </div>
 
 </div>
 </div>
-<a id="a0eb0ee496bb5ea993be5fec7560c0cf8" name="a0eb0ee496bb5ea993be5fec7560c0cf8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0eb0ee496bb5ea993be5fec7560c0cf8">&#9670;&#160;</a></span>reset_indent()</h2>
+<a id="a17777959da26fcaca0f532ce1893a430" name="a17777959da26fcaca0f532ce1893a430"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17777959da26fcaca0f532ce1893a430">&#9670;&#160;</a></span>reset_indent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -446,7 +406,7 @@ template&lt;typename T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void Logger::reset_indent </td>
+          <td class="memname">void Logger::reset_indent </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -454,7 +414,7 @@ template&lt;typename T&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -464,8 +424,8 @@ template&lt;typename T&gt; </div>
 
 </div>
 </div>
-<a id="ad82d05211a113d17b53affa1bd76156f" name="ad82d05211a113d17b53affa1bd76156f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad82d05211a113d17b53affa1bd76156f">&#9670;&#160;</a></span>set_file()</h2>
+<a id="a501e19230279be27244b866cb6b3b3d7" name="a501e19230279be27244b866cb6b3b3d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a501e19230279be27244b866cb6b3b3d7">&#9670;&#160;</a></span>set_file()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -474,7 +434,7 @@ template&lt;typename T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void Logger::set_file </td>
+          <td class="memname">void Logger::set_file </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>file</em></span></td><td>)</td>
           <td></td>
@@ -482,7 +442,7 @@ template&lt;typename T&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -491,8 +451,8 @@ template&lt;typename T&gt; </div>
 
 </div>
 </div>
-<a id="a5da53aa414d5ae016af11e79430b7e7b" name="a5da53aa414d5ae016af11e79430b7e7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5da53aa414d5ae016af11e79430b7e7b">&#9670;&#160;</a></span>write_indent()</h2>
+<a id="abf079a98806cc56a1a0883603e99c904" name="abf079a98806cc56a1a0883603e99c904"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf079a98806cc56a1a0883603e99c904">&#9670;&#160;</a></span>write_indent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -501,7 +461,7 @@ template&lt;typename T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void Logger::write_indent </td>
+          <td class="memname">void Logger::write_indent </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -509,7 +469,7 @@ template&lt;typename T&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -532,7 +492,7 @@ template&lt;typename T&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -554,7 +514,7 @@ template&lt;typename T&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -576,7 +536,7 @@ template&lt;typename T&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -598,37 +558,16 @@ template&lt;typename T&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a065cfa856fc55691c867c5eba9341b01" name="a065cfa856fc55691c867c5eba9341b01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a065cfa856fc55691c867c5eba9341b01">&#9670;&#160;</a></span>term_supports_color</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Logger::term_supports_color {<a class="el" href="classTerminalColor.html#af3188275fba832421adc9ed88dab517c">TerminalColor::is_supported</a>()}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/__w/phaseField/phaseField/include/prismspf/utilities/<a class="el" href="logger_8h_source.html">logger.h</a></li>
+<li>/__w/phaseField/phaseField/src/utilities/<a class="el" href="logger_8cc.html">logger.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

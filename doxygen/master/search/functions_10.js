@@ -4,7 +4,7 @@ var searchData=
   ['terminalcolor_1',['TerminalColor',['../classTerminalColor.html#a607f2a03fe15f6cfb6edb1e1a6877a67',1,'TerminalColor']]],
   ['tessellate_2',['tessellate',['../classTerminalColor.html#a51e3882e018e98b7b778a8a1f0f9e19d',1,'TerminalColor::tessellate(const StringLike auto &amp;text, std::initializer_list&lt; std::string_view &gt; codes, std::size_t block_size=1, std::string_view modifier=&quot;&quot;)'],['../classTerminalColor.html#a037372f2a7d3a2b496155a08b1d86072',1,'TerminalColor::tessellate(const StringLike auto &amp;text, std::size_t block_size, std::string_view modifier, Codes &amp;&amp;...codes)']]],
   ['tessellate_5fimpl_3',['tessellate_impl',['../classTerminalColor.html#a99624df89df2421ea414cde9a6565ca3',1,'TerminalColor']]],
-  ['this_5frank_4',['this_rank',['../classLogStream.html#ae5d233e22d39a8efe0c2dbf6c49853b9',1,'LogStream']]],
+  ['this_5frank_4',['this_rank',['../classLogStream.html#a6103ce28cd647a6233e1a1d7ef7da792',1,'LogStream']]],
   ['timer_5',['Timer',['../classTimer.html#a8ed3c5e074223900c0c9a74376471209',1,'Timer::Timer()=default'],['../classTimer.html#ae6b73141ad1d5029d3782d14d2fd5ff0',1,'Timer::Timer(const Timer &amp;)=delete'],['../classTimer.html#a0ef67d1b473d712352dcd55573a4bb2a',1,'Timer::Timer(Timer &amp;&amp;)=delete']]],
   ['timer_5fstack_6',['timer_stack',['../namespacePRISMS__PF__BEGIN__NAMESPACE.html#ab158d849906462dbb04e776b12f75722',1,'PRISMS_PF_BEGIN_NAMESPACE']]],
   ['title_7',['title',['../classLogFormatter.html#a3538231e70c03cd62e1eaa1c7cdd3968',1,'LogFormatter']]],

@@ -11,7 +11,7 @@ var searchData=
   ['add_5flog_5fspacing_5foutputs_8',['add_log_spacing_outputs',['../io__parameters_8h.html#a8fd7dc1f121111d5d5e13790f0c94297',1,'io_parameters.h']]],
   ['add_5fn_5fper_5fdecade_5foutputs_9',['add_n_per_decade_outputs',['../io__parameters_8h.html#af3fd6c855e9a1deb14b023ad3e102226',1,'io_parameters.h']]],
   ['add_5frefinement_5fmarker_10',['add_refinement_marker',['../classRefinementManager.html#aa0f82ad24167e5e40f5ff9bccb167786',1,'RefinementManager']]],
-  ['add_5fstream_11',['add_stream',['../classFanoutStreamBuf.html#a7764f1a1e46b8a870504c80d406ac661',1,'FanoutStreamBuf::add_stream()'],['../classFanoutOStream.html#ab5292e136e0008f2752742f8737caa69',1,'FanoutOStream::add_stream()']]],
+  ['add_5fstream_11',['add_stream',['../classFanoutStreamBuf.html#aa97303d39b6829f8377664b60704b6e2',1,'FanoutStreamBuf::add_stream()'],['../classFanoutOStream.html#ab5292e136e0008f2752742f8737caa69',1,'FanoutOStream::add_stream()']]],
   ['add_5fuser_5fconstant_12',['add_user_constant',['../classUserConstants.html#a5579bbb1335c38ae05a523b9572af082',1,'UserConstants']]],
   ['anisotropic_13',['Anisotropic',['../type__enums_8h.html#afb65dffc43b1f0e550ca9370a7631284a22690afbc2ee3a3ba2a141ab906f273c',1,'type_enums.h']]],
   ['anything_14',['Anything',['../namespacePatterns.html#a7d487302ac9a171935a32a3e82e90ab4',1,'Patterns']]],

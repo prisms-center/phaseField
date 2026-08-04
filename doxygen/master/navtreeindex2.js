@@ -1,7 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"classProblem.html#a76ff86e08030a3bf222fdc2289220eb0":[8,0,48,11],
-"classProblem.html#a894dc76b5dee932156dfafe82c40ca24":[8,0,48,13],
 "classProblem.html#a8ab8c6c55f421a4e728bff2482fd6ab5":[8,0,48,12],
 "classProblem.html#a8c8b80bf8d60855c1ca66c9c991fb3b2":[8,0,48,5],
 "classProblem.html#a9db5e4c168870694e8d6bbcbe32d2d0b":[8,0,48,3],
@@ -249,5 +247,7 @@ var NAVTREEINDEX2 =
 "classTriangulationManager.html#a34eead577b5c3bd37159ccc3b60a3d82":[8,0,70,8],
 "classTriangulationManager.html#a5220079e0053ca9e4165bfc4aa822d98":[8,0,70,7],
 "classTriangulationManager.html#a6352253ea00a75da2d429e5769ac1ec7":[8,0,70,2],
-"classTriangulationManager.html#a642940a89302e7ce548412c56bd3da67":[8,0,70,17]
+"classTriangulationManager.html#a642940a89302e7ce548412c56bd3da67":[8,0,70,17],
+"classTriangulationManager.html#a7184924c29371fd6aa8d26c4d9eef949":[8,0,70,15],
+"classTriangulationManager.html#a7bb857b9b31d0c8ff36a42281190f84a":[8,0,70,5]
 };

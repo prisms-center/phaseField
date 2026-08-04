@@ -144,17 +144,17 @@ Collaboration diagram for FanoutStreamBuf:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7764f1a1e46b8a870504c80d406ac661" id="r_a7764f1a1e46b8a870504c80d406ac661"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7764f1a1e46b8a870504c80d406ac661">add_stream</a> (std::ostream &amp;out)</td></tr>
-<tr class="separator:a7764f1a1e46b8a870504c80d406ac661"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bf1e7e8a4d0ad3ee3c313e2c37f6a97" id="r_a3bf1e7e8a4d0ad3ee3c313e2c37f6a97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3bf1e7e8a4d0ad3ee3c313e2c37f6a97">set_active</a> (const bool <a class="el" href="#a08bb91d798c9b12279d6e46c9e22f96d">active</a>)</td></tr>
-<tr class="separator:a3bf1e7e8a4d0ad3ee3c313e2c37f6a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa97303d39b6829f8377664b60704b6e2" id="r_aa97303d39b6829f8377664b60704b6e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa97303d39b6829f8377664b60704b6e2">add_stream</a> (std::ostream &amp;out)</td></tr>
+<tr class="separator:aa97303d39b6829f8377664b60704b6e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae9523bcdc6068ab197d7b337aeab516" id="r_aae9523bcdc6068ab197d7b337aeab516"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae9523bcdc6068ab197d7b337aeab516">set_active</a> (bool _active)</td></tr>
+<tr class="separator:aae9523bcdc6068ab197d7b337aeab516"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c82e9b194704b53f290249b73d861e5" id="r_a4c82e9b194704b53f290249b73d861e5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c82e9b194704b53f290249b73d861e5">is_active</a> () const</td></tr>
 <tr class="separator:a4c82e9b194704b53f290249b73d861e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:aaff582d786a136040720b02d57015e9f" id="r_aaff582d786a136040720b02d57015e9f"><td class="memItemLeft" align="right" valign="top">int_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaff582d786a136040720b02d57015e9f">overflow</a> (int_type int_char) override</td></tr>
-<tr class="separator:aaff582d786a136040720b02d57015e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdfe1044321af68a0492575a4c7a3a14" id="r_afdfe1044321af68a0492575a4c7a3a14"><td class="memItemLeft" align="right" valign="top">int_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afdfe1044321af68a0492575a4c7a3a14">overflow</a> (int_type int_char) override</td></tr>
+<tr class="separator:afdfe1044321af68a0492575a4c7a3a14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fe25de268c361cf350613d4f27cd9ea" id="r_a6fe25de268c361cf350613d4f27cd9ea"><td class="memItemLeft" align="right" valign="top">std::streamsize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6fe25de268c361cf350613d4f27cd9ea">xsputn</a> (const char *_char, std::streamsize n) override</td></tr>
 <tr class="separator:a6fe25de268c361cf350613d4f27cd9ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb3aa0731e300ac2560fcd00dd57a541" id="r_acb3aa0731e300ac2560fcd00dd57a541"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb3aa0731e300ac2560fcd00dd57a541">sync</a> () override</td></tr>
@@ -170,27 +170,19 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Fanout stream buffer </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7764f1a1e46b8a870504c80d406ac661" name="a7764f1a1e46b8a870504c80d406ac661"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7764f1a1e46b8a870504c80d406ac661">&#9670;&#160;</a></span>add_stream()</h2>
+<a id="aa97303d39b6829f8377664b60704b6e2" name="aa97303d39b6829f8377664b60704b6e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa97303d39b6829f8377664b60704b6e2">&#9670;&#160;</a></span>add_stream()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void FanoutStreamBuf::add_stream </td>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE void FanoutStreamBuf::add_stream </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;</td>          <td class="paramname"><span class="paramname"><em>out</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -213,15 +205,15 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="aaff582d786a136040720b02d57015e9f" name="aaff582d786a136040720b02d57015e9f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaff582d786a136040720b02d57015e9f">&#9670;&#160;</a></span>overflow()</h2>
+<a id="afdfe1044321af68a0492575a4c7a3a14" name="afdfe1044321af68a0492575a4c7a3a14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdfe1044321af68a0492575a4c7a3a14">&#9670;&#160;</a></span>overflow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -230,7 +222,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int_type FanoutStreamBuf::overflow </td>
+          <td class="memname">FanoutStreamBuf::int_type FanoutStreamBuf::overflow </td>
           <td>(</td>
           <td class="paramtype">int_type</td>          <td class="paramname"><span class="paramname"><em>int_char</em></span></td><td>)</td>
           <td></td>
@@ -238,34 +230,26 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a3bf1e7e8a4d0ad3ee3c313e2c37f6a97" name="a3bf1e7e8a4d0ad3ee3c313e2c37f6a97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3bf1e7e8a4d0ad3ee3c313e2c37f6a97">&#9670;&#160;</a></span>set_active()</h2>
+<a id="aae9523bcdc6068ab197d7b337aeab516" name="aae9523bcdc6068ab197d7b337aeab516"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae9523bcdc6068ab197d7b337aeab516">&#9670;&#160;</a></span>set_active()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void FanoutStreamBuf::set_active </td>
           <td>(</td>
-          <td class="paramtype">const bool</td>          <td class="paramname"><span class="paramname"><em>active</em></span></td><td>)</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>_active</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -288,7 +272,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -317,7 +301,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel protected">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -369,8 +353,9 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/__w/phaseField/phaseField/include/prismspf/utilities/<a class="el" href="logger_8h_source.html">logger.h</a></li>
+<li>/__w/phaseField/phaseField/src/utilities/<a class="el" href="logger_8cc.html">logger.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

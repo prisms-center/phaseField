@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['rank_5fmatches_0',['rank_matches',['../classLogStream.html#a51e1240a1214c20be2da645d5102d182',1,'LogStream']]],
+  ['rank_5fmatches_0',['rank_matches',['../classLogStream.html#a14d86d6164fc9f80fc290a019344dd4a',1,'LogStream']]],
   ['readbinary_1',['ReadBinary',['../classReadBinary.html#a1ffbb18aec3eb4f2408954bfa7a25d01',1,'ReadBinary']]],
   ['readfieldbase_2',['ReadFieldBase',['../classReadFieldBase.html#a60fcec50faa15af0fb4ae897f0bf8c3b',1,'ReadFieldBase::ReadFieldBase(const InitialConditionFile &amp;_ic_file, const SpatialDiscretization&lt; dim &gt; &amp;_spatial_discretization)'],['../classReadFieldBase.html#a9e6a78fd0e86186206feb08843536bdb',1,'ReadFieldBase::ReadFieldBase(const ReadFieldBase &amp;read_base)=delete'],['../classReadFieldBase.html#a9ef0af3047d379a60eab62d7bd6ec757',1,'ReadFieldBase::ReadFieldBase(ReadFieldBase &amp;&amp;read_base) noexcept=delete']]],
   ['readinitialcondition_3',['ReadInitialCondition',['../classReadInitialCondition.html#a561821d28292ec23df3f5530c9814309',1,'ReadInitialCondition']]],
@@ -16,5 +16,5 @@ var searchData=
   ['reinit_5fmg_5ftransfer_13',['reinit_mg_transfer',['../classGroupSolutionHandler.html#a389d80e6e17857b696f037cf1f811de5',1,'GroupSolutionHandler']]],
   ['remove_5fparentheses_14',['remove_parentheses',['../classUserConstants.html#afb4d4b8a027a3611d044b85a7567ecb6',1,'UserConstants']]],
   ['reset_15',['reset',['../classSimulationTimer.html#afa462fedaa49d65c5c3dea5e63f89c0a',1,'SimulationTimer']]],
-  ['reset_5findent_16',['reset_indent',['../classLogger.html#a0eb0ee496bb5ea993be5fec7560c0cf8',1,'Logger']]]
+  ['reset_5findent_16',['reset_indent',['../classLogger.html#a17777959da26fcaca0f532ce1893a430',1,'Logger']]]
 ];

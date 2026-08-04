@@ -1,7 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"io__parameters_8cc.html":[9,0,2,2,1],
-"io__parameters_8h.html":[9,0,1,0,5,1],
 "io__parameters_8h.html#a7c844ac33554b7eb72d932ea1aeb6012":[9,0,1,0,5,1,5],
 "io__parameters_8h.html#a8fd7dc1f121111d5d5e13790f0c94297":[9,0,1,0,5,1,6],
 "io__parameters_8h.html#ae7378b9f6e68cf0d61f4fea3e9a5dddd":[9,0,1,0,5,1,4],
@@ -9,6 +7,7 @@ var NAVTREEINDEX4 =
 "io__parameters_8h_source.html":[9,0,1,0,5,1],
 "linear__solver_8h.html":[9,0,1,0,4,2],
 "linear__solver_8h_source.html":[9,0,1,0,4,2],
+"logger_8cc.html":[9,0,2,3,1],
 "logger_8h.html":[9,0,1,0,6,2],
 "logger_8h_source.html":[9,0,1,0,6,2],
 "main_8h.html":[9,0,0,2,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "structInitialConditionFile.html#a2359ea131696e39515d60df0dd241208":[8,0,20,3],
 "structInitialConditionFile.html#a2e94b523e7ae1d5d49aee48768997338":[8,0,20,2],
 "structInitialConditionFile.html#a513ea241c71a115e54a9dda54a83765a":[8,0,20,1],
-"structInitialConditionFile.html#afbb5d18e39e5911f4ec777efe2e54863":[8,0,20,4]
+"structInitialConditionFile.html#afbb5d18e39e5911f4ec777efe2e54863":[8,0,20,4],
+"structInitialConditionFile.html#afe5913e5485124b6056345cc3e41eb4d":[8,0,20,0]
 };

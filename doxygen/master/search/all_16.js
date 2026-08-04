@@ -7,5 +7,5 @@ var searchData=
   ['white_4',['WHITE',['../classTerminalColor.html#a9072c2a431685d36e3356739883db99c',1,'TerminalColor']]],
   ['with_20docker_5',['with Docker',['../docker.html#docker_installation',1,'Installation with Docker'],['../docker.html',1,'Installing with Docker']]],
   ['write_5ffile_6',['write_file',['../classReadBinary.html#ad616b95c00b6066948367a441cda490c',1,'ReadBinary']]],
-  ['write_5findent_7',['write_indent',['../classLogger.html#a5da53aa414d5ae016af11e79430b7e7b',1,'Logger']]]
+  ['write_5findent_7',['write_indent',['../classLogger.html#abf079a98806cc56a1a0883603e99c904',1,'Logger']]]
 ];
