@@ -29,80 +29,23 @@ class FanoutStreamBuf : public std::streambuf
 {
 public:
   void
-  add_stream(std::ostream &out)
-  {
-    buffers.push_back(out.rdbuf());
-  }
+  add_stream(std::ostream &out);
 
   void
-  set_active(const bool active)
-  {
-    this->active = active;
-  }
+  set_active(bool _active);
 
   [[nodiscard]] bool
-  is_active() const
-  {
-    return active;
-  }
+  is_active() const;
 
 protected:
   int_type
-  overflow(int_type int_char) override
-  {
-    if (traits_type::eq_int_type(int_char, traits_type::eof()))
-      {
-        return traits_type::not_eof(int_char);
-      }
-    if (!active)
-      {
-        return int_char;
-      }
-    bool       is_ok = true;
-    const char _char = traits_type::to_char_type(int_char);
-    for (auto *buffer : buffers)
-      {
-        if (traits_type::eq_int_type(buffer->sputc(_char), traits_type::eof()))
-          {
-            is_ok = false;
-          }
-      }
-    return is_ok ? int_char : traits_type::eof();
-  }
+  overflow(int_type int_char) override;
 
   std::streamsize
-  xsputn(const char *_char, std::streamsize n) override
-  {
-    if (!active)
-      {
-        return n;
-      }
-    std::streamsize min_written = n;
-    for (auto *buffer : buffers)
-      {
-        const std::streamsize written = buffer->sputn(_char, n);
-        min_written                   = std::min(min_written, written);
-      }
-    return min_written;
-  }
+  xsputn(const char *_char, std::streamsize n) override;
 
   int
-  sync() override
-  {
-    if (!active)
-      {
-        return 0;
-      }
-    bool is_ok = true;
-    for (auto *buffer : buffers)
-      {
-        if (buffer->pubsync() != 0)
-          {
-            is_ok = false;
-          }
-      }
-    return is_ok ? 0 : -1;
-  }
+  sync() override;
 
 private:
   bool                          active = true;
@@ -115,33 +58,19 @@ private:
 class FanoutOStream
 {
 public:
-  FanoutOStream()
-    : stream(&buffer)
-  {}
+  FanoutOStream();
 
   void
-  add_stream(std::ostream &out)
-  {
-    buffer.add_stream(out);
-  }
+  add_stream(std::ostream &out);
 
   void
-  set_active(const bool active)
-  {
-    buffer.set_active(active);
-  }
+  set_active(bool active);
 
   bool
-  is_active() const
-  {
-    return buffer.is_active();
-  }
+  is_active() const;
 
   std::ostream &
-  get()
-  {
-    return stream;
-  }
+  get();
 
 private:
   FanoutStreamBuf buffer;
@@ -160,75 +89,42 @@ public:
   /**
    * Blank output
    */
-  explicit LogStream([[maybe_unused]] BlankOutputTag tag)
-    : LogStream(std::nullopt, std::nullopt, false)
-  {}
+  explicit LogStream([[maybe_unused]] BlankOutputTag tag);
 
   /**
    * Output to std::cout on all MPI processes.
    */
-  LogStream()
-    : LogStream(std::nullopt, std::nullopt, true)
-  {}
+  LogStream();
 
   /**
    * Output to std::cout on a given MPI process.
    */
-  explicit LogStream(unsigned int process_id)
-    : LogStream(std::nullopt, std::optional<unsigned int> {process_id}, true)
-  {}
+  explicit LogStream(unsigned int process_id);
 
   /**
    * Output to std::cout and one file per MPI process.
    *
    * The file name is appended by the MPI process id.
    */
-  explicit LogStream(const std::string &file)
-    : LogStream(std::optional<std::string> {file}, std::nullopt, true)
-  {}
+  explicit LogStream(const std::string &file);
 
   /**
    * Output to std::cout and one file on a given MPI process.
    */
-  LogStream(const std::string &file, unsigned int process_id)
-    : LogStream(std::optional<std::string> {file},
-                std::optional<unsigned int> {process_id},
-                true)
-  {}
+  LogStream(const std::string &file, unsigned int process_id);
 
   void
   add_file([[maybe_unused]] const std::string &file,
-           [[maybe_unused]] unsigned int       process_id)
-  {
-    if (file_stream)
-      {
-        return;
-      }
-    file_stream = open_file_if_needed(file, process_id);
-    if (file_stream)
-      {
-        fanout.add_stream(*file_stream);
-      }
-  }
+           [[maybe_unused]] unsigned int       process_id);
 
   void
-  set_condition(const bool condition)
-  {
-    user_condition = condition;
-    fanout.set_active(is_active());
-  }
+  set_condition(bool condition);
 
   bool
-  is_active() const
-  {
-    return rank_is_enabled && user_condition;
-  }
+  is_active() const;
 
   std::ostream &
-  get()
-  {
-    return fanout.get();
-  }
+  get();
 
   template <typename T>
   LogStream &
@@ -246,64 +142,19 @@ public:
   }
 
 private:
-  static unsigned int
-  this_rank()
-  {
-    return dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
-  }
+  unsigned int
+  this_rank() const;
 
-  static bool
-  rank_matches(std::optional<unsigned int> process_id)
-  {
-    if (!process_id)
-      {
-        return true;
-      }
-    return this_rank() == *process_id;
-  }
+  bool
+  rank_matches(std::optional<unsigned int> process_id) const;
 
-  static std::optional<std::ofstream>
+  std::optional<std::ofstream>
   open_file_if_needed(const std::optional<std::string> &file,
-                      std::optional<unsigned int>       process_id)
-  {
-    if (!file)
-      {
-        return std::nullopt;
-      }
-    if (!rank_matches(process_id))
-      {
-        return std::nullopt;
-      }
-
-    // If no specific process was requested, create one file per rank.
-    std::string filename = *file;
-    if (!process_id)
-      {
-        filename += "_" + std::to_string(this_rank());
-      }
-    std::optional<std::ofstream> out {std::in_place,
-                                      filename,
-                                      std::ios::out | std::ios::trunc};
-    ASSERT(*out, "Could not open log file", filename);
-    return out;
-  }
+                      std::optional<unsigned int>       process_id) const;
 
   LogStream(const std::optional<std::string> &file,
             std::optional<unsigned int>       process_id,
-            bool                              enable_cout)
-    : rank_is_enabled(rank_matches(process_id))
-    , file_stream(open_file_if_needed(file, process_id))
-  {
-    if (enable_cout)
-      {
-        fanout.add_stream(std::cout);
-      }
-    if (file_stream)
-      {
-        fanout.add_stream(*file_stream);
-      }
-    fanout.set_active(rank_is_enabled && user_condition);
-  }
+            bool                              enable_cout);
 
   bool                         rank_is_enabled = true;
   bool                         user_condition  = true;
@@ -546,39 +397,20 @@ public:
   class IndentScope
   {
   public:
-    IndentScope()
-    {
-      increment_indent();
-    }
-
-    ~IndentScope()
-    {
-      decrement_indent();
-    }
+    IndentScope();
+    ~IndentScope();
   };
 
   /**
    * @brief Clear terminal and print logo upon construction
    */
-  Logger()
-  {
-    // NOTE: We must check that the terminal supports color codes before printing with
-    // them to cout
-    if (colorize())
-      {
-        cout << TerminalColor::ERASE_SCREEN;
-      }
-    cout << LogFormatter::title() << LogFormatter::subtitle() << std::flush;
-  }
+  Logger();
 
   /**
    * @brief Set the log file to write to.
    */
   static void
-  set_file(const std::string &file)
-  {
-    log_file.add_file(file, 0);
-  }
+  set_file(const std::string &file);
 
   /**
    * @brief Static instance
@@ -586,32 +418,19 @@ public:
    * Use this to access the logger in the code.
    */
   static Logger &
-  instance()
-  {
-    static Logger logger;
-    return logger;
-  }
+  instance();
 
   /**
    * @brief Increment indentation level
    */
   static void
-  increment_indent()
-  {
-    ++indent_level;
-  }
+  increment_indent();
 
   /**
    * @brief Decrement indentation level
    */
   static void
-  decrement_indent()
-  {
-    if (indent_level > 0)
-      {
-        --indent_level;
-      }
-  }
+  decrement_indent();
 
   /**
    * @brief Reset indentation level
@@ -619,10 +438,7 @@ public:
    * @note This gets called when you use a section or subsection manipulator
    */
   static void
-  reset_indent()
-  {
-    indent_level = 0;
-  }
+  reset_indent();
 
   /**
    * @brief Stream operator
@@ -679,43 +495,15 @@ public:
     return *this;
   }
 
-  /**
-   * @brief Whether the terminal supports color
-   */
-  [[nodiscard]] static bool
-  colorize()
-  {
-    return term_supports_color;
-  }
-
 private:
   static void
-  write_indent()
-  {
-    cout << std::string(2 * indent_level, ' ');
-    log_file << std::string(2 * indent_level, ' ');
-  }
+  write_indent();
 
-  inline static bool         term_supports_color {TerminalColor::is_supported()};
-  inline static unsigned int indent_level  = 0;
-  inline static bool         at_line_start = true;
+  unsigned int indent_level  = 0;
+  bool         at_line_start = true;
 
-  inline static LogStream cout {0};
-  inline static LogStream log_file {LogStream::BlankOutputTag {}};
+  LogStream cout {0};
+  LogStream log_file {LogStream::BlankOutputTag {}};
 };
-
-// TODO: Move this
-inline std::string
-LogFormatter::format(Section                 _section,
-                     Style                   _style,
-                     const std::string_view &text,
-                     bool                    use_ansi)
-{
-  if (Logger::colorize() && use_ansi)
-    {
-      return style(section(text, _section), _style);
-    }
-  return section(text, _section);
-}
 
 PRISMS_PF_END_NAMESPACE
