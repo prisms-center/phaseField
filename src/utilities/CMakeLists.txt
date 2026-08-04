@@ -3,6 +3,7 @@ set(
   _sources
   integrator.cc
   utilities.cc
+  logger.cc
   timer.cc
 )
 
