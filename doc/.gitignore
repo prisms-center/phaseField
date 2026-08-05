@@ -1,2 +1,4 @@
 DoxygenWarningLog.txt
+doxygen/DoxygenLayout.xml
 doxygen/parameters/parameters.h
+doxygen/applications/applications.h

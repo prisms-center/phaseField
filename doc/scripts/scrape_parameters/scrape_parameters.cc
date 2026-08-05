@@ -5,8 +5,9 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/utilities/assert.h>
+
 #include <algorithm>
-#include <cctype>
 #include <filesystem>
 #include <fstream>
 #include <list>
@@ -171,8 +172,7 @@ public:
   {
     // Check that the file exists
     std::ifstream _file(file);
-    AssertThrow(_file.is_open(),
-                dealii::ExcMessage("Could not open parameter file: " + file));
+    ASSERT(_file.is_open(), "Could not open parameter file", file);
     _file.close();
 
     // Read the boost property tree
@@ -310,8 +310,7 @@ public:
   {
     // Read the input file
     std::ifstream in(input_filepath);
-    AssertThrow(in.is_open(),
-                dealii::ExcMessage("Could not open file: " + input_filepath));
+    ASSERT(in.is_open(), "Could not open file", input_filepath);
 
     std::ostringstream buffer;
     buffer << in.rdbuf();
@@ -321,9 +320,10 @@ public:
     // Find the marker
     const std::string marker     = "@parameter_list";
     const std::size_t marker_pos = content.find(marker);
-    AssertThrow(marker_pos != std::string::npos,
-                dealii::ExcMessage("Could not find marker " + marker + " in file " +
-                                   input_filepath));
+    ASSERT(marker_pos != std::string::npos,
+           "Could not find marker in file",
+           marker,
+           input_filepath);
 
     // Build the replacement content
     const std::string sections = build_sections();
@@ -333,8 +333,7 @@ public:
 
     // Write to output
     std::ofstream out(output_filepath);
-    AssertThrow(out.is_open(),
-                dealii::ExcMessage("Could not open file: " + output_filepath));
+    ASSERT(out.is_open(), "Could not open file", output_filepath);
     out << content;
     out.close();
   }
@@ -529,8 +528,9 @@ main(int argc, char *argv[])
 
   // Check that the parameters file exists
   const std::string in_file = argv[1];
-  AssertThrow(std::filesystem::exists(std::filesystem::path(in_file)),
-              dealii::ExcMessage("Could not find file " + in_file));
+  ASSERT(std::filesystem::exists(std::filesystem::path(in_file)),
+         "Could not find file",
+         in_file);
   const std::string out_file = argv[2];
 
   // Create the deal.II parameter handler and the PRISMS-PF
