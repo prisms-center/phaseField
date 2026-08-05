@@ -14,7 +14,9 @@
       <tab type="user" url="dev_docs.html" title="Developers"/>
     </tab>
     <tab type="user" url="\ref parameters" title="Parameters"/>
-    <tab type="user" url="applications.html" title="Applications"/>
+    <tab type="usergroup" url="applications.html" title="Applications">
+      @application_navigation
+    </tab>
     <tab type="user" url="contact.html" title="Contact"/>
     <tab type="topics" visible="yes" title="" intro=""/>
     <tab type="modules" visible="yes" title="" intro="">

@@ -4,8 +4,9 @@
 #   2. Build doxygen documentation
 #
 
-# First, we must scrape the parameters to build their documentation
 add_subdirectory(scripts)
+
+# First, we must scrape the parameters to build their documentation
 add_custom_target(
   generate_parameter_docs
   COMMAND
@@ -14,6 +15,18 @@ add_custom_target(
   COMMENT "Generating parameter documentation"
 )
 add_dependencies(generate_parameter_docs scrape_parameters_exe)
+
+# Next, scrape the applications to build their documentation
+add_custom_target(
+  generate_application_docs
+  COMMAND
+    scrape_applications_exe
+    ${CMAKE_CURRENT_SOURCE_DIR}/doxygen/applications/applications.h.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/doxygen/applications/applications.h
+    ${CMAKE_SOURCE_DIR}/applications
+  COMMENT "Generating parameter documentation"
+)
+add_dependencies(generate_application_docs scrape_applications_exe)
 
 # Next, doxygen documentation with the parameter docs dependency
 find_package(Doxygen REQUIRED)
@@ -36,7 +49,11 @@ doxygen_add_docs(
   CONFIG_FILE ${PRISMS_PF_DOXYGEN_OUTPUT}
   ALL
 )
-add_dependencies(doc generate_parameter_docs)
+add_dependencies(
+  doc
+  generate_parameter_docs
+  generate_application_docs
+)
 
 message(
   STATUS
