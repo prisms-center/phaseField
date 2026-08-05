@@ -396,6 +396,18 @@ dealii_point_to_vector(const dealii::Point<dim, number> &point)
   return vec;
 }
 
+/**
+ * @brief Give the CFL timestep for a given coefficient, dim, degree, and element size
+ * @todo Add template for higher order space derivatives
+ */
+template <unsigned int dim, unsigned int element_degree>
+inline DEAL_II_ALWAYS_INLINE double
+cfl_timestep(double coefficient, double dx)
+{
+  constexpr double prefactor = 1.0 / (2.0 * dim * element_degree * element_degree);
+  return prefactor * dx * dx / coefficient;
+}
+
 PRISMS_PF_END_NAMESPACE
 
 #include <prismspf/utilities/vectorized_operations.h>
