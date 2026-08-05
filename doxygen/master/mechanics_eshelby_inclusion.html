@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=11" />
   <meta name="generator" content="Doxygen 1.13.2" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PRISMS-PF Manual: Tutorial</title>
+  <title>PRISMS-PF Manual: mechanics_eshelby_inclusion</title>
   <link href="tabs.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="jquery.js"></script>
   <script type="text/javascript" src="dynsections.js"></script>
@@ -95,7 +95,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('tutorial.html',''); initResizable(true); });
+$(function(){initNavTree('mechanics_eshelby_inclusion.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -121,20 +121,39 @@ $(function(){initNavTree('tutorial.html',''); initResizable(true); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Tutorial</div></div>
+  <div class="headertitle"><div class="title">mechanics_eshelby_inclusion</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md27"></a>
-Tutorial</h1>
-<p>Welcome to the tutorial section!</p>
-<p>Here you can explain step-by-step usage of the code, include images, and even link to other parts of the docs.</p>
-<h1><a class="anchor" id="getting_started"></a>
-Getting Started</h1>
-<ul>
-<li>Step 1</li>
-<li>Step 2</li>
-<li>Step 3 </li>
-</ul>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md24"></a>
+PRISMS-PF: Eshelby Inclusion</h1>
+<p>This example application implements a simple 3D calculation of the displacement field near a homogeneous inclusion.</p>
+<p>Consider a strain energy expression of the form:</p>
+<p>$$ \begin{equation} \Pi(\varepsilon) = \int_{\Omega} \frac{1}{2} (\epsilon-\epsilon^0):C: (\epsilon-\epsilon^0) ~dV - \int_{\partial \Omega} u \cdot t ~dS \end{equation} $$</p>
+<p>where $\varepsilon$ is the infinitesimal strain tensor, $C_{ijkl}=\lambda \delta_{ij} \delta_{kl}+\mu ( \delta_{ik} \delta_{jl}+ \delta_{il} \delta_{jk} )$ is the fourth order elasticity tensor, ($\lambda$, $\mu$) are the Lame parameters, $u$ is the displacement, and $t=\sigma \cdot n$ is the surface traction. Here, body forces are assumed to be zero.</p>
+<h2><a class="anchor" id="autotoc_md25"></a>
+Governing equations</h2>
+<p>Considering variations on the displacement $u$ of the from $u+\alpha w$, we have</p>
+<p>$$ \begin{align} \delta \Pi &amp;= \left. \frac{d}{d\alpha} \left( \int_{\Omega} \frac{1}{2} [\epsilon(u+\alpha w) - \epsilon^0] : C : [\epsilon(u+\alpha w) - \epsilon^0] ~dV - \int_{\partial \Omega} (u+\alpha w) \cdot t ~dS \right)\right\vert_{\alpha=0} \ &amp;= \int_{\Omega} \nabla w : C : (\epsilon-\epsilon^0) ~dV - \int_{\partial \Omega} w \cdot t~dS\ &amp;= \int_{\Omega} \nabla w : \sigma ~dV - \int_{\partial \Omega} w\cdot t~dS \end{align} $$</p>
+<p>where $\sigma = C : (\epsilon-\epsilon^0)$ is the stress tensor, $\epsilon^0$ is the misfit strain (eigenstrain), and $t=\sigma \cdot n$ is the surface traction. In this case, we assume that the diagonal elements of $\epsilon^0$ take the form:</p>
+<p>$$ \begin{equation} \epsilon^0_{ii} = m \left(\frac{1}{2} + \frac{1}{2} \tanh\left(\frac{r-a}{\ell}\right) \right) \end{equation} $$</p>
+<p>where $m$ is the magnitide of the misfit strain inside the inclusion, $\ell$ determines the thickness of the "interface" between the inclusion and the matrix, $r$ is the distance from the origin, and $a$ is the radius of the inclusion. The off-diagonal elements of $\epsilon^0$ are zero.</p>
+<p>The minimization of the variation, $\delta \Pi=0$, gives the weak formulation of the governing equation of mechanics:</p>
+<p>$$ \begin{align} \int_{\Omega} \nabla w : \sigma ~dV - \int_{\partial \Omega} w \cdot t ~dS = 0 \end{align} $$</p>
+<p>If surface tractions are zero:</p>
+<p>$$ \begin{align} R &amp;= \int_{\Omega} \nabla w : \sigma ~dV = 0 \end{align} $$</p>
+<h2><a class="anchor" id="autotoc_md26"></a>
+Expressions (TODO: This is not correct as of 4.0)</h2>
+<p>In PRISMS-PF, two sets of residuals are required for elliptic PDEs (such as this one), one for the left-hand side of the equation (LHS) and one for the right-hand side of the equation (RHS). We solve $R=0$ by casting this in a form that can be solved as a matrix inversion problem. This will involve a brief detour into the discretized form of the equation. First we derive an expression for the solution, given an initial guess, $u_0$:</p>
+<p>$$ \begin{gather} 0 = R(u) = R(u_0 + \Delta u) \end{gather} $$</p>
+<p>where $\Delta u = u - u_0$. Then, we expand $R(u)$ around $u_0$: $$ \begin{equation} R(u) = R(u_0 + \Delta u) \approx R(u_0) + \int_\Omega \left.\frac{\delta R}{\delta u}\right|_{u_0} \cdot \Delta u ~dV \end{equation} $$</p>
+<p>The variation of $R$ is $$ \begin{align} \delta R &amp;= \int_{\Omega} \nabla w : C : \nabla \delta u ~dV\ &amp;= - \int_{\Omega} \nabla \cdot (\nabla w : C) \cdot \delta u ~dV \end{align} $$</p>
+<p>Therefore, the variational derivative of $R$ is $$ \begin{equation} \frac{\delta R}{\delta u} = -\nabla \cdot (\nabla w : C) \end{equation} $$</p>
+<p>The residual equation can be written as: $$ \begin{align} R(u_0) &amp;= \int_\Omega (\nabla \cdot (\nabla w : C)) \cdot \Delta u ~dV\ &amp;= -\int_{\Omega} \nabla w : C : \nabla (\Delta u) dV \end{align} $$</p>
+<p>Thus, the full equation relating $u_0$ and $\Delta u$ is:</p>
+<p>$$ \begin{align} \int_{\Omega} \nabla w : C : \nabla (\Delta u) dV = -\int_{\Omega} \nabla w : \sigma ~dV \end{align} $$</p>
+<p>$$ \begin{align} r_{ux}^{LHS} &amp;= C : \nabla (\Delta u) \end{align} $$</p>
+<p>$$ \begin{align} r_{ux} &amp;= -\sigma \end{align} $$</p>
+<p>The above values of $r_{ux}^{LHS}$ and $r_{ux}$ are used to define the residuals in the following input file: <code>applications/mechanics/eshelby_inclusion/custom_pde.h</code> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

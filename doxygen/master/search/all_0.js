@@ -1,8 +1,11 @@
 var searchData=
 [
-  ['0_0',['0',['../parameters.html#p_list_boundary_conditions__0',1,'boundary conditions: 0'],['../parameters.html#p_list_input_file__0',1,'input file: 0'],['../parameters.html#p_list_linear_solver_parameters__0',1,'linear solver parameters: 0'],['../parameters.html#p_list_newton_solver_parameters__0',1,'newton solver parameters: 0'],['../parameters.html#p_list_refinement_criterion__0',1,'refinement criterion: 0']]],
-  ['0_20bicgstab_1',['linear solver parameters: 0.BiCGStab',['../parameters.html#p_list_linear_solver_parameters__0_bicgstab',1,'']]],
-  ['0_20chebyshev_2',['linear solver parameters: 0.Chebyshev',['../parameters.html#p_list_linear_solver_parameters__0_chebyshev',1,'']]],
-  ['0_20gmres_3',['linear solver parameters: 0.GMRES',['../parameters.html#p_list_linear_solver_parameters__0_gmres',1,'']]],
-  ['0_20richardson_4',['linear solver parameters: 0.Richardson',['../parameters.html#p_list_linear_solver_parameters__0_richardson',1,'']]]
+  ['_24_0',['Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $f_{Landau}$, $H(\eta)$',['../nucleation.html#autotoc_md13',1,'']]],
+  ['_24_20_24f_5f_20beta_20_24_20_24f_5f_20landau_20_24_20_24h_20eta_20_24_1',['Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $f_{Landau}$, $H(\eta)$',['../nucleation.html#autotoc_md13',1,'']]],
+  ['_24_20_24f_5f_20landau_20_24_20_24h_20eta_20_24_2',['Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $f_{Landau}$, $H(\eta)$',['../nucleation.html#autotoc_md13',1,'']]],
+  ['_24_20_24h_20eta_20_24_3',['Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $f_{Landau}$, $H(\eta)$',['../nucleation.html#autotoc_md13',1,'']]],
+  ['_24f_5f_20alpha_20_24_20_24f_5f_20beta_20_24_20_24f_5f_20landau_20_24_20_24h_20eta_20_24_4',['Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $f_{Landau}$, $H(\eta)$',['../nucleation.html#autotoc_md13',1,'']]],
+  ['_24f_5f_20beta_20_24_20_24f_5f_20landau_20_24_20_24h_20eta_20_24_5',['Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $f_{Landau}$, $H(\eta)$',['../nucleation.html#autotoc_md13',1,'']]],
+  ['_24f_5f_20landau_20_24_20_24h_20eta_20_24_6',['Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $f_{Landau}$, $H(\eta)$',['../nucleation.html#autotoc_md13',1,'']]],
+  ['_24h_20eta_20_24_7',['Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $f_{Landau}$, $H(\eta)$',['../nucleation.html#autotoc_md13',1,'']]]
 ];

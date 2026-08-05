@@ -1,14 +1,14 @@
 var searchData=
 [
-  ['_7ecellmarkerbase_0',['~CellMarkerBase',['../classCellMarkerBase.html#a10ba574bf0a796968941e952238be991',1,'CellMarkerBase']]],
-  ['_7edofmanager_1',['~DoFManager',['../classDoFManager.html#a353146f5d880f2907675e9f225763174',1,'DoFManager']]],
-  ['_7eindentscope_2',['~IndentScope',['../classLogger_1_1IndentScope.html#a29b2a815b2eab26de9a7a4a9de401a60',1,'Logger::IndentScope']]],
-  ['_7empiinitfinalize_3',['~MPIInitFinalize',['../classMPIInitFinalize.html#a9cd2df9b62aabda5b5631dff43c709e5',1,'MPIInitFinalize']]],
-  ['_7eparameterbase_4',['~ParameterBase',['../structParameterBase.html#a6d78afb61695c9ead31fd3fff44d5b94',1,'ParameterBase']]],
-  ['_7epdeoperatorbase_5',['~PDEOperatorBase',['../classPDEOperatorBase.html#a70fc1c3bb935c10c474c1805b088050f',1,'PDEOperatorBase']]],
-  ['_7ereadfieldbase_6',['~ReadFieldBase',['../classReadFieldBase.html#a48ea2c5f52cc8590e8e4e17ed3aae959',1,'ReadFieldBase']]],
-  ['_7erefinementmanager_7',['~RefinementManager',['../classRefinementManager.html#aa012e2fe0922d561b7e4e7ea6cf2ec6e',1,'RefinementManager']]],
-  ['_7escope_8',['~Scope',['../structTimer_1_1Scope.html#aea326a0fa3b70da3f0f84ccf66c1436e',1,'Timer::Scope']]],
-  ['_7esolverbase_9',['~SolverBase',['../classSolverBase.html#a4ad5a8e2d8bacc3b0f05c95a7342786b',1,'SolverBase']]],
-  ['_7etimer_10',['~Timer',['../classTimer.html#a14fa469c4c295c5fa6e66a4ad1092146',1,'Timer']]]
+  ['warning_0',['Warning',['../classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9a0eaadb4fcb48a0a0ed7bc9868be9fbaa',1,'LogFormatter']]],
+  ['warning_1',['warning',['../classLogFormatter.html#aadba3dc6e1a30dd463e0cd21e1f26924',1,'LogFormatter']]],
+  ['weak_20formulation_2',['Weak Formulation',['../alloy_solidification.html#autotoc_md19',1,'']]],
+  ['weak_20formulation_3',['Weak formulation',['../nucleation.html#autotoc_md7',1,'']]],
+  ['welcome_4',['Welcome',['../index.html#welcome',1,'']]],
+  ['what_5',['what',['../classExcNaN.html#afe8180a5f501dc2dd18e5f34f452b6e0',1,'ExcNaN::what()'],['../classExcDepNotInitialized.html#a6cec24ef3d5d6b6ddf92f94b08e295bb',1,'ExcDepNotInitialized::what()']]],
+  ['white_6',['WHITE',['../classTerminalColor.html#a9072c2a431685d36e3356739883db99c',1,'TerminalColor']]],
+  ['with_20docker_7',['with Docker',['../docker.html#docker_installation',1,'Installation with Docker'],['../docker.html',1,'Installing with Docker']]],
+  ['with_20nucleation_20october_202_202024_8',['KKS Phase Field Model of Precipitate Evolution coupled with nucleation (October 2, 2024)',['../nucleation.html#autotoc_md0',1,'']]],
+  ['write_5ffile_9',['write_file',['../classReadBinary.html#ad616b95c00b6066948367a441cda490c',1,'ReadBinary']]],
+  ['write_5findent_10',['write_indent',['../classLogger.html#abf079a98806cc56a1a0883603e99c904',1,'Logger']]]
 ];

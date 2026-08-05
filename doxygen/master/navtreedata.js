@@ -35,7 +35,21 @@ var NAVTREE =
       [ "Developers", "dev_docs.html", null ]
     ] ],
     [ "Parameters", "parameters.html", null ],
-    [ "Applications", "applications.html", null ],
+    [ "Applications", "applications.html", [
+      [ "nucleation", "nucleation.html", null ],
+      [ "alloy_solidification", "alloy_solidification.html", null ],
+      [ "pfhub_benchmarks_1_a", "pfhub_benchmarks_1_a.html", null ],
+      [ "pfhub_benchmarks_6_a", "pfhub_benchmarks_6_a.html", null ],
+      [ "mechanics_eshelby_inclusion", "mechanics_eshelby_inclusion.html", null ],
+      [ "mechanics_boundary_value_problem", "\ref mechanics_boundary_value_problem", null ],
+      [ "laplace", "\ref laplace", null ],
+      [ "allen_cahn_implicit", "\ref allen_cahn_implicit", null ],
+      [ "allen_cahn_explicit", "\ref allen_cahn_explicit", null ],
+      [ "coupled_allen_cahn_cahn_hilliard", "\ref coupled_allen_cahn_cahn_hilliard", null ],
+      [ "blank", "\ref blank", null ],
+      [ "cahn_hilliard_implicit", "\ref cahn_hilliard_implicit", null ],
+      [ "cahn_hilliard_explicit", "\ref cahn_hilliard_explicit", null ]
+    ] ],
     [ "Contact", "contact.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -78,13 +92,13 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"annotated.html",
-"classInvMManager.html#a541264bfc6a440393f11e36daa19c67d",
-"classProblem.html#a8ab8c6c55f421a4e728bff2482fd6ab5",
-"classTriangulationManager.html#a864648008877f5493e2def77ca78beb0",
-"io__parameters_8h.html#a7c844ac33554b7eb72d932ea1aeb6012",
-"structInitialConditionFile.html#afe5913e5485124b6056345cc3e41eb4da245263e01516722fdf524dfe109ff937",
-"type__enums_8h.html#a17bc53e9e9f11a9a90eb8cc303a189d4a3ecdce43b54d3ec77dd4f578b19821d1"
+"\ref allen_cahn_explicit",
+"classInvMManager.html#a114713d8dd6b8e5ce225f874834e9170",
+"classProblem.html#a0ab4e0dbdf0e935e3803c439ac2e2512",
+"classTriangulationManager.html#a000e337a58cc9ac7ffbc180968d49010",
+"installation_8h.html",
+"structFieldOutputParameters.html#aeb06d893f288d52bea97b48cb1a09240a27272b519b2950d81ac7aa03ceb9aa69",
+"terminal_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
