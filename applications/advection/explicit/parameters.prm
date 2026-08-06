@@ -1,0 +1,27 @@
+subsection Rectangular mesh
+  set x size = 100.0
+  set y size = 100.0
+  set z size = 100.0
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
+end
+
+set global refinement = 7
+
+set time step = 1.0e-5
+set end time = 1
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 10
+end
+
+set Model constant W = 0.5, DOUBLE
+
+subsection linear solver parameters: 0
+  set solver_ids               = 0
+  set max iterations           = 1000
+  set tolerance type           = RMSEPerField
+  set tolerance value          = 1.0e-6
+end
