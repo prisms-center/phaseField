@@ -340,6 +340,8 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::apply_constraints(BlockVector<number> &solution_vector)
 {
+  Timer::Scope scope("Apply Constraints");
+
   const MatrixFree<dim, number> &matrix_free =
     matrix_free_manager->get_shared_matrix_free();
   unsigned int num_blocks = solve_block.field_indices.size();
