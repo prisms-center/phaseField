@@ -101,14 +101,10 @@ NucleationManager<dim, degree, number>::attempt_nucleation(
   const double delta_t = nuc_params.nucleation_period * time_info.get_timestep();
   auto        &rng     = user_inputs.misc_parameters.rng;
 
-  // Set up FEValues
+  auto        &fe_values       = SystemWide<dim, degree>::scalar_fe_values();
   unsigned int num_quad_points = SystemWide<dim, degree>::quadrature.size();
-  // Made static because initialization was taking a LOT of time
-  static dealii::FEValues<dim> fe_values(SystemWide<dim, degree>::fe_systems[0],
-                                         SystemWide<dim, degree>::quadrature,
-                                         dealii::UpdateFlags::update_values |
-                                           dealii::UpdateFlags::update_JxW_values);
-  std::list<Nucleus<dim>>      new_nuclei_list;
+
+  std::list<Nucleus<dim>> new_nuclei_list;
   // Loop over nucleation rate variables and attempt seeding at each cell
   for (unsigned int index = 0; index < solve_context.get_field_attributes().size();
        ++index)
@@ -225,16 +221,16 @@ NucleationManager<dim, degree, number>::gather_exclude_broadcast_nuclei(
             global_nuclei.begin(),
             global_nuclei.end(),
             [&](const Nucleus<dim> &existing_nucleus)
-            {
-              const double distance =
-                user_inputs.spatial_discretization.distance(nuc.location,
-                                                            existing_nucleus.location);
+              {
+                const double distance =
+                  user_inputs.spatial_discretization.distance(nuc.location,
+                                                              existing_nucleus.location);
 
-              return nuc_params.check_active(existing_nucleus, time_info) &&
-                     (distance < nuc_params.nucleus_exclusion_distance ||
-                      (nuc.field_index == existing_nucleus.field_index &&
-                       distance < nuc_params.same_field_nucleus_exclusion_distance));
-            });
+                return nuc_params.check_active(existing_nucleus, time_info) &&
+                       (distance < nuc_params.nucleus_exclusion_distance ||
+                        (nuc.field_index == existing_nucleus.field_index &&
+                         distance < nuc_params.same_field_nucleus_exclusion_distance));
+              });
           if (valid)
             {
               // Note: Using push_back() in a loop is not good use for
