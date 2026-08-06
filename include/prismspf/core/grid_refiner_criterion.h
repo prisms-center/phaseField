@@ -69,8 +69,6 @@ operator&=(RefinementFlags &flag_1, const RefinementFlags flag_2)
 /**
  * This class holds information for a determining whether the mesh should be
  * refined.
- *
- * TODO (landinjm): This should likely be part of VariableAttributes
  */
 struct RefinementCriterion
 {

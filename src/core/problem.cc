@@ -102,10 +102,10 @@ namespace
     return std::any_of(solve_blocks.begin(),
                        solve_blocks.end(),
                        [](const SolveBlock &solve_block)
-                       {
-                         return solve_block.linear_solver_parameters.preconditioner ==
-                                GMG;
-                       });
+                         {
+                           return solve_block.linear_solver_parameters.preconditioner ==
+                                  GMG;
+                         });
   }
 
   template <unsigned int dim, unsigned int degree, typename number>
@@ -494,7 +494,6 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
            (user_inputs.spatial_discretization.should_refine_mesh(increment) ||
             any_nucleation_occurred))
     {
-      // TODO: Add logger here or in the function
       // Perform grid refinement
       grid_refiner.do_adaptive_refinement(solvers);
     }

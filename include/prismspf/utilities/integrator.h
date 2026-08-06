@@ -9,6 +9,8 @@
 
 #include <prismspf/core/system_wide.h>
 
+#include <prismspf/utilities/assert.h>
+
 #include <prismspf/config.h>
 
 #include <vector>
@@ -30,37 +32,28 @@ public:
   {
     constexpr unsigned int expected_components =
       dealii::Tensor<rank, dim>::n_independent_components;
-    Assert(dof_handler.get_fe().n_components() == expected_components,
-           dealii::ExcMessage("The provided DoFHandler does not have the same number of "
-                              "components as the expected ones. For scalar fields there "
-                              "should be 1 component."));
+    const unsigned int n_components = dof_handler.get_fe().n_components();
 
-    // Update ghosts
+    DEBUG_ASSERT(n_components == expected_components,
+                 "The provided DoFHandler does not have the same number of components as "
+                 "the expected ones. For scalar fields there should be 1 component.");
+
     solution_vector.update_ghost_values();
 
-    // Set quadrature rule and FEValues to update the JxW values
-    dealii::FEValues<dim> fe_values(dof_handler.get_fe(),
-                                    SystemWide<dim, degree>::quadrature,
-                                    dealii::update_values | dealii::update_JxW_values);
-
-    // Get the number of quadrature points
+    auto &fe_values = n_components == 1 ? SystemWide<dim, degree>::scalar_fe_values()
+                                        : SystemWide<dim, degree>::vector_fe_values();
     const unsigned int num_quad_points = SystemWide<dim, degree>::quadrature.size();
 
-    // Create a value vector
     std::vector<dealii::Vector<number>> quad_values(num_quad_points,
                                                     dealii::Vector<number>(
                                                       expected_components));
-
-    // Loop over the cells provided by the DoFHandler
-    dealii::Vector<number> value(expected_components);
+    dealii::Vector<number>              value(expected_components);
     for (const auto &cell : dof_handler.active_cell_iterators())
       {
         if (cell->is_locally_owned())
           {
-            // Reinitialize the cell
             fe_values.reinit(cell);
 
-            // Get the values
             fe_values.get_function_values(solution_vector, quad_values);
 
             // Sum up the product of the JxW and values at each quadrature point to
