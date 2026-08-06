@@ -72,6 +72,8 @@ public:
   void
   solve_impl() override
   {
+    Timer::Scope scope("Nonlinear Solver");
+
     const number newton_step_length = newton_params().step_length;
     const number newton_tolerance =
       newton_params().tolerance_value * normalization_value();
