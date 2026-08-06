@@ -194,9 +194,9 @@ stabilization_parameter(const T                         &timestep,
   using std::cbrt;
   using std::sqrt;
 
-  constexpr auto degree_modifier  = T(1) / T(degree);
-  constexpr auto inv_pi           = T(1) / T(M_PI);
-  const auto     velocity_l2_norm = velocity.norm_square() + T(1e-12);
+  auto       degree_modifier  = T(1) / T(degree);
+  auto       inv_pi           = T(1) / T(M_PI);
+  const auto velocity_l2_norm = velocity.norm_square() + T(1e-12);
 
   auto element_size = T(0);
   if constexpr (dim == 1)
@@ -246,9 +246,9 @@ stabilization_parameter(const T                         &element_volume,
   using std::cbrt;
   using std::sqrt;
 
-  constexpr auto degree_modifier  = T(1) / T(degree);
-  constexpr auto inv_pi           = T(1) / T(M_PI);
-  const auto     velocity_l2_norm = velocity.norm_square() + T(1e-12);
+  auto       degree_modifier  = T(1) / T(degree);
+  auto       inv_pi           = T(1) / T(M_PI);
+  const auto velocity_l2_norm = velocity.norm_square() + T(1e-12);
 
   auto element_size = T(0);
   if constexpr (dim == 1)
@@ -297,9 +297,9 @@ stabilization_parameter(const T                         &timestep,
   using std::cbrt;
   using std::sqrt;
 
-  constexpr auto degree_modifier  = T(1) / T(degree);
-  constexpr auto inv_pi           = T(1) / T(M_PI);
-  const auto     velocity_l2_norm = velocity.norm_square() + T(1e-12);
+  auto       degree_modifier  = T(1) / T(degree);
+  auto       inv_pi           = T(1) / T(M_PI);
+  const auto velocity_l2_norm = velocity.norm_square() + T(1e-12);
 
   auto element_size = T(0);
   if constexpr (dim == 1)
@@ -347,9 +347,9 @@ stabilization_parameter(const T                         &element_volume,
   using std::cbrt;
   using std::sqrt;
 
-  constexpr auto degree_modifier  = T(1) / T(degree);
-  constexpr auto inv_pi           = T(1) / T(M_PI);
-  const auto     velocity_l2_norm = velocity.norm_square() + T(1e-12);
+  auto       degree_modifier  = T(1) / T(degree);
+  auto       inv_pi           = T(1) / T(M_PI);
+  const auto velocity_l2_norm = velocity.norm_square() + T(1e-12);
 
   auto element_size = T(0);
   if constexpr (dim == 1)
