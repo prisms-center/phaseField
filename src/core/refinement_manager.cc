@@ -157,8 +157,6 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 RefinementManager<dim, degree, number>::mark_cells_for_refinement_and_coarsening()
 {
-  Timer::Scope timer_scope("mark_cells_for_refinement_and_coarsening()");
-
   // Create the an object for the refinement criterion at each of the quad points. This
   // will either contain the value for scalar fields, the magnitude for vector fields,
   // or the magnitude of the gradient for both of the fields.
@@ -321,8 +319,6 @@ template <unsigned int dim, unsigned int degree, typename number>
 bool
 RefinementManager<dim, degree, number>::mark_cells_for_refinement()
 {
-  Timer::Scope timer_scope("mark_cells_for_refinement()");
-
   bool any_cell_marked = false;
   for (const auto &cell : solve_context->get_triangulation_manager()
                             .get_triangulation()
@@ -358,8 +354,6 @@ void
 RefinementManager<dim, degree, number>::refine_grid(
   std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> &solvers)
 {
-  Timer::Scope timer_scope("refine_grid()");
-
   TriangulationManager<dim> &triangulation_manager =
     solve_context->get_triangulation_manager();
   DoFManager<dim, degree>                &dof_manager = solve_context->get_dof_manager();
@@ -374,40 +368,31 @@ RefinementManager<dim, degree, number>::refine_grid(
       solver->update_ghosts();
     }
 
-  {
-    Timer::Scope scope("prepare");
-    // Prepare for grid refinement
-    triangulation_manager.prepare_for_grid_refinement();
-    for (auto &solver : solvers)
-      {
-        solver->prepare_for_solution_transfer();
-      }
-  }
+  // Prepare for grid refinement
+  triangulation_manager.prepare_for_grid_refinement();
+  for (auto &solver : solvers)
+    {
+      solver->prepare_for_solution_transfer();
+    }
 
-  {
-    Timer::Scope scope("execute");
-    // Execute grid refinement
-    triangulation_manager.execute_grid_refinement();
-  }
+  // Execute grid refinement
+  triangulation_manager.execute_grid_refinement();
 
-  {
-    Timer::Scope scope("reinit");
-    // Redistribute DoFs and reinit the solvers
-    if (triangulation_manager.has_mg())
-      {
-        triangulation_manager.init_mg();
-      }
-    dof_manager.reinit(triangulation_manager, dof_manager.has_mg());
-    constraint_manager.reinit(solve_context->get_field_attributes());
-    matrix_free_manager.reinit(dof_manager, constraint_manager);
+  // Redistribute DoFs and reinit the solvers
+  if (triangulation_manager.has_mg())
+    {
+      triangulation_manager.init_mg();
+    }
+  dof_manager.reinit(triangulation_manager, dof_manager.has_mg());
+  constraint_manager.reinit(solve_context->get_field_attributes());
+  matrix_free_manager.reinit(dof_manager, constraint_manager);
 
-    // Reinit solutions, apply constraints, then solution transfer
-    for (auto &solver : solvers)
-      {
-        solver->reinit();
-        solver->execute_solution_transfer();
-      }
-  }
+  // Reinit solutions, apply constraints, then solution transfer
+  for (auto &solver : solvers)
+    {
+      solver->reinit();
+      solver->execute_solution_transfer();
+    }
 }
 
 #include "core/refinement_manager.inst"
