@@ -32,8 +32,7 @@ TriangulationManager<1U>::TriangulationManager()
 template <unsigned int dim>
 TriangulationManager<dim>::TriangulationManager()
   : triangulation(MPI_COMM_WORLD,
-                  TriangulationManager<dim>::Triangulation::smoothing_on_refinement,
-                  TriangulationManager<dim>::Triangulation::construct_multigrid_hierarchy)
+                  TriangulationManager<dim>::Triangulation::smoothing_on_refinement)
 {}
 
 template <unsigned int dim>
