@@ -198,8 +198,46 @@ Functions</h2></td></tr>
 <tr class="memitem:a6900a956ef14d53b30c0616e7cf7b930" id="r_a6900a956ef14d53b30c0616e7cf7b930"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename number&gt; </td></tr>
 <tr class="memitem:a6900a956ef14d53b30c0616e7cf7b930"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE std::vector&lt; number &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6900a956ef14d53b30c0616e7cf7b930">dealii_point_to_vector</a> (const dealii::Point&lt; dim, number &gt; &amp;point)</td></tr>
 <tr class="separator:a6900a956ef14d53b30c0616e7cf7b930"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e55d522b97c94a8676e937d9b9d06c9" id="r_a9e55d522b97c94a8676e937d9b9d06c9"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, unsigned int element_degree&gt; </td></tr>
+<tr class="memitem:a9e55d522b97c94a8676e937d9b9d06c9"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9e55d522b97c94a8676e937d9b9d06c9">cfl_timestep</a> (double coefficient, double dx)</td></tr>
+<tr class="memdesc:a9e55d522b97c94a8676e937d9b9d06c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Give the CFL timestep for a given coefficient, dim, degree, and element size.  <br /></td></tr>
+<tr class="separator:a9e55d522b97c94a8676e937d9b9d06c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a9e55d522b97c94a8676e937d9b9d06c9" name="a9e55d522b97c94a8676e937d9b9d06c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e55d522b97c94a8676e937d9b9d06c9">&#9670;&#160;</a></span>cfl_timestep()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int element_degree&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">DEAL_II_ALWAYS_INLINE double cfl_timestep </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>coefficient</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>dx</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Give the CFL timestep for a given coefficient, dim, degree, and element size. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo</a></b></dt><dd>Add template for higher order space derivatives </dd></dl>
+
+</div>
+</div>
 <a id="a6900a956ef14d53b30c0616e7cf7b930" name="a6900a956ef14d53b30c0616e7cf7b930"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6900a956ef14d53b30c0616e7cf7b930">&#9670;&#160;</a></span>dealii_point_to_vector()</h2>
 

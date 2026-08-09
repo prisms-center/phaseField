@@ -1,6 +1,7 @@
 var utilities_8h =
 [
     [ "MPIInitFinalize", "classMPIInitFinalize.html", "classMPIInitFinalize" ],
+    [ "cfl_timestep", "utilities_8h.html#a9e55d522b97c94a8676e937d9b9d06c9", null ],
     [ "dealii_point_to_vector", "utilities_8h.html#a6900a956ef14d53b30c0616e7cf7b930", null ],
     [ "pmod", "utilities_8h.html#aa82813cf82bc07c48bf1e91eb5d7f381", null ],
     [ "set_zero_entries_to_one", "utilities_8h.html#a1d764c5ace94fd9ba37dd9fdb6d36625", null ],
