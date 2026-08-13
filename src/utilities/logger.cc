@@ -264,10 +264,6 @@ Logger::Logger()
 {
   // NOTE: We must check that the terminal supports color codes before printing with
   // them to cout
-  if (TerminalColor::is_supported())
-    {
-      cout << TerminalColor::ERASE_SCREEN;
-    }
   cout << LogFormatter::title() << LogFormatter::subtitle() << std::flush;
 }
 
