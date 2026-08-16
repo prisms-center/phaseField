@@ -36,19 +36,19 @@ var NAVTREE =
     ] ],
     [ "Parameters", "parameters.html", null ],
     [ "Applications", "applications.html", [
-      [ "nucleation", "nucleation.html", null ],
-      [ "alloy_solidification", "alloy_solidification.html", null ],
-      [ "pfhub_benchmarks_1_a", "pfhub_benchmarks_1_a.html", null ],
-      [ "pfhub_benchmarks_6_a", "pfhub_benchmarks_6_a.html", null ],
-      [ "mechanics_eshelby_inclusion", "mechanics_eshelby_inclusion.html", null ],
-      [ "mechanics_boundary_value_problem", "\ref mechanics_boundary_value_problem", null ],
-      [ "laplace", "\ref laplace", null ],
-      [ "allen_cahn_implicit", "\ref allen_cahn_implicit", null ],
-      [ "allen_cahn_explicit", "\ref allen_cahn_explicit", null ],
-      [ "coupled_allen_cahn_cahn_hilliard", "\ref coupled_allen_cahn_cahn_hilliard", null ],
+      [ "coupled_allen_cahn_cahn_hilliard", "coupled_allen_cahn_cahn_hilliard.html", null ],
       [ "blank", "\ref blank", null ],
-      [ "cahn_hilliard_implicit", "\ref cahn_hilliard_implicit", null ],
-      [ "cahn_hilliard_explicit", "\ref cahn_hilliard_explicit", null ]
+      [ "pfhub_benchmarks_1_a", "\ref pfhub_benchmarks_1_a", null ],
+      [ "pfhub_benchmarks_6_a", "\ref pfhub_benchmarks_6_a", null ],
+      [ "allen_cahn_explicit", "\ref allen_cahn_explicit", null ],
+      [ "allen_cahn_implicit", "\ref allen_cahn_implicit", null ],
+      [ "mechanics_boundary_value_problem", "\ref mechanics_boundary_value_problem", null ],
+      [ "mechanics_eshelby_inclusion", "\ref mechanics_eshelby_inclusion", null ],
+      [ "nucleation", "\ref nucleation", null ],
+      [ "alloy_solidification", "\ref alloy_solidification", null ],
+      [ "laplace", "\ref laplace", null ],
+      [ "cahn_hilliard_explicit", "\ref cahn_hilliard_explicit", null ],
+      [ "cahn_hilliard_implicit", "\ref cahn_hilliard_implicit", null ]
     ] ],
     [ "Contact", "contact.html", null ],
     [ "Namespaces", "namespaces.html", [
@@ -93,10 +93,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "\ref allen_cahn_explicit",
-"classInvMManager.html#a114713d8dd6b8e5ce225f874834e9170",
-"classProblem.html#a0ab4e0dbdf0e935e3803c439ac2e2512",
-"classTriangulationManager.html#a000e337a58cc9ac7ffbc180968d49010",
-"installation_8h.html",
+"classIntegrator.html#af9efd8729c661e6ab1ad89bc9779b122",
+"classParseCMDOptions.html#ad02ca16ca7747eb8e0c757047a48a414",
+"classTimer.html#ae6b73141ad1d5029d3782d14d2fd5ff0",
+"initial__conditions_8cc.html",
 "structFieldOutputParameters.html#aeb06d893f288d52bea97b48cb1a09240a27272b519b2950d81ac7aa03ceb9aa69",
 "terminal_8h.html"
 ];

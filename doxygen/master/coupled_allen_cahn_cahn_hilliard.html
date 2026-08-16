@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=11" />
   <meta name="generator" content="Doxygen 1.13.2" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PRISMS-PF Manual: doxygen/applications/applications.h Source File</title>
+  <title>PRISMS-PF Manual: coupled_allen_cahn_cahn_hilliard</title>
   <link href="tabs.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="jquery.js"></script>
   <script type="text/javascript" src="dynsections.js"></script>
@@ -95,7 +95,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('applications_8h_source.html',''); initResizable(true); });
+$(function(){initNavTree('coupled_allen_cahn_cahn_hilliard.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -120,18 +120,53 @@ $(function(){initNavTree('applications_8h_source.html',''); initResizable(true);
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">applications.h</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">coupled_allen_cahn_cahn_hilliard</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="applications_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span></div><!-- fragment --></div><!-- contents -->
+<div class="textblock"><h1><a class="anchor" id="autotoc_md0"></a>
+PRISMS PhaseField: Coupled Cahn-Hilliard and Allen-Cahn Dynamics</h1>
+<p>Consider a free energy expression of the form:</p>
+<p>$$ \begin{equation} \Pi(c, \eta, \nabla \eta) = \int_{\Omega} \left( f_{\alpha}(1-H) + f_{\beta}H \right) + \frac{\kappa}{2} \nabla \eta \cdot \nabla \eta ~dV \end{equation} $$</p>
+<p>where $f_{\alpha}$ and $f_{\beta}$ are the free energy densities corresponding to $\alpha$ and $\beta$ phases, respectively, and are functions of composition $c$. $H$ is a function of the structural order parameter $\eta$. Note that we don't have the gradient terms for the composition, i.e, $\nabla c$ terms, unlike classical Cahn-Hillard formulation.</p>
+<h2><a class="anchor" id="autotoc_md1"></a>
+Variational treatment</h2>
+<p>Following standard variational arguments (see Cahn-Hilliard formulation), we obtain the chemical potentials:</p>
+<p>$$ \begin{align} \mu_{c} &amp;= (f_{\alpha,c}(1-H)+f_{\beta,c}H) \end{align} $$</p>
+<p>$$ \begin{align} \mu_{\eta} &amp;= (f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \nabla^2 \eta \end{align} $$</p>
+<h2><a class="anchor" id="autotoc_md2"></a>
+Kinetics</h2>
+<p>Now the PDE for Cahn-Hilliard dynamics is given by:</p>
+<p>$$ \begin{align} \frac{\partial c}{\partial t} &amp;= -~\nabla \cdot (-M_c\nabla \mu_c) \end{align} $$</p>
+<p>$$ \begin{align} &amp;=M_c~\nabla \cdot (\nabla (f_{\alpha,c}(1-H)+f_{\beta,c}H)) \end{align} $$</p>
+<p>and the PDE for Allen-Cahn dynamics is given by:</p>
+<p>$$ \begin{align} \frac{\partial \eta}{\partial t} &amp;= -M_\eta \mu_\eta \end{align} $$</p>
+<p>$$ \begin{align} &amp;=-M_\eta ~ ((f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \nabla^2 \eta) \end{align} $$</p>
+<p>where $M_c$ and $M_\eta$ are the constant mobilities.</p>
+<h2><a class="anchor" id="autotoc_md3"></a>
+Time discretization</h2>
+<p>Considering forward Euler explicit time stepping, we have the time discretized kinetics equation:</p>
+<p>$$ \begin{align} \eta^{n} &amp;= \eta^{n-1} - \Delta t M_{\eta}~ ((f_{\beta,c}^{n-1}-f_{\alpha,c}^{n-1})H_{,\eta}^{n-1} - \kappa \nabla^2 \eta^{n-1}) \end{align} $$</p>
+<p>$$ \begin{align} c^{n} &amp;= c^{n-1} + \Delta t M_{\eta}~\nabla \cdot (\nabla (f_{\alpha,c}^{n-1}(1-H^{n-1})+f_{\beta,c}^n H^{n-1})) \end{align} $$</p>
+<h2><a class="anchor" id="autotoc_md4"></a>
+Weak formulation</h2>
+<p>In the weak formulation, considering an arbitrary variation $w$, the above equations can be expressed as residual equations:</p>
+<p>$$ \begin{align} \int_{\Omega} w \eta^{n} ~dV &amp;= \int_{\Omega} w \eta^{n-1} - w \Delta t M_{\eta}~ ((f_{\beta,c}^{n-1}-f_{\alpha,c}^{n-1})H_{,\eta}^{n-1} - \kappa \nabla^2 \eta^{n-1}) ~dV \end{align} $$</p>
+<p>$$ \begin{align} &amp;=\int_{\Omega} w \left(\eta^{n-1} - \Delta t M_{\eta}~ ((f_{\beta,c}^{n-1}-f_{\alpha,c}^{n-1})H_{,\eta}^{n-1}) \right)+ \nabla w \cdot (- \Delta t M_{\eta}\kappa) \nabla \eta^{n-1} ~dV \end{align} $$</p>
+<p>$$ \begin{align} r_{\eta} &amp;= \eta^{n-1} - \Delta t M_{\eta}~ ((f_{\beta,c}^{n-1}-f_{\alpha,c}^{n-1})H_{,\eta}^{n-1}) \end{align} $$</p>
+<p>$$ \begin{align} r_{\eta x} &amp;= (- \Delta t M_{\eta}\kappa) \nabla \eta^{n-1} \end{align} $$</p>
+<p>and</p>
+<p>$$ \begin{align} \int_{\Omega} w c^{n} ~dV &amp;= \int_{\Omega} w c^{n-1} + w \Delta t M_{c}~ \nabla \cdot (\nabla (f_{\alpha,c}^{n-1}(1-H^{n-1})+f_{\beta,c}^{n-1} H^{n-1})) ~dV \end{align} $$</p>
+<p>$$ \begin{align} &amp;= \int_{\Omega} w c^{n-1} + \nabla w (-\Delta t M_{c})~ [~(f_{\alpha,cc}^{n-1}(1-H^{n-1})+f_{\beta,cc}^{n-1} H^{n-1}) \nabla c + ~((f_{\beta,c}^{n-1}-f_{\alpha,c}^{n-1})H^{n-1}_{,\eta} \nabla \eta) ] ~dV \end{align} $$</p>
+<p>$$ \begin{align} r_c &amp;= c^{n-1} \end{align} $$</p>
+<p>$$ \begin{align} r_{cx} &amp;= (-\Delta t M_{c})~ [~(f_{\alpha,cc}^{n-1}(1-H^{n-1})+f_{\beta,cc}^{n-1} H^{n-1}) \nabla c + ~((f_{\beta,c}^{n-1}-f_{\alpha,c}^{n-1})H^{n-1}_{,\eta} \nabla \eta) ] \end{align} $$</p>
+<p>The above values of $r_{\eta}$, $r_{\eta x}$, $r_{c}$ and $r_{cx}$ are used to define the residuals in the following parameters file: <code>applications/coupled_allen_cahn_cahn_hilliard/equations.cc</code> </p>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_04f2ecc425faf0d475a3caf484e551f3.html">doxygen</a></li><li class="navelem"><a class="el" href="dir_d072f1071a3646681f3a467cd7b8e324.html">applications</a></li><li class="navelem"><a class="el" href="applications_8h.html">applications.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

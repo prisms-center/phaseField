@@ -33,7 +33,7 @@ var searchData=
   ['solve_5fimpl_30',['solve_impl',['../classExplicitSolver.html#ab8a44e969ae8a6841f4c65baf6b932d8',1,'ExplicitSolver::solve_impl()'],['../classLinearSolver.html#ae2409c641f1732fac9d07a865136a68e',1,'LinearSolver::solve_impl()'],['../classNewtonSolver.html#a64e42f20afbf2e75a400056b97d43b22',1,'NewtonSolver::solve_impl()'],['../classSolverBase.html#a84e7b40e9ed956b72903ab8f297485bf',1,'SolverBase::solve_impl()']]],
   ['solve_5fincrement_31',['solve_increment',['../classProblem.html#a4d18b5598daf20435ce09829b8983616',1,'Problem']]],
   ['solveblock_32',['SolveBlock',['../classSolveBlock.html#a46791ee87747d4ad83882f30c9a293f2',1,'SolveBlock']]],
-  ['solvecontext_33',['SolveContext',['../classSolveContext.html#aaa4b3defd85f5db61b90165bb0414ba4',1,'SolveContext']]],
+  ['solvecontext_33',['SolveContext',['../classSolveContext.html#a4648af542557c73ff2a702ed8feff369',1,'SolveContext']]],
   ['solverbase_34',['SolverBase',['../classSolverBase.html#a84149fa02932ffb0254b239d561ce35e',1,'SolverBase::SolverBase(SolveBlock _solve_block, const SolveContext&lt; dim, degree, number &gt; &amp;_solve_context)'],['../classSolverBase.html#a5d3319c979b85de11bd95fde679082b5',1,'SolverBase::SolverBase(const SolverBase &amp;)=delete'],['../classSolverBase.html#ac2a85122e25581d6735f900b14511cc9',1,'SolverBase::SolverBase(SolverBase &amp;&amp;)=delete']]],
   ['sphericalmesh_35',['SphericalMesh',['../structSphericalMesh.html#a38656f8ae89b5fc27c56178f4950abdd',1,'SphericalMesh::SphericalMesh()=default'],['../structSphericalMesh.html#ad6da88a01ab53c2630c7f1f74ead6ca1',1,'SphericalMesh::SphericalMesh(double _radius)']]],
   ['sqrt_36',['sqrt',['../classInvMManager.html#aaef460da324382a16a4bd5c4d26ada07',1,'InvMManager']]],

@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"classTimer.html#ae6b73141ad1d5029d3782d14d2fd5ff0":[8,0,69,3],
+"classTimer.html#af05ef1223d3acbeb28d2d69fe1a79140":[8,0,69,7],
+"classTriangulationManager.html":[8,0,70],
 "classTriangulationManager.html#a000e337a58cc9ac7ffbc180968d49010":[8,0,70,16],
 "classTriangulationManager.html#a26c033d958359678381f9238d37d8381":[8,0,70,3],
 "classTriangulationManager.html#a2bbe15a4574daaa8c8510317c0ea1353":[8,0,70,12],
@@ -85,6 +88,7 @@ var NAVTREEINDEX3 =
 "contact.html":[5],
 "contact_8h.html":[9,0,0,2,0],
 "contact_8h_source.html":[9,0,0,2,0],
+"coupled_allen_cahn_cahn_hilliard.html":[4,0],
 "dependencies_8h.html":[9,0,1,0,0,2],
 "dependencies_8h.html#a8ee155eab2c56d1d5418eed94e41a238":[9,0,1,0,0,2,2],
 "dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d":[9,0,1,0,0,2,1],
@@ -245,9 +249,5 @@ var NAVTREEINDEX3 =
 "group__solution__handler_8h_source.html":[9,0,1,0,0,10],
 "hierarchy.html":[8,2],
 "index.html":[],
-"index.html":[0],
-"initial__conditions_8cc.html":[9,0,2,0,5],
-"initial__conditions_8h.html":[9,0,1,0,0,11],
-"initial__conditions_8h_source.html":[9,0,1,0,0,11],
-"installation.html":[1]
+"index.html":[0]
 };

@@ -1,6 +1,6 @@
 var classSolveContext =
 [
-    [ "SolveContext", "classSolveContext.html#aaa4b3defd85f5db61b90165bb0414ba4", null ],
+    [ "SolveContext", "classSolveContext.html#a4648af542557c73ff2a702ed8feff369", null ],
     [ "get_constraint_manager", "classSolveContext.html#a0ac9023eb2bd83a5cc8e4c4228ae80c9", null ],
     [ "get_constraint_manager", "classSolveContext.html#a5ab3719bb4fb4c0db5753df9acfbaec7", null ],
     [ "get_dof_manager", "classSolveContext.html#a08e4c7c780d5f08d9012cf481df1e727", null ],
@@ -20,7 +20,7 @@ var classSolveContext =
     [ "get_user_inputs", "classSolveContext.html#a63b2a582649aa6ce7b53f3f958453115", null ],
     [ "constraint_manager", "classSolveContext.html#abfcc062b426cfa5d0fca411b0cbe22ef", null ],
     [ "dof_manager", "classSolveContext.html#ac4f42d8f52c9343ee050372f77c9ef8f", null ],
-    [ "field_attributes", "classSolveContext.html#ab849665a3485ecfbdf294ee4f17eee49", null ],
+    [ "field_attributes", "classSolveContext.html#ad30cbacccd51e6404099028cdbcf2025", null ],
     [ "invm_manager", "classSolveContext.html#abee84067d14d7d97694a0fa1f5517fb4", null ],
     [ "matrix_free_manager", "classSolveContext.html#ad1726bec16f92d11394760909745a64f", null ],
     [ "pde_operator", "classSolveContext.html#a0868de97a3daef4759b4699e5a80c8ca", null ],

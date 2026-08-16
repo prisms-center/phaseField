@@ -1,14 +1,17 @@
 var NAVTREEINDEX0 =
 {
-"\ref allen_cahn_explicit":[4,8],
-"\ref allen_cahn_implicit":[4,7],
-"\ref blank":[4,10],
-"\ref cahn_hilliard_explicit":[4,12],
-"\ref cahn_hilliard_implicit":[4,11],
-"\ref coupled_allen_cahn_cahn_hilliard":[4,9],
-"\ref laplace":[4,6],
-"\ref mechanics_boundary_value_problem":[4,5],
-"alloy_solidification.html":[4,1],
+"\ref allen_cahn_explicit":[4,4],
+"\ref allen_cahn_implicit":[4,5],
+"\ref alloy_solidification":[4,9],
+"\ref blank":[4,1],
+"\ref cahn_hilliard_explicit":[4,11],
+"\ref cahn_hilliard_implicit":[4,12],
+"\ref laplace":[4,10],
+"\ref mechanics_boundary_value_problem":[4,6],
+"\ref mechanics_eshelby_inclusion":[4,7],
+"\ref nucleation":[4,8],
+"\ref pfhub_benchmarks_1_a":[4,2],
+"\ref pfhub_benchmarks_6_a":[4,3],
 "annotated.html":[8,0],
 "applications.html":[4],
 "applications_8h.html":[9,0,0,0,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX0 =
 "classInitialCondition.html#a9165859f7fd0210eed4ae01a05f58a38":[8,0,19,2],
 "classInitialCondition.html#ae1e1c28adb3c0b9feadd2c381f507606":[8,0,19,1],
 "classIntegrator.html":[8,0,21],
-"classIntegrator.html#ab49b0feb1acc51106acf14361a7088b6":[8,0,21,1],
-"classIntegrator.html#af9efd8729c661e6ab1ad89bc9779b122":[8,0,21,0],
-"classInvMManager.html":[8,0,22],
-"classInvMManager.html#a01daa535b486ed21c744365f643a1d0f":[8,0,22,10]
+"classIntegrator.html#ab49b0feb1acc51106acf14361a7088b6":[8,0,21,1]
 };
