@@ -34,14 +34,14 @@ public:
   /**
    * @brief Constructor.
    */
-  SolveContext(std::vector<FieldAttributes>            _field_attributes,
+  SolveContext(const std::vector<FieldAttributes>     &_field_attributes,
                const UserInputParameters<dim>         &_user_inputs,
                TriangulationManager<dim>              &_triangulation_manager,
                DoFManager<dim, degree>                &_dof_manager,
                ConstraintManager<dim, degree, number> &_constraint_manager,
                SolutionIndexer<dim, number>           &_solution_indexer,
                PDEOperatorBase<dim, degree, number>   &_pde_operator)
-    : field_attributes(std::move(_field_attributes))
+    : field_attributes(&_field_attributes)
     , user_inputs(&_user_inputs)
     , triangulation_manager(&_triangulation_manager)
     , dof_manager(&_dof_manager)
@@ -59,7 +59,8 @@ public:
   [[nodiscard]] const std::vector<FieldAttributes> &
   get_field_attributes() const
   {
-    return field_attributes;
+    Assert(field_attributes != nullptr, dealii::ExcNotInitialized());
+    return *field_attributes;
   }
 
   /**
@@ -220,7 +221,7 @@ private:
   /**
    * @brief Field attributes.
    */
-  std::vector<FieldAttributes> field_attributes;
+  const std::vector<FieldAttributes> *field_attributes;
 
   /**
    * @brief User-inputs.
