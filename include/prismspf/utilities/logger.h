@@ -188,6 +188,7 @@ public:
     Error,            // Yellow
     Success,          // Green
     Debug,            // Grey
+    Verbose,          // Grey
     RainbowTessellate // Rainbow tessellation
   };
 
@@ -312,6 +313,7 @@ public:
         case Style::Success:
           return TerminalColor::colorize(string, TerminalColor::GREEN);
         case Style::Debug:
+        case Style::Verbose:
           return TerminalColor::colorize(string,
                                          {TerminalColor::DIM,
                                           TerminalColor::BRIGHT_BLACK});
@@ -333,6 +335,7 @@ public:
   static std::string
   section(const std::string_view &string, Section _section)
   {
+    // TODO: Avoid the 79 magic number here
     switch (_section)
       {
         case Section::Normal:
@@ -379,6 +382,9 @@ public:
  *
  * @note Indents are only applied when starting on a newline. For now, this is only
  * detected after using `std::endl`.
+ *
+ * @warn When using the verbose style do not follow with `std::endl`. This is handled
+ * uniquely by that style so as to not produce extra whitespace.
  *
  * Thus, this code here:
  *
@@ -458,9 +464,16 @@ public:
         at_line_start = false;
       }
 
-    // TODO: Add a verbose log flag that we can route to only the log file
-    cout << LogFormatter::format(manip.section, manip.style, manip.text);
     log_file << LogFormatter::format(manip.section, manip.style, manip.text, false);
+    if (manip.style == LogFormatter::Style::Verbose)
+      {
+        log_file << std::endl;
+        at_line_start = true;
+      }
+    else
+      {
+        cout << LogFormatter::format(manip.section, manip.style, manip.text);
+      }
 
     return *this;
   }
