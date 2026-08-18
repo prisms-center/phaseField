@@ -53,8 +53,9 @@ repos:
     files: (^|/)(CMakeLists\.txt|.*\.cmake)(\.in)?$
 # c++ formatting
 - repo: https://github.com/pre-commit/mirrors-clang-format
-  rev:  v18.1.8
+  rev: v18.1.8
   hooks:
   - id: clang-format
     types: [file]
-    files: \.(c|cc|cpp|cxx|h|hh|hpp|hxx)(\.in)?$
+    types_or: []
+    files: \.(c|cc|cpp|cxx|h|hh|hpp|hxx)(\.in)?$|\.inst\.in$
