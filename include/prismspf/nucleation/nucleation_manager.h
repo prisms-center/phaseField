@@ -101,7 +101,11 @@ NucleationManager<dim, degree, number>::attempt_nucleation(
   const double delta_t = nuc_params.nucleation_period * time_info.get_timestep();
   auto        &rng     = user_inputs.misc_parameters.rng;
 
-  auto        &fe_values       = SystemWide<dim, degree>::scalar_fe_values();
+  static dealii::FEValues<dim> fe_values(SystemWide<dim, degree>::fe_systems[0],
+                                         SystemWide<dim, degree>::quadrature,
+                                         dealii::UpdateFlags::update_values |
+                                           dealii::UpdateFlags::update_JxW_values);
+
   unsigned int num_quad_points = SystemWide<dim, degree>::quadrature.size();
 
   std::list<Nucleus<dim>> new_nuclei_list;

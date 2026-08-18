@@ -237,13 +237,26 @@ RefinementManager<dim, degree, number>::mark_cells_for_refinement_and_coarsening
           });
     };
 
+  // Create FEValues
+  // TODO: Better off using lazy evaluation
+  static dealii::FEValues<dim, dim> scalar_fe_values(
+    SystemWide<dim, degree>::mapping,
+    SystemWide<dim, degree>::fe_systems[0],
+    SystemWide<dim, degree>::quadrature,
+    dealii::UpdateFlags::update_values | dealii::UpdateFlags::update_gradients);
+  static dealii::FEValues<dim, dim> vector_fe_values(
+    SystemWide<dim, degree>::mapping,
+    SystemWide<dim, degree>::fe_systems[1],
+    SystemWide<dim, degree>::quadrature,
+    dealii::UpdateFlags::update_values | dealii::UpdateFlags::update_gradients);
+
   // Create the an object for the refinement criterion at each of the quad points. This
   // will either contain the value for scalar fields, the magnitude for vector fields,
   // or the magnitude of the gradient for both of the fields.
-  std::vector<number>                                      values(num_quad_points, 0.0);
-  std::vector<dealii::Vector<number>>                      vector_values(num_quad_points,
-                                                    dealii::Vector<number>(dim));
-  std::vector<dealii::Tensor<1, dim, number>>              gradients(num_quad_points);
+  std::vector<number>                         values(num_quad_points, 0.0);
+  std::vector<dealii::Vector<number>>         vector_values(num_quad_points,
+                                                            dealii::Vector<number>(dim));
+  std::vector<dealii::Tensor<1, dim, number>> gradients(num_quad_points);
   std::vector<std::vector<dealii::Tensor<1, dim, number>>> vector_gradients(
     num_quad_points,
     std::vector<dealii::Tensor<1, dim, number>>(dim));
@@ -277,9 +290,8 @@ RefinementManager<dim, degree, number>::mark_cells_for_refinement_and_coarsening
                 solve_context->get_dof_manager().get_field_dof_handler(index));
 
               // Reinit the cell
-              auto &fe_values = local_field_type == TensorRank::Scalar
-                                  ? SystemWide<dim, degree>::scalar_fe_values()
-                                  : SystemWide<dim, degree>::vector_fe_values();
+              auto &fe_values = local_field_type == TensorRank::Scalar ? scalar_fe_values
+                                                                       : vector_fe_values;
 
               fe_values.reinit(dof_iterator);
               const auto &solution_vector =

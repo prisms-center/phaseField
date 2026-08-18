@@ -40,8 +40,10 @@ public:
 
     solution_vector.update_ghost_values();
 
-    auto &fe_values = n_components == 1 ? SystemWide<dim, degree>::scalar_fe_values()
-                                        : SystemWide<dim, degree>::vector_fe_values();
+    static dealii::FEValues<dim> fe_values(dof_handler.get_fe(),
+                                           SystemWide<dim, degree>::quadrature,
+                                           dealii::update_values |
+                                             dealii::update_JxW_values);
     const unsigned int num_quad_points = SystemWide<dim, degree>::quadrature.size();
 
     std::vector<dealii::Vector<number>> quad_values(num_quad_points,

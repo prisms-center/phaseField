@@ -28,8 +28,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * other immutable data structures shared across the code base.
  *
  * We also use lazy initializers for the expensive objects that aren't always
- * constructors. For example, dealii::FEValues, which is only needed if nucleation or
- * adaptive meshing is enabled.
+ * constructors.
  */
 template <unsigned int dim, unsigned int degree>
 class SystemWide
@@ -60,42 +59,6 @@ public:
    */
   inline static const dealii::QGaussLobatto<1> quadrature_matrix_free =
     dealii::QGaussLobatto<1>(degree + 1);
-
-  /**
-   * @brief Lazy initialized scalar FEValues
-   *
-   * @todo See if we can update necessary flags only. Or split up.
-   */
-  static dealii::FEValues<dim, dim> &
-  scalar_fe_values()
-  {
-    static dealii::FEValues<dim, dim> fe_values(
-      mapping,
-      fe_systems[0],
-      quadrature,
-      dealii::UpdateFlags::update_values | dealii::UpdateFlags::update_gradients |
-        dealii::UpdateFlags::update_quadrature_points |
-        dealii::UpdateFlags::update_JxW_values);
-    return fe_values;
-  }
-
-  /**
-   * @brief Lazy initialized vector FEValues
-   *
-   * @todo See if we can update necessary flags only. Or split up.
-   */
-  static dealii::FEValues<dim, dim> &
-  vector_fe_values()
-  {
-    static dealii::FEValues<dim, dim> fe_values(
-      mapping,
-      fe_systems[1],
-      quadrature,
-      dealii::UpdateFlags::update_values | dealii::UpdateFlags::update_gradients |
-        dealii::UpdateFlags::update_quadrature_points |
-        dealii::UpdateFlags::update_JxW_values);
-    return fe_values;
-  }
 };
 
 PRISMS_PF_END_NAMESPACE
