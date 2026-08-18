@@ -15,12 +15,10 @@ include(CMakeFindDependencyMacro)
 # Two different paths: the build and install directories.
 # The build directory should have a CMakeCache.
 if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/../CMakeCache.txt")
-  get_filename_component(_pkg_prefix
-    "${CMAKE_CURRENT_LIST_DIR}/../_deps"
-    ABSOLUTE
-  )
+  get_filename_component(_pkg_prefix "${CMAKE_CURRENT_LIST_DIR}/../_deps" ABSOLUTE)
 else()
-  get_filename_component(_pkg_prefix
+  get_filename_component(
+    _pkg_prefix
     "${CMAKE_CURRENT_LIST_DIR}/../../../vendored"
     ABSOLUTE
   )
@@ -37,13 +35,15 @@ function(_prisms_pf_import_archive TARGET_NAME PREFIX_DIR ARCHIVE_NAME)
       return()
     endif()
     add_library("${TARGET_NAME}_debug" STATIC IMPORTED GLOBAL)
-    set_target_properties("${TARGET_NAME}_debug"
+    set_target_properties(
+      "${TARGET_NAME}_debug"
       PROPERTIES
         IMPORTED_LOCATION
           "${PREFIX_DIR}/@CMAKE_INSTALL_LIBDIR@/${ARCHIVE_NAME}.a"
     )
     if(IS_DIRECTORY "${PREFIX_DIR}_debug/include")
-      set_target_properties("${TARGET_NAME}_debug"
+      set_target_properties(
+        "${TARGET_NAME}_debug"
         PROPERTIES
           INTERFACE_INCLUDE_DIRECTORIES
             "${PREFIX_DIR}_debug/include"
@@ -55,13 +55,15 @@ function(_prisms_pf_import_archive TARGET_NAME PREFIX_DIR ARCHIVE_NAME)
     return()
   endif()
   add_library(${TARGET_NAME} STATIC IMPORTED GLOBAL)
-  set_target_properties(${TARGET_NAME}
+  set_target_properties(
+    ${TARGET_NAME}
     PROPERTIES
       IMPORTED_LOCATION
         "${PREFIX_DIR}/@CMAKE_INSTALL_LIBDIR@/${ARCHIVE_NAME}.a"
   )
   if(IS_DIRECTORY "${PREFIX_DIR}/include")
-    set_target_properties(${TARGET_NAME}
+    set_target_properties(
+      ${TARGET_NAME}
       PROPERTIES
         INTERFACE_INCLUDE_DIRECTORIES
           "${PREFIX_DIR}/include"
@@ -74,31 +76,21 @@ endfunction()
 find_dependency(Threads)
 if("libassert" IN_LIST PRISMS_PF_VENDORED_PACKAGES)
   # dwarf
-  _prisms_pf_import_archive(
-    imported_dwarf
-    "${_pkg_prefix}/libassert"
-    libdwarf
-  )
+  _prisms_pf_import_archive(imported_dwarf "${_pkg_prefix}/libassert" libdwarf)
   # zstd
-  _prisms_pf_import_archive(
-    imported_zstd
-    "${_pkg_prefix}/libassert"
-    libzstd
-  )
+  _prisms_pf_import_archive(imported_zstd "${_pkg_prefix}/libassert" libzstd)
   # cpptrace
-  _prisms_pf_import_archive(
-    imported_cpptrace
-    "${_pkg_prefix}/libassert"
-    libcpptrace
-  )
+  _prisms_pf_import_archive(imported_cpptrace "${_pkg_prefix}/libassert" libcpptrace)
 
-  set_target_properties(imported_cpptrace
+  set_target_properties(
+    imported_cpptrace
     PROPERTIES
       INTERFACE_LINK_LIBRARIES
         "imported_dwarf;imported_zstd;Threads::Threads;${CMAKE_DL_LIBS}"
   )
   if(${PRISMS_PF_BUILD_TYPE} STREQUAL "DebugRelease")
-    set_target_properties(imported_cpptrace_debug
+    set_target_properties(
+      imported_cpptrace_debug
       PROPERTIES
         INTERFACE_LINK_LIBRARIES
           "imported_dwarf_debug;imported_zstd_debug;Threads::Threads;${CMAKE_DL_LIBS}"
@@ -106,18 +98,16 @@ if("libassert" IN_LIST PRISMS_PF_VENDORED_PACKAGES)
   endif()
 
   # libassert
-  _prisms_pf_import_archive(
+  _prisms_pf_import_archive(imported_libassert "${_pkg_prefix}/libassert" libassert)
+  set_target_properties(
     imported_libassert
-    "${_pkg_prefix}/libassert"
-    libassert
-  )
-  set_target_properties(imported_libassert
     PROPERTIES
       INTERFACE_LINK_LIBRARIES
         imported_cpptrace
   )
   if(${PRISMS_PF_BUILD_TYPE} STREQUAL "DebugRelease")
-    set_target_properties(imported_libassert_debug
+    set_target_properties(
+      imported_libassert_debug
       PROPERTIES
         INTERFACE_LINK_LIBRARIES
           imported_cpptrace_debug
@@ -126,13 +116,28 @@ if("libassert" IN_LIST PRISMS_PF_VENDORED_PACKAGES)
 endif()
 
 # MPI
-find_dependency(MPI COMPONENTS CXX)
+find_dependency(
+  MPI
+  COMPONENTS
+  CXX
+)
 
 # deal.II
-find_dependency(deal.II HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR})
+find_dependency(
+  deal.II
+  HINTS
+  ${DEAL_II_DIR}
+  $ENV{DEAL_II_DIR}
+)
 
 # Caliper
-find_package(caliper QUIET HINTS ${CALIPER_DIR} $ENV{CALIPER_DIR})
+find_package(
+  caliper
+  QUIET
+  HINTS
+    ${CALIPER_DIR}
+    $ENV{CALIPER_DIR}
+)
 
 # Exported targets
 include(${CMAKE_CURRENT_LIST_DIR}/prisms_pf_targets.cmake)

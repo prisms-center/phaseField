@@ -29,9 +29,9 @@ main(int argc, char *argv[])
    *   c - The concentration.
    *
    * The first three equations are explicit with U and phi evolving with a forward Euler
-   * time integration scheme. The interesting particle of the equation is xi, which we use
-   * to make the evaluation of phi easier. This auxiliary field, xi, has no initial
-   * condition and is only used to evolve the order parameter.
+   * time integration scheme. The interesting part of the equation is xi, which we use to
+   * make the evaluation of phi easier. This auxiliary field, xi, has no initial condition
+   * and is only used to evolve the order parameter.
    *
    * The last field is the concentration, which we only need for postprocessing.
    */

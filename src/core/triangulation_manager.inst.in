@@ -1,4 +1,4 @@
-for ( dimension : SPACE_DIMENSIONS)
+for (dimension : SPACE_DIMENSIONS)
   {
     template class TriangulationManager<dimension>;
   }
