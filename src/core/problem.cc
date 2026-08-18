@@ -102,10 +102,10 @@ namespace
     return std::any_of(solve_blocks.begin(),
                        solve_blocks.end(),
                        [](const SolveBlock &solve_block)
-                         {
-                           return solve_block.linear_solver_parameters.preconditioner ==
-                                  GMG;
-                         });
+                       {
+                         return solve_block.linear_solver_parameters.preconditioner ==
+                                GMG;
+                       });
   }
 
   template <unsigned int dim, unsigned int degree, typename number>
