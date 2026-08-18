@@ -19,6 +19,8 @@ void
 MFOperator<dim, degree, number>::compute_operator(BlockVector<number>       &dst,
                                                   const BlockVector<number> &src) const
 {
+  Timer::Scope scope("Compute Operator");
+
   data->cell_loop(&MFOperator::compute_local_operator, this, dst, src, true);
   if (scale_by_diagonal)
     {

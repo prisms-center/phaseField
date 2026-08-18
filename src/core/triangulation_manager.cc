@@ -29,6 +29,7 @@ TriangulationManager<1U>::TriangulationManager()
       TriangulationManager<1U>::Triangulation::limit_level_difference_at_vertices)
 {}
 
+// TODO: This should on construct multigrid when necessary
 template <unsigned int dim>
 TriangulationManager<dim>::TriangulationManager()
   : triangulation(MPI_COMM_WORLD,

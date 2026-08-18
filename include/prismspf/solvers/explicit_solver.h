@@ -62,6 +62,8 @@ public:
   void
   solve_impl() override
   {
+    Timer::Scope scope("Explicit Solver");
+
     // Zero out the ghosts
     solutions.zero_out_ghosts();
 

@@ -430,22 +430,25 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   constraint_manager.update_time_dependent_constraints(field_attributes);
 
   // Solve a single increment
-  for (auto &solver : solvers)
-    {
-      SolveTiming solve_timing = solver->get_solve_block().solve_timing;
-      if ((solve_timing == PostProcess && !is_output_increment) ||
-          (solve_timing == NucleationRate &&
-           !(is_nucleation_increment || is_output_increment)))
-        {
-          continue;
-        }
-      solve_context.get_pde_operator().pre_solve_block(solve_context,
-                                                       solver->get_solve_block().id);
-      solver->solve();
-      solver->update_ghosts();
-      solve_context.get_pde_operator().post_solve_block(solve_context,
-                                                        solver->get_solve_block().id);
-    }
+  {
+    Timer::Scope solve_scope("Solve Blocks");
+    for (auto &solver : solvers)
+      {
+        SolveTiming solve_timing = solver->get_solve_block().solve_timing;
+        if ((solve_timing == PostProcess && !is_output_increment) ||
+            (solve_timing == NucleationRate &&
+             !(is_nucleation_increment || is_output_increment)))
+          {
+            continue;
+          }
+        solve_context.get_pde_operator().pre_solve_block(solve_context,
+                                                         solver->get_solve_block().id);
+        solver->solve();
+        solver->update_ghosts();
+        solve_context.get_pde_operator().post_solve_block(solve_context,
+                                                          solver->get_solve_block().id);
+      }
+  }
 
   // Check for NaN. This isn't an exhaustive search. Just a quick check on specific
   // values.
@@ -491,7 +494,6 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
            (user_inputs.spatial_discretization.should_refine_mesh(increment) ||
             any_nucleation_occurred))
     {
-      // TODO: Add logger here or in the function
       // Perform grid refinement
       grid_refiner.do_adaptive_refinement(solvers);
     }

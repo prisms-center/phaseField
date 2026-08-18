@@ -304,6 +304,8 @@ public:
   void
   solve_impl() override
   {
+    Timer::Scope scope("Linear Solver");
+
     // Zero out the ghosts
     solutions.zero_out_ghosts();
 

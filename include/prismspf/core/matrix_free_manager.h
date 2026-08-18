@@ -144,8 +144,7 @@ MatrixFreeManager<dim, number>::reinit(
     shared_matrix_free.reinit(SystemWide<dim, degree>::mapping,
                               dof_manager.get_field_dof_handlers(),
                               constraint_manager.get_field_constraints(),
-                              dealii::QGaussLobatto<1>(degree + 1),
-                              // should dim really be 1?
+                              SystemWide<dim, degree>::quadrature_matrix_free,
                               additional_data);
 
     // Reinit generic MatrixFree
@@ -154,8 +153,7 @@ MatrixFreeManager<dim, number>::reinit(
                                  {&generic_dof_handlers[0], &generic_dof_handlers[1]}),
                                std::vector<const dealii::AffineConstraints<number> *>(
                                  {&generic_constraints[0], &generic_constraints[1]}),
-                               dealii::QGaussLobatto<1>(degree +
-                                                        1)); // should dim really be 1?
+                               SystemWide<dim, degree>::quadrature_matrix_free);
   }
   const unsigned int num_levels = dof_manager.has_mg() ? dof_manager.num_levels() : 0;
   shared_matrix_free_levels.resize(num_levels);
@@ -176,12 +174,12 @@ MatrixFreeManager<dim, number>::reinit(
       shared_additional_data.mg_level       = level;
 
       // Reinit shared MatrixFree
-      shared_mg_matrix_free.reinit(
-        SystemWide<dim, degree>::mapping,
-        dof_manager.get_field_dof_handlers(),
-        constraint_manager.get_mg_field_constraints(relative_level),
-        dealii::QGaussLobatto<1>(degree + 1), // should dim really be 1?
-        shared_additional_data);
+      shared_mg_matrix_free.reinit(SystemWide<dim, degree>::mapping,
+                                   dof_manager.get_field_dof_handlers(),
+                                   constraint_manager.get_mg_field_constraints(
+                                     relative_level),
+                                   SystemWide<dim, degree>::quadrature_matrix_free,
+                                   shared_additional_data);
 
       AdditionalData generic_additional_data;
       generic_additional_data.mg_level = level;
@@ -193,7 +191,7 @@ MatrixFreeManager<dim, number>::reinit(
           {&generic_dof_handlers[0], &generic_dof_handlers[1]}),
         std::vector<const dealii::AffineConstraints<number> *>(
           {&generic_constraints[0], &generic_constraints[1]}),
-        dealii::QGaussLobatto<1>(degree + 1), // should dim really be 1?
+        SystemWide<dim, degree>::quadrature_matrix_free,
         generic_additional_data);
     }
 }

@@ -12,6 +12,7 @@ set(
   solution_indexer.cc
   solution_output.cc
   triangulation_manager.cc
+  refinement_manager.cc
 )
 
 set(
@@ -58,6 +59,7 @@ set(
   solution_indexer
   solution_output
   triangulation_manager
+  refinement_manager
 )
 
 prisms_pf_target_sources(
