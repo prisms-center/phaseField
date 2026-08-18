@@ -11,9 +11,7 @@ repos:
     args: [--maxkb=8192]
   - id: check-merge-conflict
   - id: end-of-file-fixer
-    exclude: ^contrib/catch/
   - id: trailing-whitespace
-    exclude: ^contrib/catch/
   - id: check-json
   - id: pretty-format-json
     args: [--autofix]
@@ -26,7 +24,6 @@ repos:
   hooks:
   - id: codespell
     args: [--config=.codespellrc]
-    exclude: ^contrib/catch/
 # Python formatting and linting tools
 - repo: https://github.com/psf/black
   rev: 25.9.0
@@ -59,5 +56,5 @@ repos:
   rev:  v18.1.8
   hooks:
   - id: clang-format
-    types_or: [c++, c, cuda]
-    exclude: ^contrib/catch/
+    types: [file]
+    files: \.(c|cc|cpp|cxx|h|hh|hpp|hxx)(\.in)?$
