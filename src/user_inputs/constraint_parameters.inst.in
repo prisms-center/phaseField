@@ -1,5 +1,6 @@
-for ( dimension : SPACE_DIMENSIONS)
+for (dimension : SPACE_DIMENSIONS)
   {
-    template void BoundaryParameters::assign<dimension>(dealii::ParameterHandler &parameter_handler,
-                                                        unsigned int              n_subsections);
+    template void BoundaryParameters::assign<dimension>(dealii::ParameterHandler &
+                                                          parameter_handler,
+                                                        unsigned int n_subsections);
   }

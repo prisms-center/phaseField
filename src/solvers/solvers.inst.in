@@ -1,4 +1,4 @@
-for ( dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE; number : REAL_SCALARS)
+for (dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE; number : REAL_SCALARS)
   {
     template class ExplicitSolver<dimension, degree, number>;
     template class LinearSolver<dimension, degree, number>;
