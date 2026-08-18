@@ -13,7 +13,7 @@ var searchData=
   ['field_5fconstraints_10',['field_constraints',['../classConstraintManager.html#a54e7716b7fee938bedbf6f15ccd18bb2',1,'ConstraintManager']]],
   ['field_5fdof_5fhandlers_11',['field_dof_handlers',['../classDoFManager.html#ae13a180e53c555043c568fce67adaae1',1,'DoFManager']]],
   ['field_5findex_12',['field_index',['../structFieldContainer_1_1FEEValuationDeps.html#aeecdb731afbdc7f5cd4e5d6c3af704b0',1,'FieldContainer::FEEValuationDeps::field_index'],['../structNucleus.html#a9896d837664d2ab8dc582fddb0a1bdc6',1,'Nucleus::field_index']]],
-  ['field_5findices_13',['field_indices',['../classSolveBlock.html#aed4db27b24952789059c00d833b912d6',1,'SolveBlock']]],
+  ['field_5findices_13',['field_indices',['../classRefinementManager.html#a553eb49a6babd7a55f65d02556edc981',1,'RefinementManager::field_indices'],['../classSolveBlock.html#aed4db27b24952789059c00d833b912d6',1,'SolveBlock::field_indices']]],
   ['field_5fname_14',['field_name',['../classReadInitialCondition.html#a8352d51254e7ae6ab607caf1f8465ff6',1,'ReadInitialCondition']]],
   ['field_5fto_5fblock_5findex_15',['field_to_block_index',['../classMFOperator.html#a873ceac7004d746546ec1cdce179bc5a',1,'MFOperator']]],
   ['field_5ftype_16',['field_type',['../structFieldAttributes.html#a3cae2a412a6282457907b0a082152c1f',1,'FieldAttributes::field_type'],['../classInitialCondition.html#a9165859f7fd0210eed4ae01a05f58a38',1,'InitialCondition::field_type'],['../classReadInitialCondition.html#a1892ba69c530805bf4f25bd410d19770',1,'ReadInitialCondition::field_type']]],

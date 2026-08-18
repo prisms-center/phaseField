@@ -1,11 +1,14 @@
 var NAVTREEINDEX6 =
 {
+"temporal__discretization_8cc.html":[9,0,2,2,6],
+"temporal__discretization_8h.html":[9,0,1,0,5,7],
+"temporal__discretization_8h_source.html":[9,0,1,0,5,7],
 "terminal_8h.html":[9,0,1,0,6,5],
 "terminal_8h_source.html":[9,0,1,0,6,5],
 "timer_8cc.html":[9,0,2,3,2],
 "timer_8h.html":[9,0,1,0,6,6],
 "timer_8h_source.html":[9,0,1,0,6,6],
-"triangulation__manager_8cc.html":[9,0,2,0,10],
+"triangulation__manager_8cc.html":[9,0,2,0,11],
 "triangulation__manager_8h.html":[9,0,1,0,0,24],
 "triangulation__manager_8h_source.html":[9,0,1,0,0,24],
 "tutorial.html":[2],

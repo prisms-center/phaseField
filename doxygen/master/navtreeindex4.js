@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"index.html":[],
+"index.html":[0],
 "initial__conditions_8cc.html":[9,0,2,0,5],
 "initial__conditions_8h.html":[9,0,1,0,0,11],
 "initial__conditions_8h_source.html":[9,0,1,0,0,11],
@@ -139,14 +141,15 @@ var NAVTREEINDEX4 =
 "read__field__factory_8h_source.html":[9,0,1,0,1,2],
 "read__vtk_8h.html":[9,0,1,0,1,3],
 "read__vtk_8h_source.html":[9,0,1,0,1,3],
+"refinement__manager_8cc.html":[9,0,2,0,8],
 "refinement__manager_8h.html":[9,0,1,0,0,18],
 "refinement__manager_8h_source.html":[9,0,1,0,0,18],
 "simulation__timer_8h.html":[9,0,1,0,0,19],
 "simulation__timer_8h_source.html":[9,0,1,0,0,19],
-"solution__indexer_8cc.html":[9,0,2,0,8],
+"solution__indexer_8cc.html":[9,0,2,0,9],
 "solution__indexer_8h.html":[9,0,1,0,0,20],
 "solution__indexer_8h_source.html":[9,0,1,0,0,20],
-"solution__output_8cc.html":[9,0,2,0,9],
+"solution__output_8cc.html":[9,0,2,0,10],
 "solution__output_8h.html":[9,0,1,0,0,21],
 "solution__output_8h_source.html":[9,0,1,0,0,21],
 "solve__block_8h.html":[9,0,1,0,0,22],
@@ -246,8 +249,5 @@ var NAVTREEINDEX4 =
 "structFieldOutputParameters.html#a5d4e031f57f41cae9ca85db1d03d190b":[8,0,17,10],
 "structFieldOutputParameters.html#a62fd3787a0258084f4f7918fdad33010":[8,0,17,5],
 "structFieldOutputParameters.html#a790dfd0971a786b02cadf8f1e2d02f31":[8,0,17,8],
-"structFieldOutputParameters.html#a8225b592329259dca28cdd12bc09466e":[8,0,17,1],
-"structFieldOutputParameters.html#a89f949ef0eca4dc1c193651951fcdcc6":[8,0,17,9],
-"structFieldOutputParameters.html#add2e6f8dfeda22bf47b79206f1b75566":[8,0,17,7],
-"structFieldOutputParameters.html#aeb06d893f288d52bea97b48cb1a09240":[8,0,17,0]
+"structFieldOutputParameters.html#a8225b592329259dca28cdd12bc09466e":[8,0,17,1]
 };

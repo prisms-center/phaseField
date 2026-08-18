@@ -128,7 +128,7 @@ $(function(){initNavTree('classSystemWide.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
-<p>This is the main class that handles the construction and solving of user-specified PDEs.  
+<p>Collection of system-wide shared objects.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="system__wide_8h_source.html">system_wide.h</a>&gt;</code></p>
@@ -136,7 +136,7 @@ $(function(){initNavTree('classSystemWide.html',''); initResizable(true); });
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a17fa96da372ec5f800d469bb35e4d420" id="r_a17fa96da372ec5f800d469bb35e4d420"><td class="memItemLeft" align="right" valign="top">static const std::array&lt; const dealii::FESystem&lt; dim &gt;, 2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17fa96da372ec5f800d469bb35e4d420">fe_systems</a></td></tr>
-<tr class="memdesc:a17fa96da372ec5f800d469bb35e4d420"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scalar and Vector FE systems.  <br /></td></tr>
+<tr class="memdesc:a17fa96da372ec5f800d469bb35e4d420"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scalar and vector FE systems.  <br /></td></tr>
 <tr class="separator:a17fa96da372ec5f800d469bb35e4d420"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c15962471d26784704650c907101fb4" id="r_a8c15962471d26784704650c907101fb4"><td class="memItemLeft" align="right" valign="top">static const dealii::MappingQ1&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c15962471d26784704650c907101fb4">mapping</a></td></tr>
 <tr class="memdesc:a8c15962471d26784704650c907101fb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mappings to and from reference cell.  <br /></td></tr>
@@ -144,10 +144,16 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a821763857a67e0352e7fed53e8bc52a4" id="r_a821763857a67e0352e7fed53e8bc52a4"><td class="memItemLeft" align="right" valign="top">static const dealii::QGaussLobatto&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a821763857a67e0352e7fed53e8bc52a4">quadrature</a></td></tr>
 <tr class="memdesc:a821763857a67e0352e7fed53e8bc52a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quadrature rule.  <br /></td></tr>
 <tr class="separator:a821763857a67e0352e7fed53e8bc52a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a252ac4538dcb3c7633a9dbbda4942380" id="r_a252ac4538dcb3c7633a9dbbda4942380"><td class="memItemLeft" align="right" valign="top">static const dealii::QGaussLobatto&lt; 1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a252ac4538dcb3c7633a9dbbda4942380">quadrature_matrix_free</a></td></tr>
+<tr class="memdesc:a252ac4538dcb3c7633a9dbbda4942380"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quadrature rule for MatrixFree.  <br /></td></tr>
+<tr class="separator:a252ac4538dcb3c7633a9dbbda4942380"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree&gt;<br />
-class SystemWide&lt; dim, degree &gt;</div><p>This is the main class that handles the construction and solving of user-specified PDEs. </p>
+class SystemWide&lt; dim, degree &gt;</div><p>Collection of system-wide shared objects. </p>
+<p>Provides access to objects that are used throughout the application and are expensive to construct or identical for all users of a given template specialization. These objects are stored once per <code>(dim, degree)</code> specialization and reused wherever needed to avoid repeated construction and ensure consistent configuration.</p>
+<p>Typical examples include quadrature rules, mappings, finite elements, and other immutable data structures shared across the code base.</p>
+<p>We also use lazy initializers for the expensive objects that aren't always constructors. </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a17fa96da372ec5f800d469bb35e4d420" name="a17fa96da372ec5f800d469bb35e4d420"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a17fa96da372ec5f800d469bb35e4d420">&#9670;&#160;</a></span>fe_systems</h2>
@@ -174,7 +180,7 @@ template&lt;unsigned int dim, unsigned int degree&gt; </div>
 <div class="line">    dealii::FESystem&lt;dim&gt;(dealii::FE_Q&lt;dim&gt;(dealii::QGaussLobatto&lt;1&gt;(degree + 1)), 1),</div>
 <div class="line">    dealii::FESystem&lt;dim&gt;(dealii::FE_Q&lt;dim&gt;(dealii::QGaussLobatto&lt;1&gt;(degree + 1)), dim)}</div>
 </div><!-- fragment -->
-<p>Scalar and Vector FE systems. </p>
+<p>Scalar and vector FE systems. </p>
 
 </div>
 </div>
@@ -229,6 +235,35 @@ template&lt;unsigned int dim, unsigned int degree&gt; </div>
 <div class="line">    dealii::QGaussLobatto&lt;dim&gt;(degree + 1)</div>
 </div><!-- fragment -->
 <p>Quadrature rule. </p>
+
+</div>
+</div>
+<a id="a252ac4538dcb3c7633a9dbbda4942380" name="a252ac4538dcb3c7633a9dbbda4942380"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a252ac4538dcb3c7633a9dbbda4942380">&#9670;&#160;</a></span>quadrature_matrix_free</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const dealii::QGaussLobatto&lt;1&gt; <a class="el" href="classSystemWide.html">SystemWide</a>&lt; dim, degree &gt;::quadrature_matrix_free</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    dealii::QGaussLobatto&lt;1&gt;(degree + 1)</div>
+</div><!-- fragment -->
+<p>Quadrature rule for MatrixFree. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo</a></b></dt><dd>Figure out why dim = 1 </dd></dl>
 
 </div>
 </div>

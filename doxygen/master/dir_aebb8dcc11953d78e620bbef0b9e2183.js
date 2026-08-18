@@ -8,6 +8,7 @@ var dir_aebb8dcc11953d78e620bbef0b9e2183 =
     [ "initial_conditions.cc", "initial__conditions_8cc.html", null ],
     [ "phase_field_tools.cc", "phase__field__tools_8cc.html", null ],
     [ "problem.cc", "problem_8cc.html", "problem_8cc" ],
+    [ "refinement_manager.cc", "refinement__manager_8cc.html", null ],
     [ "solution_indexer.cc", "solution__indexer_8cc.html", null ],
     [ "solution_output.cc", "solution__output_8cc.html", null ],
     [ "triangulation_manager.cc", "triangulation__manager_8cc.html", null ]

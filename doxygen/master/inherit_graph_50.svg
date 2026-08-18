@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classSystemWide.html" target="_top" xlink:title="This is the main class that handles the construction and solving of user&#45;specified PDEs.">
+<g id="a_Node000000"><a xlink:href="classSystemWide.html" target="_top" xlink:title="Collection of system&#45;wide shared objects.">
 <polygon fill="white" stroke="#666666" points="158.5,-20.75 0,-20.75 0,0 158.5,0 158.5,-20.75"/>
 <text text-anchor="middle" x="79.25" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00">SystemWide&lt; dim, degree &gt;</text>
 </a>
