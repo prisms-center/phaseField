@@ -456,11 +456,11 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
        field_index < solve_context.get_field_attributes().size();
        ++field_index)
     {
-      if (dealii::Utilities::MPI::logical_or(!dealii::numbers::is_finite(
-                                               solve_context.get_solution_indexer()
-                                                 .get_solution_vector(field_index)
-                                                 .local_element(0)),
-                                             MPI_COMM_WORLD))
+      const auto &vec =
+        solve_context.get_solution_indexer().get_solution_vector(field_index);
+      bool not_finite =
+        vec.locally_owned_size() > 0 && !dealii::numbers::is_finite(vec.local_element(0));
+      if (dealii::Utilities::MPI::logical_or(not_finite, MPI_COMM_WORLD))
         {
           exit_status  = 2;
           force_output = true;
