@@ -69,10 +69,10 @@ main(int argc, char *argv[])
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
   Problem<dim, degree, double>   problem(fields,
-                                         solves,
-                                         user_inputs,
-                                         pf_tools,
-                                         pde_operator);
+                                       solves,
+                                       user_inputs,
+                                       pf_tools,
+                                       pde_operator);
   problem.solve();
 
   return 0;
