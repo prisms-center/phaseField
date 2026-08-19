@@ -208,6 +208,7 @@ Private Attributes</h2></td></tr>
 <p>This class manages two static instances of the <a class="el" href="classLogStream.html" title="Logging of data to a given ostream.">LogStream</a> class: one for std::cout one for some log file. Both of these only run on the 0th process.</p>
 <p>We must also consider that certain information is only relevant when certain CMake flags are on (e.g., DEBUG and VERBOSE). This produces a lot of separate ostreams that would have to be managed in the code. Rather than do that, we rely on manipulators to tell us what strings go where and how they should be formatted.</p>
 <dl class="section note"><dt>Note</dt><dd>Indents are only applied when starting on a newline. For now, this is only detected after using <code>std::endl</code>.</dd></dl>
+<p>@warn When using the verbose style do not follow with <code>std::endl</code>. This is handled uniquely by that style so as to not produce extra whitespace.</p>
 <p>Thus, this code here:</p>
 <div class="fragment"></div><!-- fragment --><p>Would produce the following results: </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>

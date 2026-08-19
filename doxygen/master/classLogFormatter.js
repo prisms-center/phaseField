@@ -15,6 +15,7 @@ var classLogFormatter =
       [ "Error", "classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9a902b0d55fddef6f8d651fe1035b7d4bd", null ],
       [ "Success", "classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9a505a83f220c02df2f85c3810cd9ceb38", null ],
       [ "Debug", "classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9aa603905470e2a5b8c13e96b579ef0dba", null ],
+      [ "Verbose", "classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9ad4a9fa383ab700c5bdd6f31cf7df0faf", null ],
       [ "RainbowTessellate", "classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9a9ec811075ec57fddc675e164c108ac27", null ]
     ] ],
     [ "LogFormatter", "classLogFormatter.html#a209df3a2b5df277b9f804751e02fa644", null ],

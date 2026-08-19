@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"classTimer.html#abab11b7f11ebabd0ec136f93c3a7f556":[8,0,69,10],
 "classTimer.html#abc2a3f33c55dca79a3f9ae61c90a42ed":[8,0,69,9],
 "classTimer.html#ae1dc504d4bd75188b95693a4951149fd":[8,0,69,5],
 "classTimer.html#ae6b73141ad1d5029d3782d14d2fd5ff0":[8,0,69,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "grid__refiner__criterion_8h_source.html":[9,0,1,0,0,9],
 "group__solution__handler_8cc.html":[9,0,2,0,4],
 "group__solution__handler_8h.html":[9,0,1,0,0,10],
-"group__solution__handler_8h_source.html":[9,0,1,0,0,10],
-"hierarchy.html":[8,2]
+"group__solution__handler_8h_source.html":[9,0,1,0,0,10]
 };

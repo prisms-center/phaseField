@@ -70,8 +70,9 @@ var NAVTREEINDEX1 =
 "classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9a505a83f220c02df2f85c3810cd9ceb38":[8,0,26,2,4],
 "classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9a902b0d55fddef6f8d651fe1035b7d4bd":[8,0,26,2,3],
 "classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9a960b44c579bc2f6818d2daaf9e4c16f0":[8,0,26,2,0],
-"classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9a9ec811075ec57fddc675e164c108ac27":[8,0,26,2,6],
+"classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9a9ec811075ec57fddc675e164c108ac27":[8,0,26,2,7],
 "classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9aa603905470e2a5b8c13e96b579ef0dba":[8,0,26,2,5],
+"classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9ad4a9fa383ab700c5bdd6f31cf7df0faf":[8,0,26,2,6],
 "classLogFormatter.html#a209df3a2b5df277b9f804751e02fa644":[8,0,26,3],
 "classLogFormatter.html#a3538231e70c03cd62e1eaa1c7cdd3968":[8,0,26,14],
 "classLogFormatter.html#a37bdc632f9b6fb2a68aa6aa077a3ba70":[8,0,26,16],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "classParseCMDOptions.html":[8,0,44],
 "classParseCMDOptions.html#a3d2f1008a3904204187e6154f82cd58e":[8,0,44,5],
 "classParseCMDOptions.html#a72272eecf6968274b337df70029798b4":[8,0,44,0],
-"classParseCMDOptions.html#a9d4bc9cdc4b80bf2a414da900649ff53":[8,0,44,2],
-"classParseCMDOptions.html#abf92da04daffe8af607348588d8d3a56":[8,0,44,4]
+"classParseCMDOptions.html#a9d4bc9cdc4b80bf2a414da900649ff53":[8,0,44,2]
 };
