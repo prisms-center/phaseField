@@ -76,13 +76,17 @@ enum StressState
    */
   ThreeDimension,
   /**
-   * Assumes the body is very thick or infinitely long. Strain components in the
-   * out-of-plane direction are zero: epsilon_z = gamma_xz = gamma_yz = 0.
+   * Assumes the body is very thick or infinitely long. Total strain components in
+   * the out-of-plane direction are zero: epsilon^t_zz = gamma^t_xz = gamma^t_yz = 0. The
+   * elastic epsilon_zz component may be nonzero in the presence of eigenstrain. In the
+   * restricted representation (4x4 stiffness), the xz and yz elastic shear components are
+   * assumed to be zero. This may not be true for general anisotropy and general 3D
+   * eigenstrain with out-of-plane shear components.
    */
   PlaneStrain,
   /**
    * Assumes the body is very thin. Stress components associated with the out-of-plane
-   * direction are zero: sigma_z = tau_xz = tau_yz = 0.
+   * direction are zero: sigma_zz = sigma_xz = simga_yz = 0.
    */
   PlaneStress,
 };
