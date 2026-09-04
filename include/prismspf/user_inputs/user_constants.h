@@ -447,7 +447,7 @@ UserConstants<dim>::construct_user_constant(
       const std::string &elastic_const_symmetry = model_constants_type_strings.at(0);
 
       // get the stress state for the 2D case
-      StressState stress_state = StressState::ThreeDimension;
+      StressState stress_state = StressState::ThreeDimensional;
       if (dim == 2)
         {
           if (model_constants_type_strings.size() == 4)
