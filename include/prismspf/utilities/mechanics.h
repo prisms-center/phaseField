@@ -24,9 +24,10 @@ namespace Mechanics
    */
   template <unsigned int dim, StressState state>
   inline constexpr bool valid_stress_state =
-    (dim == 1 && state == ThreeDimensional) ||
-    (dim == 2 && (state == PlaneStress || state == PlaneStrain)) ||
-    (dim == 3 && state == ThreeDimensional);
+    (dim == 1 && state == StressState::ThreeDimensional) ||
+    (dim == 2 &&
+     (state == StressState::PlaneStress || state == StressState::PlaneStrain)) ||
+    (dim == 3 && state == StressState::ThreeDimensional);
 
   /**
    * @brief Voigt notation index range.
@@ -34,11 +35,11 @@ namespace Mechanics
    *
    * get_voigt_size<1>();              // ThreeDimensional, returns 1
    * get_voigt_size<3>();              // ThreeDimensional, returns 6
-   * get_voigt_size<2, PlaneStress>(); // returns 3
-   * get_voigt_size<2, PlaneStrain>(); // returns 4
+   * get_voigt_size<2, StressState::PlaneStress>(); // returns 3
+   * get_voigt_size<2, StressState::PlaneStrain>(); // returns 4
    * get_voigt_size<2>();              // this is invalid
    */
-  template <unsigned int dim, StressState state = ThreeDimensional>
+  template <unsigned int dim, StressState state = StressState::ThreeDimensional>
   constexpr unsigned int
   get_voigt_size()
   {
@@ -49,9 +50,9 @@ namespace Mechanics
 
     if constexpr (dim == 1)
       return 1;
-    else if constexpr (dim == 2 && state == PlaneStress)
+    else if constexpr (dim == 2 && state == StressState::PlaneStress)
       return 3;
-    else if constexpr (dim == 2 && state == PlaneStrain)
+    else if constexpr (dim == 2 && state == StressState::PlaneStrain)
       return 4;
     else
       return 6;
@@ -61,8 +62,10 @@ namespace Mechanics
    * @brief Strain tensor to Voigt notation.
    * 1D, 2D Plane Stress, 3D.
    */
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T = double>
-  requires(state != PlaneStrain || dim != 2)
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T         = double>
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
   strain_to_voigt(const dealii::Tensor<2, dim, T>                    &tensor,
                   dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt)
@@ -98,8 +101,10 @@ namespace Mechanics
    * 1D, 2D Plane Stress, 3D.
    * Overload: Return value
    */
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T = double>
-  requires(state != PlaneStrain || dim != 2)
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T         = double>
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, get_voigt_size<dim, state>(), T>
   strain_to_voigt(const dealii::Tensor<2, dim, T> &tensor)
   {
@@ -138,8 +143,10 @@ namespace Mechanics
    * 1D, 2D Plane Stress, 3D.
    * Overload: Tensor input is a symmetric tensor.
    */
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T = double>
-  requires(state != PlaneStrain || dim != 2)
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T         = double>
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
   strain_to_voigt(const dealii::SymmetricTensor<2, dim, T>           &tensor,
                   dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt)
@@ -176,8 +183,10 @@ namespace Mechanics
    * Overload: Tensor input is a symmetric tensor.
    * Overload: Return value.
    */
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T = double>
-  requires(state != PlaneStrain || dim != 2)
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T         = double>
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, get_voigt_size<dim, state>(), T>
   strain_to_voigt(const dealii::SymmetricTensor<2, dim, T> &tensor)
   {
@@ -216,7 +225,7 @@ namespace Mechanics
    * Overload for 2D Plane Strain
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE void
   strain_to_voigt(const dealii::Tensor<2, dim, T> &tensor_inplane,
                   const T                         &component_zz,
@@ -235,7 +244,7 @@ namespace Mechanics
    * Overload: Return value
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, 4, T>
   strain_to_voigt(const dealii::Tensor<2, dim, T> &tensor_inplane, const T &component_zz)
   {
@@ -256,7 +265,7 @@ namespace Mechanics
    * Overload: Tensor input is a symmetric tensor.
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE void
   strain_to_voigt(const dealii::SymmetricTensor<2, dim, T> &tensor_inplane,
                   const T                                  &component_zz,
@@ -276,7 +285,7 @@ namespace Mechanics
    * Overload: Return value
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, 4, T>
   strain_to_voigt(const dealii::SymmetricTensor<2, dim, T> &tensor_inplane,
                   const T                                  &component_zz)
@@ -296,8 +305,10 @@ namespace Mechanics
    * @brief Voigt notation to Strain tensor.
    * 1D, 2D Plane Stress, 3D.
    */
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T = double>
-  requires(state != PlaneStrain || dim != 2)
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T         = double>
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
   voigt_to_strain(const dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt,
                   dealii::Tensor<2, dim, T>                                &tensor)
@@ -332,8 +343,10 @@ namespace Mechanics
    * 1D, 2D Plane Stress, 3D.
    * Overload: Tensor output is a symmetric tensor.
    */
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T = double>
-  requires(state != PlaneStrain || dim != 2)
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T         = double>
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
   voigt_to_strain(const dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt,
                   dealii::SymmetricTensor<2, dim, T>                       &tensor)
@@ -368,8 +381,10 @@ namespace Mechanics
    * 1D, 2D Plane Stress, 3D.
    * Overload: Return value, always return a symmetric tensor.
    */
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T = double>
-  requires(state != PlaneStrain || dim != 2)
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T         = double>
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE dealii::SymmetricTensor<2, dim, T>
   voigt_to_strain(const dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt)
   {
@@ -407,7 +422,7 @@ namespace Mechanics
    * Overload for 2D Plane Strain
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE void
   voigt_to_strain(const dealii::Tensor<1, 4, T> &voigt,
                   dealii::Tensor<2, dim, T>     &tensor_inplane,
@@ -426,7 +441,7 @@ namespace Mechanics
    * Overload: Tensor output is a symmetric tensor.
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE void
   voigt_to_strain(const dealii::Tensor<1, 4, T>      &voigt,
                   dealii::SymmetricTensor<2, dim, T> &tensor_inplane,
@@ -445,7 +460,7 @@ namespace Mechanics
    * Overload: Return value, always return a symmetric tensor.
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE std::pair<dealii::SymmetricTensor<2, dim, T>, T>
                                voigt_to_strain(const dealii::Tensor<1, 4, T> &voigt)
   {
@@ -464,8 +479,10 @@ namespace Mechanics
    * @brief Stress tensor to Voigt notation.
    * 1D, 2D Plane Stress, 3D.
    */
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T>
-  requires(state != PlaneStrain || dim != 2)
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T>
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
   stress_to_voigt(const dealii::Tensor<2, dim, T>                    &tensor,
                   dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt)
@@ -501,8 +518,10 @@ namespace Mechanics
    * 1D, 2D Plane Stress, 3D.
    * Overload: Return value.
    */
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T>
-  requires(state != PlaneStrain || dim != 2)
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T>
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, get_voigt_size<dim, state>(), T>
   stress_to_voigt(const dealii::Tensor<2, dim, T> &tensor)
   {
@@ -541,8 +560,10 @@ namespace Mechanics
    * 1D, 2D Plane Stress, 3D.
    * Overload: Tensor input is a symmetric tensor.
    */
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T>
-  requires(state != PlaneStrain || dim != 2)
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T>
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
   stress_to_voigt(const dealii::SymmetricTensor<2, dim, T>           &tensor,
                   dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt)
@@ -579,8 +600,10 @@ namespace Mechanics
    * Overload: Tensor input is a symmetric tensor.
    * Overload: Return value.
    */
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T>
-  requires(state != PlaneStrain || dim != 2)
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T>
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, get_voigt_size<dim, state>(), T>
   stress_to_voigt(const dealii::SymmetricTensor<2, dim, T> &tensor)
   {
@@ -619,7 +642,7 @@ namespace Mechanics
    * Overload for 2D Plane Strain
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE void
   stress_to_voigt(const dealii::Tensor<2, dim, T> &tensor_inplane,
                   const T                         &component_zz,
@@ -638,7 +661,7 @@ namespace Mechanics
    * Overload: Return value
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, 4, T>
   stress_to_voigt(const dealii::Tensor<2, dim, T> &tensor_inplane, const T &component_zz)
   {
@@ -659,7 +682,7 @@ namespace Mechanics
    * Overload: Tensor input is a symmetric tensor.
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE void
   stress_to_voigt(const dealii::SymmetricTensor<2, dim, T> &tensor_inplane,
                   const T                                  &component_zz,
@@ -679,7 +702,7 @@ namespace Mechanics
    * Overload: Return value
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, 4, T>
   stress_to_voigt(const dealii::SymmetricTensor<2, dim, T> &tensor_inplane,
                   const T                                  &component_zz)
@@ -699,8 +722,10 @@ namespace Mechanics
    * @brief Voigt notation to Stress tensor.
    * 1D, 2D Plane Stress, 3D.
    */
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T = double>
-  requires(state != PlaneStrain || dim != 2)
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T         = double>
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
   voigt_to_stress(const dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt,
                   dealii::Tensor<2, dim, T>                                &tensor)
@@ -735,8 +760,10 @@ namespace Mechanics
    * 1D, 2D Plane Stress, 3D.
    * Overload: Tensor output is a symmetric tensor.
    */
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T = double>
-  requires(state != PlaneStrain || dim != 2)
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T         = double>
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
   voigt_to_stress(const dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt,
                   dealii::SymmetricTensor<2, dim, T>                       &tensor)
@@ -771,8 +798,10 @@ namespace Mechanics
    * 1D, 2D Plane Stress, 3D.
    * Overload: Return value, always return a symmetric tensor.
    */
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T = double>
-  requires(state != PlaneStrain || dim != 2)
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T         = double>
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE dealii::SymmetricTensor<2, dim, T>
   voigt_to_stress(const dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt)
   {
@@ -810,7 +839,7 @@ namespace Mechanics
    * Overload for 2D Plane Strain
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE void
   voigt_to_stress(const dealii::Tensor<1, 4, T> &voigt,
                   dealii::Tensor<2, dim, T>     &tensor_inplane,
@@ -829,7 +858,7 @@ namespace Mechanics
    * Overload: Tensor output is a symmetric tensor.
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE void
   voigt_to_stress(const dealii::Tensor<1, 4, T>      &voigt,
                   dealii::SymmetricTensor<2, dim, T> &tensor_inplane,
@@ -848,7 +877,7 @@ namespace Mechanics
    * Overload: Return value, always return a symmetric tensor.
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE std::pair<dealii::SymmetricTensor<2, dim, T>, T>
                                voigt_to_stress(const dealii::Tensor<1, 4, T> &voigt)
   {
@@ -867,7 +896,9 @@ namespace Mechanics
    * @brief Isotropic stiffness matrix.
    */
   // TODO: should we use DEAL_II_ALWAYS_INLINE
-  template <unsigned int dim, StressState state = ThreeDimensional, typename T = double>
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T         = double>
   inline DEAL_II_ALWAYS_INLINE dealii::Tensor<2, get_voigt_size<dim, state>(), T>
                                stiffness_isotropic(const T E, const T nu)
   {
@@ -889,7 +920,7 @@ namespace Mechanics
       {
         const T G = E / (2.0 * (1.0 + nu));
 
-        if constexpr (state == PlaneStress)
+        if constexpr (state == StressState::PlaneStress)
           {
             // 11, 22, 12
             const T lambda  = (nu * E) / (1.0 - nu * nu);
@@ -897,7 +928,7 @@ namespace Mechanics
             stiffness[0][1] = stiffness[1][0] = lambda;
             stiffness[2][2]                   = G;
           }
-        else if constexpr (state == PlaneStrain)
+        else if constexpr (state == StressState::PlaneStrain)
           {
             // TODO: Warning for parameer close to incompressible
 
@@ -1199,7 +1230,7 @@ namespace Mechanics
    * @note This function internally converts to Voigt notation.
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state != PlaneStrain || dim != 2)
+  requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
   compute_stress(
     const dealii::Tensor<2, get_voigt_size<dim, state>(), T> &elasticity_tensor,
@@ -1224,7 +1255,7 @@ namespace Mechanics
    * @note This function internally converts to Voigt notation.
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE void
   compute_stress(const dealii::Tensor<2, 4, T>   &elasticity_tensor,
                  const dealii::Tensor<2, dim, T> &strain,
@@ -1249,7 +1280,7 @@ namespace Mechanics
    * @note This function internally converts to Voigt notation.
    */
   template <unsigned int dim, StressState state, typename T>
-  requires(state == PlaneStrain && dim == 2)
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE void
   compute_stress(const dealii::Tensor<2, 4, T>   &elasticity_tensor,
                  const dealii::Tensor<2, dim, T> &strain,
