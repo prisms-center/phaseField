@@ -74,7 +74,7 @@ enum StressState
   /**
    * General 3D stress state.
    */
-  ThreeDimension,
+  ThreeDimensional,
   /**
    * Assumes the body is very thick or infinitely long. Total strain components in
    * the out-of-plane direction are zero: epsilon^t_zz = gamma^t_xz = gamma^t_yz = 0. The
