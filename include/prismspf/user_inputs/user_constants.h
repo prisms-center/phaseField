@@ -495,8 +495,8 @@ UserConstants<dim>::construct_user_constant(
             }
           else if (model_constants_type_strings.size() == 3)
             {
-              // Default to plane strain if nothing is specified
-              stress_state = StressState::PlaneStrain;
+              // Default to plane stress if nothing is specified
+              stress_state = StressState::PlaneStress;
             }
           else
             {
