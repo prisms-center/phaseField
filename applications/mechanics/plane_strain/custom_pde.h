@@ -68,6 +68,25 @@ private:
       {
         variable_list.set_value_term(0, VectorValue());
       }
+    else if (solve_block_id == 2) // post-processing
+      {
+        VectorGrad strain =
+          variable_list.template get_symmetric_gradient<Vector, Current>(0);
+        VectorGrad  stress {};
+        ScalarValue stress_zz {};
+        Mechanics::compute_stress<dim, StressState::PlaneStrain, ScalarValue>(stiffness,
+                                                                              strain,
+                                                                              stress,
+                                                                              stress_zz);
+
+        variable_list.set_value_term(1, strain[0][0]);
+        variable_list.set_value_term(2, strain[1][1]);
+        variable_list.set_value_term(3, 2.0 * strain[0][1]);
+        variable_list.set_value_term(4, stress[0][0]);
+        variable_list.set_value_term(5, stress[1][1]);
+        variable_list.set_value_term(6, stress[0][1]);
+        variable_list.set_value_term(7, stress_zz);
+      }
   }
 
   void
@@ -78,16 +97,17 @@ private:
     if (solve_block_id == 1) // linear lhs
       {
         VectorGrad strain = variable_list.template get_symmetric_gradient<Vector, LHS>(0);
-        VectorGrad stress;
-        ScalarValue stress_zz;
+        VectorGrad stress {};
+        ScalarValue stress_zz {};
         // if strain_zz = 0
         Mechanics::compute_stress<dim, StressState::PlaneStrain, ScalarValue>(stiffness,
                                                                               strain,
                                                                               stress,
                                                                               stress_zz);
-        // otherwise
+        // if strain_zz is not 0
         //  Mechanics::compute_stress<dim, StressState::PlaneStrain,
         //  ScalarValue>(stiffness, strain, strain_zz, stress, stress_zz);
+
         variable_list.set_gradient_term(0, stress);
       }
   }
