@@ -109,6 +109,10 @@ public:
   [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
   get_elasticity_tensor(const std::string &constant_name) const;
 
+  // Plane strain
+  [[nodiscard]] dealii::Tensor<2, 4>
+  get_elasticity_tensor_plane_strain(const std::string &constant_name) const;
+
   /**
    * @brief Add user-specified constants
    */
@@ -306,6 +310,20 @@ UserConstants<dim>::get_elasticity_tensor(const std::string &constant_name) cons
 
   return boost::get<dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>>(
     model_constants.at(constant_name));
+}
+
+template <unsigned int dim>
+inline dealii::Tensor<2, 4>
+UserConstants<dim>::get_elasticity_tensor_plane_strain(
+  const std::string &constant_name) const
+{
+  Assert(model_constants.find(constant_name) != model_constants.end(),
+         dealii::ExcMessage(
+           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
+           "that you attempted to access was " +
+           constant_name + "."));
+
+  return boost::get<dealii::Tensor<2, 4>>(model_constants.at(constant_name));
 }
 
 template <unsigned int dim>
