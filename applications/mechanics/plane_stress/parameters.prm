@@ -1,0 +1,29 @@
+set mesh type = rectangular
+
+subsection Rectangular mesh
+  set x size = 100.0
+  set y size = 100.0
+  set z size = 100.0
+end
+
+set global refinement = 2
+
+subsection linear solver parameters: 0
+  set solver_ids               = 1
+
+  set max iterations           = 10000
+  set tolerance type           = RMSEPerField
+  set tolerance value          = 1e-10
+end
+
+subsection boundary conditions: 0
+  set variables = u:x
+  set conditions = Dirichlet, Dirichlet, Natural, Natural
+end
+
+subsection boundary conditions: 1
+  set variables = u:y
+  set conditions = Natural, Natural, Dirichlet, Dirichlet
+end
+
+set Model constant stiffness = (1.0,0.25), isotropic elastic constants
