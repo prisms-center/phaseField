@@ -92,7 +92,7 @@ private:
     if (solve_block_id == 1) // linear lhs
       {
         VectorGrad strain = variable_list.template get_symmetric_gradient<Vector, LHS>(0);
-        VectorGrad stress;
+        VectorGrad stress {};
         Mechanics::compute_stress<dim, StressState::PlaneStress, ScalarValue>(stiffness,
                                                                               strain,
                                                                               stress);
