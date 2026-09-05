@@ -75,14 +75,17 @@ private:
   {
     if (solve_block_id == 1) // linear lhs
       {
-        VectorGrad ux = variable_list.template get_symmetric_gradient<Vector, LHS>(0);
+        VectorGrad strain = variable_list.template get_symmetric_gradient<Vector, LHS>(0);
         VectorGrad stress;
-        Mechanics::compute_stress<dim, StressState::PlaneStress, ScalarValue>(stiffness, ux, stress);
+        Mechanics::compute_stress<dim, StressState::PlaneStress, ScalarValue>(stiffness,
+                                                                              strain,
+                                                                              stress);
         variable_list.set_gradient_term(0, stress);
       }
   }
 
-  dealii::Tensor<2, Mechanics::get_voigt_size<dim, StressState::PlaneStress>(), number> stiffness;
+  dealii::Tensor<2, Mechanics::get_voigt_size<dim, StressState::PlaneStress>(), number>
+    stiffness;
 };
 
 PRISMS_PF_END_NAMESPACE
