@@ -19,6 +19,24 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 namespace Mechanics
 {
+  template <typename T>
+  using PlaneStressStiffness = dealii::Tensor<2, 3, T>;
+
+  template <typename T>
+  using PlaneStrainStiffness = dealii::Tensor<2, 4, T>;
+
+  template <typename T>
+  using ThreeDimensionalStiffness = dealii::Tensor<2, 6, T>;
+
+  template <typename T>
+  using PlaneStressVector = dealii::Tensor<1, 3, T>;
+
+  template <typename T>
+  using PlaneStrainVector = dealii::Tensor<1, 4, T>;
+
+  template <typename T>
+  using ThreeDimensionalVector = dealii::Tensor<1, 6, T>;
+
   /**
    * @brief Validate supported combinations (compile time).
    */
@@ -902,10 +920,10 @@ namespace Mechanics
   inline dealii::Tensor<2, get_voigt_size<dim, state>(), T>
   stiffness_isotropic(const T E, const T nu)
   {
-    AssertThrow(E > 0,
+    AssertThrow(E > T(0.0),
                 dealii::ExcMessage("Invalid isotropic elastic constants: "
                                    "Young's modulus E must be positive."));
-    AssertThrow(nu > -1.0 && nu < 0.5,
+    AssertThrow(nu > T(-1.0) && nu < T(0.5),
                 dealii::ExcMessage("Invalid isotropic elastic constants: "
                                    "Poisson's ratio must be in range -1 < nu < 0.5"));
 
@@ -918,13 +936,13 @@ namespace Mechanics
       }
     else if constexpr (dim == 2)
       {
-        const T G = E / (2.0 * (1.0 + nu));
+        const T G = E / (T(2.0) * (T(1.0) + nu));
 
         if constexpr (state == StressState::PlaneStress)
           {
             // 11, 22, 12
-            const T lambda  = (nu * E) / (1.0 - nu * nu);
-            stiffness[0][0] = stiffness[1][1] = lambda + 2.0 * G;
+            const T lambda  = (nu * E) / (T(1.0) - nu * nu);
+            stiffness[0][0] = stiffness[1][1] = lambda + T(2.0) * G;
             stiffness[0][1] = stiffness[1][0] = lambda;
             stiffness[2][2]                   = G;
           }
@@ -933,8 +951,8 @@ namespace Mechanics
             // TODO: Warning for parameer close to incompressible
 
             // 11, 22, 33, 12
-            const T lambda  = (nu * E) / ((1.0 + nu) * (1.0 - 2.0 * nu));
-            stiffness[0][0] = stiffness[1][1] = stiffness[2][2] = lambda + 2.0 * G;
+            const T lambda  = (nu * E) / ((T(1.0) + nu) * (T(1.0) - T(2.0) * nu));
+            stiffness[0][0] = stiffness[1][1] = stiffness[2][2] = lambda + T(2.0) * G;
             stiffness[0][1] = stiffness[1][0] = lambda;
             stiffness[0][2] = stiffness[2][0] = lambda;
             stiffness[1][2] = stiffness[2][1] = lambda;
@@ -950,10 +968,10 @@ namespace Mechanics
         // TODO: Warning for parameer close to incompressible
 
         // 11, 22, 33, 23, 13, 12
-        const T G      = E / (2.0 * (1.0 + nu));
-        const T lambda = (nu * E) / ((1.0 + nu) * (1.0 - 2.0 * nu));
+        const T G      = E / (T(2.0) * (T(1.0) + nu));
+        const T lambda = (nu * E) / ((T(1.0) + nu) * (T(1.0) - T(2.0) * nu));
 
-        stiffness[0][0] = stiffness[1][1] = stiffness[2][2] = lambda + 2.0 * G;
+        stiffness[0][0] = stiffness[1][1] = stiffness[2][2] = lambda + T(2.0) * G;
         stiffness[0][1] = stiffness[1][0] = lambda;
         stiffness[0][2] = stiffness[2][0] = lambda;
         stiffness[1][2] = stiffness[2][1] = lambda;
@@ -979,15 +997,15 @@ namespace Mechanics
   inline dealii::Tensor<2, 3, T>
   stiffness_orthotropic(const T E1, const T E2, const T nu12, const T G12)
   {
-    AssertThrow(E1 > 0.0,
+    AssertThrow(E1 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: E1 must be positive."));
 
-    AssertThrow(E2 > 0.0,
+    AssertThrow(E2 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: E2 must be positive."));
 
-    AssertThrow(G12 > 0.0,
+    AssertThrow(G12 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: G12 must be positive."));
 
@@ -996,14 +1014,14 @@ namespace Mechanics
     const T nu21 = nu12 * (E2 / E1);
 
     AssertThrow(
-      1.0 > nu12 * nu21,
+      T(1.0) > nu12 * nu21,
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: 1 - nu12*nu21 must be positive."));
 
-    const T delta = 1.0 - nu12 * nu21;
+    const T delta = T(1.0) - nu12 * nu21;
 
     AssertThrow(
-      delta > 0.0,
+      delta > T(0.0),
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: the determinant must be positive."));
 
@@ -1016,7 +1034,7 @@ namespace Mechanics
           << std::endl;
       }
 
-    const T inv_delta = 1.0 / delta;
+    const T inv_delta = T(1.0) / delta;
 
     stiffness[0][0] = E1 * inv_delta;
     stiffness[1][1] = E2 * inv_delta;
@@ -1040,19 +1058,19 @@ namespace Mechanics
                         const T nu23,
                         const T G12)
   {
-    AssertThrow(E1 > 0.0,
+    AssertThrow(E1 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: E1 must be positive."));
 
-    AssertThrow(E2 > 0.0,
+    AssertThrow(E2 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: E2 must be positive."));
 
-    AssertThrow(E3 > 0.0,
+    AssertThrow(E3 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: E3 must be positive."));
 
-    AssertThrow(G12 > 0.0,
+    AssertThrow(G12 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: G12 must be positive."));
 
@@ -1063,22 +1081,22 @@ namespace Mechanics
     const T nu32 = nu23 * (E3 / E2);
 
     AssertThrow(
-      1.0 > nu12 * nu21,
+      T(1.0) > nu12 * nu21,
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: 1 - nu12*nu21 must be positive."));
 
     AssertThrow(
-      1.0 > nu13 * nu31,
+      T(1.0) > nu13 * nu31,
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: 1 - nu13*nu31 must be positive."));
 
     AssertThrow(
-      1.0 > nu23 * nu32,
+      T(1.0) > nu23 * nu32,
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: 1 - nu23*nu32 must be positive."));
 
-    const T delta =
-      1.0 - (nu12 * nu21) - (nu23 * nu32) - (nu13 * nu31) - (2.0 * nu12 * nu23 * nu31);
+    const T delta = T(1.0) - (nu12 * nu21) - (nu23 * nu32) - (nu13 * nu31) -
+                    (T(2.0) * nu12 * nu23 * nu31);
 
     AssertThrow(
       delta > 0.0,
@@ -1089,9 +1107,9 @@ namespace Mechanics
 
     const T inv_delta = 1.0 / delta;
 
-    stiffness[0][0] = E1 * (1.0 - nu23 * nu32) * inv_delta;
-    stiffness[1][1] = E2 * (1.0 - nu13 * nu31) * inv_delta;
-    stiffness[2][2] = E3 * (T(1) - nu12 * nu21) * inv_delta;
+    stiffness[0][0] = E1 * (T(1.0) - nu23 * nu32) * inv_delta;
+    stiffness[1][1] = E2 * (T(1.0) - nu13 * nu31) * inv_delta;
+    stiffness[2][2] = E3 * (T(1.0) - nu12 * nu21) * inv_delta;
     stiffness[0][1] = stiffness[1][0] = E1 * (nu21 + nu31 * nu23) * inv_delta;
     stiffness[0][2] = stiffness[2][0] = E1 * (nu31 + nu21 * nu32) * inv_delta;
     stiffness[1][2] = stiffness[2][1] = E2 * (nu32 + nu12 * nu31) * inv_delta;
@@ -1117,27 +1135,27 @@ namespace Mechanics
                         const T G13,
                         const T G23)
   {
-    AssertThrow(E1 > 0.0,
+    AssertThrow(E1 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: E1 must be positive."));
 
-    AssertThrow(E2 > 0.0,
+    AssertThrow(E2 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: E2 must be positive."));
 
-    AssertThrow(E3 > 0.0,
+    AssertThrow(E3 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: E3 must be positive."));
 
-    AssertThrow(G12 > 0.0,
+    AssertThrow(G12 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: G12 must be positive."));
 
-    AssertThrow(G13 > 0.0,
+    AssertThrow(G13 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: G13 must be positive."));
 
-    AssertThrow(G23 > 0.0,
+    AssertThrow(G23 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: G23 must be positive."));
 
@@ -1148,35 +1166,35 @@ namespace Mechanics
     const T nu32 = nu23 * (E3 / E2);
 
     AssertThrow(
-      1.0 > nu12 * nu21,
+      T(1.0) > nu12 * nu21,
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: 1 - nu12*nu21 must be positive."));
 
     AssertThrow(
-      1.0 > nu13 * nu31,
+      T(1.0) > nu13 * nu31,
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: 1 - nu13*nu31 must be positive."));
 
     AssertThrow(
-      1.0 > nu23 * nu32,
+      T(1.0) > nu23 * nu32,
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: 1 - nu23*nu32 must be positive."));
 
-    const T delta =
-      1.0 - (nu12 * nu21) - (nu23 * nu32) - (nu13 * nu31) - (2.0 * nu12 * nu23 * nu31);
+    const T delta = T(1.0) - (nu12 * nu21) - (nu23 * nu32) - (nu13 * nu31) -
+                    (T(2.0) * nu12 * nu23 * nu31);
 
     AssertThrow(
-      delta > 0.0,
+      delta > T(0.0),
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: the determinant must be positive."));
 
     // TODO: warning for nearly singular
 
-    const T inv_delta = 1.0 / delta;
+    const T inv_delta = T(1.0) / delta;
 
-    stiffness[0][0] = E1 * (1.0 - nu23 * nu32) * inv_delta;
-    stiffness[1][1] = E2 * (1.0 - nu13 * nu31) * inv_delta;
-    stiffness[2][2] = E3 * (1.0 - nu12 * nu21) * inv_delta;
+    stiffness[0][0] = E1 * (T(1.0) - nu23 * nu32) * inv_delta;
+    stiffness[1][1] = E2 * (T(1.0) - nu13 * nu31) * inv_delta;
+    stiffness[2][2] = E3 * (T(1.0) - nu12 * nu21) * inv_delta;
 
     stiffness[0][1] = stiffness[1][0] = E1 * (nu21 + nu31 * nu23) * inv_delta;
     stiffness[0][2] = stiffness[2][0] = E1 * (nu31 + nu21 * nu32) * inv_delta;
@@ -1274,6 +1292,32 @@ namespace Mechanics
   }
 
   /**
+   * @brief Compute the stress with a elasticity tensor (Voigt notation) and stress &
+   * strain tensors.
+   * Overload for 2D Plane Strain.
+   * Input the in-plane strain and the out-of-plane component.
+   * Return in-plane stress and out-of-plane stress component.
+   * If not providing strain_zz, default to 0
+   *
+   * @note This function internally converts to Voigt notation.
+   */
+  template <unsigned int dim, StressState state, typename T>
+  requires(state == StressState::PlaneStrain && dim == 2)
+  inline DEAL_II_ALWAYS_INLINE void
+  compute_stress(const dealii::Tensor<2, 4, T>   &elasticity_tensor,
+                 const dealii::Tensor<2, dim, T> &strain,
+                 dealii::Tensor<2, dim, T>       &stress,
+                 T                               &stress_zz)
+  {
+    dealii::Tensor<1, 4, T> sigma;
+    dealii::Tensor<1, 4, T> epsilon;
+
+    strain_to_voigt<dim, state, T>(strain, T(0.0), epsilon);
+    compute_stress<dim, state, T>(elasticity_tensor, epsilon, sigma);
+    voigt_to_stress<dim, state, T>(sigma, stress, stress_zz);
+  }
+
+  /**
    * @brief Compute the stress with a elasticity tensor and stress & strain tensors.
    * Overload for 2D Plane Strain.
    * Input the in-plane strain and the out-of-plane component.
@@ -1295,7 +1339,29 @@ namespace Mechanics
     compute_stress<dim, state, T>(elasticity_tensor, epsilon, stress);
   }
 
-  /* TODO: out-of-plane strain epsilon_zz under plane stress may be needed.*/
+  /**
+   * @brief Compute the stress with a elasticity tensor and stress & strain tensors.
+   * Overload for 2D Plane Strain.
+   * Input the in-plane strain and the out-of-plane component.
+   * Return stress in Voigt notation.
+   * If not providing strain_zz, default to 0
+   *
+   * @note This function internally converts to Voigt notation.
+   */
+  template <unsigned int dim, StressState state, typename T>
+  requires(state == StressState::PlaneStrain && dim == 2)
+  inline DEAL_II_ALWAYS_INLINE void
+  compute_stress(const dealii::Tensor<2, 4, T>   &elasticity_tensor,
+                 const dealii::Tensor<2, dim, T> &strain,
+                 dealii::Tensor<1, 4, T>         &stress)
+  {
+    dealii::Tensor<1, 4, T> epsilon;
+
+    strain_to_voigt<dim, state, T>(strain, T(0.0), epsilon);
+    compute_stress<dim, state, T>(elasticity_tensor, epsilon, stress);
+  }
+
+  /* TODO: out-of-plane strain epsilon_zz under plane stress may be needed. */
 
   /**
    * -------------------------------------------------------------
