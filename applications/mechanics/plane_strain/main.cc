@@ -21,7 +21,16 @@ main(int argc, char *argv[])
   constexpr unsigned int dim    = 2;
   constexpr unsigned int degree = 2;
 
-  std::vector<FieldAttributes> fields = {FieldAttributes("u", Vector)};
+  std::vector<FieldAttributes> fields = {
+    FieldAttributes("u", Vector),
+    FieldAttributes("epsilon_xx", Scalar),
+    FieldAttributes("epsilon_yy", Scalar),
+    FieldAttributes("gamma_xy", Scalar),
+    FieldAttributes("sigma_xx", Scalar),
+    FieldAttributes("sigma_yy", Scalar),
+    FieldAttributes("sigma_xy", Scalar),
+    FieldAttributes("sigma_zz", Scalar),
+  };
 
   SolveBlock linear_solve;
   linear_solve.id               = 1;
@@ -30,7 +39,13 @@ main(int argc, char *argv[])
   linear_solve.field_indices    = {0};
   linear_solve.dependencies_lhs = make_dependency_set(fields, {"grad(lhs(u))"});
 
-  std::vector<SolveBlock> solve_blocks({linear_solve});
+  SolveBlock pp_block;
+  pp_block.id         = 2;
+  pp_block.solve_type = Explicit, pp_block.solve_timing = PostProcess,
+  pp_block.field_indices    = {1, 2, 3, 4, 5, 6, 7},
+  pp_block.dependencies_rhs = make_dependency_set(fields, {"grad(u)"});
+
+  std::vector<SolveBlock> solve_blocks({linear_solve, pp_block});
 
   UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
   PhaseFieldTools<dim>           pf_tools;
