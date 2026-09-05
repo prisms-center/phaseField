@@ -899,8 +899,8 @@ namespace Mechanics
   template <unsigned int dim,
             StressState  state = StressState::ThreeDimensional,
             typename T         = double>
-  inline DEAL_II_ALWAYS_INLINE dealii::Tensor<2, get_voigt_size<dim, state>(), T>
-                               stiffness_isotropic(const T E, const T nu)
+  inline dealii::Tensor<2, get_voigt_size<dim, state>(), T>
+  stiffness_isotropic(const T E, const T nu)
   {
     AssertThrow(E > 0,
                 dealii::ExcMessage("Invalid isotropic elastic constants: "
@@ -974,8 +974,9 @@ namespace Mechanics
    * @brief Orthotropic stiffness matrix: Overload for Plane Stress.
    */
   // TODO: should we use DEAL_II_ALWAYS_INLINE
-  template <typename T>
-  inline DEAL_II_ALWAYS_INLINE dealii::Tensor<2, 3, T>
+  template <unsigned int dim, StressState state, typename T>
+  requires(state == StressState::PlaneStress && dim == 2)
+  inline dealii::Tensor<2, 3, T>
   stiffness_orthotropic(const T E1, const T E2, const T nu12, const T G12)
   {
     AssertThrow(E1 > 0.0,
@@ -1028,8 +1029,8 @@ namespace Mechanics
   /**
    * @brief Orthotropic stiffness matrix: Overload for Plane Strain.
    */
-  // TODO: should we use DEAL_II_ALWAYS_INLINE
-  template <typename T>
+  template <unsigned int dim, StressState state, typename T>
+  requires(state == StressState::PlaneStrain && dim == 2)
   inline dealii::Tensor<2, 4, T>
   stiffness_orthotropic(const T E1,
                         const T E2,
@@ -1103,17 +1104,18 @@ namespace Mechanics
    * @brief Orthotropic stiffness matrix: Overload for 3D.
    */
   // TODO: should we use DEAL_II_ALWAYS_INLINE
-  template <typename T>
-  inline DEAL_II_ALWAYS_INLINE dealii::Tensor<2, 6, T>
-                               stiffness_orthotropic(const T E1,
-                                                     const T E2,
-                                                     const T E3,
-                                                     const T nu12,
-                                                     const T nu13,
-                                                     const T nu23,
-                                                     const T G12,
-                                                     const T G13,
-                                                     const T G23)
+  template <unsigned int dim, StressState state, typename T>
+  requires(state == StressState::ThreeDimensional && dim == 3)
+  inline dealii::Tensor<2, 6, T>
+  stiffness_orthotropic(const T E1,
+                        const T E2,
+                        const T E3,
+                        const T nu12,
+                        const T nu13,
+                        const T nu23,
+                        const T G12,
+                        const T G13,
+                        const T G23)
   {
     AssertThrow(E1 > 0.0,
                 dealii::ExcMessage(
