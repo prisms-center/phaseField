@@ -72,13 +72,13 @@ namespace
 
 } // namespace
 
-TEST_CASE("Mechanics get_voigt_size", "[mechanics][voigt][size]")
+TEST_CASE("Mechanics voigt_size", "[mechanics][voigt][size]")
 {
-  STATIC_REQUIRE(Mechanics::get_voigt_size<1>() == 1);
-  STATIC_REQUIRE(Mechanics::get_voigt_size<3>() == 6);
+  STATIC_REQUIRE(Mechanics::voigt_size<1> == 1);
+  STATIC_REQUIRE(Mechanics::voigt_size<3> == 6);
 
-  STATIC_REQUIRE((Mechanics::get_voigt_size<2, StressState::PlaneStress>() == 3));
-  STATIC_REQUIRE((Mechanics::get_voigt_size<2, StressState::PlaneStrain>() == 4));
+  STATIC_REQUIRE((Mechanics::voigt_size<2, StressState::PlaneStress> == 3));
+  STATIC_REQUIRE((Mechanics::voigt_size<2, StressState::PlaneStrain> == 4));
 
   STATIC_REQUIRE((Mechanics::valid_stress_state<1, StressState::ThreeDimensional>) );
   STATIC_REQUIRE((Mechanics::valid_stress_state<2, StressState::PlaneStress>) );

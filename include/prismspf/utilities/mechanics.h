@@ -51,15 +51,14 @@ namespace Mechanics
    * @brief Voigt notation index range.
    * This is evaluated at compile time. The user must state the 2D assumption explicitly.
    *
-   * get_voigt_size<1>();              // ThreeDimensional, returns 1
-   * get_voigt_size<3>();              // ThreeDimensional, returns 6
-   * get_voigt_size<2, StressState::PlaneStress>(); // returns 3
-   * get_voigt_size<2, StressState::PlaneStrain>(); // returns 4
-   * get_voigt_size<2>();              // this is invalid
+   * voigt_size<1>;              // ThreeDimensional, returns 1
+   * voigt_size<3>;              // ThreeDimensional, returns 6
+   * voigt_size<2, StressState::PlaneStress>; // returns 3
+   * voigt_size<2, StressState::PlaneStrain>; // returns 4
+   * voigt_size<2>;              // this is invalid
    */
   template <unsigned int dim, StressState state = StressState::ThreeDimensional>
-  constexpr unsigned int
-  get_voigt_size()
+  static constexpr unsigned int voigt_size = []() constexpr
   {
     static_assert(dim >= 1 && dim <= 3,
                   "Mechanics supports only dimensions 1, 2, and 3.");
@@ -74,7 +73,7 @@ namespace Mechanics
       return 4;
     else
       return 6;
-  }
+  }();
 
   /**
    * @brief Strain tensor to Voigt notation.
@@ -85,8 +84,8 @@ namespace Mechanics
             typename T         = double>
   requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
-  strain_to_voigt(const dealii::Tensor<2, dim, T>                    &tensor,
-                  dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt)
+  strain_to_voigt(const dealii::Tensor<2, dim, T>              &tensor,
+                  dealii::Tensor<1, voigt_size<dim, state>, T> &voigt)
   {
     static_assert(valid_stress_state<dim, state>,
                   "Invalid dimension/StressState combination.");
@@ -123,13 +122,13 @@ namespace Mechanics
             StressState  state = StressState::ThreeDimensional,
             typename T         = double>
   requires(state != StressState::PlaneStrain || dim != 2)
-  inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, get_voigt_size<dim, state>(), T>
+  inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, voigt_size<dim, state>, T>
   strain_to_voigt(const dealii::Tensor<2, dim, T> &tensor)
   {
     static_assert(valid_stress_state<dim, state>,
                   "Invalid dimension/StressState combination.");
 
-    dealii::Tensor<1, get_voigt_size<dim, state>(), T> voigt;
+    dealii::Tensor<1, voigt_size<dim, state>, T> voigt;
 
     if constexpr (dim == 1)
       {
@@ -166,8 +165,8 @@ namespace Mechanics
             typename T         = double>
   requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
-  strain_to_voigt(const dealii::SymmetricTensor<2, dim, T>           &tensor,
-                  dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt)
+  strain_to_voigt(const dealii::SymmetricTensor<2, dim, T>     &tensor,
+                  dealii::Tensor<1, voigt_size<dim, state>, T> &voigt)
   {
     static_assert(valid_stress_state<dim, state>,
                   "Invalid dimension/StressState combination.");
@@ -205,13 +204,13 @@ namespace Mechanics
             StressState  state = StressState::ThreeDimensional,
             typename T         = double>
   requires(state != StressState::PlaneStrain || dim != 2)
-  inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, get_voigt_size<dim, state>(), T>
+  inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, voigt_size<dim, state>, T>
   strain_to_voigt(const dealii::SymmetricTensor<2, dim, T> &tensor)
   {
     static_assert(valid_stress_state<dim, state>,
                   "Invalid dimension/StressState combination.");
 
-    dealii::Tensor<1, get_voigt_size<dim, state>(), T> voigt;
+    dealii::Tensor<1, voigt_size<dim, state>, T> voigt;
 
     if constexpr (dim == 1)
       {
@@ -328,8 +327,8 @@ namespace Mechanics
             typename T         = double>
   requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
-  voigt_to_strain(const dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt,
-                  dealii::Tensor<2, dim, T>                                &tensor)
+  voigt_to_strain(const dealii::Tensor<1, voigt_size<dim, state>, T> &voigt,
+                  dealii::Tensor<2, dim, T>                          &tensor)
   {
     static_assert(valid_stress_state<dim, state>,
                   "Invalid dimension/StressState combination.");
@@ -366,8 +365,8 @@ namespace Mechanics
             typename T         = double>
   requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
-  voigt_to_strain(const dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt,
-                  dealii::SymmetricTensor<2, dim, T>                       &tensor)
+  voigt_to_strain(const dealii::Tensor<1, voigt_size<dim, state>, T> &voigt,
+                  dealii::SymmetricTensor<2, dim, T>                 &tensor)
   {
     static_assert(valid_stress_state<dim, state>,
                   "Invalid dimension/StressState combination.");
@@ -404,7 +403,7 @@ namespace Mechanics
             typename T         = double>
   requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE dealii::SymmetricTensor<2, dim, T>
-  voigt_to_strain(const dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt)
+  voigt_to_strain(const dealii::Tensor<1, voigt_size<dim, state>, T> &voigt)
   {
     static_assert(valid_stress_state<dim, state>,
                   "Invalid dimension/StressState combination.");
@@ -502,8 +501,8 @@ namespace Mechanics
             typename T>
   requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
-  stress_to_voigt(const dealii::Tensor<2, dim, T>                    &tensor,
-                  dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt)
+  stress_to_voigt(const dealii::Tensor<2, dim, T>              &tensor,
+                  dealii::Tensor<1, voigt_size<dim, state>, T> &voigt)
   {
     static_assert(valid_stress_state<dim, state>,
                   "Invalid dimension/StressState combination.");
@@ -540,13 +539,13 @@ namespace Mechanics
             StressState  state = StressState::ThreeDimensional,
             typename T>
   requires(state != StressState::PlaneStrain || dim != 2)
-  inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, get_voigt_size<dim, state>(), T>
+  inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, voigt_size<dim, state>, T>
   stress_to_voigt(const dealii::Tensor<2, dim, T> &tensor)
   {
     static_assert(valid_stress_state<dim, state>,
                   "Invalid dimension/StressState combination.");
 
-    dealii::Tensor<1, get_voigt_size<dim, state>(), T> voigt;
+    dealii::Tensor<1, voigt_size<dim, state>, T> voigt;
 
     if constexpr (dim == 1)
       {
@@ -583,8 +582,8 @@ namespace Mechanics
             typename T>
   requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
-  stress_to_voigt(const dealii::SymmetricTensor<2, dim, T>           &tensor,
-                  dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt)
+  stress_to_voigt(const dealii::SymmetricTensor<2, dim, T>     &tensor,
+                  dealii::Tensor<1, voigt_size<dim, state>, T> &voigt)
   {
     static_assert(valid_stress_state<dim, state>,
                   "Invalid dimension/StressState combination.");
@@ -622,13 +621,13 @@ namespace Mechanics
             StressState  state = StressState::ThreeDimensional,
             typename T>
   requires(state != StressState::PlaneStrain || dim != 2)
-  inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, get_voigt_size<dim, state>(), T>
+  inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, voigt_size<dim, state>, T>
   stress_to_voigt(const dealii::SymmetricTensor<2, dim, T> &tensor)
   {
     static_assert(valid_stress_state<dim, state>,
                   "Invalid dimension/StressState combination.");
 
-    dealii::Tensor<1, get_voigt_size<dim, state>(), T> voigt;
+    dealii::Tensor<1, voigt_size<dim, state>, T> voigt;
 
     if constexpr (dim == 1)
       {
@@ -745,8 +744,8 @@ namespace Mechanics
             typename T         = double>
   requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
-  voigt_to_stress(const dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt,
-                  dealii::Tensor<2, dim, T>                                &tensor)
+  voigt_to_stress(const dealii::Tensor<1, voigt_size<dim, state>, T> &voigt,
+                  dealii::Tensor<2, dim, T>                          &tensor)
   {
     static_assert(valid_stress_state<dim, state>,
                   "Invalid dimension/StressState combination.");
@@ -783,8 +782,8 @@ namespace Mechanics
             typename T         = double>
   requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
-  voigt_to_stress(const dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt,
-                  dealii::SymmetricTensor<2, dim, T>                       &tensor)
+  voigt_to_stress(const dealii::Tensor<1, voigt_size<dim, state>, T> &voigt,
+                  dealii::SymmetricTensor<2, dim, T>                 &tensor)
   {
     static_assert(valid_stress_state<dim, state>,
                   "Invalid dimension/StressState combination.");
@@ -821,7 +820,7 @@ namespace Mechanics
             typename T         = double>
   requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE dealii::SymmetricTensor<2, dim, T>
-  voigt_to_stress(const dealii::Tensor<1, get_voigt_size<dim, state>(), T> &voigt)
+  voigt_to_stress(const dealii::Tensor<1, voigt_size<dim, state>, T> &voigt)
   {
     static_assert(valid_stress_state<dim, state>,
                   "Invalid dimension/StressState combination.");
@@ -917,7 +916,7 @@ namespace Mechanics
   template <unsigned int dim,
             StressState  state = StressState::ThreeDimensional,
             typename T         = double>
-  inline dealii::Tensor<2, get_voigt_size<dim, state>(), T>
+  inline dealii::Tensor<2, voigt_size<dim, state>, T>
   stiffness_isotropic(const T E, const T nu)
   {
     AssertThrow(E > T(0.0),
@@ -927,8 +926,7 @@ namespace Mechanics
                 dealii::ExcMessage("Invalid isotropic elastic constants: "
                                    "Poisson's ratio must be in range -1 < nu < 0.5"));
 
-    constexpr unsigned int           voigt_size = get_voigt_size<dim, state>();
-    dealii::Tensor<2, voigt_size, T> stiffness;
+    dealii::Tensor<2, voigt_size<dim, state>, T> stiffness;
 
     if constexpr (dim == 1)
       {
@@ -1234,10 +1232,9 @@ namespace Mechanics
    */
   template <unsigned int dim, StressState state, typename T>
   inline DEAL_II_ALWAYS_INLINE void
-  compute_stress(
-    const dealii::Tensor<2, get_voigt_size<dim, state>(), T> &elasticity_tensor,
-    const dealii::Tensor<1, get_voigt_size<dim, state>(), T> &strain,
-    dealii::Tensor<1, get_voigt_size<dim, state>(), T>       &stress)
+  compute_stress(const dealii::Tensor<2, voigt_size<dim, state>, T> &elasticity_tensor,
+                 const dealii::Tensor<1, voigt_size<dim, state>, T> &strain,
+                 dealii::Tensor<1, voigt_size<dim, state>, T>       &stress)
   {
     stress = elasticity_tensor * strain;
   }
@@ -1252,13 +1249,12 @@ namespace Mechanics
   template <unsigned int dim, StressState state, typename T>
   requires(state != StressState::PlaneStrain || dim != 2)
   inline DEAL_II_ALWAYS_INLINE void
-  compute_stress(
-    const dealii::Tensor<2, get_voigt_size<dim, state>(), T> &elasticity_tensor,
-    const dealii::Tensor<2, dim, T>                          &strain,
-    dealii::Tensor<2, dim, T>                                &stress)
+  compute_stress(const dealii::Tensor<2, voigt_size<dim, state>, T> &elasticity_tensor,
+                 const dealii::Tensor<2, dim, T>                    &strain,
+                 dealii::Tensor<2, dim, T>                          &stress)
   {
-    dealii::Tensor<1, get_voigt_size<dim, state>(), T> sigma;
-    dealii::Tensor<1, get_voigt_size<dim, state>(), T> epsilon;
+    dealii::Tensor<1, voigt_size<dim, state>, T> sigma;
+    dealii::Tensor<1, voigt_size<dim, state>, T> epsilon;
 
     strain_to_voigt<dim, state, T>(strain, epsilon);
     compute_stress<dim, state, T>(elasticity_tensor, epsilon, sigma);
@@ -1376,7 +1372,7 @@ namespace Mechanics
    * This is used for backward compatibility.
    */
   template <unsigned int dim>
-  [[deprecated("Use get_voigt_size<dim, StressState>() instead.")]] constexpr unsigned int
+  [[deprecated("Use voigt_size<dim, StressState> instead.")]] constexpr unsigned int
     voigt_tensor_size = (2 * dim) - 1 + (dim / 3);
 
   /**
