@@ -151,8 +151,8 @@ struct RectangularMesh : public Mesh<dim>
     Right  = 1,
     Bottom = 2,
     Top    = 3,
-    Front  = 4,
-    Back   = 5
+    Back   = 4,
+    Front  = 5
   };
 
   /**
