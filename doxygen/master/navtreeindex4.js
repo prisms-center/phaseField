@@ -1,7 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"hierarchy.html":[8,2],
-"index.html":[],
 "index.html":[0],
 "initial__conditions_8cc.html":[9,0,2,0,5],
 "initial__conditions_8h.html":[9,0,1,0,0,11],
@@ -21,6 +19,7 @@ var NAVTREEINDEX4 =
 "io__parameters_8h.html#ae7378b9f6e68cf0d61f4fea3e9a5dddd":[9,0,1,0,5,1,4],
 "io__parameters_8h.html#af3fd6c855e9a1deb14b023ad3e102226":[9,0,1,0,5,1,7],
 "io__parameters_8h_source.html":[9,0,1,0,5,1],
+"laplace.html":[4,0],
 "linear__solver_8h.html":[9,0,1,0,4,2],
 "linear__solver_8h_source.html":[9,0,1,0,4,2],
 "logger_8cc.html":[9,0,2,3,1],
@@ -92,6 +91,7 @@ var NAVTREEINDEX4 =
 "namespacestd.html#af30f66fa919ee4207f875331acaaf1e5":[6,0,5,4],
 "newton__solver_8h.html":[9,0,1,0,4,4],
 "newton__solver_8h_source.html":[9,0,1,0,4,4],
+"nucleation.html":[4,1],
 "nucleation__manager_8h.html":[9,0,1,0,3,0],
 "nucleation__manager_8h_source.html":[9,0,1,0,3,0],
 "nucleation__parameters_8cc.html":[9,0,2,2,3],
@@ -124,6 +124,7 @@ var NAVTREEINDEX4 =
 "parse__cmd__options_8h_source.html":[9,0,1,0,0,14],
 "pde__operator__base_8h.html":[9,0,1,0,0,15],
 "pde__operator__base_8h_source.html":[9,0,1,0,0,15],
+"pfhub_benchmarks_6_a.html":[4,2],
 "phase__field__tools_8cc.html":[9,0,2,0,6],
 "phase__field__tools_8h.html":[9,0,1,0,0,16],
 "phase__field__tools_8h_source.html":[9,0,1,0,0,16],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "structFieldOutputParameters.html#a3710b9d639d32a1f250e8c2b618f5b47":[8,0,17,6],
 "structFieldOutputParameters.html#a3c535bb1347ed902f4a1d87f36f617c8":[8,0,17,12],
 "structFieldOutputParameters.html#a5d4e031f57f41cae9ca85db1d03d190b":[8,0,17,10],
-"structFieldOutputParameters.html#a62fd3787a0258084f4f7918fdad33010":[8,0,17,5],
-"structFieldOutputParameters.html#a790dfd0971a786b02cadf8f1e2d02f31":[8,0,17,8]
+"structFieldOutputParameters.html#a62fd3787a0258084f4f7918fdad33010":[8,0,17,5]
 };

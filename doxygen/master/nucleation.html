@@ -124,12 +124,12 @@ $(function(){initNavTree('nucleation.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">nucleation</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md0"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md3"></a>
 KKS Phase Field Model of Precipitate Evolution coupled with nucleation (October 2, 2024)</h1>
 <p>The Nucleation Model application for PRISMS-PF incorporates a stochastic method to add nuclei to the KKS phase field model for precipitate growth. Nuclei are seeded throughout the time evolution of the system based on a probability that depends on the local solute supersaturation. This document is divided in two sections. In the first section, the phase field model formulation for precipitate evolution in a binary alloy (without elastic effects) is presented. In the second section the nucleation method is presented.</p>
-<h2><a class="anchor" id="autotoc_md1"></a>
+<h2><a class="anchor" id="autotoc_md4"></a>
 Precipitate Evolution</h2>
-<h3><a class="anchor" id="autotoc_md2"></a>
+<h3><a class="anchor" id="autotoc_md5"></a>
 Variational formulation</h3>
 <p>In the absence of elastic effects total free energy of the 2-component system (neglecting boundary terms) is of the form,</p>
 <p>$$ \begin{equation} \Pi(c, \eta) = \int_{\Omega} f(c, \eta) ~dV \end{equation} $$</p>
@@ -150,7 +150,7 @@ Variational formulation</h3>
 <p>the single-phase concentrations are:</p>
 <p>$$ \begin{align} c_{\alpha} = \frac{ B_2 c + \frac{1}{2} (B_1 - A_1) H(\eta) }{A_2 H(\eta) + B_2 \left( 1- H(\eta)\right) } \end{align} $$</p>
 <p>$$ \begin{align} c_{\beta} = \frac{ A_2 c + \frac{1}{2} (A_1 - B_1) \left[1-H(\eta)\right] }{A_2 H(\eta) + B_2 \left[ 1- H(\eta)\right] } \end{align} $$</p>
-<h3><a class="anchor" id="autotoc_md3"></a>
+<h3><a class="anchor" id="autotoc_md6"></a>
 Required inputs</h3>
 <ul>
 <li>$f_{\alpha}(c_{\alpha}), f_{\beta}(c_{\beta})$ - Homogeneous chemical free energy of the components of the binary system, example form given above</li>
@@ -164,24 +164,24 @@ Required inputs</h3>
 <li>item $M$ - mobility value for the concentration field</li>
 <li>item $L$ - mobility value for the structural order parameter field</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md4"></a>
+<h3><a class="anchor" id="autotoc_md7"></a>
 Variational treatment</h3>
 <p>We obtain chemical potentials for the concentration and the structural order parameter by taking variational derivatives of $\Pi$:</p>
 <p>$$ \begin{align} \mu_{c} &amp;= f_{\alpha,c} \left( 1- H(\eta)\right) +f_{\beta,c} H(\eta) \end{align} $$</p>
 <p>$$ \begin{align} \mu_{\eta} &amp;= \left[ f_{\beta}-f_{\alpha} -(c_{\beta}-c_{\alpha}) f_{\beta,c_{\beta}} \right] H_{,\eta}(\eta) + W f_{Landau,\eta}- \kappa\nabla^2\eta \end{align} $$</p>
-<h3><a class="anchor" id="autotoc_md5"></a>
+<h3><a class="anchor" id="autotoc_md8"></a>
 Kinetics</h3>
 <p>Now the PDE for Cahn-Hilliard dynamics is given by:</p>
 <p>$$ \begin{align} \frac{\partial c}{\partial t} &amp;= ~\nabla \cdot \left( \frac{1}{f_{,cc}}M \nabla \mu_c \right) \end{align} $$</p>
 <p>where $M$ is a constant mobility and the factor of $\frac{1}{f_{,cc}}$ is added to guarantee constant diffusivity in the two phases. The PDE for Allen-Cahn dynamics is given by:</p>
 <p>$$ \begin{align} \frac{\partial \eta}{\partial t} &amp;= - L \mu_{\eta_p} \end{align} $$</p>
 <p>where $L$ is a constant mobility.</p>
-<h3><a class="anchor" id="autotoc_md6"></a>
+<h3><a class="anchor" id="autotoc_md9"></a>
 Time discretization</h3>
 <p>Using forward Euler explicit time stepping, the equations from the Kinetics section become:</p>
 <p>$$ \begin{align} c^{n} = c^{n-1}+\Delta t \left[\nabla \cdot \left(\frac{1}{f_{,cc}^{n-1}} M \nabla \mu_c^{n-1} \right) \right] \end{align} $$</p>
 <p>$$ \begin{align} \eta_p^{n} = \eta_p^{n-1} -\Delta t L \mu_{\eta_p}^{n-1} \end{align} $$</p>
-<h3><a class="anchor" id="autotoc_md7"></a>
+<h3><a class="anchor" id="autotoc_md10"></a>
 Weak formulation</h3>
 <p>Writing the equations from the Kinetics section in the weak form, with the arbitrary variation given by $w$ yields:</p>
 <p>$$ \begin{align} \int_\Omega w c^{n} dV &amp;= \int_\Omega wc^{n-1}+w \Delta t \left[\nabla \cdot \left(\frac{1}{f_{,cc}^{n-1}} M \nabla \mu_c^{n-1} \right) \right] dV \end{align} $$</p>
@@ -203,24 +203,24 @@ Weak formulation</h3>
 <p>$$ \begin{align} &amp;+ \nabla w \cdot (-\Delta t L \kappa \nabla \eta^{n-1} ) dV \end{align} $$</p>
 <p>$$ \begin{align} r_{\eta} &amp;= \eta^{n-1}-\Delta t L \bigg[(f_{\beta}^{n-1}-f_{\alpha}^{n-1})H_{,\eta}^{n-1} - (c_{\beta}^{n-1}-c_{\alpha}^{n-1}) f_{\beta,c_{\beta}}^{n-1}H_{,\eta}^{n-1} + W f_{Landau,\eta}^{n-1} \end{align} $$</p>
 <p>$$ \begin{align} r_{\eta x} &amp;= -\Delta t L \kappa \nabla \eta^{n-1} \end{align} $$</p>
-<h2><a class="anchor" id="autotoc_md8"></a>
+<h2><a class="anchor" id="autotoc_md11"></a>
 Nucleation method</h2>
 <p>We follow the same approach as Jokisaari and Thornton [Comput. Mater. Sci. <b>112</b>, 128-138 (2016)] which consists of adding nuclei throughout a phase field simulation based on a probability that depends on the local supersaturation. This probability is calculated every fixed number of time steps and for every element of the computational domain. In each nucleation event, nucleation is triggered at a point within the $\alpha$ phase. Each nucleus is then added to the system by modifying the order parameter to it's $\beta$ phase value within a small domain around the selected nucleation center. This domain can be spherical/circular or ellipsoidal/elliptical.</p>
-<h3><a class="anchor" id="autotoc_md9"></a>
+<h3><a class="anchor" id="autotoc_md12"></a>
 Nucleation rate</h3>
 <p>From classical nucleation theory, the nucleation rate for critical nuclei $J^*$ is given by</p>
 <p>$$ \begin{align} J^* (\mathbf{r},t)=Zn\beta^* \exp \left( -\frac{\Delta G^* }{k_B T} \right) \exp \left( -\frac{\tau}{t} \right), \end{align} $$</p>
 <p>where $Z$ is the Zeldovich factor, $n$ is the number of nucleation sites per volume, $\beta^*$ is the frequency at which a critical nucleus becomes supercritical, $\Delta G^*$ is the nucleation energy barrier, $k_B$ is the Boltzmann constant, $T$ is the temperature, $t$ is time and $\tau$ is the incubation time. It can be shown that, in the dilute limit and for constant temperature, the previous equation can be simplified by grouping approximately constant terms in both the exponential and pre-exponential factors:</p>
 <p>$$ \begin{align} J^*(\mathbf{r},t)=k_1\exp \left( -\frac{k_2}{(\Delta c)^{d-1}} \right) \exp \left(-\frac{\tau}{t} \right), \end{align} $$</p>
 <p>where $k_1$ and $k_2$ are now taken as constant parameters, $\Delta c=c(\mathbf{r},t)-c_\alpha^{eq}$ is the local supersaturation in the $\alpha$ phase and $d$ is the dimensionality of the system (<em>e.g.</em> $d=2$ or $d=3$).</p>
-<h3><a class="anchor" id="autotoc_md10"></a>
+<h3><a class="anchor" id="autotoc_md13"></a>
 Nucleation probability</h3>
 <p>Considering $J^*$ to be approximately constant within a small volume, $\Delta V$, and for a small time interval, $\Delta t$, the probability that at least one nucleation event occurs in $\Delta V$ within $\Delta t$ is given by [Simmons et al., Scripta Mater. <b>43</b>, 935 (2000)]</p>
 <p>$$ \begin{align} P(\mathbf{r},t) = 1 - \exp \left( -J^* \Delta V \Delta t \right) \end{align} $$</p>
-<h3><a class="anchor" id="autotoc_md11"></a>
+<h3><a class="anchor" id="autotoc_md14"></a>
 Hold time</h3>
 <p>After each nucleus is added, there is a &lsquo;hold&rsquo; time interval, $\Delta t_h$, during which the order parameter value is fixed within a small window that encompasses the new nucleus. The purpose of this hold time is to allow the concentration to evolve within the nucleus to a value close to the coexistence composition for $\beta$ phase, and therefore, to create small a solute depleted zone around the nucleus. After the hold time, the nucleus is allowed to evolve into a precipitate.</p>
-<h3><a class="anchor" id="autotoc_md12"></a>
+<h3><a class="anchor" id="autotoc_md15"></a>
 Required nucleation inputs</h3>
 <ul>
 <li>$k_1$ - Constant pre-exponential factor in the equation for simple nucleation rate</li>
@@ -234,7 +234,7 @@ Required nucleation inputs</h3>
 <li>b - semiaxis in the y-direction</li>
 <li>c - semiaxis in the x-direction</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<h2><a class="anchor" id="autotoc_md16"></a>
 Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $f_{Landau}$, $H(\eta)$</h2>
 <p>$$ \begin{align} f_{\alpha}(c_{\alpha}) = A_{2} c_{\alpha}^2 + A_{1} c_{\alpha} + A_{0} \end{align} $$</p>
 <p>$$ \begin{align} f_{\beta}(c_{\beta}) = B_{2} c_{\beta}^2 + B_{1} c_{\beta} + B_{0} \end{align} $$</p>

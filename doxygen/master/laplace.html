@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=11" />
   <meta name="generator" content="Doxygen 1.13.2" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PRISMS-PF Manual: pfhub_benchmarks_6_a</title>
+  <title>PRISMS-PF Manual: laplace</title>
   <link href="tabs.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="jquery.js"></script>
   <script type="text/javascript" src="dynsections.js"></script>
@@ -95,7 +95,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('pfhub_benchmarks_6_a.html',''); initResizable(true); });
+$(function(){initNavTree('laplace.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -121,12 +121,25 @@ $(function(){initNavTree('pfhub_benchmarks_6_a.html',''); initResizable(true); }
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">pfhub_benchmarks_6_a</div></div>
+  <div class="headertitle"><div class="title">laplace</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md17"></a>
-TODO</h1>
-<p><a href="https://pages.nist.gov/pfhub/benchmarks/benchmark6-hackathon.ipynb/">https://pages.nist.gov/pfhub/benchmarks/benchmark6-hackathon.ipynb/</a> </p>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md0"></a>
+PRISMS-PF: Laplace's Equation</h1>
+<p>This example application solves <a href="https://en.wikipedia.org/wiki/Laplace%27s_equation">Laplace's equation</a> with Dirichlet boundary values.</p>
+<p>$$ \begin{align} \nabla\cdot\nabla u_{\Omega} = 0 \ u_{\partial \Omega} = \Gamma_D \end{align} $$</p>
+<p>where $\Gamma_D$ are the Dirichlet boundary values.</p>
+<h2><a class="anchor" id="autotoc_md1"></a>
+Governing equations</h2>
+<p>In the weak form (and multiplying by -1), we have</p>
+<p>$$ \begin{align} \int_{\Omega} \nabla w \cdot \nabla u ~dV = \int_{\Omega}0~dV \end{align} $$</p>
+<h2><a class="anchor" id="autotoc_md2"></a>
+Expressions</h2>
+<p>In PRISMS-PF, linear equations are solved provided expressions for the left and right hand side of equations of the form $Ax=b$. From the weak form, we find</p>
+<p>$$ \begin{align} r_{ux}^{LHS} = \nabla u^* \end{align} $$</p>
+<p>$$ \begin{align} r_{u}^{RHS} = 0 \end{align} $$</p>
+<p>The ${}^*$ indicates a trial solution.</p>
+<p>The above equations are used to define expressions in the file: <code>applications/laplace/custom_pde.h</code> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

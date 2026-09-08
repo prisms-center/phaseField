@@ -1,12 +1,24 @@
 var searchData=
 [
-  ['warning_0',['Warning',['../classLogFormatter.html#a1bde08ff456ff725c5f109515014c5c9a0eaadb4fcb48a0a0ed7bc9868be9fbaa',1,'LogFormatter']]],
-  ['warning_1',['warning',['../classLogFormatter.html#aadba3dc6e1a30dd463e0cd21e1f26924',1,'LogFormatter']]],
-  ['weak_20formulation_2',['Weak formulation',['../coupled_allen_cahn_cahn_hilliard.html#autotoc_md4',1,'']]],
-  ['welcome_3',['Welcome',['../index.html#welcome',1,'']]],
-  ['what_4',['what',['../classExcNaN.html#afe8180a5f501dc2dd18e5f34f452b6e0',1,'ExcNaN::what()'],['../classExcDepNotInitialized.html#a6cec24ef3d5d6b6ddf92f94b08e295bb',1,'ExcDepNotInitialized::what()']]],
-  ['white_5',['WHITE',['../classTerminalColor.html#a9072c2a431685d36e3356739883db99c',1,'TerminalColor']]],
-  ['with_20docker_6',['with Docker',['../docker.html#docker_installation',1,'Installation with Docker'],['../docker.html',1,'Installing with Docker']]],
-  ['write_5ffile_7',['write_file',['../classReadBinary.html#ad616b95c00b6066948367a441cda490c',1,'ReadBinary']]],
-  ['write_5findent_8',['write_indent',['../classLogger.html#abf079a98806cc56a1a0883603e99c904',1,'Logger']]]
+  ['undefined_0',['Undefined',['../type__enums_8h.html#a2b0006f00013ab2a87dec51132ccbcdba18f893264a00711081b62de694f99db4',1,'type_enums.h']]],
+  ['underline_1',['UNDERLINE',['../classTerminalColor.html#ad5ce5e4ae88577c24ce497415a7c1b2a',1,'TerminalColor']]],
+  ['uninitialized_2',['Uninitialized',['../solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5da254bd1cf3c287ac4eb3d47320b1c92b6',1,'solve_block.h']]],
+  ['unreachable_3',['UNREACHABLE',['../assert_8h.html#acc72016abc8c2f0a7245399318f0c79a',1,'assert.h']]],
+  ['unsignedinteger_4',['UnsignedInteger',['../namespacePatterns.html#a8eaf37b98f1a2a0af6c66c421ef9eebd',1,'Patterns']]],
+  ['unsignedintegerlist_5',['UnsignedIntegerList',['../namespacePatterns.html#ad4fb74aaf29c7c8313936ce7f24af218',1,'Patterns']]],
+  ['update_6',['update',['../classGroupSolutionHandler.html#a1ca433f8ea10e34fd33ae3053c457594',1,'GroupSolutionHandler::update()'],['../classSolverBase.html#a32666c58a2da7c1da51f5e5dab6fa4be',1,'SolverBase::update()']]],
+  ['update_5fghosts_7',['update_ghosts',['../classGroupSolutionHandler.html#ac606bab73c152df40d85cdfd81fe5f16',1,'GroupSolutionHandler::update_ghosts()'],['../classSolverBase.html#aea9076dd7e2cbcc6df6c19e0ac2ee0dd',1,'SolverBase::update_ghosts()']]],
+  ['update_5ftime_5fdependent_5fconstraints_8',['update_time_dependent_constraints',['../classConstraintManager.html#a0b8f4b72311aa20bdd080ede6f7b37a1',1,'ConstraintManager']]],
+  ['user_5fcondition_9',['user_condition',['../classLogStream.html#a4bb1b3181d0e7004a319eb8bb66da983',1,'LogStream']]],
+  ['user_5fconstants_10',['user_constants',['../classUserInputParameters.html#aff16df7f532fd2f58fa2863e63461be9',1,'UserInputParameters']]],
+  ['user_5fconstants_2eh_11',['user_constants.h',['../user__constants_8h.html',1,'']]],
+  ['user_5finput_5fparameters_2ecc_12',['user_input_parameters.cc',['../user__input__parameters_8cc.html',1,'']]],
+  ['user_5finput_5fparameters_2eh_13',['user_input_parameters.h',['../user__input__parameters_8h.html',1,'']]],
+  ['user_5finputs_14',['user_inputs',['../classPDEOperatorBase.html#a258b97080008c211eef4670e868dd904',1,'PDEOperatorBase::user_inputs'],['../classSolveContext.html#a389115bdf2e5e2168d56e21bfd10aa59',1,'SolveContext::user_inputs']]],
+  ['user_5finputs_5fptr_15',['user_inputs_ptr',['../classProblem.html#a5dbf38e64d65fa0deb5beaa7cba9017f',1,'Problem']]],
+  ['user_5fstop_16',['user_stop',['../classPDEOperatorBase.html#ab06e29bd0b2bc2ae23fb2e97aa8994dd',1,'PDEOperatorBase']]],
+  ['userconstants_17',['UserConstants',['../classUserConstants.html',1,'']]],
+  ['userinputparameters_18',['UserInputParameters',['../classUserInputParameters.html',1,'UserInputParameters&lt; dim &gt;'],['../classUserInputParameters.html#af1a6cb34c8ad976c6e99eec85cf963c9',1,'UserInputParameters::UserInputParameters()=default'],['../classUserInputParameters.html#a4465bee8ac376a8b15dada868639fac9',1,'UserInputParameters::UserInputParameters(const std::string &amp;file_name, unsigned int n_subsections=Numbers::default_subsections)']]],
+  ['utilities_2ecc_19',['utilities.cc',['../utilities_8cc.html',1,'']]],
+  ['utilities_2eh_20',['utilities.h',['../utilities_8h.html',1,'']]]
 ];

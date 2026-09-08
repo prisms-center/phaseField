@@ -36,19 +36,20 @@ var NAVTREE =
     ] ],
     [ "Parameters", "parameters.html", null ],
     [ "Applications", "applications.html", [
-      [ "coupled_allen_cahn_cahn_hilliard", "coupled_allen_cahn_cahn_hilliard.html", null ],
-      [ "blank", "\ref blank", null ],
+      [ "laplace", "laplace.html", null ],
+      [ "nucleation", "nucleation.html", null ],
+      [ "pfhub_benchmarks_6_a", "pfhub_benchmarks_6_a.html", null ],
+      [ "pfhub_benchmarks_2_b", "\ref pfhub_benchmarks_2_b", null ],
       [ "pfhub_benchmarks_1_a", "\ref pfhub_benchmarks_1_a", null ],
-      [ "pfhub_benchmarks_6_a", "\ref pfhub_benchmarks_6_a", null ],
-      [ "allen_cahn_explicit", "\ref allen_cahn_explicit", null ],
-      [ "allen_cahn_implicit", "\ref allen_cahn_implicit", null ],
-      [ "mechanics_boundary_value_problem", "\ref mechanics_boundary_value_problem", null ],
-      [ "mechanics_eshelby_inclusion", "\ref mechanics_eshelby_inclusion", null ],
-      [ "nucleation", "\ref nucleation", null ],
+      [ "blank", "\ref blank", null ],
+      [ "coupled_allen_cahn_cahn_hilliard", "\ref coupled_allen_cahn_cahn_hilliard", null ],
       [ "alloy_solidification", "\ref alloy_solidification", null ],
-      [ "laplace", "\ref laplace", null ],
+      [ "allen_cahn_implicit", "\ref allen_cahn_implicit", null ],
+      [ "allen_cahn_explicit", "\ref allen_cahn_explicit", null ],
+      [ "cahn_hilliard_implicit", "\ref cahn_hilliard_implicit", null ],
       [ "cahn_hilliard_explicit", "\ref cahn_hilliard_explicit", null ],
-      [ "cahn_hilliard_implicit", "\ref cahn_hilliard_implicit", null ]
+      [ "mechanics_boundary_value_problem", "\ref mechanics_boundary_value_problem", null ],
+      [ "mechanics_eshelby_inclusion", "\ref mechanics_eshelby_inclusion", null ]
     ] ],
     [ "Contact", "contact.html", null ],
     [ "Namespaces", "namespaces.html", [
@@ -93,12 +94,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "\ref allen_cahn_explicit",
-"classIntegrator.html#af9efd8729c661e6ab1ad89bc9779b122",
-"classParseCMDOptions.html#abf92da04daffe8af607348588d8d3a56",
-"classTimer.html#abab11b7f11ebabd0ec136f93c3a7f556",
-"hierarchy.html",
-"structFieldOutputParameters.html#a8225b592329259dca28cdd12bc09466e",
-"system__wide_8h_source.html"
+"classInvMManager.html",
+"classParseCMDOptions.html#ad02ca16ca7747eb8e0c757047a48a414",
+"classTimer.html#abc2a3f33c55dca79a3f9ae61c90a42ed",
+"index.html",
+"structFieldOutputParameters.html#a790dfd0971a786b02cadf8f1e2d02f31",
+"system__wide_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
