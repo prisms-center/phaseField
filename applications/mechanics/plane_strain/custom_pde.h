@@ -112,7 +112,7 @@ private:
       }
   }
 
-  dealii::Tensor<2, Mechanics::get_voigt_size<dim, StressState::PlaneStrain>(), number>
+  dealii::Tensor<2, Mechanics::voigt_size<dim, StressState::PlaneStrain>, number>
     stiffness;
 };
 
