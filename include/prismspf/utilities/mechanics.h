@@ -118,6 +118,7 @@ namespace Mechanics
    * 1D, 2D Plane Stress, 3D.
    * Overload: Return value
    */
+  // clang-format off
   template <unsigned int dim,
             StressState  state = StressState::ThreeDimensional,
             typename T         = double>
@@ -154,6 +155,8 @@ namespace Mechanics
 
     return voigt;
   }
+
+  // clang-format on
 
   /**
    * @brief Strain tensor to Voigt notation.
@@ -535,6 +538,7 @@ namespace Mechanics
    * 1D, 2D Plane Stress, 3D.
    * Overload: Return value.
    */
+  // clang-format off
   template <unsigned int dim,
             StressState  state = StressState::ThreeDimensional,
             typename T>
@@ -571,6 +575,8 @@ namespace Mechanics
 
     return voigt;
   }
+
+  // clang-format on
 
   /**
    * @brief Stress tensor to Voigt notation.
