@@ -952,7 +952,15 @@ namespace Mechanics
           }
         else if constexpr (state == StressState::PlaneStrain)
           {
-            // TODO: Warning for parameer close to incompressible
+            // Warning for parameer close to incompressible
+            constexpr T tolerance = std::numeric_limits<T>::epsilon() * 1e4;
+            if (std::fabs(T(1.0) - T(2.0) * nu) <= tolerance)
+              {
+                Logger::instance()
+                  << LogFormatter::warning(
+                       "WARNING: Isotropic elastic constants are nearly singular.")
+                  << std::endl;
+              }
 
             // 11, 22, 33, 12
             const T lambda  = (nu * E) / ((T(1.0) + nu) * (T(1.0) - T(2.0) * nu));
@@ -969,7 +977,15 @@ namespace Mechanics
       }
     else if constexpr (dim == 3)
       {
-        // TODO: Warning for parameer close to incompressible
+        // Warning for parameer close to incompressible
+        constexpr T tolerance = std::numeric_limits<T>::epsilon() * 1e4;
+        if (std::fabs(T(1.0) - T(2.0) * nu) <= tolerance)
+          {
+            Logger::instance()
+              << LogFormatter::warning(
+                   "WARNING: Isotropic elastic constants are nearly singular.")
+              << std::endl;
+          }
 
         // 11, 22, 33, 23, 13, 12
         const T G      = E / (T(2.0) * (T(1.0) + nu));
@@ -1107,7 +1123,15 @@ namespace Mechanics
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: the determinant must be positive."));
 
-    // TODO: warning for nearly singular
+    // Warning for nearly singular
+    constexpr T tolerance = std::numeric_limits<T>::epsilon() * 1e4;
+    if (delta <= tolerance)
+      {
+        Logger::instance()
+          << LogFormatter::warning(
+               "WARNING: Orthotropic elastic constants are nearly singular.")
+          << std::endl;
+      }
 
     const T inv_delta = 1.0 / delta;
 
@@ -1192,7 +1216,15 @@ namespace Mechanics
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: the determinant must be positive."));
 
-    // TODO: warning for nearly singular
+    // Warning for nearly singular
+    constexpr T tolerance = std::numeric_limits<T>::epsilon() * 1e4;
+    if (delta <= tolerance)
+      {
+        Logger::instance()
+          << LogFormatter::warning(
+               "WARNING: Orthotropic elastic constants are nearly singular.")
+          << std::endl;
+      }
 
     const T inv_delta = T(1.0) / delta;
 
