@@ -1,0 +1,20 @@
+set global refinement = 7
+set max refinement = 7
+set min refinement = 2
+set mesh adaptivity = true
+set remeshing period = 5000
+
+subsection refinement criterion: 0
+  set variables                      = c
+  set type                           = gradient
+  set value lower bound              = 0.31
+  set value upper bound              = 0.69
+  set gradient lower bound = 0.005
+end
+
+set time step = 0.01e-3
+set end time = 100
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 800
+end

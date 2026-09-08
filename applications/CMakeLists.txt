@@ -13,6 +13,7 @@ set(
   nucleation
   laplace
   pfhub_benchmarks/1/a
+  pfhub_benchmarks/2/b
   pfhub_benchmarks/6/a
 )
 
