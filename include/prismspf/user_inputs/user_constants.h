@@ -581,7 +581,7 @@ UserConstants<dim>::get_cij_tensor(std::vector<double> elastic_constants,
   // If the material model is anisotropic for a 2D calculation but the elastic
   // constants are given for a 3D calculation, change the elastic constant
   // vector to the 2D form.
-  // Note: Simple extraction is only valid for plane strain. It is not ecommended to
+  // Note: Simple extraction is only valid for plane strain. It is not recommended to
   // input 3D stiffness for 2D plane stress.
   if constexpr (dim == 2)
     {
