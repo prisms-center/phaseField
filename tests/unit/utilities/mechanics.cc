@@ -6,6 +6,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 #include <initializer_list>
+#include <numbers>
 #include <utility>
 
 namespace
@@ -912,10 +913,13 @@ TEST_CASE("Mechanics compute_stress for plane strain",
     constexpr double strain_zz = 0.0;
 
     dealii::Tensor<1, 4, double> stress;
+    dealii::Tensor<1, 4, double> stress2;
 
     Mechanics::compute_stress<2, plane_strain>(stiffness, strain, strain_zz, stress);
+    Mechanics::compute_stress<2, plane_strain>(stiffness, strain, stress2);
 
     check_voigt<4>(stress, {1.2, 0.4, 0.4, 0.0});
+    check_voigt<4>(stress2, {1.2, 0.4, 0.4, 0.0});
   }
 
   SECTION("Nonzero out-of-plane strain")
@@ -986,5 +990,152 @@ TEST_CASE("Mechanics compute_stress in 1D and 3D", "[mechanics][compute-stress]"
     check_close(stress[2][2], 0.0);
     check_close(stress[0][1], 0.4);
     check_close(stress[1][0], 0.4);
+  }
+}
+
+TEST_CASE("Mechanics strain energy", "[mechanics][strain-energy]")
+{
+  SECTION("1D")
+  {
+    const auto stress   = make_voigt<1>({4.0});
+    const auto strain_e = make_voigt<1>({3.0});
+
+    const double energy =
+      Mechanics::strain_energy<1, three_dimensional>(stress, strain_e);
+
+    check_close(energy, 6.0);
+  }
+
+  SECTION("2D plane stress")
+  {
+    const auto stress   = make_voigt<3>({2.0, 4.0, 6.0});
+    const auto strain_e = make_voigt<3>({1.0, 0.5, 0.25});
+
+    const double energy = Mechanics::strain_energy<2, plane_stress>(stress, strain_e);
+
+    check_close(energy, 2.75);
+  }
+
+  SECTION("2D plane strain")
+  {
+    const auto stress   = make_voigt<4>({2.0, 4.0, 6.0, 8.0});
+    const auto strain_e = make_voigt<4>({1.0, 0.5, 0.25, 0.125});
+
+    const double energy = Mechanics::strain_energy<2, plane_strain>(stress, strain_e);
+
+    check_close(energy, 3.25);
+  }
+
+  SECTION("3D")
+  {
+    const auto stress   = make_voigt<6>({1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
+    const auto strain_e = make_voigt<6>({6.0, 5.0, 4.0, 3.0, 2.0, 1.0});
+
+    const double energy =
+      Mechanics::strain_energy<3, three_dimensional>(stress, strain_e);
+
+    check_close(energy, 28.0);
+  }
+}
+
+TEST_CASE("Mechanics von Mises stress", "[mechanics][stress-mises]")
+{
+  SECTION("1D returns the magnitude of the stress")
+  {
+    const auto stress = make_voigt<1>({-7.0});
+
+    const double mises = Mechanics::stress_mises<1, three_dimensional>(stress);
+
+    check_close(mises, 7.0);
+  }
+
+  SECTION("2D plane stress")
+  {
+    const auto stress = make_voigt<3>({100.0, 40.0, 30.0});
+
+    const double mises = Mechanics::stress_mises<2, plane_stress>(stress);
+
+    check_close(mises, std::sqrt(10300.0));
+  }
+
+  SECTION("2D plane strain includes sigma zz")
+  {
+    const auto stress = make_voigt<4>({100.0, 40.0, 20.0, 30.0});
+
+    const double mises = Mechanics::stress_mises<2, plane_strain>(stress);
+
+    check_close(mises, std::sqrt(7900.0));
+  }
+
+  SECTION("3D")
+  {
+    const auto stress = make_voigt<6>({100.0, 40.0, 20.0, 10.0, 20.0, 30.0});
+
+    const double mises = Mechanics::stress_mises<3, three_dimensional>(stress);
+
+    check_close(mises, std::sqrt(9400.0));
+  }
+
+  SECTION("3D hydrostatic stress has zero von Mises stress")
+  {
+    const auto stress = make_voigt<6>({25.0, 25.0, 25.0, 0.0, 0.0, 0.0});
+
+    const double mises = Mechanics::stress_mises<3, three_dimensional>(stress);
+
+    check_close(mises, 0.0);
+  }
+
+  SECTION("3D pure shear")
+  {
+    const auto stress = make_voigt<6>({0.0, 0.0, 0.0, 0.0, 0.0, 8.0});
+
+    const double mises = Mechanics::stress_mises<3, three_dimensional>(stress);
+
+    check_close(mises, 8.0 * std::numbers::sqrt3);
+  }
+}
+
+TEST_CASE("Mechanics principal stress", "[mechanics][stress-principal]")
+{
+  SECTION("1D")
+  {
+    const auto stress = make_voigt<1>({-12.0});
+
+    const auto principal = Mechanics::stress_principal<1, three_dimensional>(stress);
+
+    check_voigt<1>(principal, {-12.0});
+  }
+
+  SECTION("2D plane stress")
+  {
+    // The in-plane stress tensor is
+    // [ 5  2 ]
+    // [ 2  2 ]
+    // Its eigenvalues are 6 and 1.
+    const auto stress = make_voigt<3>({5.0, 2.0, 2.0});
+
+    const auto principal = Mechanics::stress_principal<2, plane_stress>(stress);
+
+    check_voigt<2>(principal, {6.0, 1.0});
+  }
+
+  SECTION("2D plane strain uses the in-plane stress tensor")
+  {
+    // sigma_zz is intentionally large. The function should return the
+    // principal stresses of the in-plane 2x2 tensor and ignore sigma_zz.
+    const auto stress = make_voigt<4>({5.0, 2.0, 123.0, 2.0});
+
+    const auto principal = Mechanics::stress_principal<2, plane_strain>(stress);
+
+    check_voigt<2>(principal, {6.0, 1.0});
+  }
+
+  SECTION("2D hydrostatic in-plane stress")
+  {
+    const auto stress = make_voigt<3>({9.0, 9.0, 0.0});
+
+    const auto principal = Mechanics::stress_principal<2, plane_stress>(stress);
+
+    check_voigt<2>(principal, {9.0, 9.0});
   }
 }
