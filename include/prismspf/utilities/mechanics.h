@@ -19,6 +19,17 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 namespace Mechanics
 {
+
+  /*
+    NOTE: The reduced 4x4 stiffness for plane strain requires stiffness like
+    [ .  .  .  0  0  . ]
+    [ .  .  .  0  0  . ]
+    [ .  .  .  0  0  . ]
+    [ 0  0  0  .  0  0 ]
+    [ 0  0  0  0  .  0 ]
+    [ .  .  .  .  0  . ]
+  */
+
   template <typename T>
   using PlaneStressStiffness = dealii::Tensor<2, 3, T>;
 
