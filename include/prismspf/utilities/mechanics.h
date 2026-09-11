@@ -899,10 +899,11 @@ namespace Mechanics
    * Overload for 2D Plane Strain
    * Overload: Return value, always return a symmetric tensor.
    */
+  // clang-format off
   template <unsigned int dim, StressState state, typename T>
   requires(state == StressState::PlaneStrain && dim == 2)
   inline DEAL_II_ALWAYS_INLINE std::pair<dealii::SymmetricTensor<2, dim, T>, T>
-                               voigt_to_stress(const dealii::Tensor<1, 4, T> &voigt)
+  voigt_to_stress(const dealii::Tensor<1, 4, T> &voigt)
   {
     dealii::SymmetricTensor<2, dim, T> tensor_inplane;
 
@@ -914,6 +915,8 @@ namespace Mechanics
 
     return {tensor_inplane, component_zz};
   }
+
+  // clang-format on
 
   /**
    * @brief Isotropic stiffness matrix.
@@ -1396,6 +1399,111 @@ namespace Mechanics
   }
 
   /* TODO: out-of-plane strain epsilon_zz under plane stress may be needed. */
+
+  /**
+   * @brief Strain energy (Inputs are in Voigt notation).
+   */
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T         = double>
+  inline DEAL_II_ALWAYS_INLINE T
+  strain_energy(const dealii::Tensor<1, voigt_size<dim, state>, T> &stress,
+                const dealii::Tensor<1, voigt_size<dim, state>, T> &strain_e)
+  {
+    return T(0.5) * stress * strain_e;
+  }
+
+  /**
+   * @brief von Mises stress (Input is in Voigt notation).
+   */
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T         = double>
+  inline DEAL_II_ALWAYS_INLINE T
+  stress_mises(const dealii::Tensor<1, voigt_size<dim, state>, T> &stress)
+  {
+    T stress_m2 = T(0);
+
+    if constexpr (dim == 1)
+      {
+        stress_m2 = stress[0] * stress[0];
+      }
+    else if constexpr (dim == 2 && state == StressState::PlaneStress)
+      {
+        const T &sigma_xx = stress[0];
+        const T &sigma_yy = stress[1];
+        const T &sigma_xy = stress[2];
+
+        stress_m2 = sigma_xx * sigma_xx - sigma_xx * sigma_yy + sigma_yy * sigma_yy +
+                    T(3) * sigma_xy * sigma_xy;
+      }
+    else if constexpr (dim == 2 && state == StressState::PlaneStrain)
+      {
+        const T &sigma_xx = stress[0];
+        const T &sigma_yy = stress[1];
+        const T &sigma_zz = stress[2];
+        const T &sigma_xy = stress[3];
+
+        const T d_xy = sigma_xx - sigma_yy;
+        const T d_yz = sigma_yy - sigma_zz;
+        const T d_zx = sigma_zz - sigma_xx;
+
+        stress_m2 =
+          T(0.5) * (d_xy * d_xy + d_yz * d_yz + d_zx * d_zx) + T(3) * sigma_xy * sigma_xy;
+      }
+    else
+      {
+        const T &sigma_xx = stress[0];
+        const T &sigma_yy = stress[1];
+        const T &sigma_zz = stress[2];
+        const T &sigma_yz = stress[3];
+        const T &sigma_xz = stress[4];
+        const T &sigma_xy = stress[5];
+
+        const T d_xy = sigma_xx - sigma_yy;
+        const T d_yz = sigma_yy - sigma_zz;
+        const T d_zx = sigma_zz - sigma_xx;
+
+        stress_m2 =
+          T(0.5) * (d_xy * d_xy + d_yz * d_yz + d_zx * d_zx) +
+          T(3) * (sigma_xy * sigma_xy + sigma_yz * sigma_yz + sigma_xz * sigma_xz);
+      }
+
+    return std::sqrt(stress_m2);
+  }
+
+  /**
+   * @brief Principal stress (Input is in Voigt notation).
+   */
+  template <unsigned int dim,
+            StressState  state = StressState::ThreeDimensional,
+            typename T         = double>
+  inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, dim, T>
+  stress_principal(const dealii::Tensor<1, voigt_size<dim, state>, T> &stress)
+  {
+    static_assert(dim == 1 || (dim == 2 && state == StressState::PlaneStress) || dim == 3,
+                  "stress_principal() supports only 1D, 2D plane stress, and 3D.");
+
+    dealii::Tensor<1, dim, T> stress_p {};
+
+    if constexpr (dim == 1)
+      {
+        stress_p[0] = stress[0];
+      }
+    else if constexpr (dim == 2)
+      {
+        const T avg = (stress[0] + stress[1]) * T(0.5);
+        const T dif = (stress[0] - stress[1]) * T(0.5);
+        const T rad = std::sqrt(dif * dif + stress[3] * stress[3]);
+
+        stress_p[0] = avg + rad;
+        stress_p[1] = avg - rad;
+      }
+    else
+      {
+        // TODO: 3D
+      }
+  }
 
   /**
    * -------------------------------------------------------------
