@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.25)
 cmake_policy(VERSION 3.25)
 
 # Name the application
-set(APPLICATION_NAME "mechanics")
+set(APPLICATION_NAME "plane_strain")
 
 # Create a project for the application
 project(${APPLICATION_NAME} CXX)
