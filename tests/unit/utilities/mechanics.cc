@@ -739,6 +739,7 @@ TEST_CASE("Mechanics isotropic stiffness", "[mechanics][stiffness][isotropic]")
   }
 }
 
+#ifdef DEBUG
 TEST_CASE("Mechanics isotropic stiffness rejects invalid constants",
           "[mechanics][stiffness][isotropic][exceptions]")
 {
@@ -748,6 +749,7 @@ TEST_CASE("Mechanics isotropic stiffness rejects invalid constants",
   CHECK_THROWS(Mechanics::stiffness_isotropic<1>(1.0, -1.0));
   CHECK_THROWS(Mechanics::stiffness_isotropic<1>(1.0, 0.5));
 }
+#endif
 
 TEST_CASE("Mechanics orthotropic stiffness", "[mechanics][stiffness][orthotropic]")
 {
@@ -794,6 +796,7 @@ TEST_CASE("Mechanics orthotropic stiffness", "[mechanics][stiffness][orthotropic
   }
 }
 
+#ifdef DEBUG
 TEST_CASE("Mechanics orthotropic stiffness rejects invalid constants",
           "[mechanics][stiffness][orthotropic][exceptions]")
 {
@@ -805,6 +808,7 @@ TEST_CASE("Mechanics orthotropic stiffness rejects invalid constants",
 
   CHECK_THROWS((Mechanics::stiffness_orthotropic<2, plane_stress>(1.0, 1.0, 1.0, 0.4)));
 }
+#endif
 
 TEST_CASE("Mechanics extract_plane_strain_stiffness",
           "[mechanics][stiffness][plane-strain]")

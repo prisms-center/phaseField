@@ -939,13 +939,14 @@ namespace Mechanics
   inline dealii::Tensor<2, voigt_size<dim, state>, T>
   stiffness_isotropic(const T E, const T nu)
   {
+#ifdef DEBUG
     AssertThrow(E > T(0.0),
                 dealii::ExcMessage("Invalid isotropic elastic constants: "
                                    "Young's modulus E must be positive."));
     AssertThrow(nu > T(-1.0) && nu < T(0.5),
                 dealii::ExcMessage("Invalid isotropic elastic constants: "
                                    "Poisson's ratio must be in range -1 < nu < 0.5"));
-
+#endif
     dealii::Tensor<2, voigt_size<dim, state>, T> stiffness;
 
     if constexpr (dim == 1)
@@ -966,6 +967,7 @@ namespace Mechanics
           }
         else if constexpr (state == StressState::PlaneStrain)
           {
+#ifdef DEBUG
             // Warning for parameer close to incompressible
             constexpr T tolerance = std::numeric_limits<T>::epsilon() * 1e4;
             if (std::fabs(T(1.0) - T(2.0) * nu) <= tolerance)
@@ -975,6 +977,7 @@ namespace Mechanics
                        "WARNING: Isotropic elastic constants are nearly singular.")
                   << std::endl;
               }
+#endif
 
             // 11, 22, 33, 12
             const T lambda  = (nu * E) / ((T(1.0) + nu) * (T(1.0) - T(2.0) * nu));
@@ -984,13 +987,16 @@ namespace Mechanics
             stiffness[1][2] = stiffness[2][1] = lambda;
             stiffness[3][3]                   = G;
           }
+#ifdef DEBUG
         else
           {
             AssertThrow(false, dealii::ExcMessage("Invalid stress state type for 2D"));
           }
+#endif
       }
     else if constexpr (dim == 3)
       {
+#ifdef DEBUG
         // Warning for parameer close to incompressible
         constexpr T tolerance = std::numeric_limits<T>::epsilon() * 1e4;
         if (std::fabs(T(1.0) - T(2.0) * nu) <= tolerance)
@@ -1000,6 +1006,7 @@ namespace Mechanics
                    "WARNING: Isotropic elastic constants are nearly singular.")
               << std::endl;
           }
+#endif
 
         // 11, 22, 33, 23, 13, 12
         const T G      = E / (T(2.0) * (T(1.0) + nu));
@@ -1014,10 +1021,12 @@ namespace Mechanics
         stiffness[4][4] = G;
         stiffness[5][5] = G;
       }
+#ifdef DEBUG
     else
       {
         AssertThrow(false, dealii::ExcMessage("Unsupported dimension"));
       }
+#endif
 
     return stiffness;
   }
@@ -1031,6 +1040,7 @@ namespace Mechanics
   inline dealii::Tensor<2, 3, T>
   stiffness_orthotropic(const T E1, const T E2, const T nu12, const T G12)
   {
+#ifdef DEBUG
     AssertThrow(E1 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: E1 must be positive."));
@@ -1042,18 +1052,22 @@ namespace Mechanics
     AssertThrow(G12 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: G12 must be positive."));
+#endif
 
     dealii::Tensor<2, 3, T> stiffness;
 
     const T nu21 = nu12 * (E2 / E1);
 
+#ifdef DEBUG
     AssertThrow(
       T(1.0) > nu12 * nu21,
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: 1 - nu12*nu21 must be positive."));
+#endif
 
     const T delta = T(1.0) - nu12 * nu21;
 
+#ifdef DEBUG
     AssertThrow(
       delta > T(0.0),
       dealii::ExcMessage(
@@ -1067,6 +1081,7 @@ namespace Mechanics
                "WARNING: Orthotropic elastic constants are nearly singular.")
           << std::endl;
       }
+#endif
 
     const T inv_delta = T(1.0) / delta;
 
@@ -1092,6 +1107,7 @@ namespace Mechanics
                         const T nu23,
                         const T G12)
   {
+#ifdef DEBUG
     AssertThrow(E1 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: E1 must be positive."));
@@ -1107,6 +1123,7 @@ namespace Mechanics
     AssertThrow(G12 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: G12 must be positive."));
+#endif
 
     dealii::Tensor<2, 4, T> stiffness;
 
@@ -1114,6 +1131,7 @@ namespace Mechanics
     const T nu31 = nu13 * (E3 / E1);
     const T nu32 = nu23 * (E3 / E2);
 
+#ifdef DEBUG
     AssertThrow(
       T(1.0) > nu12 * nu21,
       dealii::ExcMessage(
@@ -1128,10 +1146,12 @@ namespace Mechanics
       T(1.0) > nu23 * nu32,
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: 1 - nu23*nu32 must be positive."));
+#endif
 
     const T delta = T(1.0) - (nu12 * nu21) - (nu23 * nu32) - (nu13 * nu31) -
                     (T(2.0) * nu12 * nu23 * nu31);
 
+#ifdef DEBUG
     AssertThrow(
       delta > 0.0,
       dealii::ExcMessage(
@@ -1146,6 +1166,7 @@ namespace Mechanics
                "WARNING: Orthotropic elastic constants are nearly singular.")
           << std::endl;
       }
+#endif
 
     const T inv_delta = 1.0 / delta;
 
@@ -1177,6 +1198,7 @@ namespace Mechanics
                         const T G13,
                         const T G23)
   {
+#ifdef DEBUG
     AssertThrow(E1 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: E1 must be positive."));
@@ -1200,6 +1222,7 @@ namespace Mechanics
     AssertThrow(G23 > T(0.0),
                 dealii::ExcMessage(
                   "Invalid orthotropic elastic constants: G23 must be positive."));
+#endif
 
     dealii::Tensor<2, 6, T> stiffness;
 
@@ -1207,6 +1230,7 @@ namespace Mechanics
     const T nu31 = nu13 * (E3 / E1);
     const T nu32 = nu23 * (E3 / E2);
 
+#ifdef DEBUG
     AssertThrow(
       T(1.0) > nu12 * nu21,
       dealii::ExcMessage(
@@ -1221,10 +1245,12 @@ namespace Mechanics
       T(1.0) > nu23 * nu32,
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: 1 - nu23*nu32 must be positive."));
+#endif
 
     const T delta = T(1.0) - (nu12 * nu21) - (nu23 * nu32) - (nu13 * nu31) -
                     (T(2.0) * nu12 * nu23 * nu31);
 
+#ifdef DEBUG
     AssertThrow(
       delta > T(0.0),
       dealii::ExcMessage(
@@ -1239,6 +1265,7 @@ namespace Mechanics
                "WARNING: Orthotropic elastic constants are nearly singular.")
           << std::endl;
       }
+#endif
 
     const T inv_delta = T(1.0) / delta;
 
