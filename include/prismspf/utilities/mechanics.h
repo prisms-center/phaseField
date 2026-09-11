@@ -1474,6 +1474,7 @@ namespace Mechanics
 
   /**
    * @brief Principal stress (Input is in Voigt notation).
+     @note For plane strain, it returns only the two in-plane principal stresses
    */
   template <unsigned int dim,
             StressState  state = StressState::ThreeDimensional,
@@ -1481,8 +1482,10 @@ namespace Mechanics
   inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, dim, T>
   stress_principal(const dealii::Tensor<1, voigt_size<dim, state>, T> &stress)
   {
+    /*
     static_assert(dim == 1 || (dim == 2 && state == StressState::PlaneStress) || dim == 3,
                   "stress_principal() supports only 1D, 2D plane stress, and 3D.");
+    */
 
     dealii::Tensor<1, dim, T> stress_p {};
 
@@ -1492,6 +1495,7 @@ namespace Mechanics
       }
     else if constexpr (dim == 2)
       {
+        // NOTE: not the real 3D principal stresses for plane strain!!!
         const T avg = (stress[0] + stress[1]) * T(0.5);
         const T dif = (stress[0] - stress[1]) * T(0.5);
         const T rad = std::sqrt(dif * dif + stress[3] * stress[3]);
