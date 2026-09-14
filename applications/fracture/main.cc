@@ -18,27 +18,27 @@ main(int argc, char *argv[])
   constexpr unsigned int degree = 1;
 
   std::vector<FieldAttributes> fields = {
-    FieldAttributes("n",     Scalar), // 0 - phase field to track fracture (scalar, explicit)
-    FieldAttributes("u",     Vector), // 1 - displacement (vector, linear)
-    FieldAttributes("dndt",  Scalar), // 2 - crack driving force (scalar, auxiliary)
-    FieldAttributes("Ex",    Scalar), // 3 - stiffness mask (scalar, constant)
-    FieldAttributes("Gx",    Scalar), // 4 - toughness mask (scalar, constant)
+    FieldAttributes("n", Scalar), // 0 - phase field to track fracture (scalar, explicit)
+    FieldAttributes("u", Vector), // 1 - displacement (vector, linear)
+    FieldAttributes("dndt", Scalar),  // 2 - crack driving force (scalar, auxiliary)
+    FieldAttributes("Ex", Scalar),    // 3 - stiffness mask (scalar, constant)
+    FieldAttributes("Gx", Scalar),    // 4 - toughness mask (scalar, constant)
     FieldAttributes("f_tot", Scalar), // 5 - total energy density (scalar, postprocess)
-    FieldAttributes("s11",   Scalar), // 6 - stress component (scalar, postprocess)
-    FieldAttributes("s12",   Scalar), // 7 - stress component (scalar, postprocess)
-    FieldAttributes("s22",   Scalar), // 8 - stress component (scalar, postprocess)
-    FieldAttributes("f_int", Scalar), // 9 - interfacial energy density (scalar, postprocess)
-    FieldAttributes("f_el",  Scalar), // 10 - elastic energy density (scalar, postprocess)
+    FieldAttributes("s11", Scalar),   // 6 - stress component (scalar, postprocess)
+    FieldAttributes("s12", Scalar),   // 7 - stress component (scalar, postprocess)
+    FieldAttributes("s22", Scalar),   // 8 - stress component (scalar, postprocess)
+    FieldAttributes("f_int",
+                    Scalar), // 9 - interfacial energy density (scalar, postprocess)
+    FieldAttributes("f_el", Scalar), // 10 - elastic energy density (scalar, postprocess)
   };
 
   // Block 0: explicit n update using previous-step n and dndt
   SolveBlock n_block;
-  n_block.id            = 0;
-  n_block.solve_type    = Explicit;
-  n_block.solve_timing  = Primary;
-  n_block.field_indices = {0};
-  n_block.dependencies_rhs =
-    make_dependency_set(fields, {"old_1(n)", "old_1(dndt)"});
+  n_block.id               = 0;
+  n_block.solve_type       = Explicit;
+  n_block.solve_timing     = Primary;
+  n_block.field_indices    = {0};
+  n_block.dependencies_rhs = make_dependency_set(fields, {"old_1(n)", "old_1(dndt)"});
 
   // Block 1: constant mask fields — initialized once from ICs
   SolveBlock const_block;
@@ -49,13 +49,12 @@ main(int argc, char *argv[])
 
   // Block 2: linear u solve — driven by analytical Dirichlet BCs, no body force
   SolveBlock u_block;
-  u_block.id            = 2;
-  u_block.solve_type    = Linear;
-  u_block.solve_timing  = Secondary;
-  u_block.field_indices = {1};
+  u_block.id               = 2;
+  u_block.solve_type       = Linear;
+  u_block.solve_timing     = Secondary;
+  u_block.field_indices    = {1};
   u_block.dependencies_rhs = make_dependency_set(fields, {});
-  u_block.dependencies_lhs =
-    make_dependency_set(fields, {"grad(lhs(u))", "n", "Ex"});
+  u_block.dependencies_lhs = make_dependency_set(fields, {"grad(lhs(u))", "n", "Ex"});
 
   // Block 3: auxiliary dndt — computed each step from current n, u, Ex, Gx
   SolveBlock dndt_block;
@@ -82,10 +81,10 @@ main(int argc, char *argv[])
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
   Problem<dim, degree, double>   problem(fields,
-                                         solve_blocks,
-                                         user_inputs,
-                                         pf_tools,
-                                         pde_operator);
+                                       solve_blocks,
+                                       user_inputs,
+                                       pf_tools,
+                                       pde_operator);
   problem.solve();
 
   return 0;
