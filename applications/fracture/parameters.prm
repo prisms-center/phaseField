@@ -1,0 +1,44 @@
+subsection Rectangular mesh
+  set x size = 0.1
+  set y size = 0.1
+  set z size = 0.1
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
+end
+
+set global refinement = 7
+set time step = 1.0
+set number steps = 300
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 5
+end
+
+subsection boundary conditions: 0
+  set variables      = u:x, u:y
+  set conditions     = Dirichlet, Dirichlet, Dirichlet, Dirichlet
+  set time dependent = true
+end
+
+subsection linear solver parameters: 0
+  set solver_ids          = 2
+  set max iterations      = 1000
+  set tolerance type      = AbsoluteResidual
+  set tolerance value     = 1e-5
+  set preconditioner type = Chebyshev
+  subsection Chebyshev
+    set smoothing range          = 20
+    set smoother degree          = 5
+    set eigenvalue cg iterations = 20
+  end
+end
+
+set Model constant cracklength = 0.01, double
+set Model constant Mn          = 3e-5, double
+set Model constant ell         = 3.75e-3, double
+set Model constant Gc0         = 3.0, double
+set Model constant CIJ_base    = (3e3,0.35), isotropic elastic constants
+set Model constant vel_nom     = 2e-5, double
+set Model constant KI_nom      = 103, double
