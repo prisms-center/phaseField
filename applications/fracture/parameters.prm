@@ -1,4 +1,7 @@
 subsection Rectangular mesh
+  set x lower bound = 0.0
+  set y lower bound = -0.05
+  set z lower bound = 0.0
   set x size = 0.1
   set y size = 0.1
   set z size = 0.1
@@ -9,11 +12,11 @@ end
 
 set global refinement = 7
 set time step = 1.0
-set number steps = 300
+set number steps = 2000
 
 subsection output
   set condition = EQUAL_SPACING
-  set number = 5
+  set number = 50
 end
 
 subsection boundary conditions: 0

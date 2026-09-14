@@ -33,13 +33,7 @@ public:
     , CIJ_base(get_user_inputs().user_constants.get_elasticity_tensor("CIJ_base"))
     , KI_nom(get_user_inputs().user_constants.get_double("KI_nom"))
     , vel_nom(get_user_inputs().user_constants.get_double("vel_nom"))
-  {
-    const auto &sd = get_user_inputs().spatial_discretization;
-    dx             = static_cast<number>(sd.rectangular_mesh.size[0]) /
-         static_cast<number>(sd.rectangular_mesh.subdivisions[0]) /
-         std::pow(number(2.0), static_cast<number>(sd.global_refinement));
-    Ly = static_cast<number>(sd.rectangular_mesh.size[1]);
-  }
+  {}
 
 private:
   void
@@ -51,16 +45,17 @@ private:
   {
     scalar_value           = 0.0;
     vector_component_value = 0.0;
-
-    if (index == 0) // n: horizontal crack seed at mid-height, x < clength
+    dealii::Point<dim> p(point);
+    p[1] -= y_offset(); // shift y origin to middle of cell
+    if (index == 0)     // n: horizontal crack seed at mid-height, x < clength
       {
-        if (std::abs(point[1] - (Ly / 2.0) + (0.5 * dx)) < dx && point[0] < clength)
-          {
-            scalar_value = 1.0;
-          }
+        double indicator(p[0] < clength);
+        double sdf = indicator * std::abs(p[1]) +
+                     (1.0 - indicator) * p.distance(dealii::Point<dim>(clength, 0.0));
+        scalar_value = analytical_n(sdf);
       }
-    if (index == 3 || index == 4)
-      { // Ex, Gx = 1 everywhere (homogeneous material)
+    if (index == 3 || index == 4) // Ex, Gx = 1 everywhere (homogeneous material)
+      {
         scalar_value = 1.0;
       }
   }
@@ -78,9 +73,10 @@ private:
       {
         constexpr double pi = std::numbers::pi;
 
-        number x =
-          point[0] - (vel_nom * static_cast<number>(sim_timer.get_time())) - clength;
-        number y     = point[1] - (Ly / 2.0) + (dx * 0.5);
+        dealii::Point<dim> p(point);
+        p[1] -= y_offset();
+        number x     = p[0] - (vel_nom * sim_timer.get_time()) - clength;
+        number y     = p[1];
         number r     = std::sqrt((x * x) + (y * y));
         number theta = std::atan2(y, x);
         number mu    = CIJ_base[dim][dim];
@@ -106,24 +102,15 @@ private:
               const SimulationTimer               &sim_timer,
               unsigned int                         solve_block_id) const override
   {
-    if (solve_block_id == 0) // explicit n update
+    if (solve_block_id == 1) // explicit n update
       {
         ScalarValue  n    = variable_list.template get_value<Scalar, OldOne>(0);
         ScalarValue  dndt = variable_list.template get_value<Scalar, OldOne>(2);
-        const number dt   = static_cast<number>(sim_timer.get_timestep());
-
-        for (unsigned int j = 0; j < dndt.size(); ++j)
-          {
-            if (dndt[j] > 0.0)
-              {
-                dndt[j] = 0.0;
-              }
-            if (n[j] - (dndt[j] * dt) > 1.0)
-              {
-                dndt[j] = (n[j] - 1.0) / dt;
-              }
-          }
-        variable_list.set_value_term(0, n - (dt * dndt));
+        const double dt   = sim_timer.get_timestep();
+        using std::max;
+        dndt = max(dndt, ScalarValue(0.0));
+        constrain_dvaldt(n, dndt, dt);
+        variable_list.set_value_term(0, n + (dt * dndt));
       }
 
     else if (solve_block_id == 3) // auxiliary dndt
@@ -148,8 +135,8 @@ private:
           }
 
         variable_list
-          .set_value_term(2, (2.0 * (n - 1.0) * psi + Gc0 * Gx * 3.0 / 8.0 / ell) * Mn);
-        variable_list.set_gradient_term(2, ell * nx * Gc0 * Gx * (3.0 / 4.0) * Mn);
+          .set_value_term(2, -(2.0 * (n - 1.0) * psi + Gc0 * Gx * 3.0 / 8.0 / ell) * Mn);
+        variable_list.set_gradient_term(2, -ell * nx * Gc0 * Gx * (3.0 / 4.0) * Mn);
       }
 
     else if (solve_block_id == 2) // no body force; analytic BC applied via set_dirichlet
@@ -210,6 +197,44 @@ private:
       }
   }
 
+private:
+  /**
+   * @brief Constrain the time derivative of a scalar field to ensure that the updated
+   * value remains within specified bounds.
+   */
+  template <typename num>
+  void
+  constrain_dvaldt(const num &val,
+                   num       &dvaldt,
+                   double     dt,
+                   double     lower = 0.0,
+                   double     upper = 1.0) const
+  {
+    using std::max;
+    using std::min;
+    num top = max(val + dvaldt * dt, num(upper));
+    num bot = min(val + dvaldt * dt, num(lower));
+    dvaldt  = (dvaldt * dt + (upper - top - (bot - lower))) / dt;
+  }
+
+  template <typename num>
+  num
+  analytical_n(const num &sdf) const
+  {
+    using std::abs;
+    using std::max;
+    num val = (1.0 - 0.5 * abs(sdf) / ell);
+    return val * max(val, num(0.0));
+  }
+
+  double
+  y_offset() const
+  {
+    const SpatialDiscretization<dim> &sd = get_user_inputs().spatial_discretization;
+    return sd.rectangular_mesh.size[1] / sd.rectangular_mesh.subdivisions[1] /
+           double(1 << sd.global_refinement) / 2.0;
+  }
+
   // ---- member variables ----
 
   number                                                       clength;
@@ -219,8 +244,6 @@ private:
   dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, number> CIJ_base;
   number                                                       KI_nom;
   number                                                       vel_nom;
-  number                                                       dx = 0.0;
-  number                                                       Ly = 0.0;
 };
 
 PRISMS_PF_END_NAMESPACE
