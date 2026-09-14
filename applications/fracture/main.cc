@@ -32,20 +32,20 @@ main(int argc, char *argv[])
     FieldAttributes("f_el", Scalar), // 10 - elastic energy density (scalar, postprocess)
   };
 
-  // Block 0: explicit n update using previous-step n and dndt
+  // Block 0: constant mask fields — initialized once from ICs
+  SolveBlock const_block;
+  const_block.id            = 0;
+  const_block.solve_type    = Constant;
+  const_block.solve_timing  = Initialized;
+  const_block.field_indices = {3, 4};
+
+  // Block 1: explicit n update using previous-step n and dndt
   SolveBlock n_block;
-  n_block.id               = 0;
+  n_block.id               = 1;
   n_block.solve_type       = Explicit;
   n_block.solve_timing     = Primary;
   n_block.field_indices    = {0};
   n_block.dependencies_rhs = make_dependency_set(fields, {"old_1(n)", "old_1(dndt)"});
-
-  // Block 1: constant mask fields — initialized once from ICs
-  SolveBlock const_block;
-  const_block.id            = 1;
-  const_block.solve_type    = Constant;
-  const_block.solve_timing  = Initialized;
-  const_block.field_indices = {3, 4};
 
   // Block 2: linear u solve — driven by analytical Dirichlet BCs, no body force
   SolveBlock u_block;
@@ -75,7 +75,7 @@ main(int argc, char *argv[])
     make_dependency_set(fields, {"n", "grad(n)", "grad(u)", "Ex", "Gx"});
 
   std::vector<SolveBlock> solve_blocks(
-    {n_block, const_block, u_block, dndt_block, pp_block});
+    {const_block, n_block, u_block, dndt_block, pp_block});
 
   UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
   PhaseFieldTools<dim>           pf_tools;
