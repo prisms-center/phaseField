@@ -55,8 +55,8 @@ public:
   using Smoother        = dealii::MGSmootherPrecondition<MFOperator<dim, degree, number>,
                                                          SmootherPrecond,
                                                          BlockVector<number>>;
-  using MGTransferType =
-    dealii::MGTransferBlockGlobalCoarsening<dim, BlockVector<number>>;
+  using MGTransferType  = dealii::MGTransferBlockMatrixFree<dim, BlockVector<number>>;
+
   // dc = default constructible, ndc = not default constructible
   dealii::MGLevelObject<MFOperator<dim, degree, number>> mg_lhs_operators; // dc
   std::vector<dealii::MGConstrainedDoFs>                 mg_constraints;   // dc
