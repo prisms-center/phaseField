@@ -30,6 +30,10 @@ namespace Mechanics
     [ .  .  .  0  0  . ]
   */
 
+  // Tolerance for checking singularity in elastic stiffness
+  template <typename T>
+  constexpr T tolerance = std::numeric_limits<T>::epsilon() * 1e4;
+
   template <typename T>
   using PlaneStressStiffness = dealii::Tensor<2, 3, T>;
 
@@ -977,8 +981,7 @@ namespace Mechanics
           {
 #ifdef DEBUG
             // Warning for parameer close to incompressible
-            constexpr T tolerance = std::numeric_limits<T>::epsilon() * 1e4;
-            if (std::fabs(T(1.0) - T(2.0) * nu) <= tolerance)
+            if (std::fabs(T(1.0) - T(2.0) * nu) <= tolerance<T>)
               {
                 Logger::instance()
                   << LogFormatter::warning(
@@ -1006,8 +1009,7 @@ namespace Mechanics
       {
 #ifdef DEBUG
         // Warning for parameer close to incompressible
-        constexpr T tolerance = std::numeric_limits<T>::epsilon() * 1e4;
-        if (std::fabs(T(1.0) - T(2.0) * nu) <= tolerance)
+        if (std::fabs(T(1.0) - T(2.0) * nu) <= tolerance<T>)
           {
             Logger::instance()
               << LogFormatter::warning(
@@ -1081,8 +1083,7 @@ namespace Mechanics
       dealii::ExcMessage(
         "Invalid orthotropic elastic constants: the determinant must be positive."));
 
-    constexpr T tolerance = std::numeric_limits<T>::epsilon() * 1e4;
-    if (delta <= tolerance)
+    if (delta <= tolerance<T>)
       {
         Logger::instance()
           << LogFormatter::warning(
@@ -1166,8 +1167,7 @@ namespace Mechanics
         "Invalid orthotropic elastic constants: the determinant must be positive."));
 
     // Warning for nearly singular
-    constexpr T tolerance = std::numeric_limits<T>::epsilon() * 1e4;
-    if (delta <= tolerance)
+    if (delta <= tolerance<T>)
       {
         Logger::instance()
           << LogFormatter::warning(
@@ -1265,8 +1265,7 @@ namespace Mechanics
         "Invalid orthotropic elastic constants: the determinant must be positive."));
 
     // Warning for nearly singular
-    constexpr T tolerance = std::numeric_limits<T>::epsilon() * 1e4;
-    if (delta <= tolerance)
+    if (delta <= tolerance<T>)
       {
         Logger::instance()
           << LogFormatter::warning(
