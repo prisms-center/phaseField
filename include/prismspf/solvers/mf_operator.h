@@ -78,14 +78,14 @@ public:
     else
       {
         static Value<Rank> ident = []()
-          {
-            Value<Rank> obj;
-            for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
-              {
-                obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
-              }
-            return obj;
-          }();
+        {
+          Value<Rank> obj;
+          for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
+            {
+              obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
+            }
+          return obj;
+        }();
         return ident;
       }
   }
