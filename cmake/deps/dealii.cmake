@@ -16,7 +16,12 @@ find_package(
 # TODO: Don't rely on deal.II do stuff ourselves
 
 function(strip_dealii_flags input output)
-  string(REGEX REPLACE "-O[0-9s]|-std=[^ ]+" "" stripped "${input}")
+  string(
+    REGEX REPLACE "-O[0-9s]|-std=[^ ]+"
+    ""
+    stripped
+    "${input}"
+  )
   string(STRIP "${stripped}" stripped)
   set(${output} "${stripped}" PARENT_SCOPE)
 endfunction()
@@ -86,6 +91,11 @@ if(DEAL_II_BUILD_TYPE STREQUAL "DebugRelease")
     prisms_pf_add_dependency_target(dealii::dealii_release RELEASE PUBLIC)
   endif()
 else()
-  prisms_pf_add_dependency_target(dealii::dealii DEBUG PUBLIC)
-  prisms_pf_add_dependency_target(dealii::dealii RELEASE PUBLIC)
+  # NOTE: For whatever reason, the dealii::dealii target is just an interface
+  # library for deal.II 9.8.0. Because of this, linking to it doesn't do
+  # anything. Instead, we have to grab the build type and determine
+  # whether we want dealii::dealii_release or dealii::dealii_debug
+  string(TOLOWER "${DEAL_II_BUILD_TYPE}" _dealii_build)
+  prisms_pf_add_dependency_target("dealii::dealii_${_dealii_build}" DEBUG PUBLIC)
+  prisms_pf_add_dependency_target("dealii::dealii_${_dealii_build}" RELEASE PUBLIC)
 endif()
