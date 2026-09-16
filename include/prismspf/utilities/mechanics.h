@@ -141,6 +141,7 @@ namespace Mechanics
    * 1D, 2D Plane Stress, 3D.
    * Overload: Return value
    */
+  // Disable clang-format intentionally
   // clang-format off
   template <unsigned int dim,
             StressState  state = StressState::ThreeDimensional,
@@ -561,6 +562,7 @@ namespace Mechanics
    * 1D, 2D Plane Stress, 3D.
    * Overload: Return value.
    */
+  // Disable clang-format intentionally
   // clang-format off
   template <unsigned int dim,
             StressState  state = StressState::ThreeDimensional,
@@ -922,6 +924,7 @@ namespace Mechanics
    * Overload for 2D Plane Strain
    * Overload: Return value, always return a symmetric tensor.
    */
+  // Disable clang-format intentionally
   // clang-format off
   template <unsigned int dim, StressState state, typename T>
   requires(state == StressState::PlaneStrain && dim == 2)
