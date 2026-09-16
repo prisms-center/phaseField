@@ -14,6 +14,32 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+// Named field indices: keeps main.cc and custom_pde.h in sync when fields are
+// added or reordered. Extend this enum (and the fields vector in main.cc) together.
+enum class FieldIndex : unsigned int
+{
+  n     = 0,
+  u     = 1,
+  dndt  = 2,
+  Ex    = 3,
+  Gx    = 4,
+  f_tot = 5,
+  s11   = 6,
+  s12   = 7,
+  s22   = 8,
+  f_int = 9,
+  f_el  = 10,
+  s33   = 11,
+  s13   = 12,
+  s23   = 13,
+};
+
+constexpr unsigned int
+idx(FieldIndex f)
+{
+  return static_cast<unsigned int>(f);
+}
+
 template <unsigned int dim, unsigned int degree, typename number>
 class CustomPDE : public PDEOperatorBase<dim, degree, number>
 {
@@ -47,14 +73,21 @@ private:
     vector_component_value = 0.0;
     dealii::Point<dim> p(point);
     p[1] -= y_offset(); // shift y origin to middle of cell
-    if (index == 0)     // n: horizontal crack seed at mid-height, x < clength
+
+    if (index == idx(FieldIndex::n)) // horizontal crack seed at mid-height, x < clength
       {
+        // Distance computed in x-y plane only; z is ignored so the crack front is a
+        // straight edge extruded uniformly through the domain's z extent (dim == 3).
         double indicator(p[0] < clength);
-        double sdf = indicator * std::abs(p[1]) +
-                     (1.0 - indicator) * p.distance(dealii::Point<dim>(clength, 0.0));
+        double dx = p[0] - clength;
+        double dy = p[1];
+        double sdf =
+          indicator * std::abs(p[1]) + (1.0 - indicator) * std::sqrt(dx * dx + dy * dy);
         scalar_value = analytical_n(sdf);
       }
-    if (index == 3 || index == 4) // Ex, Gx = 1 everywhere (homogeneous material)
+
+    if (index == idx(FieldIndex::Ex) ||
+        index == idx(FieldIndex::Gx)) // Ex, Gx = 1 everywhere (homogeneous material)
       {
         scalar_value = 1.0;
       }
@@ -69,7 +102,10 @@ private:
                 [[maybe_unused]] number                   &scalar_value,
                 [[maybe_unused]] number &vector_component_value) const override
   {
-    if (index == 1)
+    scalar_value           = 0.0;
+    vector_component_value = 0.0;
+
+    if (index == idx(FieldIndex::u))
       {
         constexpr double pi = std::numbers::pi;
 
@@ -79,6 +115,10 @@ private:
         number y     = p[1];
         number r     = std::sqrt((x * x) + (y * y));
         number theta = std::atan2(y, x);
+        // CIJ_base[dim][dim] gives the shear modulus mu for any dim because all
+        // diagonal shear entries of an isotropic Voigt matrix are equal. This
+        // indexing works for both 2D (index [2][2]) and 3D (index [3][3]).
+        // It would need to change if CIJ_base were made anisotropic.
         number mu    = CIJ_base[dim][dim];
         number lam   = CIJ_base[0][0] - (2.0 * mu);
         number nu    = lam / (2.0 * (lam + mu));
@@ -90,9 +130,13 @@ private:
           {
             vector_component_value = val * std::cos(0.5 * theta);
           }
-        else
+        else if (component == 1)
           {
             vector_component_value = val * std::sin(0.5 * theta);
+          }
+        else
+          {
+            vector_component_value = 0.0; // u_z: plane-strain extrusion in z
           }
       }
   }
@@ -104,22 +148,29 @@ private:
   {
     if (solve_block_id == 1) // explicit n update
       {
-        ScalarValue  n    = variable_list.template get_value<Scalar, OldOne>(0);
-        ScalarValue  dndt = variable_list.template get_value<Scalar, OldOne>(2);
-        const double dt   = sim_timer.get_timestep();
+        ScalarValue n =
+          variable_list.template get_value<Scalar, OldOne>(idx(FieldIndex::n));
+        ScalarValue dndt =
+          variable_list.template get_value<Scalar, OldOne>(idx(FieldIndex::dndt));
+        const double dt = sim_timer.get_timestep();
         using std::max;
         dndt = max(dndt, ScalarValue(0.0));
         constrain_dvaldt(n, dndt, dt);
-        variable_list.set_value_term(0, n + (dt * dndt));
+        variable_list.set_value_term(idx(FieldIndex::n), n + (dt * dndt));
       }
 
     else if (solve_block_id == 3) // auxiliary dndt
       {
-        ScalarValue n  = variable_list.template get_value<Scalar, Current>(0);
-        ScalarGrad  nx = variable_list.template get_gradient<Scalar, Current>(0);
-        VectorGrad ux = variable_list.template get_symmetric_gradient<Vector, Current>(1);
-        ScalarValue Ex = variable_list.template get_value<Scalar, Current>(3);
-        ScalarValue Gx = variable_list.template get_value<Scalar, Current>(4);
+        ScalarValue n =
+          variable_list.template get_value<Scalar, Current>(idx(FieldIndex::n));
+        ScalarGrad nx =
+          variable_list.template get_gradient<Scalar, Current>(idx(FieldIndex::n));
+        VectorGrad ux = variable_list.template get_symmetric_gradient<Vector, Current>(
+          idx(FieldIndex::u));
+        ScalarValue Ex =
+          variable_list.template get_value<Scalar, Current>(idx(FieldIndex::Ex));
+        ScalarValue Gx =
+          variable_list.template get_value<Scalar, Current>(idx(FieldIndex::Gx));
 
         dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, ScalarValue> C =
           CIJ_base * Ex;
@@ -134,23 +185,30 @@ private:
               }
           }
 
-        variable_list
-          .set_value_term(2, -(2.0 * (n - 1.0) * psi + Gc0 * Gx * 3.0 / 8.0 / ell) * Mn);
-        variable_list.set_gradient_term(2, -ell * nx * Gc0 * Gx * (3.0 / 4.0) * Mn);
+        variable_list.set_value_term(
+          idx(FieldIndex::dndt),
+          -(2.0 * (n - 1.0) * psi + Gc0 * Gx * 3.0 / 8.0 / ell) * Mn);
+        variable_list.set_gradient_term(idx(FieldIndex::dndt),
+                                        -ell * nx * Gc0 * Gx * (3.0 / 4.0) * Mn);
       }
 
     else if (solve_block_id == 2) // no body force; analytic BC applied via set_dirichlet
       {
-        variable_list.set_gradient_term(1, VectorGrad());
+        variable_list.set_gradient_term(idx(FieldIndex::u), VectorGrad());
       }
 
     else if (solve_block_id == 4) // postprocessing
       {
-        ScalarValue n  = variable_list.template get_value<Scalar, Current>(0);
-        ScalarGrad  nx = variable_list.template get_gradient<Scalar, Current>(0);
-        VectorGrad ux = variable_list.template get_symmetric_gradient<Vector, Current>(1);
-        ScalarValue Ex = variable_list.template get_value<Scalar, Current>(3);
-        ScalarValue Gx = variable_list.template get_value<Scalar, Current>(4);
+        ScalarValue n =
+          variable_list.template get_value<Scalar, Current>(idx(FieldIndex::n));
+        ScalarGrad nx =
+          variable_list.template get_gradient<Scalar, Current>(idx(FieldIndex::n));
+        VectorGrad ux = variable_list.template get_symmetric_gradient<Vector, Current>(
+          idx(FieldIndex::u));
+        ScalarValue Ex =
+          variable_list.template get_value<Scalar, Current>(idx(FieldIndex::Ex));
+        ScalarValue Gx =
+          variable_list.template get_value<Scalar, Current>(idx(FieldIndex::Gx));
 
         ScalarValue f_int =
           (Gc0 * n * Gx * (3.0 / 8.0) / ell) + (Gc0 * Gx * 3.0 / 8.0 * ell * nx * nx);
@@ -168,12 +226,27 @@ private:
               }
           }
 
-        variable_list.set_value_term(5, f_el + f_int); // f_tot
-        variable_list.set_value_term(6, stress[0][0]); // s11
-        variable_list.set_value_term(7, stress[0][1]); // s12
-        variable_list.set_value_term(8, stress[1][1]); // s22
-        variable_list.set_value_term(9, f_int);
-        variable_list.set_value_term(10, f_el);
+        variable_list.set_value_term(idx(FieldIndex::f_tot), f_el + f_int);
+        variable_list.set_value_term(idx(FieldIndex::s11), stress[0][0]);
+        variable_list.set_value_term(idx(FieldIndex::s12), stress[0][1]);
+        variable_list.set_value_term(idx(FieldIndex::s22), stress[1][1]);
+        variable_list.set_value_term(idx(FieldIndex::f_int), f_int);
+        variable_list.set_value_term(idx(FieldIndex::f_el), f_el);
+
+        // 3D-only stress components; zero-filled for dim == 2 so the field count
+        // stays fixed across both dims and the output is always consistent.
+        if constexpr (dim == 3)
+          {
+            variable_list.set_value_term(idx(FieldIndex::s33), stress[2][2]);
+            variable_list.set_value_term(idx(FieldIndex::s13), stress[0][2]);
+            variable_list.set_value_term(idx(FieldIndex::s23), stress[1][2]);
+          }
+        else
+          {
+            variable_list.set_value_term(idx(FieldIndex::s33), ScalarValue(0.0));
+            variable_list.set_value_term(idx(FieldIndex::s13), ScalarValue(0.0));
+            variable_list.set_value_term(idx(FieldIndex::s23), ScalarValue(0.0));
+          }
       }
   }
 
@@ -184,16 +257,18 @@ private:
   {
     if (solve_block_id == 2) // degraded stiffness tangent for u
       {
-        ScalarValue n = variable_list.template get_value<Scalar, Current>(0);
-        VectorGrad  ux_trial =
-          variable_list.template get_symmetric_gradient<Vector, LHS>(1);
-        ScalarValue Ex = variable_list.template get_value<Scalar, Current>(3);
+        ScalarValue n =
+          variable_list.template get_value<Scalar, Current>(idx(FieldIndex::n));
+        VectorGrad ux_trial =
+          variable_list.template get_symmetric_gradient<Vector, LHS>(idx(FieldIndex::u));
+        ScalarValue Ex =
+          variable_list.template get_value<Scalar, Current>(idx(FieldIndex::Ex));
 
         dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, ScalarValue> C_deg =
           CIJ_base * Ex * (1.0 - 2.0 * n + n * n);
         VectorGrad stress;
         Mechanics::compute_stress<dim, ScalarValue>(C_deg, ux_trial, stress);
-        variable_list.set_gradient_term(1, stress);
+        variable_list.set_gradient_term(idx(FieldIndex::u), stress);
       }
   }
 

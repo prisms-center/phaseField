@@ -1,135 +1,192 @@
-# Phase-Field Fracture
+# PRISMS PhaseField: Phase-Field Fracture
 
-This example application implements a 2D phase-field model of brittle fracture, driven by a
-**surfing boundary condition**: a mode-I asymptotic displacement field that translates through the
-domain at a prescribed velocity, imposing a steady stress-intensity factor near a (virtual) moving
-crack tip and driving crack propagation.
+This application implements a phase-field model of brittle fracture, closely following
+Hossain et al. [1], with the phase field evolved by a forward-Euler time iteration rather
+than solved as a stationary point of the energy, in the spirit of Kuhn and Müller [2]. Crack
+growth is driven by a **surfing boundary condition**: a mode-I asymptotic displacement field
+that translates through the domain at constant velocity, holding a steady stress-intensity
+factor near a virtual crack tip.
 
 ## Governing equations
 
 Consider a total free energy of the form
 
 $$
-\Pi(u,n) = \int_{\Omega} g(n) \psi_e\big(\varepsilon(u)\big) dV
- + \int_{\Omega} G_c \gamma(n,\nabla n) dV
- - \int_{\partial \Omega} u \cdot t dS
+\begin{equation}
+\Pi(u,n) = \int_{\Omega} E(\mathbf{x})\,h(n)\,\Psi(u) ~dV + \int_{\Omega} G_c(\mathbf{x}) \left( \frac{3}{8\ell} n + \frac{3\ell}{8} |\nabla n|^2 \right) dV - \int_{\partial \Omega} u \cdot t ~dS
+\end{equation}
 $$
 
-where $u$ is the displacement, $\varepsilon(u) = \frac{1}{2}(\nabla u + \nabla u^T)$ is the
-infinitesimal strain tensor, and $n \in [0,1]$ is a scalar phase field describing the state of
-damage ($n=0$: intact material, $n=1$: fully broken). The elastic strain energy density of the
-undamaged material is
+where $u$ is the displacement and $n \in [0,1]$ is a scalar phase field describing damage
+($n=0$: intact, $n=1$: fully broken). $\Psi(u) = \frac{1}{2}\varepsilon(u):C_0:\varepsilon(u)$
+is the elastic strain energy density of the undamaged base material ($\varepsilon(u) =
+\frac{1}{2}(\nabla u + \nabla u^T)$, $C_0$ the base elasticity tensor), and $h(n)=(1-n)^2$ is
+the quadratic degradation function. $E(\mathbf{x}) \in [0,1]$ and $G_c(\mathbf{x})$ are
+dimensionless masks (fields `Ex`, `Gx` in code) that let the base stiffness $C_0$ and baseline
+toughness $G_c^0$ vary in space, for studies of heterogeneous media [1]; they are assigned
+once through the initial condition and held fixed thereafter. $t = \sigma \cdot \hat{n}$ is
+the surface traction; body forces are zero.
+
+## Variational treatment
+
+**Mechanical equilibrium.** Holding $n$ fixed and varying $u \to u + \alpha w$:
 
 $$
-\psi_e(\varepsilon) = \frac{1}{2} \varepsilon : C_0 : \varepsilon ,
+\begin{align}
+\delta_u \Pi &= \int_{\Omega} \nabla w : \sigma ~dV - \int_{\partial \Omega} w \cdot t ~dS \\
+\sigma &= E(\mathbf{x})\,h(n)\,C_0:\varepsilon(u)
+\end{align}
 $$
 
-with $C_0$ the (isotropic) elasticity tensor of the base material, and $g(n) = (1-n)^2$ is a
-quadratic degradation function that reduces stiffness as the material accumulates damage. The
-crack surface density function
+Loading is applied through Dirichlet conditions on $u$ (see Surfing boundary condition
+below), so $\delta_u \Pi = 0$ reduces to the weak form $R_u(w) = \int_{\Omega} \nabla w : \sigma ~dV = 0$,
+i.e. $\nabla \cdot \sigma = 0$.
+
+**Phase-field evolution.** $n$ evolves by a non-conserved, $L^2$ gradient-flow kinetic law
+with mobility $M_n$ [2]; this time dependence is a numerical regularization rather than a
+physical rate law [4], so loading rates should be kept slow enough that $M_n$ does not affect
+the solution. Varying $n \to n + \alpha v$ at fixed $u$:
 
 $$
-\gamma(n,\nabla n) = \frac{3}{8\ell} n + \frac{3\ell}{8} |\nabla n|^2
+\begin{align}
+\delta_n \Pi &= \int_{\Omega} E(\mathbf{x})\,h_{,n}\,\Psi(u)\,v ~dV + \int_{\Omega} G_c(\mathbf{x}) \left( \frac{3}{8\ell} v + \frac{3\ell}{4} \nabla n \cdot \nabla v \right) dV, \qquad h_{,n} = 2(n-1)
+\end{align}
 $$
 
-is the (AT1, linear-softening) regularized approximation to the sharp-crack surface measure, so
-that $G_c\gamma$ integrates to the Griffith fracture energy $G_c$ per unit crack length as the
-regularization length $\ell \to 0$. $t = \sigma \cdot \hat{n}$ is the surface traction; body forces
-are assumed to be zero.
-
-### Mechanical equilibrium
-
-Holding $n$ fixed and considering variations of the displacement $u \to u + \alpha w$,
+giving the evolution law $\int_{\Omega} \dot{n}~v ~dV = -M_n \delta_n \Pi[v]$, or in strong form
 
 $$
-\begin{aligned}
-\delta_u \Pi &= \frac{d}{d\alpha}\Pi(u+\alpha w, n)\Big|_{\alpha=0} \\
-&= \int_{\Omega} g(n) \varepsilon(w) : C_0 : \varepsilon(u) dV - \int_{\partial\Omega} w\cdot t dS \\
-&= \int_{\Omega} \nabla w : \sigma dV - \int_{\partial\Omega} w\cdot t dS ,
-\end{aligned}
+\begin{equation}
+\dot{n} = -M_n \left[ 2(n-1)\,E(\mathbf{x})\Psi(u) + G_c(\mathbf{x}) \frac{3}{8\ell} - G_c(\mathbf{x}) \frac{3\ell}{4} \nabla^2 n \right]
+\end{equation}
 $$
 
-where
+subject to the **irreversibility constraint** $\dot n \ge 0$ (damage cannot heal) and the box
+constraint $n \le 1$, both enforced numerically by clamping the explicit update at each time
+step (see Time discretization). Splitting $\Psi(u)$ into tensile/compressive parts to prevent
+crack growth under pure compression [3] is not implemented; boundary conditions should be
+chosen to induce predominantly tensile stress states.
+
+## Kinetics
+
+Mechanical equilibrium is elliptic and is re-solved every time step for the current damage
+field, while the phase field evolves according to a parabolic rate law:
 
 $$
-\sigma = g(n) C_0 : \varepsilon(u)
+\begin{align}
+\nabla \cdot \sigma &= 0 \\
+\sigma &= E(\mathbf{x})\,h(n)\,C_0:\varepsilon(u)
+\end{align}
 $$
 
-is the degraded Cauchy stress. In this application all loading is applied through a prescribed
-(time-dependent) Dirichlet condition on $u$ rather than through surface tractions, so
-$\delta_u \Pi = 0$ for admissible variations $w$ reduces to the weak form
-
 $$
-R_u(w) = \int_{\Omega} \nabla w : \sigma dV = 0 \qquad \Longleftrightarrow \qquad \nabla\cdot\sigma = 0 \quad \text{in} \quad \Omega ,
+\begin{align}
+\frac{\partial n}{\partial t} &= -M_n \left[ 2(n-1)\,E(\mathbf{x})\Psi(u) + G_c(\mathbf{x}) \frac{3}{8\ell} - G_c(\mathbf{x}) \frac{3\ell}{4} \nabla^2 n \right]
+\end{align}
 $$
 
-the usual quasi-static equilibrium equation for a linear elastic solid with spatially and
-temporally varying (damage-degraded) stiffness.
+## Time discretization
 
-### Phase-field evolution
-
-Unlike $u$, the damage field $n$ is not required to satisfy stationarity of $\Pi$ at every
-instant; instead it evolves by a non-conserved, $L^2$ gradient-flow (Ginzburg–Landau-type) kinetic
-law with mobility $M_n$, in the spirit of the phase-field fracture models of Kuhn and Müller [2]
-and the variational formulations reviewed in [3, 4]. Taking the variation of $\Pi$ with respect to
-$n \to n + \alpha v$ at fixed $u$,
+$\dot n$ is computed once per step as an auxiliary field (`dndt` in code) so that $\Psi(u)$
+is evaluated only once and reused, then $n$ is advanced by forward Euler:
 
 $$
-\begin{aligned}
-\delta_n \Pi &= \frac{d}{d\alpha}\Pi(u, n+\alpha v)\Big|_{\alpha=0} \\
-&= \int_{\Omega} g'(n) \psi_e v dV + \int_{\Omega} G_c\left(\frac{3}{8\ell} v + \frac{3\ell}{4} \nabla n\cdot\nabla v\right)dV ,
-\end{aligned}
+\begin{align}
+\dot{n}^{n-1} &= -M_n \left[ 2(n^{n-1}-1)\,E(\mathbf{x})\Psi(u^{n-1}) + G_c(\mathbf{x}) \frac{3}{8\ell} - G_c(\mathbf{x}) \frac{3\ell}{4} \nabla^2 n^{n-1} \right]
+\end{align}
 $$
 
-with $g'(n) = -2(1-n) = 2(n-1)$. The evolution law is then
-
 $$
-\int_{\Omega} \dot{n} v dV = -M_n \delta_n\Pi[v] \qquad \forall v ,
-$$
-
-or, in strong form,
-
-$$
-\dot{n} = -M_n\left[ 2(n-1) \psi_e + G_c\frac{3}{8\ell} - G_c\frac{3\ell}{4}\nabla^2 n \right] .
+\begin{align}
+n^{n} &= n^{n-1} + \Delta t\, \dot{n}^{n-1}
+\end{align}
 $$
 
-This is subject to the **irreversibility constraint** $\dot n \ge 0$ (damage cannot heal) and the
-box constraint $n \le 1$ (damage cannot exceed the fully broken state), both enforced numerically
-(see below) rather than analytically.
+clamped afterward so that the update satisfies $n^{n} \ge n^{n-1}$ (irreversibility) and
+$n^{n} \le 1$ (box constraint).
+
+## Weak formulation
+
+For the auxiliary field $\dot n$, with arbitrary variation $w$:
+
+$$
+\begin{align}
+\int_{\Omega} w\, \dot{n}^{n-1} ~dV &= \int_{\Omega} w\, \mathrm{RHS}_{dndt} + \nabla w \cdot \mathrm{RHS}_{dndtx} ~dV
+\end{align}
+$$
+
+$$
+\begin{align}
+\mathrm{RHS}_{dndt} &= -M_n \left[ 2(n^{n-1}-1)\,E(\mathbf{x})\Psi(u^{n-1}) + G_c(\mathbf{x}) \frac{3}{8\ell} \right]
+\end{align}
+$$
+
+$$
+\begin{align}
+\mathrm{RHS}_{dndtx} &= -M_n\, G_c(\mathbf{x}) \frac{3\ell}{4} \nabla n^{n-1}
+\end{align}
+$$
+
+For the phase field $n$ itself, no gradient term is needed (the Laplacian has already been
+folded into $\dot n$ above) so the update is a pointwise sum:
+
+$$
+\begin{align}
+\int_{\Omega} w\, n^{n} ~dV &= \int_{\Omega} w\, \mathrm{RHS}_{n} ~dV, \qquad \mathrm{RHS}_{n} = n^{n-1} + \Delta t\, \dot{n}^{n-1}
+\end{align}
+$$
+
+For the displacement field $u$, loading enters only through the Dirichlet boundary condition,
+so the load-vector side of the linear solve carries no source term ($\mathrm{RHS}_{u} = 0$,
+$\mathrm{RHS}_{ux} = 0$); the matrix-free CG solve instead assembles, at each iteration, the action of
+the degraded tangent stiffness on a trial update $\Delta u$:
+
+$$
+\begin{align}
+\mathrm{LHS}_{ux} &= E(\mathbf{x})\,h(n)\,C_0:\varepsilon(\Delta u)
+\end{align}
+$$
+
+The above expressions of $\mathrm{RHS}_{dndt}$, $\mathrm{RHS}_{dndtx}$, $\mathrm{RHS}_{n}$, and $\mathrm{LHS}_{ux}$ define the
+code written in:
+`custom_pde.h`
 
 ## Surfing boundary condition
 
-Crack growth is driven entirely by a Dirichlet condition on $u$ along $\partial\Omega$: the
-classical linear-elastic (Williams) mode-I asymptotic displacement field, evaluated in a frame
-centered on a virtual crack tip that translates at a constant prescribed velocity $v_{\text{nom}}$.
-This is the "surfing" boundary condition of Hossain, Hsueh, Bourdin, and Bhattacharya [1], designed
-to hold a nominal stress-intensity factor $K_I^{\text{nom}}$ approximately constant near the
-propagating crack, so that a steady-state propagation regime can be reached without needing to
-resolve the far-field problem.
-
-Let $(x_{\text{tip}}(t), y_{\text{tip}}) = \big(v_{\text{nom}} t + c_{\ell}, L_y/2\big)$ denote
-the (moving) reference point, with $c_\ell$ the initial seed-crack length and $L_y$ the domain
-height. Define local polar coordinates centered on this point,
+Crack growth is driven entirely by a Dirichlet condition on $u$: the leading-order,
+plane-strain mode-I asymptotic displacement field for a semi-infinite crack in an infinite
+body [5], evaluated in a frame centered on a virtual crack tip that translates at constant
+velocity $v_{\text{nom}}$: the "surfing" boundary condition of Hossain et al. [1]:
 
 $$
-x = X - x_{\text{tip}}(t), \qquad y = Y - y_{\text{tip}}, \qquad r = \sqrt{x^2+y^2}, \qquad \theta = \text{atan2}(y,x) ,
+\begin{align}
+u_x &= \frac{K_I^{\text{nom}}}{2\mu}\sqrt{\frac{r}{2\pi}} (\kappa - \cos\theta)\cos\frac{\theta}{2} \\
+u_y &= \frac{K_I^{\text{nom}}}{2\mu}\sqrt{\frac{r}{2\pi}} (\kappa - \cos\theta)\sin\frac{\theta}{2}
+\end{align}
 $$
 
-for a point $(X,Y) \in \partial\Omega$. The imposed displacement is the plane-strain mode-I
-near-tip field (see e.g. Zehnder [5]),
+where $r,\theta$ are polar coordinates centered on the moving tip
+$(v_{\text{nom}}t + c_\ell,\, y_{\text{tip}})$, $\mu,\lambda$ are the Lamé parameters recovered
+from $C_0$, $\nu = \lambda/[2(\lambda+\mu)]$, and $\kappa = 3-4\nu$ (plane strain). The crack
+should propagate through some combination of $K_I^{\text{nom}}$ exceeding the critical
+stress intensity factor $K_{Ic} = \sqrt{G_c E'}$ (with $E'=E$ for plane stress, $E'=E/(1-\nu^2)$
+for plane strain) and the actual crack tip lagging the imposed tip location; $v_{\text{nom}}$
+should be slow enough that the phase field stays close to equilibrium.
+
+## Initial conditions
+
+$n$ is seeded at $t=0$ with a straight crack of length $c_\ell$ along the domain mid-height,
+using the analytical AT1 energy-minimizing profile
 
 $$
-\begin{aligned}
-u_x(x,y,t) &= \frac{K_I^{\text{nom}}}{2\mu}\sqrt{\frac{r}{2\pi}} (\kappa - \cos\theta) \cos\frac{\theta}{2} , \\
-u_y(x,y,t) &= \frac{K_I^{\text{nom}}}{2\mu}\sqrt{\frac{r}{2\pi}} (\kappa - \cos\theta) \sin\frac{\theta}{2} ,
-\end{aligned}
+\begin{equation}
+n_0(\mathbf{x}) = \left[ \left(1 - \frac{d(\mathbf{x})}{2\ell}\right)_+ \right]^2
+\end{equation}
 $$
 
-where $\mu$ and $\lambda$ are the Lamé parameters recovered from the base elasticity tensor $C_0$,
-$\nu = \lambda / [2(\lambda+\mu)]$ is Poisson's ratio, and $\kappa = 3-4\nu$ is the plane-strain
-Kolosov constant. As $t$ increases, this field slides through the domain at velocity
-$v_{\text{nom}}$, so the boundary loading looks, in the crack-tip frame, like a stationary K-field
-"surfing" past the material, hence the name.
+where $d(\mathbf{x})$ is the distance from $\mathbf{x}$ to the seed crack, so the crack starts
+at its steady-state regularized width and does not need to re-equilibrate before propagation
+begins.
 
 ## References
 
