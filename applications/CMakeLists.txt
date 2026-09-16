@@ -10,6 +10,8 @@ set(
   coupled_allen_cahn_cahn_hilliard
   mechanics/boundary_value_problem
   mechanics/eshelby_inclusion
+  mechanics/plane_stress
+  mechanics/plane_strain
   nucleation
   laplace
   pfhub_benchmarks/1/a
