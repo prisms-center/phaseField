@@ -142,7 +142,7 @@ declare_entry(dealii::ParameterHandler            &parameter_handler,
     }
 
   parameter_handler.declare_entry(_entry, std::string(default_value), pattern, _doc);
-#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
+#if DEAL_II_VERSION_GTE(9, 7, 0)
   parameter_handler.mark_as_deprecated(_entry, deprecated);
 #endif
   declare_aliases_with_generated(parameter_handler, _entry, aliases);

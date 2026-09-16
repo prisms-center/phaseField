@@ -55,7 +55,7 @@ public:
   using Smoother        = dealii::MGSmootherPrecondition<MFOperator<dim, degree, number>,
                                                          SmootherPrecond,
                                                          BlockVector<number>>;
-#ifdef DEAL_II_VERSION_GTE(9, 8, 0)
+#if DEAL_II_VERSION_GTE(9, 8, 0)
   using MGTransferType = dealii::MGTransferBlockMatrixFree<dim, BlockVector<number>>;
 #else
   using MGTransferType =

@@ -55,7 +55,7 @@ template <unsigned int dim, typename number>
 class GroupSolutionHandler
 {
 public:
-#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
+#if DEAL_II_VERSION_GTE(9, 7, 0)
   using SolutionTransfer = dealii::SolutionTransfer<dim, SolutionVector<number>>;
 #else
   using SolutionTransfer =
