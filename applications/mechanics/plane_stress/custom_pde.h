@@ -10,6 +10,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
+requires(dim == 2)
 class CustomPDE : public PDEOperatorBase<dim, degree, number>
 {
 public:
