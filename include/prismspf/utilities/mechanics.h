@@ -77,13 +77,21 @@ namespace Mechanics
                   "Invalid dimension/StressState combination");
 
     if constexpr (dim == 1)
-      return 1;
+      {
+        return 1;
+      }
     else if constexpr (dim == 2 && state == StressState::PlaneStress)
-      return 3;
+      {
+        return 3;
+      }
     else if constexpr (dim == 2 && state == StressState::PlaneStrain)
-      return 4;
+      {
+        return 4;
+      }
     else
-      return 6;
+      {
+        return 6;
+      }
   }();
 
   /**
