@@ -53,7 +53,6 @@ private:
         component == 0)
       {
         vector_component_value = -1.0;
-        return;
       }
   }
 
