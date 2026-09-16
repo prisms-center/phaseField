@@ -26,7 +26,7 @@
 #include <memory>
 #include <vector>
 
-#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
+#if DEAL_II_VERSION_GTE(9, 7, 0)
 #  include <deal.II/base/enable_observer_pointer.h>
 #  define MATRIX_FREE_OPERATOR_BASE dealii::EnableObserverPointer
 #else
