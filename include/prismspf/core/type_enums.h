@@ -69,7 +69,7 @@ enum ElasticityModel
 /**
  * @brief State of stress.
  */
-enum StressState
+enum class StressState
 {
   /**
    * General 3D stress state.

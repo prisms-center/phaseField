@@ -76,12 +76,12 @@ private:
       {
         VectorGrad ux = variable_list.template get_symmetric_gradient<Vector, LHS>(0);
         VectorGrad stress;
-        Mechanics::compute_stress<dim, ScalarValue>(stiffness, ux, stress);
+        Mechanics<dim>::compute_stress(stiffness, ux, stress);
         variable_list.set_gradient_term(0, stress);
       }
   }
 
-  dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, number> stiffness;
+  typename Mechanics<dim>::VoigtMatrix<double> stiffness;
 };
 
 PRISMS_PF_END_NAMESPACE

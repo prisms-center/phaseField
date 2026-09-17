@@ -18,7 +18,6 @@ main(int argc, char *argv[])
   // file
   ParseCMDOptions cli_options(argc, argv);
 
-  constexpr unsigned int dim    = 2;
   constexpr unsigned int degree = 2;
 
   std::vector<FieldAttributes> fields = {
@@ -47,14 +46,14 @@ main(int argc, char *argv[])
 
   std::vector<SolveBlock> solve_blocks({linear_solve, pp_block});
 
-  UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
-  PhaseFieldTools<dim>           pf_tools;
-  CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
-  Problem<dim, degree, double>   problem(fields,
-                                       solve_blocks,
-                                       user_inputs,
-                                       pf_tools,
-                                       pde_operator);
+  UserInputParameters<2>     user_inputs(cli_options.get_parameters_filename());
+  PhaseFieldTools<2>         pf_tools;
+  CustomPDE<degree, double>  pde_operator(user_inputs, pf_tools);
+  Problem<2, degree, double> problem(fields,
+                                     solve_blocks,
+                                     user_inputs,
+                                     pf_tools,
+                                     pde_operator);
   problem.solve();
 
   return 0;

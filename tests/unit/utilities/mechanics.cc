@@ -9,16 +9,10 @@
 #include <numbers>
 #include <utility>
 
+using namespace prismspf;
+
 namespace
 {
-  namespace Mechanics = prismspf::Mechanics;
-
-  using prismspf::StressState;
-
-  constexpr StressState three_dimensional = StressState::ThreeDimensional;
-  constexpr StressState plane_stress      = StressState::PlaneStress;
-  constexpr StressState plane_strain      = StressState::PlaneStrain;
-
   constexpr double tolerance = 1.0e-12;
 
   void
@@ -75,20 +69,11 @@ namespace
 
 TEST_CASE("Mechanics voigt_size", "[mechanics][voigt][size]")
 {
-  STATIC_REQUIRE(Mechanics::voigt_size<1> == 1);
-  STATIC_REQUIRE(Mechanics::voigt_size<3> == 6);
+  STATIC_REQUIRE(Mechanics<1>::voigt_size == 1);
+  STATIC_REQUIRE(Mechanics<3>::voigt_size == 6);
 
-  STATIC_REQUIRE((Mechanics::voigt_size<2, StressState::PlaneStress> == 3));
-  STATIC_REQUIRE((Mechanics::voigt_size<2, StressState::PlaneStrain> == 4));
-
-  STATIC_REQUIRE((Mechanics::valid_stress_state<1, StressState::ThreeDimensional>) );
-  STATIC_REQUIRE((Mechanics::valid_stress_state<2, StressState::PlaneStress>) );
-  STATIC_REQUIRE((Mechanics::valid_stress_state<2, StressState::PlaneStrain>) );
-  STATIC_REQUIRE((Mechanics::valid_stress_state<3, StressState::ThreeDimensional>) );
-
-  STATIC_REQUIRE_FALSE(
-    (Mechanics::valid_stress_state<2, StressState::ThreeDimensional>) );
-  STATIC_REQUIRE_FALSE((Mechanics::valid_stress_state<3, StressState::PlaneStress>) );
+  STATIC_REQUIRE((PlaneStress::voigt_size == 3));
+  STATIC_REQUIRE((PlaneStrain::voigt_size == 4));
 }
 
 TEST_CASE("Mechanics strain_to_voigt", "[mechanics][strain][voigt]")
@@ -98,10 +83,10 @@ TEST_CASE("Mechanics strain_to_voigt", "[mechanics][strain][voigt]")
     dealii::Tensor<2, 1, double> strain;
     strain[0][0] = 2.5;
 
-    const auto returned = Mechanics::strain_to_voigt<1>(strain);
+    const auto returned = Mechanics<1>::strain_to_voigt(strain);
 
     dealii::Tensor<1, 1, double> output;
-    Mechanics::strain_to_voigt<1>(strain, output);
+    Mechanics<1>::strain_to_voigt(strain, output);
 
     check_voigt<1>(returned, {2.5});
     check_voigt<1>(output, {2.5});
@@ -112,10 +97,10 @@ TEST_CASE("Mechanics strain_to_voigt", "[mechanics][strain][voigt]")
     dealii::SymmetricTensor<2, 1, double> strain;
     strain[0][0] = 2.5;
 
-    const auto returned = Mechanics::strain_to_voigt<1>(strain);
+    const auto returned = Mechanics<1>::strain_to_voigt(strain);
 
     dealii::Tensor<1, 1, double> output;
-    Mechanics::strain_to_voigt<1>(strain, output);
+    Mechanics<1>::strain_to_voigt(strain, output);
 
     check_voigt<1>(returned, {2.5});
     check_voigt<1>(output, {2.5});
@@ -129,10 +114,10 @@ TEST_CASE("Mechanics strain_to_voigt", "[mechanics][strain][voigt]")
     strain[0][1] = 3.0;
     strain[1][0] = 5.0;
 
-    const auto returned = Mechanics::strain_to_voigt<2, plane_stress>(strain);
+    const auto returned = PlaneStress::strain_to_voigt(strain);
 
     dealii::Tensor<1, 3, double> output;
-    Mechanics::strain_to_voigt<2, plane_stress>(strain, output);
+    PlaneStress::strain_to_voigt(strain, output);
 
     // Engineering shear strain: gamma_xy = epsilon_xy + epsilon_yx.
     check_voigt<3>(returned, {1.0, 2.0, 8.0});
@@ -146,10 +131,10 @@ TEST_CASE("Mechanics strain_to_voigt", "[mechanics][strain][voigt]")
     strain[1][1] = 2.0;
     strain[0][1] = 4.0;
 
-    const auto returned = Mechanics::strain_to_voigt<2, plane_stress>(strain);
+    const auto returned = PlaneStress::strain_to_voigt(strain);
 
     dealii::Tensor<1, 3, double> output;
-    Mechanics::strain_to_voigt<2, plane_stress>(strain, output);
+    PlaneStress::strain_to_voigt(strain, output);
 
     check_voigt<3>(returned, {1.0, 2.0, 8.0});
     check_voigt<3>(output, {1.0, 2.0, 8.0});
@@ -165,10 +150,10 @@ TEST_CASE("Mechanics strain_to_voigt", "[mechanics][strain][voigt]")
 
     const double strain_zz = 6.0;
 
-    const auto returned = Mechanics::strain_to_voigt<2, plane_strain>(strain, strain_zz);
+    const auto returned = PlaneStrain::strain_to_voigt(strain, strain_zz);
 
     dealii::Tensor<1, 4, double> output;
-    Mechanics::strain_to_voigt<2, plane_strain>(strain, strain_zz, output);
+    PlaneStrain::strain_to_voigt(strain, strain_zz, output);
 
     check_voigt<4>(returned, {1.0, 2.0, 6.0, 8.0});
     check_voigt<4>(output, {1.0, 2.0, 6.0, 8.0});
@@ -183,10 +168,10 @@ TEST_CASE("Mechanics strain_to_voigt", "[mechanics][strain][voigt]")
 
     const double strain_zz = 6.0;
 
-    const auto returned = Mechanics::strain_to_voigt<2, plane_strain>(strain, strain_zz);
+    const auto returned = PlaneStrain::strain_to_voigt(strain, strain_zz);
 
     dealii::Tensor<1, 4, double> output;
-    Mechanics::strain_to_voigt<2, plane_strain>(strain, strain_zz, output);
+    PlaneStrain::strain_to_voigt(strain, strain_zz, output);
 
     check_voigt<4>(returned, {1.0, 2.0, 6.0, 8.0});
     check_voigt<4>(output, {1.0, 2.0, 6.0, 8.0});
@@ -207,10 +192,10 @@ TEST_CASE("Mechanics strain_to_voigt", "[mechanics][strain][voigt]")
     strain[0][1] = 8.0;
     strain[1][0] = 9.0;
 
-    const auto returned = Mechanics::strain_to_voigt<3>(strain);
+    const auto returned = Mechanics<3>::strain_to_voigt(strain);
 
     dealii::Tensor<1, 6, double> output;
-    Mechanics::strain_to_voigt<3>(strain, output);
+    Mechanics<3>::strain_to_voigt(strain, output);
 
     check_voigt<6>(returned, {1.0, 2.0, 3.0, 9.0, 13.0, 17.0});
     check_voigt<6>(output, {1.0, 2.0, 3.0, 9.0, 13.0, 17.0});
@@ -227,10 +212,10 @@ TEST_CASE("Mechanics strain_to_voigt", "[mechanics][strain][voigt]")
     strain[0][2] = 5.0;
     strain[0][1] = 6.0;
 
-    const auto returned = Mechanics::strain_to_voigt<3>(strain);
+    const auto returned = Mechanics<3>::strain_to_voigt(strain);
 
     dealii::Tensor<1, 6, double> output;
-    Mechanics::strain_to_voigt<3>(strain, output);
+    Mechanics<3>::strain_to_voigt(strain, output);
 
     check_voigt<6>(returned, {1.0, 2.0, 3.0, 8.0, 10.0, 12.0});
     check_voigt<6>(output, {1.0, 2.0, 3.0, 8.0, 10.0, 12.0});
@@ -244,12 +229,12 @@ TEST_CASE("Mechanics voigt_to_strain", "[mechanics][strain][voigt]")
     const auto voigt = make_voigt<1>({2.5});
 
     dealii::Tensor<2, 1, double> tensor;
-    Mechanics::voigt_to_strain<1>(voigt, tensor);
+    Mechanics<1>::voigt_to_strain(voigt, tensor);
 
     dealii::SymmetricTensor<2, 1, double> symmetric_tensor;
-    Mechanics::voigt_to_strain<1>(voigt, symmetric_tensor);
+    Mechanics<1>::voigt_to_strain(voigt, symmetric_tensor);
 
-    const auto returned = Mechanics::voigt_to_strain<1>(voigt);
+    const auto returned = Mechanics<1>::voigt_to_strain(voigt);
 
     check_close(tensor[0][0], 2.5);
     check_close(symmetric_tensor[0][0], 2.5);
@@ -261,12 +246,12 @@ TEST_CASE("Mechanics voigt_to_strain", "[mechanics][strain][voigt]")
     const auto voigt = make_voigt<3>({1.0, 2.0, 8.0});
 
     dealii::Tensor<2, 2, double> tensor;
-    Mechanics::voigt_to_strain<2, plane_stress>(voigt, tensor);
+    PlaneStress::voigt_to_strain(voigt, tensor);
 
     dealii::SymmetricTensor<2, 2, double> symmetric_tensor;
-    Mechanics::voigt_to_strain<2, plane_stress>(voigt, symmetric_tensor);
+    PlaneStress::voigt_to_strain(voigt, symmetric_tensor);
 
-    const auto returned = Mechanics::voigt_to_strain<2, plane_stress>(voigt);
+    const auto returned = PlaneStress::voigt_to_strain(voigt);
 
     check_close(tensor[0][0], 1.0);
     check_close(tensor[1][1], 2.0);
@@ -284,17 +269,15 @@ TEST_CASE("Mechanics voigt_to_strain", "[mechanics][strain][voigt]")
     dealii::Tensor<2, 2, double> tensor;
     double                       component_zz = 0.0;
 
-    Mechanics::voigt_to_strain<2, plane_strain>(voigt, tensor, component_zz);
+    PlaneStrain::voigt_to_strain(voigt, tensor, component_zz);
 
     dealii::SymmetricTensor<2, 2, double> symmetric_tensor;
     double                                symmetric_component_zz = 0.0;
 
-    Mechanics::voigt_to_strain<2, plane_strain>(voigt,
-                                                symmetric_tensor,
-                                                symmetric_component_zz);
+    PlaneStrain::voigt_to_strain(voigt, symmetric_tensor, symmetric_component_zz);
 
     const auto [returned_tensor, returned_component_zz] =
-      Mechanics::voigt_to_strain<2, plane_strain>(voigt);
+      PlaneStrain::voigt_to_strain(voigt);
 
     check_close(tensor[0][0], 1.0);
     check_close(tensor[1][1], 2.0);
@@ -313,12 +296,12 @@ TEST_CASE("Mechanics voigt_to_strain", "[mechanics][strain][voigt]")
     const auto voigt = make_voigt<6>({1.0, 2.0, 3.0, 8.0, 10.0, 12.0});
 
     dealii::Tensor<2, 3, double> tensor;
-    Mechanics::voigt_to_strain<3>(voigt, tensor);
+    Mechanics<3>::voigt_to_strain(voigt, tensor);
 
     dealii::SymmetricTensor<2, 3, double> symmetric_tensor;
-    Mechanics::voigt_to_strain<3>(voigt, symmetric_tensor);
+    Mechanics<3>::voigt_to_strain(voigt, symmetric_tensor);
 
-    const auto returned = Mechanics::voigt_to_strain<3>(voigt);
+    const auto returned = Mechanics<3>::voigt_to_strain(voigt);
 
     check_close(tensor[0][0], 1.0);
     check_close(tensor[1][1], 2.0);
@@ -345,9 +328,9 @@ TEST_CASE("Mechanics strain Voigt round trips", "[mechanics][strain][voigt][roun
     original[1][1] = 2.0;
     original[0][1] = 3.0;
 
-    const auto voigt = Mechanics::strain_to_voigt<2, plane_stress>(original);
+    const auto voigt = PlaneStress::strain_to_voigt(original);
 
-    const auto recovered = Mechanics::voigt_to_strain<2, plane_stress>(voigt);
+    const auto recovered = PlaneStress::voigt_to_strain(voigt);
 
     check_rank_2_tensor<2>(recovered, original);
   }
@@ -361,10 +344,9 @@ TEST_CASE("Mechanics strain Voigt round trips", "[mechanics][strain][voigt][roun
 
     const double original_zz = 4.0;
 
-    const auto voigt = Mechanics::strain_to_voigt<2, plane_strain>(original, original_zz);
+    const auto voigt = PlaneStrain::strain_to_voigt(original, original_zz);
 
-    const auto [recovered, recovered_zz] =
-      Mechanics::voigt_to_strain<2, plane_strain>(voigt);
+    const auto [recovered, recovered_zz] = PlaneStrain::voigt_to_strain(voigt);
 
     check_rank_2_tensor<2>(recovered, original);
     check_close(recovered_zz, original_zz);
@@ -380,8 +362,8 @@ TEST_CASE("Mechanics strain Voigt round trips", "[mechanics][strain][voigt][roun
     original[0][2] = 5.0;
     original[0][1] = 6.0;
 
-    const auto voigt     = Mechanics::strain_to_voigt<3>(original);
-    const auto recovered = Mechanics::voigt_to_strain<3>(voigt);
+    const auto voigt     = Mechanics<3>::strain_to_voigt(original);
+    const auto recovered = Mechanics<3>::voigt_to_strain(voigt);
 
     check_rank_2_tensor<3>(recovered, original);
   }
@@ -394,10 +376,10 @@ TEST_CASE("Mechanics stress_to_voigt", "[mechanics][stress][voigt]")
     dealii::Tensor<2, 1, double> stress;
     stress[0][0] = 2.5;
 
-    const auto returned = Mechanics::stress_to_voigt<1>(stress);
+    const auto returned = Mechanics<1>::stress_to_voigt(stress);
 
     dealii::Tensor<1, 1, double> output;
-    Mechanics::stress_to_voigt<1>(stress, output);
+    Mechanics<1>::stress_to_voigt(stress, output);
 
     check_voigt<1>(returned, {2.5});
     check_voigt<1>(output, {2.5});
@@ -408,10 +390,10 @@ TEST_CASE("Mechanics stress_to_voigt", "[mechanics][stress][voigt]")
     dealii::SymmetricTensor<2, 1, double> stress;
     stress[0][0] = 2.5;
 
-    const auto returned = Mechanics::stress_to_voigt<1>(stress);
+    const auto returned = Mechanics<1>::stress_to_voigt(stress);
 
     dealii::Tensor<1, 1, double> output;
-    Mechanics::stress_to_voigt<1>(stress, output);
+    Mechanics<1>::stress_to_voigt(stress, output);
 
     check_voigt<1>(returned, {2.5});
     check_voigt<1>(output, {2.5});
@@ -425,10 +407,10 @@ TEST_CASE("Mechanics stress_to_voigt", "[mechanics][stress][voigt]")
     stress[0][1] = 3.0;
     stress[1][0] = 5.0;
 
-    const auto returned = Mechanics::stress_to_voigt<2, plane_stress>(stress);
+    const auto returned = PlaneStress::stress_to_voigt(stress);
 
     dealii::Tensor<1, 3, double> output;
-    Mechanics::stress_to_voigt<2, plane_stress>(stress, output);
+    PlaneStress::stress_to_voigt(stress, output);
 
     check_voigt<3>(returned, {1.0, 2.0, 4.0});
     check_voigt<3>(output, {1.0, 2.0, 4.0});
@@ -441,10 +423,10 @@ TEST_CASE("Mechanics stress_to_voigt", "[mechanics][stress][voigt]")
     stress[1][1] = 2.0;
     stress[0][1] = 4.0;
 
-    const auto returned = Mechanics::stress_to_voigt<2, plane_stress>(stress);
+    const auto returned = PlaneStress::stress_to_voigt(stress);
 
     dealii::Tensor<1, 3, double> output;
-    Mechanics::stress_to_voigt<2, plane_stress>(stress, output);
+    PlaneStress::stress_to_voigt(stress, output);
 
     check_voigt<3>(returned, {1.0, 2.0, 4.0});
     check_voigt<3>(output, {1.0, 2.0, 4.0});
@@ -460,10 +442,10 @@ TEST_CASE("Mechanics stress_to_voigt", "[mechanics][stress][voigt]")
 
     const double stress_zz = 6.0;
 
-    const auto returned = Mechanics::stress_to_voigt<2, plane_strain>(stress, stress_zz);
+    const auto returned = PlaneStrain::stress_to_voigt(stress, stress_zz);
 
     dealii::Tensor<1, 4, double> output;
-    Mechanics::stress_to_voigt<2, plane_strain>(stress, stress_zz, output);
+    PlaneStrain::stress_to_voigt(stress, stress_zz, output);
 
     check_voigt<4>(returned, {1.0, 2.0, 6.0, 4.0});
     check_voigt<4>(output, {1.0, 2.0, 6.0, 4.0});
@@ -478,10 +460,10 @@ TEST_CASE("Mechanics stress_to_voigt", "[mechanics][stress][voigt]")
 
     const double stress_zz = 6.0;
 
-    const auto returned = Mechanics::stress_to_voigt<2, plane_strain>(stress, stress_zz);
+    const auto returned = PlaneStrain::stress_to_voigt(stress, stress_zz);
 
     dealii::Tensor<1, 4, double> output;
-    Mechanics::stress_to_voigt<2, plane_strain>(stress, stress_zz, output);
+    PlaneStrain::stress_to_voigt(stress, stress_zz, output);
 
     check_voigt<4>(returned, {1.0, 2.0, 6.0, 4.0});
     check_voigt<4>(output, {1.0, 2.0, 6.0, 4.0});
@@ -499,10 +481,10 @@ TEST_CASE("Mechanics stress_to_voigt", "[mechanics][stress][voigt]")
     stress[0][2] = stress[2][0] = 5.0;
     stress[0][1] = stress[1][0] = 6.0;
 
-    const auto returned = Mechanics::stress_to_voigt<3>(stress);
+    const auto returned = Mechanics<3>::stress_to_voigt(stress);
 
     dealii::Tensor<1, 6, double> output;
-    Mechanics::stress_to_voigt<3>(stress, output);
+    Mechanics<3>::stress_to_voigt(stress, output);
 
     check_voigt<6>(returned, {1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
     check_voigt<6>(output, {1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
@@ -519,10 +501,10 @@ TEST_CASE("Mechanics stress_to_voigt", "[mechanics][stress][voigt]")
     stress[0][2] = 5.0;
     stress[0][1] = 6.0;
 
-    const auto returned = Mechanics::stress_to_voigt<3>(stress);
+    const auto returned = Mechanics<3>::stress_to_voigt(stress);
 
     dealii::Tensor<1, 6, double> output;
-    Mechanics::stress_to_voigt<3>(stress, output);
+    Mechanics<3>::stress_to_voigt(stress, output);
 
     check_voigt<6>(returned, {1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
     check_voigt<6>(output, {1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
@@ -536,12 +518,12 @@ TEST_CASE("Mechanics voigt_to_stress", "[mechanics][stress][voigt]")
     const auto voigt = make_voigt<1>({2.5});
 
     dealii::Tensor<2, 1, double> tensor;
-    Mechanics::voigt_to_stress<1>(voigt, tensor);
+    Mechanics<1>::voigt_to_stress(voigt, tensor);
 
     dealii::SymmetricTensor<2, 1, double> symmetric_tensor;
-    Mechanics::voigt_to_stress<1>(voigt, symmetric_tensor);
+    Mechanics<1>::voigt_to_stress(voigt, symmetric_tensor);
 
-    const auto returned = Mechanics::voigt_to_stress<1>(voigt);
+    const auto returned = Mechanics<1>::voigt_to_stress(voigt);
 
     check_close(tensor[0][0], 2.5);
     check_close(symmetric_tensor[0][0], 2.5);
@@ -553,12 +535,12 @@ TEST_CASE("Mechanics voigt_to_stress", "[mechanics][stress][voigt]")
     const auto voigt = make_voigt<3>({1.0, 2.0, 4.0});
 
     dealii::Tensor<2, 2, double> tensor;
-    Mechanics::voigt_to_stress<2, plane_stress>(voigt, tensor);
+    PlaneStress::voigt_to_stress(voigt, tensor);
 
     dealii::SymmetricTensor<2, 2, double> symmetric_tensor;
-    Mechanics::voigt_to_stress<2, plane_stress>(voigt, symmetric_tensor);
+    PlaneStress::voigt_to_stress(voigt, symmetric_tensor);
 
-    const auto returned = Mechanics::voigt_to_stress<2, plane_stress>(voigt);
+    const auto returned = PlaneStress::voigt_to_stress(voigt);
 
     check_close(tensor[0][0], 1.0);
     check_close(tensor[1][1], 2.0);
@@ -576,17 +558,15 @@ TEST_CASE("Mechanics voigt_to_stress", "[mechanics][stress][voigt]")
     dealii::Tensor<2, 2, double> tensor;
     double                       component_zz = 0.0;
 
-    Mechanics::voigt_to_stress<2, plane_strain>(voigt, tensor, component_zz);
+    PlaneStrain::voigt_to_stress(voigt, tensor, component_zz);
 
     dealii::SymmetricTensor<2, 2, double> symmetric_tensor;
     double                                symmetric_component_zz = 0.0;
 
-    Mechanics::voigt_to_stress<2, plane_strain>(voigt,
-                                                symmetric_tensor,
-                                                symmetric_component_zz);
+    PlaneStrain::voigt_to_stress(voigt, symmetric_tensor, symmetric_component_zz);
 
     const auto [returned_tensor, returned_component_zz] =
-      Mechanics::voigt_to_stress<2, plane_strain>(voigt);
+      PlaneStrain::voigt_to_stress(voigt);
 
     check_close(tensor[0][0], 1.0);
     check_close(tensor[1][1], 2.0);
@@ -605,12 +585,12 @@ TEST_CASE("Mechanics voigt_to_stress", "[mechanics][stress][voigt]")
     const auto voigt = make_voigt<6>({1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
 
     dealii::Tensor<2, 3, double> tensor;
-    Mechanics::voigt_to_stress<3>(voigt, tensor);
+    Mechanics<3>::voigt_to_stress(voigt, tensor);
 
     dealii::SymmetricTensor<2, 3, double> symmetric_tensor;
-    Mechanics::voigt_to_stress<3>(voigt, symmetric_tensor);
+    Mechanics<3>::voigt_to_stress(voigt, symmetric_tensor);
 
-    const auto returned = Mechanics::voigt_to_stress<3>(voigt);
+    const auto returned = Mechanics<3>::voigt_to_stress(voigt);
 
     check_close(tensor[0][0], 1.0);
     check_close(tensor[1][1], 2.0);
@@ -637,9 +617,9 @@ TEST_CASE("Mechanics stress Voigt round trips", "[mechanics][stress][voigt][roun
     original[1][1] = 2.0;
     original[0][1] = 3.0;
 
-    const auto voigt = Mechanics::stress_to_voigt<2, plane_stress>(original);
+    const auto voigt = PlaneStress::stress_to_voigt(original);
 
-    const auto recovered = Mechanics::voigt_to_stress<2, plane_stress>(voigt);
+    const auto recovered = PlaneStress::voigt_to_stress(voigt);
 
     check_rank_2_tensor<2>(recovered, original);
   }
@@ -648,9 +628,9 @@ TEST_CASE("Mechanics stress Voigt round trips", "[mechanics][stress][voigt][roun
   {
     const auto original = make_voigt<3>({1.0, 2.0, 3.0});
 
-    const auto tensor = Mechanics::voigt_to_stress<2, plane_stress>(original);
+    const auto tensor = PlaneStress::voigt_to_stress(original);
 
-    const auto recovered = Mechanics::stress_to_voigt<2, plane_stress>(tensor);
+    const auto recovered = PlaneStress::stress_to_voigt(tensor);
 
     check_voigt<3>(recovered, {1.0, 2.0, 3.0});
   }
@@ -664,10 +644,9 @@ TEST_CASE("Mechanics stress Voigt round trips", "[mechanics][stress][voigt][roun
 
     const double original_zz = 4.0;
 
-    const auto voigt = Mechanics::stress_to_voigt<2, plane_strain>(original, original_zz);
+    const auto voigt = PlaneStrain::stress_to_voigt(original, original_zz);
 
-    const auto [recovered, recovered_zz] =
-      Mechanics::voigt_to_stress<2, plane_strain>(voigt);
+    const auto [recovered, recovered_zz] = PlaneStrain::voigt_to_stress(voigt);
 
     check_rank_2_tensor<2>(recovered, original);
     check_close(recovered_zz, original_zz);
@@ -678,14 +657,14 @@ TEST_CASE("Mechanics isotropic stiffness", "[mechanics][stiffness][isotropic]")
 {
   SECTION("1D")
   {
-    const auto stiffness = Mechanics::stiffness_isotropic<1>(1.0, 0.25);
+    const auto stiffness = Mechanics<1>::stiffness_isotropic(1.0, 0.25);
 
     check_close(stiffness[0][0], 1.0);
   }
 
   SECTION("2D plane stress")
   {
-    const auto stiffness = Mechanics::stiffness_isotropic<2, plane_stress>(1.0, 0.25);
+    const auto stiffness = PlaneStress::stiffness_isotropic(1.0, 0.25);
 
     dealii::Tensor<2, 3, double> expected;
 
@@ -700,7 +679,7 @@ TEST_CASE("Mechanics isotropic stiffness", "[mechanics][stiffness][isotropic]")
 
   SECTION("2D plane strain")
   {
-    const auto stiffness = Mechanics::stiffness_isotropic<2, plane_strain>(1.0, 0.25);
+    const auto stiffness = PlaneStrain::stiffness_isotropic(1.0, 0.25);
 
     dealii::Tensor<2, 4, double> expected;
 
@@ -719,7 +698,7 @@ TEST_CASE("Mechanics isotropic stiffness", "[mechanics][stiffness][isotropic]")
 
   SECTION("3D")
   {
-    const auto stiffness = Mechanics::stiffness_isotropic<3>(1.0, 0.25);
+    const auto stiffness = Mechanics<3>::stiffness_isotropic(1.0, 0.25);
 
     dealii::Tensor<2, 6, double> expected;
 
@@ -743,11 +722,11 @@ TEST_CASE("Mechanics isotropic stiffness", "[mechanics][stiffness][isotropic]")
 TEST_CASE("Mechanics isotropic stiffness rejects invalid constants",
           "[mechanics][stiffness][isotropic][exceptions]")
 {
-  CHECK_THROWS(Mechanics::stiffness_isotropic<1>(0.0, 0.25));
-  CHECK_THROWS(Mechanics::stiffness_isotropic<1>(-1.0, 0.25));
+  CHECK_THROWS(Mechanics<1>::stiffness_isotropic(0.0, 0.25));
+  CHECK_THROWS(Mechanics<1>::stiffness_isotropic(-1.0, 0.25));
 
-  CHECK_THROWS(Mechanics::stiffness_isotropic<1>(1.0, -1.0));
-  CHECK_THROWS(Mechanics::stiffness_isotropic<1>(1.0, 0.5));
+  CHECK_THROWS(Mechanics<1>::stiffness_isotropic(1.0, -1.0));
+  CHECK_THROWS(Mechanics<1>::stiffness_isotropic(1.0, 0.5));
 }
 #endif
 
@@ -755,42 +734,29 @@ TEST_CASE("Mechanics orthotropic stiffness", "[mechanics][stiffness][orthotropic
 {
   SECTION("2D plane stress isotropic limit")
   {
-    const auto orthotropic =
-      Mechanics::stiffness_orthotropic<2, plane_stress>(1.0, 1.0, 0.25, 0.4);
+    const auto orthotropic = PlaneStress::stiffness_orthotropic(1.0, 1.0, 0.25, 0.4);
 
-    const auto isotropic = Mechanics::stiffness_isotropic<2, plane_stress>(1.0, 0.25);
+    const auto isotropic = PlaneStress::stiffness_isotropic(1.0, 0.25);
 
     check_matrix<3>(orthotropic, isotropic);
   }
 
   SECTION("2D plane strain isotropic limit")
   {
-    const auto orthotropic = Mechanics::stiffness_orthotropic<2, plane_strain>(1.0,
-                                                                               1.0,
-                                                                               1.0,
-                                                                               0.25,
-                                                                               0.25,
-                                                                               0.25,
-                                                                               0.4);
+    const auto orthotropic =
+      PlaneStrain::stiffness_orthotropic(1.0, 1.0, 1.0, 0.25, 0.25, 0.25, 0.4);
 
-    const auto isotropic = Mechanics::stiffness_isotropic<2, plane_strain>(1.0, 0.25);
+    const auto isotropic = PlaneStrain::stiffness_isotropic(1.0, 0.25);
 
     check_matrix<4>(orthotropic, isotropic);
   }
 
   SECTION("3D isotropic limit")
   {
-    const auto orthotropic = Mechanics::stiffness_orthotropic<3, three_dimensional>(1.0,
-                                                                                    1.0,
-                                                                                    1.0,
-                                                                                    0.25,
-                                                                                    0.25,
-                                                                                    0.25,
-                                                                                    0.4,
-                                                                                    0.4,
-                                                                                    0.4);
+    const auto orthotropic =
+      Mechanics<3>::stiffness_orthotropic(1.0, 1.0, 1.0, 0.25, 0.25, 0.25, 0.4, 0.4, 0.4);
 
-    const auto isotropic = Mechanics::stiffness_isotropic<3>(1.0, 0.25);
+    const auto isotropic = Mechanics<3>::stiffness_isotropic(1.0, 0.25);
 
     check_matrix<6>(orthotropic, isotropic);
   }
@@ -800,24 +766,24 @@ TEST_CASE("Mechanics orthotropic stiffness", "[mechanics][stiffness][orthotropic
 TEST_CASE("Mechanics orthotropic stiffness rejects invalid constants",
           "[mechanics][stiffness][orthotropic][exceptions]")
 {
-  CHECK_THROWS((Mechanics::stiffness_orthotropic<2, plane_stress>(0.0, 1.0, 0.25, 0.4)));
+  CHECK_THROWS((PlaneStress::stiffness_orthotropic(0.0, 1.0, 0.25, 0.4)));
 
-  CHECK_THROWS((Mechanics::stiffness_orthotropic<2, plane_stress>(1.0, 0.0, 0.25, 0.4)));
+  CHECK_THROWS((PlaneStress::stiffness_orthotropic(1.0, 0.0, 0.25, 0.4)));
 
-  CHECK_THROWS((Mechanics::stiffness_orthotropic<2, plane_stress>(1.0, 1.0, 0.25, 0.0)));
+  CHECK_THROWS((PlaneStress::stiffness_orthotropic(1.0, 1.0, 0.25, 0.0)));
 
-  CHECK_THROWS((Mechanics::stiffness_orthotropic<2, plane_stress>(1.0, 1.0, 1.0, 0.4)));
+  CHECK_THROWS((PlaneStress::stiffness_orthotropic(1.0, 1.0, 1.0, 0.4)));
 }
 #endif
 
 TEST_CASE("Mechanics extract_plane_strain_stiffness",
           "[mechanics][stiffness][plane-strain]")
 {
-  const auto stiffness_3d = Mechanics::stiffness_isotropic<3>(1.0, 0.25);
+  const auto stiffness_3d = Mechanics<3>::stiffness_isotropic(1.0, 0.25);
 
-  const auto extracted = Mechanics::extract_plane_strain_stiffness(stiffness_3d);
+  const auto extracted = PlaneStrain::extract_plane_strain_stiffness(stiffness_3d);
 
-  const auto expected = Mechanics::stiffness_isotropic<2, plane_strain>(1.0, 0.25);
+  const auto expected = PlaneStrain::stiffness_isotropic(1.0, 0.25);
 
   check_matrix<4>(extracted, expected);
 }
@@ -825,7 +791,7 @@ TEST_CASE("Mechanics extract_plane_strain_stiffness",
 TEST_CASE("Mechanics compute_stress for plane stress",
           "[mechanics][compute-stress][plane-stress]")
 {
-  const auto stiffness = Mechanics::stiffness_isotropic<2, plane_stress>(1.0, 0.25);
+  const auto stiffness = PlaneStress::stiffness_isotropic(1.0, 0.25);
 
   SECTION("Voigt strain and stress")
   {
@@ -833,7 +799,7 @@ TEST_CASE("Mechanics compute_stress for plane stress",
 
     dealii::Tensor<1, 3, double> stress;
 
-    Mechanics::compute_stress<2, plane_stress>(stiffness, strain, stress);
+    PlaneStress::compute_stress(stiffness, strain, stress);
 
     check_voigt<3>(stress, {16.0 / 15.0, 4.0 / 15.0, 0.0});
   }
@@ -845,7 +811,7 @@ TEST_CASE("Mechanics compute_stress for plane stress",
 
     dealii::Tensor<2, 2, double> stress;
 
-    Mechanics::compute_stress<2, plane_stress>(stiffness, strain, stress);
+    PlaneStress::compute_stress(stiffness, strain, stress);
 
     check_close(stress[0][0], 16.0 / 15.0);
     check_close(stress[1][1], 4.0 / 15.0);
@@ -861,7 +827,7 @@ TEST_CASE("Mechanics compute_stress for plane stress",
 
     dealii::Tensor<2, 2, double> stress;
 
-    Mechanics::compute_stress<2, plane_stress>(stiffness, strain, stress);
+    PlaneStress::compute_stress(stiffness, strain, stress);
 
     check_close(stress[0][0], 0.0);
     check_close(stress[1][1], 0.0);
@@ -873,7 +839,7 @@ TEST_CASE("Mechanics compute_stress for plane stress",
 TEST_CASE("Mechanics compute_stress for plane strain",
           "[mechanics][compute-stress][plane-strain]")
 {
-  const auto stiffness = Mechanics::stiffness_isotropic<2, plane_strain>(1.0, 0.25);
+  const auto stiffness = PlaneStrain::stiffness_isotropic(1.0, 0.25);
 
   SECTION("Voigt strain and stress")
   {
@@ -881,7 +847,7 @@ TEST_CASE("Mechanics compute_stress for plane strain",
 
     dealii::Tensor<1, 4, double> stress;
 
-    Mechanics::compute_stress<2, plane_strain>(stiffness, strain, stress);
+    PlaneStrain::compute_stress(stiffness, strain, stress);
 
     check_voigt<4>(stress, {1.2, 0.4, 0.4, 0.0});
   }
@@ -896,11 +862,7 @@ TEST_CASE("Mechanics compute_stress for plane strain",
     dealii::Tensor<2, 2, double> stress;
     double                       stress_zz = 0.0;
 
-    Mechanics::compute_stress<2, plane_strain>(stiffness,
-                                               strain,
-                                               strain_zz,
-                                               stress,
-                                               stress_zz);
+    PlaneStrain::compute_stress(stiffness, strain, strain_zz, stress, stress_zz);
 
     check_close(stress[0][0], 1.2);
     check_close(stress[1][1], 0.4);
@@ -919,8 +881,8 @@ TEST_CASE("Mechanics compute_stress for plane strain",
     dealii::Tensor<1, 4, double> stress;
     dealii::Tensor<1, 4, double> stress2;
 
-    Mechanics::compute_stress<2, plane_strain>(stiffness, strain, strain_zz, stress);
-    Mechanics::compute_stress<2, plane_strain>(stiffness, strain, stress2);
+    PlaneStrain::compute_stress(stiffness, strain, strain_zz, stress);
+    PlaneStrain::compute_stress(stiffness, strain, stress2);
 
     check_voigt<4>(stress, {1.2, 0.4, 0.4, 0.0});
     check_voigt<4>(stress2, {1.2, 0.4, 0.4, 0.0});
@@ -935,11 +897,7 @@ TEST_CASE("Mechanics compute_stress for plane strain",
     dealii::Tensor<2, 2, double> stress;
     double                       stress_zz = 0.0;
 
-    Mechanics::compute_stress<2, plane_strain>(stiffness,
-                                               strain,
-                                               strain_zz,
-                                               stress,
-                                               stress_zz);
+    PlaneStrain::compute_stress(stiffness, strain, strain_zz, stress, stress_zz);
 
     check_close(stress[0][0], 0.4);
     check_close(stress[1][1], 0.4);
@@ -953,33 +911,33 @@ TEST_CASE("Mechanics compute_stress in 1D and 3D", "[mechanics][compute-stress]"
 {
   SECTION("1D")
   {
-    const auto stiffness = Mechanics::stiffness_isotropic<1>(2.0, 0.25);
+    const auto stiffness = Mechanics<1>::stiffness_isotropic(2.0, 0.25);
 
     const auto strain = make_voigt<1>({3.0});
 
     dealii::Tensor<1, 1, double> stress;
 
-    Mechanics::compute_stress<1, three_dimensional>(stiffness, strain, stress);
+    Mechanics<1>::compute_stress(stiffness, strain, stress);
 
     check_voigt<1>(stress, {6.0});
   }
 
   SECTION("3D uniaxial strain")
   {
-    const auto stiffness = Mechanics::stiffness_isotropic<3>(1.0, 0.25);
+    const auto stiffness = Mechanics<3>::stiffness_isotropic(1.0, 0.25);
 
     const auto strain = make_voigt<6>({1.0, 0.0, 0.0, 0.0, 0.0, 0.0});
 
     dealii::Tensor<1, 6, double> stress;
 
-    Mechanics::compute_stress<3, three_dimensional>(stiffness, strain, stress);
+    Mechanics<3>::compute_stress(stiffness, strain, stress);
 
     check_voigt<6>(stress, {1.2, 0.4, 0.4, 0.0, 0.0, 0.0});
   }
 
   SECTION("3D tensor shear strain")
   {
-    const auto stiffness = Mechanics::stiffness_isotropic<3>(1.0, 0.25);
+    const auto stiffness = Mechanics<3>::stiffness_isotropic(1.0, 0.25);
 
     dealii::Tensor<2, 3, double> strain;
     strain[0][1] = 0.5;
@@ -987,7 +945,7 @@ TEST_CASE("Mechanics compute_stress in 1D and 3D", "[mechanics][compute-stress]"
 
     dealii::Tensor<2, 3, double> stress;
 
-    Mechanics::compute_stress<3, three_dimensional>(stiffness, strain, stress);
+    Mechanics<3>::compute_stress(stiffness, strain, stress);
 
     check_close(stress[0][0], 0.0);
     check_close(stress[1][1], 0.0);
@@ -1004,8 +962,7 @@ TEST_CASE("Mechanics strain energy", "[mechanics][strain-energy]")
     const auto stress   = make_voigt<1>({4.0});
     const auto strain_e = make_voigt<1>({3.0});
 
-    const double energy =
-      Mechanics::strain_energy<1, three_dimensional>(stress, strain_e);
+    const double energy = Mechanics<1>::strain_energy(stress, strain_e);
 
     check_close(energy, 6.0);
   }
@@ -1015,7 +972,7 @@ TEST_CASE("Mechanics strain energy", "[mechanics][strain-energy]")
     const auto stress   = make_voigt<3>({2.0, 4.0, 6.0});
     const auto strain_e = make_voigt<3>({1.0, 0.5, 0.25});
 
-    const double energy = Mechanics::strain_energy<2, plane_stress>(stress, strain_e);
+    const double energy = PlaneStress::strain_energy(stress, strain_e);
 
     check_close(energy, 2.75);
   }
@@ -1025,7 +982,7 @@ TEST_CASE("Mechanics strain energy", "[mechanics][strain-energy]")
     const auto stress   = make_voigt<4>({2.0, 4.0, 6.0, 8.0});
     const auto strain_e = make_voigt<4>({1.0, 0.5, 0.25, 0.125});
 
-    const double energy = Mechanics::strain_energy<2, plane_strain>(stress, strain_e);
+    const double energy = PlaneStrain::strain_energy(stress, strain_e);
 
     check_close(energy, 3.25);
   }
@@ -1035,8 +992,7 @@ TEST_CASE("Mechanics strain energy", "[mechanics][strain-energy]")
     const auto stress   = make_voigt<6>({1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
     const auto strain_e = make_voigt<6>({6.0, 5.0, 4.0, 3.0, 2.0, 1.0});
 
-    const double energy =
-      Mechanics::strain_energy<3, three_dimensional>(stress, strain_e);
+    const double energy = Mechanics<3>::strain_energy(stress, strain_e);
 
     check_close(energy, 28.0);
   }
@@ -1048,7 +1004,7 @@ TEST_CASE("Mechanics von Mises stress", "[mechanics][stress-mises]")
   {
     const auto stress = make_voigt<1>({-7.0});
 
-    const double mises = Mechanics::stress_mises<1, three_dimensional>(stress);
+    const double mises = Mechanics<1>::stress_mises(stress);
 
     check_close(mises, 7.0);
   }
@@ -1057,7 +1013,7 @@ TEST_CASE("Mechanics von Mises stress", "[mechanics][stress-mises]")
   {
     const auto stress = make_voigt<3>({100.0, 40.0, 30.0});
 
-    const double mises = Mechanics::stress_mises<2, plane_stress>(stress);
+    const double mises = PlaneStress::stress_mises(stress);
 
     check_close(mises, std::sqrt(10300.0));
   }
@@ -1066,7 +1022,7 @@ TEST_CASE("Mechanics von Mises stress", "[mechanics][stress-mises]")
   {
     const auto stress = make_voigt<4>({100.0, 40.0, 20.0, 30.0});
 
-    const double mises = Mechanics::stress_mises<2, plane_strain>(stress);
+    const double mises = PlaneStrain::stress_mises(stress);
 
     check_close(mises, std::sqrt(7900.0));
   }
@@ -1075,7 +1031,7 @@ TEST_CASE("Mechanics von Mises stress", "[mechanics][stress-mises]")
   {
     const auto stress = make_voigt<6>({100.0, 40.0, 20.0, 10.0, 20.0, 30.0});
 
-    const double mises = Mechanics::stress_mises<3, three_dimensional>(stress);
+    const double mises = Mechanics<3>::stress_mises(stress);
 
     check_close(mises, std::sqrt(9400.0));
   }
@@ -1084,7 +1040,7 @@ TEST_CASE("Mechanics von Mises stress", "[mechanics][stress-mises]")
   {
     const auto stress = make_voigt<6>({25.0, 25.0, 25.0, 0.0, 0.0, 0.0});
 
-    const double mises = Mechanics::stress_mises<3, three_dimensional>(stress);
+    const double mises = Mechanics<3>::stress_mises(stress);
 
     check_close(mises, 0.0);
   }
@@ -1093,7 +1049,7 @@ TEST_CASE("Mechanics von Mises stress", "[mechanics][stress-mises]")
   {
     const auto stress = make_voigt<6>({0.0, 0.0, 0.0, 0.0, 0.0, 8.0});
 
-    const double mises = Mechanics::stress_mises<3, three_dimensional>(stress);
+    const double mises = Mechanics<3>::stress_mises(stress);
 
     check_close(mises, 8.0 * std::numbers::sqrt3);
   }
@@ -1105,7 +1061,7 @@ TEST_CASE("Mechanics principal stress", "[mechanics][stress-principal]")
   {
     const auto stress = make_voigt<1>({-12.0});
 
-    const auto principal = Mechanics::stress_principal<1, three_dimensional>(stress);
+    const auto principal = Mechanics<1>::stress_principal(stress);
 
     check_voigt<1>(principal, {-12.0});
   }
@@ -1118,7 +1074,7 @@ TEST_CASE("Mechanics principal stress", "[mechanics][stress-principal]")
     // Its eigenvalues are 6 and 1.
     const auto stress = make_voigt<3>({5.0, 2.0, 2.0});
 
-    const auto principal = Mechanics::stress_principal<2, plane_stress>(stress);
+    const auto principal = PlaneStress::stress_principal(stress);
 
     check_voigt<2>(principal, {6.0, 1.0});
   }
@@ -1129,7 +1085,7 @@ TEST_CASE("Mechanics principal stress", "[mechanics][stress-principal]")
     // principal stresses of the in-plane 2x2 tensor and ignore sigma_zz.
     const auto stress = make_voigt<4>({5.0, 2.0, 123.0, 2.0});
 
-    const auto principal = Mechanics::stress_principal<2, plane_strain>(stress);
+    const auto principal = PlaneStrain::stress_principal(stress);
 
     check_voigt<2>(principal, {6.0, 1.0});
   }
@@ -1138,7 +1094,7 @@ TEST_CASE("Mechanics principal stress", "[mechanics][stress-principal]")
   {
     const auto stress = make_voigt<3>({9.0, 9.0, 0.0});
 
-    const auto principal = Mechanics::stress_principal<2, plane_stress>(stress);
+    const auto principal = PlaneStress::stress_principal(stress);
 
     check_voigt<2>(principal, {9.0, 9.0});
   }

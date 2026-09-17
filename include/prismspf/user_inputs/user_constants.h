@@ -650,16 +650,15 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
             {
               if (stress_state == StressState::PlaneStress)
                 {
-                  return Mechanics::stiffness_isotropic<dim, StressState::PlaneStress>(
-                    constants.at(0),
-                    constants.at(1));
+                  return PlaneStress::stiffness_isotropic(constants.at(0),
+                                                          constants.at(1));
                 }
-              else
+              if (stress_state == StressState::PlaneStrain)
                 {
-                  return Mechanics::stiffness_isotropic<dim, StressState::PlaneStrain>(
-                    constants.at(0),
-                    constants.at(1));
+                  return PlaneStrain::stiffness_isotropic(constants.at(0),
+                                                          constants.at(1));
                 }
+              AssertThrow(false, dealii::ExcMessage("Invalid stress state for 2D."));
               break;
             }
 
@@ -667,29 +666,24 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
             {
               if (stress_state == StressState::PlaneStress)
                 {
-                  return Mechanics::stiffness_orthotropic<dim, StressState::PlaneStress>(
-                    constants.at(0), // E1
-                    constants.at(1), // E2
-                    constants.at(2), // nu12
-                    constants.at(3)  // G12
+                  return PlaneStress::stiffness_orthotropic(constants.at(0), // E1
+                                                            constants.at(1), // E2
+                                                            constants.at(2), // nu12
+                                                            constants.at(3)  // G12
                   );
                 }
-              else if (stress_state == StressState::PlaneStrain)
+              if (stress_state == StressState::PlaneStrain)
                 {
-                  return Mechanics::stiffness_orthotropic<dim, StressState::PlaneStrain>(
-                    constants.at(0), // E1
-                    constants.at(1), // E2
-                    constants.at(2), // E3
-                    constants.at(3), // nu12
-                    constants.at(4), // nu13
-                    constants.at(5), // nu23
-                    constants.at(6)  // G12
+                  return PlaneStrain::stiffness_orthotropic(constants.at(0), // E1
+                                                            constants.at(1), // E2
+                                                            constants.at(2), // E3
+                                                            constants.at(3), // nu12
+                                                            constants.at(4), // nu13
+                                                            constants.at(5), // nu23
+                                                            constants.at(6)  // G12
                   );
                 }
-              else
-                {
-                  AssertThrow(false, dealii::ExcMessage("Invalid stress state for 2D."));
-                }
+              AssertThrow(false, dealii::ExcMessage("Invalid stress state for 2D."));
               break;
             }
 
@@ -702,7 +696,7 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                   const int yy_dir = 1;
                   const int xy_dir = 2;
 
-                  dealii::Tensor<2, 3> stiffness;
+                  PlaneStressStiffness<double> stiffness;
                   // [ 0  3  4 ]
                   // [    1  5 ]
                   // [       2 ]
@@ -715,14 +709,14 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
 
                   return stiffness;
                 }
-              else if (stress_state == StressState::PlaneStrain)
+              if (stress_state == StressState::PlaneStrain)
                 {
                   const int xx_dir = 0;
                   const int yy_dir = 1;
                   const int zz_dir = 2;
                   const int xy_dir = 3;
 
-                  dealii::Tensor<2, 4> stiffness;
+                  PlaneStrainStiffness<double> stiffness;
                   // [ 0  4  5  6 ]
                   // [    1  7  8 ]
                   // [       2  9 ]
@@ -740,10 +734,7 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
 
                   return stiffness;
                 }
-              else
-                {
-                  AssertThrow(false, dealii::ExcMessage("Invalid stress state for 2D."));
-                }
+              AssertThrow(false, dealii::ExcMessage("Invalid stress state for 2D."));
               break;
             }
 
@@ -764,26 +755,21 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
         {
           case ElasticityModel::Isotropic:
             {
-              return Mechanics::stiffness_isotropic<dim, StressState::ThreeDimensional>(
-                constants.at(0),
-                constants.at(1));
+              return Mechanics<3>::stiffness_isotropic(constants.at(0), constants.at(1));
             }
-
           case ElasticityModel::Orthotropic:
             {
-              return Mechanics::stiffness_orthotropic<dim, StressState::ThreeDimensional>(
-                constants.at(0), // E1
-                constants.at(1), // E2
-                constants.at(2), // E3
-                constants.at(3), // nu12
-                constants.at(4), // nu13
-                constants.at(5), // nu23
-                constants.at(6), // G12
-                constants.at(7), // G13
-                constants.at(8)  // G23
+              return Mechanics<3>::stiffness_orthotropic(constants.at(0), // E1
+                                                         constants.at(1), // E2
+                                                         constants.at(2), // E3
+                                                         constants.at(3), // nu12
+                                                         constants.at(4), // nu13
+                                                         constants.at(5), // nu23
+                                                         constants.at(6), // G12
+                                                         constants.at(7), // G13
+                                                         constants.at(8)  // G23
               );
             }
-
           case ElasticityModel::Anisotropic:
             {
               // In the anisotropic case, every entry is specified (given the symmetry
@@ -797,7 +783,7 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
               const int xz_dir = 4;
               const int xy_dir = 5;
 
-              dealii::Tensor<2, 6> stiffness;
+              ThreeDimensionalStiffness<double> stiffness;
               // [ 0  6  7  8  9 10 ]
               // [    1 11 12 13 14 ]
               // [       2 15 16 17 ]
