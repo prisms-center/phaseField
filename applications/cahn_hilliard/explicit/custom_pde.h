@@ -25,9 +25,9 @@ public:
    */
   CustomPDE(const UserInputParameters<dim> &_user_inputs, PhaseFieldTools<dim> &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
-    , McV(get_user_inputs().user_constants.get_double("McV"))
-    , KcV(get_user_inputs().user_constants.get_double("KcV"))
-    , WcV(get_user_inputs().user_constants.get_double("WcV"))
+    , M(get_user_inputs().user_constants.get_double("M"))
+    , kappa(get_user_inputs().user_constants.get_double("kappa"))
+    , W(get_user_inputs().user_constants.get_double("W"))
     , ic_type(get_user_inputs().user_constants.get_int("ic_type"))
     , c0(get_user_inputs().user_constants.get_double("c0"))
     , icamplitude(get_user_inputs().user_constants.get_double("icamplitude"))
@@ -99,7 +99,7 @@ private:
         ScalarGrad  mux = variable_list.template get_gradient<Scalar, OldOne>(1);
 
         ScalarValue eq_c  = c;
-        ScalarGrad  eqx_c = -McV * sim_timer.get_timestep() * mux;
+        ScalarGrad  eqx_c = -M * sim_timer.get_timestep() * mux;
 
         variable_list.set_value_term(0, eq_c);
         variable_list.set_gradient_term(0, eqx_c);
@@ -109,10 +109,10 @@ private:
         ScalarValue c  = variable_list.template get_value<Scalar, Current>(0);
         ScalarGrad  cx = variable_list.template get_gradient<Scalar, Current>(0);
 
-        ScalarValue fcV = WcV * c * (c - 1.0) * (c - 0.5);
+        ScalarValue fcV = W * c * (c - 1.0) * (c - 0.5);
 
         ScalarValue eq_mu  = fcV;
-        ScalarGrad  eqx_mu = KcV * cx;
+        ScalarGrad  eqx_mu = kappa * cx;
 
         variable_list.set_value_term(1, eq_mu);
         variable_list.set_gradient_term(1, eqx_mu);
@@ -124,15 +124,15 @@ private:
 
         ScalarValue f_tot  = 0.0;
         ScalarValue f_chem = c * c * c * c - 2.0 * c * c * c + c * c;
-        ScalarValue f_grad = 0.5 * KcV * cx.norm_square();
+        ScalarValue f_grad = 0.5 * kappa * cx.norm_square();
         f_tot              = f_chem + f_grad;
         variable_list.set_value_term(2, f_tot);
       }
   }
 
-  ScalarValue McV;
-  ScalarValue KcV;
-  ScalarValue WcV;
+  ScalarValue M;
+  ScalarValue kappa;
+  ScalarValue W;
 
   int                                            ic_type;
   number                                         c0;

@@ -26,9 +26,9 @@ public:
    */
   CustomPDE(const UserInputParameters<dim> &_user_inputs, PhaseFieldTools<dim> &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
-    , McV(get_user_inputs().user_constants.get_double("McV"))
-    , KcV(get_user_inputs().user_constants.get_double("KcV"))
-    , WcV(get_user_inputs().user_constants.get_double("WcV"))
+    , M(get_user_inputs().user_constants.get_double("M"))
+    , kappa(get_user_inputs().user_constants.get_double("kappa"))
+    , W(get_user_inputs().user_constants.get_double("W"))
     , ic_type(get_user_inputs().user_constants.get_int("ic_type"))
     , c0(get_user_inputs().user_constants.get_double("c0"))
     , icamplitude(get_user_inputs().user_constants.get_double("icamplitude"))
@@ -105,10 +105,10 @@ private:
         ScalarValue c_old = variable_list.template get_value<Scalar, OldOne>(0);
 
         ScalarValue r_c_val = (c_old - c_val);
-        VectorValue r_c_vec = (dt * McV * mu_grad);
+        VectorValue r_c_vec = (dt * M * mu_grad);
 
-        ScalarValue r_mu_val = mu_val - WcV * c_val * (c_val - 1.0) * (c_val - 0.5);
-        VectorValue r_mu_vec = KcV * c_grad;
+        ScalarValue r_mu_val = mu_val - W * c_val * (c_val - 1.0) * (c_val - 0.5);
+        VectorValue r_mu_vec = kappa * c_grad;
 
         variable_list.set_value_term(0, r_c_val);
         variable_list.set_gradient_term(0, -r_c_vec);
@@ -122,7 +122,7 @@ private:
 
         ScalarValue f_tot  = 0.0;
         ScalarValue f_chem = c * c * c * c - 2.0 * c * c * c + c * c;
-        ScalarValue f_grad = 0.5 * KcV * cx.norm_square();
+        ScalarValue f_grad = 0.5 * kappa * cx.norm_square();
         f_tot              = f_chem + f_grad;
         variable_list.set_value_term(2, f_tot);
       }
@@ -150,11 +150,10 @@ private:
         // VectorValue j_c_dc_vec = ;
 
         // ScalarValue j_c_mu_val = ;
-        VectorValue j_c_mu_vec = (dt * McV * delta_mu_grad);
+        VectorValue j_c_mu_vec = (dt * M * delta_mu_grad);
 
-        ScalarValue j_mu_c_val =
-          -WcV * (0.5 + 3.0 * (c_val * (c_val - 1.0))) * delta_c_val;
-        VectorValue j_mu_c_vec = KcV * delta_c_grad;
+        ScalarValue j_mu_c_val = -W * (0.5 + 3.0 * (c_val * (c_val - 1.0))) * delta_c_val;
+        VectorValue j_mu_c_vec = kappa * delta_c_grad;
 
         ScalarValue j_mu_mu_val = delta_mu_val;
         // VectorValue j_mu_mu_vec = ;
@@ -166,9 +165,9 @@ private:
       }
   }
 
-  ScalarValue McV;
-  ScalarValue KcV;
-  ScalarValue WcV;
+  ScalarValue M;
+  ScalarValue kappa;
+  ScalarValue W;
 
   int                                            ic_type;
   number                                         c0;

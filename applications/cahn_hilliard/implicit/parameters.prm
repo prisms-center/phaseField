@@ -27,9 +27,9 @@ subsection output
   set number = 500
 end
 
-set Model constant McV = 1.0, DOUBLE
-set Model constant KcV = 1.5, DOUBLE
-set Model constant WcV = 16.0, DOUBLE
+set Model constant M = 1.0, DOUBLE
+set Model constant kappa = 1.5, DOUBLE
+set Model constant W = 16.0, DOUBLE
 
 # The type of initial condition to use
 # 0: noise for spinodal decomposition
