@@ -2,6 +2,7 @@
 set(
   _sources
   constraint_parameters.cc
+  grain_reassignment_parameters.cc
   io_parameters.cc
   miscellaneous_parameters.cc
   nucleation_parameters.cc
@@ -14,6 +15,7 @@ set(
 set(
   _headers
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/constraint_parameters.h
+  ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/grain_reassignment_parameters.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/io_parameters.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/miscellaneous_parameters.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/nucleation_parameters.h

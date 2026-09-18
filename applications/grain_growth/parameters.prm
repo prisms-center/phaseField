@@ -1,0 +1,34 @@
+set mesh type = rectangular
+
+subsection Rectangular mesh
+  set x size = 50.0
+  set y size = 50.0
+  set z size = 1.0
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
+end
+
+set global refinement = 7
+
+set time step = 0.01
+set number steps = 5000
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 20
+end
+
+set use grain reassignment = true
+
+subsection grain reassignment
+  set steps between reassignment = 200
+  set exclusion distance = 2.5
+  set grain identification threshold = 1e-2
+  set load grain structure = false
+end
+
+set Model constant m_well = 1.0, DOUBLE
+set Model constant kappa = 0.1, DOUBLE
+set Model constant alpha = 1.5, DOUBLE
+set Model constant kinetic_coef = 1.0, DOUBLE

@@ -5,6 +5,8 @@
 
 #include <prismspf/core/types.h>
 
+#include <prismspf/grains/grains.h>
+
 #include <prismspf/nucleation/nucleus.h>
 
 #include <prismspf/config.h>
@@ -23,6 +25,11 @@ struct PhaseFieldTools
    * @brief Nucleus list.
    */
   std::vector<Nucleus<dim>> nuclei_list;
+
+  /**
+   * @brief List of SimplifiedGrainRepresentations, tracking the grains for remapping
+   */
+  std::vector<SimplifiedGrainRepresentation<dim>> simplified_grain_representations;
 };
 
 PRISMS_PF_END_NAMESPACE
