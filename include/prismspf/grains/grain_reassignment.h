@@ -46,8 +46,8 @@ public:
   static void
   reassign_grains(std::vector<SimplifiedGrainRepresentation<dim>> &grain_representations,
                   double                                           buffer_distance,
-                  int                                              number_of_remapped_fields,
-                  const std::vector<FieldAttributes>              &field_attributes);
+                  int                                 number_of_remapped_fields,
+                  const std::vector<FieldAttributes> &field_attributes);
 
   /**
    * This method checks the centers of two lists of
@@ -58,7 +58,7 @@ public:
   static void
   transfer_grain_ids(
     const std::vector<SimplifiedGrainRepresentation<dim>> &old_grain_representations,
-    std::vector<SimplifiedGrainRepresentation<dim>> &new_grain_representations);
+    std::vector<SimplifiedGrainRepresentation<dim>>       &new_grain_representations);
 };
 
 /**

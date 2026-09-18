@@ -23,8 +23,7 @@ public:
     , m_well(get_user_inputs().user_constants.get_double("m_well"))
     , kappa(get_user_inputs().user_constants.get_double("kappa"))
     , alpha(get_user_inputs().user_constants.get_double("alpha"))
-    , kinetic_coef(get_user_inputs().user_constants.get_double("kinetic_coef"))
-  {};
+    , kinetic_coef(get_user_inputs().user_constants.get_double("kinetic_coef")) {};
 
 private:
   void
@@ -45,11 +44,22 @@ private:
           get_user_inputs().spatial_discretization.rectangular_mesh.size;
 
         std::vector<dealii::Point<dim>> center_list;
-        std::vector<number> radius = {
-          0.14, 0.14, 0.14, 0.14, 0.14,
-          0.08, 0.08, 0.08, 0.08, 0.08,
-          0.05, 0.05, 0.05, 0.05, 0.05
-        };
+
+        std::vector<number> radius = {0.14,
+                                      0.14,
+                                      0.14,
+                                      0.14,
+                                      0.14,
+                                      0.08,
+                                      0.08,
+                                      0.08,
+                                      0.08,
+                                      0.08,
+                                      0.05,
+                                      0.05,
+                                      0.05,
+                                      0.05,
+                                      0.05};
 
         // Big grains
         center_list.push_back(dealii::Point<dim>(0.2, 0.15));
@@ -78,31 +88,34 @@ private:
         double dist = 0.0;
         for (unsigned int dir = 0; dir < dim; dir++)
           {
-            dist += (point[dir] - center_list[index][dir] * mesh_size[dir])
-              * (point[dir] - center_list[index][dir] * mesh_size[dir]);
+            dist += (point[dir] - center_list[index][dir] * mesh_size[dir]) *
+                    (point[dir] - center_list[index][dir] * mesh_size[dir]);
           }
         dist = std::sqrt(dist);
-        scalar_value += 0.5*(1.0 - std::tanh((dist - radius[index] * mesh_size[0]) / 0.5));
+        scalar_value +=
+          0.5 * (1.0 - std::tanh((dist - radius[index] * mesh_size[0]) / 0.5));
 
         // The medium grains
         dist = 0.0;
         for (unsigned int dir = 0; dir < dim; dir++)
           {
-            dist += (point[dir] - center_list[index + 5][dir] * mesh_size[dir])
-              * (point[dir] - center_list[index + 5][dir] * mesh_size[dir]);
+            dist += (point[dir] - center_list[index + 5][dir] * mesh_size[dir]) *
+                    (point[dir] - center_list[index + 5][dir] * mesh_size[dir]);
           }
         dist = std::sqrt(dist);
-        scalar_value += 0.5*(1.0 - std::tanh((dist - radius[index + 5] * mesh_size[0]) / 0.5));
+        scalar_value +=
+          0.5 * (1.0 - std::tanh((dist - radius[index + 5] * mesh_size[0]) / 0.5));
 
         // The small grains
         dist = 0.0;
         for (unsigned int dir = 0; dir < dim; dir++)
           {
-            dist += (point[dir] - center_list[index + 10][dir] * mesh_size[dir])
-              * (point[dir] - center_list[index + 10][dir] * mesh_size[dir]);
+            dist += (point[dir] - center_list[index + 10][dir] * mesh_size[dir]) *
+                    (point[dir] - center_list[index + 10][dir] * mesh_size[dir]);
           }
         dist = std::sqrt(dist);
-        scalar_value += 0.5*(1.0 - std::tanh((dist - radius[index + 10] * mesh_size[0]) / 0.5));
+        scalar_value +=
+          0.5 * (1.0 - std::tanh((dist - radius[index + 10] * mesh_size[0]) / 0.5));
       }
     else
       {
@@ -113,23 +126,23 @@ private:
   void
   compute_rhs([[maybe_unused]] FieldContainer<dim, degree, number> &variable_list,
               [[maybe_unused]] const SimulationTimer               &sim_timer,
-              [[maybe_unused]] unsigned int solve_block_id) const override 
+              [[maybe_unused]] unsigned int solve_block_id) const override
   {
     if (solve_block_id == 1) // Explicit solve for the order parameters
       {
         ScalarValue f_multiwell;
         ScalarValue ni;
         ScalarValue nj;
-        ScalarGrad nix;
+        ScalarGrad  nix;
 
         std::vector<ScalarValue> value_terms(number_of_fields);
-        std::vector<ScalarGrad> gradient_terms(number_of_fields);
+        std::vector<ScalarGrad>  gradient_terms(number_of_fields);
 
         // Calculate the evolution equations
         for (unsigned int i = 0; i < number_of_fields; i++)
           {
-            ni  = variable_list.template get_value<Scalar, OldOne>(i);
-            nix = variable_list.template get_gradient<Scalar, OldOne>(i);
+            ni          = variable_list.template get_value<Scalar, OldOne>(i);
+            nix         = variable_list.template get_gradient<Scalar, OldOne>(i);
             f_multiwell = -ni + ni * ni * ni;
             for (unsigned int j = 0; j < number_of_fields; j++)
               {
@@ -139,7 +152,8 @@ private:
                     f_multiwell += 2.0 * alpha * ni * nj * nj;
                   }
               }
-            value_terms[i] = ni - sim_timer.get_timestep() * kinetic_coef * m_well * f_multiwell;
+            value_terms[i] =
+              ni - sim_timer.get_timestep() * kinetic_coef * m_well * f_multiwell;
             gradient_terms[i] = -sim_timer.get_timestep() * kinetic_coef * kappa * nix;
           }
 
@@ -153,10 +167,10 @@ private:
     else if (solve_block_id == 2) // Postprocessing
       {
         ScalarValue f_total = 0.0;
-        ScalarValue sum2op = 0.0;
+        ScalarValue sum2op  = 0.0;
         ScalarValue ni;
         ScalarValue nj;
-        ScalarGrad nix;
+        ScalarGrad  nix;
 
         ScalarValue max_op_id;
         ScalarValue max_op_value;
@@ -182,7 +196,7 @@ private:
                 if (ni[v] > max_op_value[v])
                   {
                     max_op_value[v] = ni[v];
-                    max_op_id[v] = i;
+                    max_op_id[v]    = i;
                   }
               }
           }
@@ -197,7 +211,7 @@ private:
   number kappa;
   number alpha;
   number kinetic_coef;
-  
+
   static constexpr unsigned int number_of_fields = 6;
 };
 

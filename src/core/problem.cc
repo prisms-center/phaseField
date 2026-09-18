@@ -427,7 +427,8 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   bool is_nucleation_increment =
     user_inputs.nucleation_parameters.should_attempt_nucleation(increment);
   bool is_remapping_increment =
-    user_inputs.grain_reassignment_parameters.should_perform_grain_reassignment(increment);
+    user_inputs.grain_reassignment_parameters.should_perform_grain_reassignment(
+      increment);
 
   // Update the time-dependent constraints
   // TODO: Loop over levels, pass in current time
@@ -492,8 +493,9 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   // Check for order parameter remapping.
   if (is_remapping_increment)
     {
-      GrainReassignmentManager<dim, degree, number>::reassign_grains(solve_context,
-                                                                     pf_tools->simplified_grain_representations);
+      GrainReassignmentManager<dim, degree, number>::reassign_grains(
+        solve_context,
+        pf_tools->simplified_grain_representations);
     }
 
   // Perform grid refinement if necessary

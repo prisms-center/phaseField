@@ -18,15 +18,15 @@ main(int argc, char *argv[])
   // file
   ParseCMDOptions cli_options(argc, argv);
 
-  constexpr unsigned int dim    = 2;
-  constexpr unsigned int degree = 2;
+  constexpr unsigned int dim              = 2;
+  constexpr unsigned int degree           = 2;
   constexpr unsigned int number_of_fields = 6;
 
   std::vector<FieldAttributes> field_attributes;
 
   for (unsigned int i = 0; i < number_of_fields; i++)
     {
-      std::string field_name = "n" + std::to_string(i);
+      std::string     field_name = "n" + std::to_string(i);
       FieldAttributes attr(field_name, Scalar);
       // To mark grains for remapping, give them a grain_reassignment_block_id
       // Fields with the same grain_reassignment_block_id will be grouped together
@@ -39,15 +39,16 @@ main(int argc, char *argv[])
   field_attributes.emplace_back("sum2op", Scalar);
   field_attributes.emplace_back("F", Scalar);
   field_attributes.emplace_back("max_op_id", Scalar);
-  
+
   SolveBlock exp_block;
-  exp_block.id            = 1;
-  exp_block.solve_type    = Explicit;
-  exp_block.solve_timing  = Primary;
+  exp_block.id           = 1;
+  exp_block.solve_type   = Explicit;
+  exp_block.solve_timing = Primary;
 
   // The order parameters depend on the old value and gradient of the order parameters
-  const Dependency old_1_val_and_grad(EvalFlags::nothing, EvalFlags::nothing,
-    {EvalFlags::values | EvalFlags::gradients});
+  const Dependency old_1_val_and_grad(EvalFlags::nothing,
+                                      EvalFlags::nothing,
+                                      {EvalFlags::values | EvalFlags::gradients});
   for (unsigned int i = 0; i < number_of_fields; i++)
     {
       exp_block.field_indices.insert(i);
@@ -55,12 +56,13 @@ main(int argc, char *argv[])
     }
 
   SolveBlock pp_block;
-  pp_block.id               = 2;
-  pp_block.solve_type       = Explicit;
-  pp_block.solve_timing     = PostProcess;
-  pp_block.field_indices    = {number_of_fields, number_of_fields + 1, number_of_fields + 2};
-  
-  // The postprocessing block depends on the current values and gradients of the order parameters
+  pp_block.id            = 2;
+  pp_block.solve_type    = Explicit;
+  pp_block.solve_timing  = PostProcess;
+  pp_block.field_indices = {number_of_fields, number_of_fields + 1, number_of_fields + 2};
+
+  // The postprocessing block depends on the current values and gradients of the order
+  // parameters
   const Dependency current_val_and_grad(EvalFlags::values | EvalFlags::gradients);
   for (unsigned int i = 0; i < number_of_fields; i++)
     {

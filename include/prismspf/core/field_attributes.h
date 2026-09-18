@@ -68,7 +68,7 @@ struct FieldAttributes
   std::vector<Types::Index> nucleating_field_indices;
 
   /**
-   * @brief  
+   * @brief
    */
   unsigned int grain_reassignment_block_id;
 };

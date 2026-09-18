@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <prismspf/grains/grains.h>
 #include <prismspf/grains/grain_reassignment.h>
+#include <prismspf/grains/grains.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -25,9 +25,9 @@ GrainReassignmentManager<dim, degree, number>::reassign_grains(
 
   // Search over all fields and calculate a list of GrainSet for each field assigned to
   // any grain reassignment block. One GrainSet represents one grain.
-  unsigned int op_list_index = 0;
+  unsigned int op_list_index             = 0;
   unsigned int last_remapped_field_index = 0;
-  int number_of_remapped_fields = 0;
+  int          number_of_remapped_fields = 0;
   for (unsigned int field_index = 0;
        field_index < solve_context.get_field_attributes().size();
        field_index++)
@@ -85,8 +85,9 @@ GrainReassignmentManager<dim, degree, number>::reassign_grains(
   if (solve_context.get_simulation_timer().get_increment() > 0 ||
       user_inputs.grain_reassignment_parameters.load_grain_structure)
     {
-      SimplifiedGrainManipulator<dim>::transfer_grain_ids(old_grain_representations,
-                                                          simplified_grain_representations);
+      SimplifiedGrainManipulator<dim>::transfer_grain_ids(
+        old_grain_representations,
+        simplified_grain_representations);
     }
 
   SimplifiedGrainManipulator<dim>::reassign_grains(
@@ -222,8 +223,6 @@ OrderParameterRemapper<dim, number>::remap(
         }
     }
 }
-
-
 
 // ============================================================================
 // Methods for SimplifiedGrainManipulator

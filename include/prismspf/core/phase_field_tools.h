@@ -29,7 +29,7 @@ struct PhaseFieldTools
   /**
    * @brief List of SimplifiedGrainRepresentations, tracking the grains for remapping
    */
-   std::vector<SimplifiedGrainRepresentation<dim>> simplified_grain_representations;
+  std::vector<SimplifiedGrainRepresentation<dim>> simplified_grain_representations;
 };
 
 PRISMS_PF_END_NAMESPACE

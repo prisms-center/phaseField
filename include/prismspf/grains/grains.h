@@ -116,7 +116,7 @@ private:
   /**
    * The distance from this grain to the nearest grain with the same order
    * parameter. This value is used to determine the cutoff distance for
-   * tranfering the grain between order parameters.
+   * transferring the grain between order parameters.
    */
   double distance_to_neighbor_sharing_op;
 };

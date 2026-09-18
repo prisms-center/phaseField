@@ -31,7 +31,7 @@ GrainReassignmentParameters::declare(dealii::ParameterHandler &parameter_handler
       "100",
       dealii::Patterns::Integer(1),
       "The number of steps between performing grain reassignment");
-    
+
     parameter_handler.declare_entry(
       "exclusion distance",
       "5.0",
@@ -69,7 +69,7 @@ GrainReassignmentParameters::assign(dealii::ParameterHandler &parameter_handler,
 
     order_parameter_threshold =
       parameter_handler.get_double("grain identification threshold");
-    
+
     // TODO: this currently is not implemented and does nothing
     load_grain_structure = parameter_handler.get_bool("load grain structure");
   }
