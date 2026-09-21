@@ -45,9 +45,9 @@ PRISMS_PF_BEGIN_NAMESPACE
  * We want our own custom failure handler for libassert. There are two things we want to
  * do:
  *   1. Print the assertion to log file
- *   2. Throw an exception for DEBUG_ASSERT and ASSERT rather than abort
+ *   2. Throw an exception for libassert's DEBUG_ASSERT rather than abort
  */
-[[noreturn]] void
+[[noreturn]] inline void
 failure_handler(const libassert::assertion_info &info)
 {
   libassert::enable_virtual_terminal_processing_if_needed();
@@ -57,13 +57,16 @@ failure_handler(const libassert::assertion_info &info)
                    libassert::isatty(libassert::stderr_fileno)
                      ? libassert::get_color_scheme()
                      : libassert::color_scheme::blank);
+
+  // Print the message to cerr as well as the log file
+  Logger::instance() << LogFormatter::verbose(message);
   std::cerr << message << std::endl;
 
   switch (info.type)
     {
-      case libassert::assert_type::assertion:
       case libassert::assert_type::debug_assertion:
         throw std::runtime_error(message);
+      case libassert::assert_type::assertion:
       case libassert::assert_type::assumption:
       case libassert::assert_type::panic:
       case libassert::assert_type::unreachable:

@@ -27,6 +27,10 @@ MPIInitFinalize::MPIInitFinalize(int                          &argc,
                                                                  : _max_n_threads)
 
 {
+  // Set log file
+  // TODO: Move this so it's user specified
+  Logger::set_file("simulation.log");
+
   // Restrict deal.II console printing
   dealii::deallog.depth_console(0);
 

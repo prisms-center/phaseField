@@ -2,7 +2,6 @@
 
 #include <deal.II/base/mpi.h>
 
-#include <prismspf/utilities/assert.h>
 #include <prismspf/utilities/terminal.h>
 
 #include <prismspf/config.h>
@@ -293,6 +292,15 @@ public:
   debug(std::string string)
   {
     return {Section::Normal, Style::Debug, std::move(string)};
+  }
+
+  /**
+   * @brief Format text as verbose.
+   */
+  static Manipulator
+  verbose(std::string string)
+  {
+    return {Section::Normal, Style::Verbose, std::move(string)};
   }
 
   static std::string
