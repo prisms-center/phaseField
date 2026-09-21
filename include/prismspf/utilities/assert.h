@@ -22,7 +22,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 #define DEBUG_ASSERT_THROW(expr, ...) LIBASSERT_DEBUG_ASSERT(expr, __VA_ARGS__)
 
-#ifdef DEBUG
+#ifndef NDEBUG
 #  define DEBUG_ASSERT(expr, ...) LIBASSERT_ASSERT(expr, __VA_ARGS__)
 #else
 #  define DEBUG_ASSERT(expr, ...) (void) 0
@@ -47,6 +47,10 @@ failure_handler(const libassert::assertion_info &info)
 {
   libassert::enable_virtual_terminal_processing_if_needed();
 
+  // Create a message with and without terminal codes
+  std::string message_no_terminal_codes =
+    info.to_string(libassert::terminal_width(libassert::stderr_fileno),
+                   libassert::color_scheme::blank);
   std::string message =
     info.to_string(libassert::terminal_width(libassert::stderr_fileno),
                    libassert::isatty(libassert::stderr_fileno)
@@ -54,7 +58,7 @@ failure_handler(const libassert::assertion_info &info)
                      : libassert::color_scheme::blank);
 
   // Print the message to cerr as well as the log file
-  Logger::instance() << LogFormatter::verbose(message);
+  Logger::instance() << LogFormatter::verbose(message_no_terminal_codes);
   std::cerr << message << std::endl;
 
   switch (info.type)

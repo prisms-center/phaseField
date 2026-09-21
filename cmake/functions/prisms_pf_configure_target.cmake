@@ -49,12 +49,16 @@ function(prisms_pf_configure_targets TARGETS)
     # TODO: We really shouldn't do this and have suggested
     # flags that get inherited from deal.II
     # TODO: These shouldn't be public
+    # NOTE: For debug, we apply the UNDEBUG compiler options
+    # so that if we inherit DNDEBUG from deal.II it doesn't
+    # affect our own assertions and such.
     if(_use_debug)
       target_compile_options(
         ${_target}
         PUBLIC
           ${PRISMS_PF_CXX_FLAGS_LIST}
           ${PRISMS_PF_CXX_FLAGS_DEBUG_LIST}
+          -UNDEBUG
       )
     else()
       target_compile_options(
