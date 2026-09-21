@@ -9,8 +9,6 @@
 
 #include <prismspf/config.h>
 
-#include <libassert/assert.hpp>
-
 #ifdef PRISMS_PF_WITH_CALIPER
 #  include <caliper/cali-manager.h>
 #  include <caliper/cali.h>
