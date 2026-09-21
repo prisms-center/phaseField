@@ -33,12 +33,15 @@
       in {
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
-            # Main requirements
+            # Main packages
             cmake
             gnumake
             ninja
             gcc
             inputs.dealii.packages.${system}.default
+
+            # Optional packages
+            vtk
 
             # Pre-commit
             llvmPackages_18.clang-tools

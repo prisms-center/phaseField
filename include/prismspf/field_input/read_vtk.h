@@ -124,7 +124,7 @@ ReadUnstructuredVTK<dim, number>::ReadUnstructuredVTK(
   // Create a reader for the vtk file and update it
   // vtkNew is a smart pointer so we don't need to manage it with delete
   reader = vtkNew<vtkUnstructuredGridReader>();
-  reader->SetFileName(this->ic_file.filename.c_str());
+  reader->SetFileName(this->ic_file.file_name.c_str());
   reader->Update();
 
   // Check that the file is an unstructured grid
@@ -271,7 +271,7 @@ ReadUnstructuredVTK<dim, number>::get_scalar_value(const dealii::Point<dim> &poi
   bool interpolate = false;
   for (unsigned int i = 0; i < dim; i++)
     {
-      if (std::abs(point_in_dataset[i] - point_vector[i]) > Defaults::mesh_tolerance)
+      if (std::abs(point_in_dataset[i] - point_vector[i]) > Defaults::tolerance<number>)
         {
           interpolate = true;
         }
@@ -296,7 +296,7 @@ ReadUnstructuredVTK<dim, number>::get_scalar_value(const dealii::Point<dim> &poi
 
       vtkGenericCell *cell    = vtkGenericCell::New();
       const vtkIdType cell_id = cell_locator->FindCell(point_vector.data(),
-                                                       Defaults::mesh_tolerance,
+                                                       Defaults::tolerance<number>,
                                                        cell,
                                                        sub_id,
                                                        pcoords.data(),
@@ -358,7 +358,7 @@ ReadUnstructuredVTK<dim, number>::get_vector_value(const dealii::Point<dim> &poi
   bool interpolate = false;
   for (unsigned int i = 0; i < dim; i++)
     {
-      if (std::abs(point_in_dataset[i] - point_vector[i]) > Defaults::mesh_tolerance)
+      if (std::abs(point_in_dataset[i] - point_vector[i]) > Defaults::tolerance<number>)
         {
           interpolate = true;
         }
@@ -387,7 +387,7 @@ ReadUnstructuredVTK<dim, number>::get_vector_value(const dealii::Point<dim> &poi
 
           vtkGenericCell *cell    = vtkGenericCell::New();
           const vtkIdType cell_id = cell_locator->FindCell(point_vector.data(),
-                                                           Defaults::mesh_tolerance,
+                                                           Defaults::tolerance<number>,
                                                            cell,
                                                            sub_id,
                                                            pcoords.data(),

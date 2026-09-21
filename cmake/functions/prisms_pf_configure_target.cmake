@@ -1,13 +1,13 @@
 #
-# Add dependency target to lists
+# Add dependency targets to lists
 #
-function(prisms_pf_add_dependency_target TARGET BUILD TYPE)
+function(prisms_pf_add_dependency_targets BUILD TYPE)
   string(TOUPPER "${BUILD}" BUILD)
   string(TOUPPER "${TYPE}" TYPE)
 
   set(LIST_NAME "PRISMS_PF_${TYPE}_PACKAGES_${BUILD}")
 
-  list(APPEND ${LIST_NAME} ${TARGET})
+  list(APPEND ${LIST_NAME} ${ARGN})
 
   set(${LIST_NAME} ${${LIST_NAME}} PARENT_SCOPE)
 endfunction()

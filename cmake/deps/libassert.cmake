@@ -2,6 +2,8 @@
 # Find libassert and run some checks
 #
 
+# TODO: Add config variables that tell us about libassert here
+
 # With libassert we always want to vendor it
 
 # Add the external projects
@@ -66,8 +68,8 @@ prisms_pf_install_external_library(libassert)
 
 # Add libassert to the Release and Debug lists
 if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
-  prisms_pf_add_dependency_target(imported_libassert_debug DEBUG PUBLIC)
-  prisms_pf_add_dependency_target(imported_libassert RELEASE PUBLIC)
+  prisms_pf_add_dependency_targets(DEBUG PUBLIC imported_libassert_debug)
+  prisms_pf_add_dependency_targets(RELEASE PUBLIC imported_libassert)
 else()
-  prisms_pf_add_dependency_target(imported_libassert "${CMAKE_BUILD_TYPE}" PUBLIC)
+  prisms_pf_add_dependency_targets("${CMAKE_BUILD_TYPE}" PUBLIC imported_libassert)
 endif()

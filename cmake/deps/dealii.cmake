@@ -2,6 +2,8 @@
 # Find deal.II and run some checks
 #
 
+# TODO: Add config variables that tell us about deal.II here
+
 # Once we've found MPI, we need to find deal.II. Since deal.II likes to do things
 # a little differently, provide some directory hints.
 find_package(
@@ -16,7 +18,12 @@ find_package(
 # TODO: Don't rely on deal.II do stuff ourselves
 
 function(strip_dealii_flags input output)
-  string(REGEX REPLACE "-O[0-9s]|-std=[^ ]+" "" stripped "${input}")
+  string(
+    REGEX REPLACE "-O[0-9s]|-std=[^ ]+"
+    ""
+    stripped
+    "${input}"
+  )
   string(STRIP "${stripped}" stripped)
   set(${output} "${stripped}" PARENT_SCOPE)
 endfunction()
@@ -78,12 +85,12 @@ endif()
 
 if(DEAL_II_BUILD_TYPE STREQUAL "DebugRelease")
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    prisms_pf_add_dependency_target(dealii::dealii_debug DEBUG PUBLIC)
+    prisms_pf_add_dependency_targets(DEBUG PUBLIC dealii::dealii_debug)
   elseif(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
-    prisms_pf_add_dependency_target(dealii::dealii_debug DEBUG PUBLIC)
-    prisms_pf_add_dependency_target(dealii::dealii_release RELEASE PUBLIC)
+    prisms_pf_add_dependency_targets(DEBUG PUBLIC dealii::dealii_debug)
+    prisms_pf_add_dependency_targets(RELEASE PUBLIC dealii::dealii_release)
   else()
-    prisms_pf_add_dependency_target(dealii::dealii_release RELEASE PUBLIC)
+    prisms_pf_add_dependency_targets(RELEASE PUBLIC dealii::dealii_release)
   endif()
 else()
   # NOTE: For whatever reason, the dealii::dealii target is just an interface
@@ -91,6 +98,6 @@ else()
   # anything. Instead, we have to grab the build type and determine
   # whether we want dealii::dealii_release or dealii::dealii_debug
   string(TOLOWER "${DEAL_II_BUILD_TYPE}" _dealii_build)
-  prisms_pf_add_dependency_target("dealii::dealii_${_dealii_build}" DEBUG PUBLIC)
-  prisms_pf_add_dependency_target("dealii::dealii_${_dealii_build}" RELEASE PUBLIC)
+  prisms_pf_add_dependency_targets(DEBUG PUBLIC "dealii::dealii_${_dealii_build}")
+  prisms_pf_add_dependency_targets(RELEASE PUBLIC "dealii::dealii_${_dealii_build}")
 endif()
