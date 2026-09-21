@@ -4,12 +4,29 @@
 function(prisms_pf_add_external_project NAME GIT_REPO GIT_TAG)
   if(NOT NAME IN_LIST PRISMS_PF_VENDORED_PACKAGES)
     message(FATAL_ERROR "Invalid vendored package name")
-    return()
   endif()
 
-  set(LIB_NAMES ${ARGN})
+  set(options)
+  set(one_value_args)
+  set(
+    multi_value_args
+    CMAKE_ARGS
+    BUILD_BYPRODUCTS
+  )
+  cmake_parse_arguments(
+    arg
+    "${options}"
+    "${one_value_args}"
+    "${multi_value_args}"
+    ${ARGN}
+  )
+
+  if(arg_UNPARSED_ARGUMENTS)
+    message(FATAL_ERROR "Unparsed arguments for ${NAME}: ${arg_UNPARSED_ARGUMENTS}")
+  endif()
+
   set(BUILD_BYPRODUCTS_ARGS "")
-  foreach(LIB_NAME IN LISTS LIB_NAMES)
+  foreach(LIB_NAME IN LISTS arg_BUILD_BYPRODUCTS)
     list(
       APPEND BUILD_BYPRODUCTS_ARGS
       "<INSTALL_DIR>/${CMAKE_INSTALL_LIBDIR}/${LIB_NAME}.a"
@@ -24,7 +41,7 @@ function(prisms_pf_add_external_project NAME GIT_REPO GIT_TAG)
       PREFIX "${CMAKE_BINARY_DIR}/_deps/${NAME}"
       INSTALL_DIR "${CMAKE_BINARY_DIR}/_deps/${NAME}"
       CMAKE_ARGS
-        -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${ARGN}
+        -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${arg_CMAKE_ARGS}
       BUILD_BYPRODUCTS
         ${BUILD_BYPRODUCTS_ARGS}
     )
@@ -35,7 +52,7 @@ function(prisms_pf_add_external_project NAME GIT_REPO GIT_TAG)
       PREFIX "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug"
       INSTALL_DIR "${CMAKE_BINARY_DIR}/_deps/${NAME}_debug"
       CMAKE_ARGS
-        -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${ARGN}
+        -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> ${arg_CMAKE_ARGS}
       BUILD_BYPRODUCTS
         ${BUILD_BYPRODUCTS_ARGS}
     )
@@ -48,7 +65,7 @@ function(prisms_pf_add_external_project NAME GIT_REPO GIT_TAG)
       INSTALL_DIR "${CMAKE_BINARY_DIR}/_deps/${NAME}"
       CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-        ${ARGN}
+        ${arg_CMAKE_ARGS}
       BUILD_BYPRODUCTS
         ${BUILD_BYPRODUCTS_ARGS}
     )
@@ -61,7 +78,6 @@ endfunction()
 function(prisms_pf_add_external_library NAME LIB_NAME)
   if(NOT NAME IN_LIST PRISMS_PF_VENDORED_PACKAGES)
     message(FATAL_ERROR "Invalid vendored package name")
-    return()
   endif()
 
   if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
@@ -158,7 +174,6 @@ endfunction()
 function(prisms_pf_install_external_library NAME)
   if(NOT NAME IN_LIST PRISMS_PF_VENDORED_PACKAGES)
     message(FATAL_ERROR "Invalid vendored package name")
-    return()
   endif()
 
   if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")

@@ -8,38 +8,33 @@
 #include <prismspf/config.h>
 
 #include <cstdio>
-#include <libassert/assert.hpp>
 #include <stdexcept>
+
+/**
+ * This define has to come before the libassert include to make sure the assertions are
+ * prefixed properly. Otherwise, we'll run into name collisions.
+ */
+#define LIBASSERT_PREFIX_ASSERTIONS
+
+#include <libassert/assert.hpp>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-/**
- * There's one reason for this file. The libassert/assert.hpp header may not show up in
- * LSPs without having built the project. This is due to how ExternalProject works and I
- * don't see a good reason around it. LSPs should still be able to autocomplete and
- * include the prismspf/utilities/assert.h header.
- *
- * We include header macro guards for the LSP too
- */
-#ifndef DEBUG_ASSERT
-#  define DEBUG_ASSERT (void);
+#define DEBUG_ASSERT_THROW(expr, ...) LIBASSERT_DEBUG_ASSERT(expr, __VA_ARGS__)
+
+#ifdef DEBUG
+#  define DEBUG_ASSERT(expr, ...) LIBASSERT_ASSERT(expr, __VA_ARGS__)
+#else
+#  define DEBUG_ASSERT(expr, ...) (void) 0
 #endif
 
-#ifndef ASSERT
-#  define ASSERT (void);
-#endif
+#define ASSERT(expr, ...) LIBASSERT_ASSERT(expr, __VA_ARGS__)
 
-#ifndef ASSUME
-#  define ASSUME (void);
-#endif
+#define ASSUME(expr, ...) LIBASSERT_ASSUME(expr, __VA_ARGS__)
 
-#ifndef PANIC
-#  define PANIC (void);
-#endif
+#define PANIC(...) LIBASSERT_PANIC(__VA_ARGS__)
 
-#ifndef UNREACHABLE
-#  define UNREACHABLE(void) ;
-#endif
+#define UNREACHABLE(...) LIBASSERT_UNREACHABLE(__VA_ARGS__)
 
 /**
  * We want our own custom failure handler for libassert. There are two things we want to
