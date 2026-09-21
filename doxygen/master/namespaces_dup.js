@@ -1,6 +1,9 @@
 var namespaces_dup =
 [
-    [ "Defaults", "namespaceDefaults.html", null ],
+    [ "Defaults", "namespaceDefaults.html", [
+      [ "machine_epsilon", "namespaceDefaults.html#a79d87158cb4e089f95fca4139054a152", null ],
+      [ "tolerance", "namespaceDefaults.html#aafc63a8da230ead5a88a90126929de89", null ]
+    ] ],
     [ "Mechanics", "namespaceMechanics.html", [
       [ "compute_stress", "namespaceMechanics.html#aaf83d1ac4db74ba503d7d85cf2397d42", null ],
       [ "compute_stress", "namespaceMechanics.html#a9671447899545e87a1fa4438bc310f6e", null ],
@@ -8,7 +11,7 @@ var namespaces_dup =
     ] ],
     [ "Numbers", "namespaceNumbers.html", [
       [ "default_subsections", "namespaceNumbers.html#a02636074a0888f7a252ed9ece2013bba", null ],
-      [ "invalid_index", "namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343", null ]
+      [ "invalid_index", "namespaceNumbers.html#aeb8ec87ba4b056558ec322d53d529b87", null ]
     ] ],
     [ "Patterns", "namespacePatterns.html", [
       [ "Anything", "namespacePatterns.html#a7d487302ac9a171935a32a3e82e90ab4", null ],

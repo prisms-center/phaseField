@@ -121,9 +121,80 @@ $(function(){initNavTree('namespaceDefaults.html',''); initResizable(true); });
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">Defaults Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a79d87158cb4e089f95fca4139054a152" id="r_a79d87158cb4e089f95fca4139054a152"><td class="memTemplParams" colspan="2">template&lt;typename RealType&gt; </td></tr>
+<tr class="memitem:a79d87158cb4e089f95fca4139054a152"><td class="memTemplItemLeft" align="right" valign="top">static constexpr RealType&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a79d87158cb4e089f95fca4139054a152">machine_epsilon</a> = std::numeric_limits&lt;RealType&gt;::epsilon()</td></tr>
+<tr class="memdesc:a79d87158cb4e089f95fca4139054a152"><td class="mdescLeft">&#160;</td><td class="mdescRight">Machine epsilon.  <br /></td></tr>
+<tr class="separator:a79d87158cb4e089f95fca4139054a152"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafc63a8da230ead5a88a90126929de89" id="r_aafc63a8da230ead5a88a90126929de89"><td class="memTemplParams" colspan="2">template&lt;typename RealType&gt; </td></tr>
+<tr class="memitem:aafc63a8da230ead5a88a90126929de89"><td class="memTemplItemLeft" align="right" valign="top">static constexpr RealType&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aafc63a8da230ead5a88a90126929de89">tolerance</a> = RealType(10) * <a class="el" href="#a79d87158cb4e089f95fca4139054a152">machine_epsilon</a>&lt;RealType&gt;</td></tr>
+<tr class="memdesc:aafc63a8da230ead5a88a90126929de89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tolerance factor.  <br /></td></tr>
+<tr class="separator:aafc63a8da230ead5a88a90126929de89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A collection of defaults we use throughout the code. </p>
+</div><h2 class="groupheader">Variable Documentation</h2>
+<a id="a79d87158cb4e089f95fca4139054a152" name="a79d87158cb4e089f95fca4139054a152"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79d87158cb4e089f95fca4139054a152">&#9670;&#160;</a></span>machine_epsilon</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RealType&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">RealType Defaults::machine_epsilon = std::numeric_limits&lt;RealType&gt;::epsilon()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Machine epsilon. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo</a></b></dt><dd>Add a description of when and why we use this </dd></dl>
+
+</div>
+</div>
+<a id="aafc63a8da230ead5a88a90126929de89" name="aafc63a8da230ead5a88a90126929de89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafc63a8da230ead5a88a90126929de89">&#9670;&#160;</a></span>tolerance</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RealType&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">RealType Defaults::tolerance = RealType(10) * <a class="el" href="#a79d87158cb4e089f95fca4139054a152">machine_epsilon</a>&lt;RealType&gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tolerance factor. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo</a></b></dt><dd>Add a description of when and why we use this </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
