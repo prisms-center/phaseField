@@ -4,9 +4,12 @@
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/mpi.h>
 
+#include <prismspf/utilities/assert.h>
 #include <prismspf/utilities/utilities.h>
 
 #include <prismspf/config.h>
+
+#include <libassert/assert.hpp>
 
 #ifdef PRISMS_PF_WITH_CALIPER
 #  include <caliper/cali-manager.h>
@@ -26,6 +29,9 @@ MPIInitFinalize::MPIInitFinalize(int                          &argc,
 {
   // Restrict deal.II console printing
   dealii::deallog.depth_console(0);
+
+  // Set the custom failure handler for libassert
+  libassert::set_failure_handler(failure_handler);
 
 #ifdef PRISMS_PF_WITH_CALIPER
   // Add some useful defaults for Caliper
