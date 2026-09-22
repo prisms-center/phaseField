@@ -1,8 +1,8 @@
+#include <prismspf/utilities/assert.h>
 #include <prismspf/utilities/logger.h>
+#include <prismspf/utilities/terminal.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/utilities/terminal.h"
 
 #include <algorithm>
 #include <fstream>

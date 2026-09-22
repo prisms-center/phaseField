@@ -3,38 +3,78 @@
 
 #pragma once
 
+#include <prismspf/utilities/logger.h>
+
 #include <prismspf/config.h>
+
+#include <cstdio>
+#include <stdexcept>
+
+/**
+ * This define has to come before the libassert include to make sure the assertions are
+ * prefixed properly. Otherwise, we'll run into name collisions.
+ */
+#define LIBASSERT_PREFIX_ASSERTIONS
 
 #include <libassert/assert.hpp>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+#define DEBUG_ASSERT_THROW(expr, ...) LIBASSERT_DEBUG_ASSERT(expr, __VA_ARGS__)
+
+#ifndef NDEBUG
+#  define DEBUG_ASSERT(expr, ...) LIBASSERT_ASSERT(expr, __VA_ARGS__)
+#else
+#  define DEBUG_ASSERT(expr, ...) (void) 0
+#endif
+
+#define ASSERT(expr, ...) LIBASSERT_ASSERT(expr, __VA_ARGS__)
+
+#define ASSUME(expr, ...) LIBASSERT_ASSUME(expr, __VA_ARGS__)
+
+#define PANIC(...) LIBASSERT_PANIC(__VA_ARGS__)
+
+#define UNREACHABLE(...) LIBASSERT_UNREACHABLE(__VA_ARGS__)
+
 /**
- * There's one reason for this file. The libassert/assert.hpp header may not show up in
- * LSPs without having built the project. This is due to how ExternalProject works and I
- * don't see a good reason around it. LSPs should still be able to autocomplete and
- * include the prismspf/utilities/assert.h header.
- *
- * We include header macro guards for the LSP too
+ * We want our own custom failure handler for libassert. There are two things we want to
+ * do:
+ *   1. Print the assertion to log file
+ *   2. Throw an exception for libassert's DEBUG_ASSERT rather than abort
  */
-#ifndef DEBUG_ASSERT
-#  define DEBUG_ASSERT (void);
-#endif
+[[noreturn]] inline void
+failure_handler(const libassert::assertion_info &info)
+{
+  libassert::enable_virtual_terminal_processing_if_needed();
 
-#ifndef ASSERT
-#  define ASSERT (void);
-#endif
+  // Create a message with and without terminal codes
+  std::string message_no_terminal_codes =
+    info.to_string(libassert::terminal_width(libassert::stderr_fileno),
+                   libassert::color_scheme::blank);
+  std::string message =
+    info.to_string(libassert::terminal_width(libassert::stderr_fileno),
+                   libassert::isatty(libassert::stderr_fileno)
+                     ? libassert::get_color_scheme()
+                     : libassert::color_scheme::blank);
 
-#ifndef ASSUME
-#  define ASSUME (void);
-#endif
+  // Print the message to cerr as well as the log file
+  Logger::instance() << LogFormatter::verbose(message_no_terminal_codes);
+  std::cerr << message << std::endl;
 
-#ifndef PANIC
-#  define PANIC (void);
-#endif
-
-#ifndef UNREACHABLE
-#  define UNREACHABLE(void) ;
-#endif
+  switch (info.type)
+    {
+      case libassert::assert_type::debug_assertion:
+        throw std::runtime_error(message);
+      case libassert::assert_type::assertion:
+      case libassert::assert_type::assumption:
+      case libassert::assert_type::panic:
+      case libassert::assert_type::unreachable:
+        std::fflush(stderr);
+        std::abort();
+      default:
+        std::cerr << "Critical error: Unknown libassert::assert_type" << std::endl;
+        std::abort();
+    }
+}
 
 PRISMS_PF_END_NAMESPACE

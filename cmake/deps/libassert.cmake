@@ -11,10 +11,11 @@ prisms_pf_add_external_project(
   libassert
   https://github.com/jeremy-rifkin/libassert.git
   v2.2.1
-  libassert
-  libcpptrace
-  libzstd
-  libdwarf
+  BUILD_BYPRODUCTS
+    libassert
+    libcpptrace
+    libzstd
+    libdwarf
 )
 
 # Create the libraries
