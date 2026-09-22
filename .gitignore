@@ -2,6 +2,7 @@
 **/build
 **/install
 **/CMakeFiles
+**/__cmake_systeminformation
 Makefile
 cmake_install.cmake
 CMakeUserPresets.json

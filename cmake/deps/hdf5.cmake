@@ -2,6 +2,8 @@
 # Find HDF5 and run some checks
 #
 
+# TODO: Add config variables that tell us about HDF5 here
+
 # Currently, we only support HDF5 through deal.II
 if(NOT DEAL_II_WITH_HDF5 AND PRISMS_PF_WITH_HDF5)
   message(

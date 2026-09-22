@@ -87,19 +87,28 @@ include(deps/libassert)
 include(deps/mpi)
 
 # Find deal.II
+# TODO: Test compile
 include(deps/dealii)
 
 # Find VTK if we've enabled it
+# TODO: Test compile
 if(PRISMS_PF_WITH_VTK)
   include(deps/vtk)
+  print_variables(
+    PRISMS_PF_VTK_VERSION
+    PRISMS_PF_VTK_DIR
+    PRISMS_PF_VTK_SOURCE
+  )
 endif()
 
 # Find HDF5 if we've enabled it
+# TODO: Test compile
 if(PRISMS_PF_WITH_HDF5)
   include(deps/hdf5)
 endif()
 
 # Find Caliper if we've enabled it
+# TODO: Test compile
 if(PRISMS_PF_WITH_CALIPER)
   include(deps/caliper)
 endif()

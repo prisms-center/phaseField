@@ -2,6 +2,8 @@
 # Find MPI and run some checks
 #
 
+# TODO: add config variables that tell us about MPI here
+
 find_package(MPI REQUIRED COMPONENTS CXX)
 
 if(NOT MPI_CXX_FOUND)
@@ -31,5 +33,5 @@ if(NOT MPI_CXX_VERSION)
 endif()
 
 # Add MPI to the Release and Debug lists
-prisms_pf_add_dependency_target(MPI::MPI_CXX DEBUG PUBLIC)
-prisms_pf_add_dependency_target(MPI::MPI_CXX RELEASE PUBLIC)
+prisms_pf_add_dependency_targets(DEBUG PUBLIC MPI::MPI_CXX)
+prisms_pf_add_dependency_targets(RELEASE PUBLIC MPI::MPI_CXX)

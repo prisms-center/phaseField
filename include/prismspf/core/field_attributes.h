@@ -100,8 +100,4 @@ field_map(const std::vector<FieldAttributes> &fields)
   return map;
 }
 
-// TODO: Submit a PR/issue to dealii to make operator| constexpr.
-// constexpr EvalFlags values_and_gradients = EvalFlags::values |
-// EvalFlags::gradients;
-
 PRISMS_PF_END_NAMESPACE

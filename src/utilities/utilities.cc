@@ -4,6 +4,7 @@
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/mpi.h>
 
+#include <prismspf/utilities/assert.h>
 #include <prismspf/utilities/utilities.h>
 
 #include <prismspf/config.h>
@@ -24,8 +25,15 @@ MPIInitFinalize::MPIInitFinalize(int                          &argc,
                                                                  : _max_n_threads)
 
 {
+  // Set log file
+  // TODO: Move this so it's user specified
+  Logger::set_file("simulation.log");
+
   // Restrict deal.II console printing
   dealii::deallog.depth_console(0);
+
+  // Set the custom failure handler for libassert
+  libassert::set_failure_handler(failure_handler);
 
 #ifdef PRISMS_PF_WITH_CALIPER
   // Add some useful defaults for Caliper

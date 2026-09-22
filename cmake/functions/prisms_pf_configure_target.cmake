@@ -1,13 +1,13 @@
 #
-# Add dependency target to lists
+# Add dependency targets to lists
 #
-function(prisms_pf_add_dependency_target TARGET BUILD TYPE)
+function(prisms_pf_add_dependency_targets BUILD TYPE)
   string(TOUPPER "${BUILD}" BUILD)
   string(TOUPPER "${TYPE}" TYPE)
 
   set(LIST_NAME "PRISMS_PF_${TYPE}_PACKAGES_${BUILD}")
 
-  list(APPEND ${LIST_NAME} ${TARGET})
+  list(APPEND ${LIST_NAME} ${ARGN})
 
   set(${LIST_NAME} ${${LIST_NAME}} PARENT_SCOPE)
 endfunction()
@@ -49,12 +49,16 @@ function(prisms_pf_configure_targets TARGETS)
     # TODO: We really shouldn't do this and have suggested
     # flags that get inherited from deal.II
     # TODO: These shouldn't be public
+    # NOTE: For debug, we apply the UNDEBUG compiler options
+    # so that if we inherit DNDEBUG from deal.II it doesn't
+    # affect our own assertions and such.
     if(_use_debug)
       target_compile_options(
         ${_target}
         PUBLIC
           ${PRISMS_PF_CXX_FLAGS_LIST}
           ${PRISMS_PF_CXX_FLAGS_DEBUG_LIST}
+          -UNDEBUG
       )
     else()
       target_compile_options(
