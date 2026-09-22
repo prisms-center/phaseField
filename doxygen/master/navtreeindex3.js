@@ -1,5 +1,9 @@
 var NAVTREEINDEX3 =
 {
+"classTimer.html#a64705ee502c79c919034afc1377d5b61":[8,0,69,11],
+"classTimer.html#a71ca433e1d5349d09281467425dc81a9":[8,0,69,6],
+"classTimer.html#a8ed3c5e074223900c0c9a74376471209":[8,0,69,1],
+"classTimer.html#abab11b7f11ebabd0ec136f93c3a7f556":[8,0,69,10],
 "classTimer.html#abc2a3f33c55dca79a3f9ae61c90a42ed":[8,0,69,9],
 "classTimer.html#ae1dc504d4bd75188b95693a4951149fd":[8,0,69,5],
 "classTimer.html#ae6b73141ad1d5029d3782d14d2fd5ff0":[8,0,69,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX3 =
 "grid__refiner__criterion_8h.html#ae8a1da00a86af20d3668602d778d02baaadd31e0ae0bc3c65905fdbb5b2c2633d":[9,0,1,0,0,9,1,2],
 "grid__refiner__criterion_8h.html#af027400efc02bf9f43b5e376052e14d8":[9,0,1,0,0,9,3],
 "grid__refiner__criterion_8h_source.html":[9,0,1,0,0,9],
-"group__solution__handler_8cc.html":[9,0,2,0,4],
-"group__solution__handler_8h.html":[9,0,1,0,0,10],
-"group__solution__handler_8h_source.html":[9,0,1,0,0,10],
-"hierarchy.html":[8,2],
-"index.html":[]
+"group__solution__handler_8cc.html":[9,0,2,0,4]
 };

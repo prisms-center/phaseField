@@ -181,7 +181,7 @@ $(function(){initNavTree('field__attributes_8h_source.html',''); initResizable(t
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  std::map&lt;std::string, Types::Index&gt; map;</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; fields.size(); ++i)</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    {</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      <a class="code hl_define" href="assert_8h.html#af343b20373ba49a92fce523e948f2ab3">ASSERT</a>(!map.contains(fields[i].name),</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      <a class="code hl_define" href="assert_8h.html#a1904119772d0bc11727caebd5825c07f">ASSERT</a>(!map.contains(fields[i].name),</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>             <span class="stringliteral">&quot;The names of the fields must be unique&quot;</span>,</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>             fields[i].name);</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      map[fields[i].name] = i;</div>
@@ -197,7 +197,7 @@ $(function(){initNavTree('field__attributes_8h_source.html',''); initResizable(t
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  std::map&lt;std::string, FieldAttributes&gt; map;</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <a class="code hl_struct" href="structFieldAttributes.html">FieldAttributes</a> &amp;field : fields)</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    {</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      <a class="code hl_define" href="assert_8h.html#af343b20373ba49a92fce523e948f2ab3">ASSERT</a>(!map.contains(field.name),</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      <a class="code hl_define" href="assert_8h.html#a1904119772d0bc11727caebd5825c07f">ASSERT</a>(!map.contains(field.name),</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>             <span class="stringliteral">&quot;The names of the fields must be unique&quot;</span>,</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>             field.name);</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      map[field.name] = field;</div>
@@ -208,7 +208,7 @@ $(function(){initNavTree('field__attributes_8h_source.html',''); initResizable(t
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aassert_8h_html"><div class="ttname"><a href="assert_8h.html">assert.h</a></div></div>
-<div class="ttc" id="aassert_8h_html_af343b20373ba49a92fce523e948f2ab3"><div class="ttname"><a href="assert_8h.html#af343b20373ba49a92fce523e948f2ab3">ASSERT</a></div><div class="ttdeci">#define ASSERT</div><div class="ttdef"><b>Definition</b> assert.h:25</div></div>
+<div class="ttc" id="aassert_8h_html_a1904119772d0bc11727caebd5825c07f"><div class="ttname"><a href="assert_8h.html#a1904119772d0bc11727caebd5825c07f">ASSERT</a></div><div class="ttdeci">#define ASSERT(expr,...)</div><div class="ttdef"><b>Definition</b> assert.h:31</div></div>
 <div class="ttc" id="aconstraint__parameters_8h_html"><div class="ttname"><a href="constraint__parameters_8h.html">constraint_parameters.h</a></div></div>
 <div class="ttc" id="afield__attributes_8h_html_a59664838f232a382119cacc52670b0d0"><div class="ttname"><a href="field__attributes_8h.html#a59664838f232a382119cacc52670b0d0">field_index_map</a></div><div class="ttdeci">std::map&lt; std::string, Types::Index &gt; field_index_map(const std::vector&lt; FieldAttributes &gt; &amp;fields)</div><div class="ttdoc">Make a map that maps field names to field indices.</div><div class="ttdef"><b>Definition</b> field_attributes.h:73</div></div>
 <div class="ttc" id="afield__attributes_8h_html_adaa6e313c2945ec95eca03bf754510a6"><div class="ttname"><a href="field__attributes_8h.html#adaa6e313c2945ec95eca03bf754510a6">field_map</a></div><div class="ttdeci">std::map&lt; std::string, FieldAttributes &gt; field_map(const std::vector&lt; FieldAttributes &gt; &amp;fields)</div><div class="ttdoc">Make a map that maps field names to field attributes.</div><div class="ttdef"><b>Definition</b> field_attributes.h:90</div></div>

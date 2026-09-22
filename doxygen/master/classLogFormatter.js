@@ -30,6 +30,7 @@ var classLogFormatter =
     [ "subtitle", "classLogFormatter.html#ac590456dcf3ebe1c981e4dd6064e19a3", null ],
     [ "success", "classLogFormatter.html#a05e05e37f11a6171151363a14fc0048f", null ],
     [ "title", "classLogFormatter.html#a3538231e70c03cd62e1eaa1c7cdd3968", null ],
+    [ "verbose", "classLogFormatter.html#a7a3afca95ad4072d773a90932a9bcc70", null ],
     [ "warning", "classLogFormatter.html#aadba3dc6e1a30dd463e0cd21e1f26924", null ],
     [ "operator<<", "classLogFormatter.html#a37bdc632f9b6fb2a68aa6aa077a3ba70", null ]
 ];

@@ -5,5 +5,6 @@ var searchData=
   ['value_2',['value',['../classDirichletConditions.html#a95e67e2ca91018c0f29f0f5f4d1462c2',1,'DirichletConditions']]],
   ['value_5fin_5fopen_5frange_3',['value_in_open_range',['../structRefinementCriterion.html#a2abe1974a53262282636c44a787efeeb',1,'RefinementCriterion']]],
   ['vector_5fvalue_4',['vector_value',['../classDirichletConditions.html#ada1151c6fe575fc9828325325726fd32',1,'DirichletConditions::vector_value()'],['../classInitialCondition.html#ae1e1c28adb3c0b9feadd2c381f507606',1,'InitialCondition::vector_value()'],['../classReadInitialCondition.html#a2f4b02ecee8d1822620fe2fac717effe',1,'ReadInitialCondition::vector_value()']]],
-  ['vmult_5',['vmult',['../classMFOperator.html#af7dddcd4e602938e22f219d009f2ecfa',1,'MFOperator']]]
+  ['verbose_5',['verbose',['../classLogFormatter.html#a7a3afca95ad4072d773a90932a9bcc70',1,'LogFormatter']]],
+  ['vmult_6',['vmult',['../classMFOperator.html#af7dddcd4e602938e22f219d009f2ecfa',1,'MFOperator']]]
 ];

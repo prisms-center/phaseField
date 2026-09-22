@@ -122,99 +122,175 @@ $(function(){initNavTree('assert_8h.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">assert.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;prismspf/config.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="logger_8h_source.html">prismspf/utilities/logger.h</a>&gt;</code><br />
+<code>#include &lt;prismspf/config.h&gt;</code><br />
+<code>#include &lt;cstdio&gt;</code><br />
+<code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &lt;libassert/assert.hpp&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for assert.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="assert_8h__incl.svg" width="318" height="148"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="assert_8h__incl.svg" width="1691" height="334"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="assert_8h__dep__incl.svg" width="3618" height="1718"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="assert_8h__dep__incl.svg" width="3795" height="1920"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="assert_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:aa583c348c858a7681f097347158598fb" id="r_aa583c348c858a7681f097347158598fb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa583c348c858a7681f097347158598fb">DEBUG_ASSERT</a>&#160;&#160;&#160;(void);</td></tr>
-<tr class="separator:aa583c348c858a7681f097347158598fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af343b20373ba49a92fce523e948f2ab3" id="r_af343b20373ba49a92fce523e948f2ab3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af343b20373ba49a92fce523e948f2ab3">ASSERT</a>&#160;&#160;&#160;(void);</td></tr>
-<tr class="separator:af343b20373ba49a92fce523e948f2ab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d04d03f709f4858dfaa509ab368e8a2" id="r_a7d04d03f709f4858dfaa509ab368e8a2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d04d03f709f4858dfaa509ab368e8a2">ASSUME</a>&#160;&#160;&#160;(void);</td></tr>
-<tr class="separator:a7d04d03f709f4858dfaa509ab368e8a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83407c90dbd7ab867fe438dc3e5d9373" id="r_a83407c90dbd7ab867fe438dc3e5d9373"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83407c90dbd7ab867fe438dc3e5d9373">PANIC</a>&#160;&#160;&#160;(void);</td></tr>
-<tr class="separator:a83407c90dbd7ab867fe438dc3e5d9373"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc72016abc8c2f0a7245399318f0c79a" id="r_acc72016abc8c2f0a7245399318f0c79a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc72016abc8c2f0a7245399318f0c79a">UNREACHABLE</a>(void)</td></tr>
-<tr class="separator:acc72016abc8c2f0a7245399318f0c79a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c923dd1d01d5a1cff47112434cde61c" id="r_a0c923dd1d01d5a1cff47112434cde61c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c923dd1d01d5a1cff47112434cde61c">LIBASSERT_PREFIX_ASSERTIONS</a></td></tr>
+<tr class="separator:a0c923dd1d01d5a1cff47112434cde61c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3334995c549391b9981c1adc858117f" id="r_af3334995c549391b9981c1adc858117f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3334995c549391b9981c1adc858117f">DEBUG_ASSERT_THROW</a>(expr, ...)</td></tr>
+<tr class="separator:af3334995c549391b9981c1adc858117f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7828cd0c0196482516103f2170a4449c" id="r_a7828cd0c0196482516103f2170a4449c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7828cd0c0196482516103f2170a4449c">DEBUG_ASSERT</a>(expr, ...)</td></tr>
+<tr class="separator:a7828cd0c0196482516103f2170a4449c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1904119772d0bc11727caebd5825c07f" id="r_a1904119772d0bc11727caebd5825c07f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1904119772d0bc11727caebd5825c07f">ASSERT</a>(expr, ...)</td></tr>
+<tr class="separator:a1904119772d0bc11727caebd5825c07f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ae2e800d8feadbeaaa291ba17f43ce8" id="r_a6ae2e800d8feadbeaaa291ba17f43ce8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ae2e800d8feadbeaaa291ba17f43ce8">ASSUME</a>(expr, ...)</td></tr>
+<tr class="separator:a6ae2e800d8feadbeaaa291ba17f43ce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f54a1e3c548236aa6a60f4596699819" id="r_a8f54a1e3c548236aa6a60f4596699819"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f54a1e3c548236aa6a60f4596699819">PANIC</a>(...)</td></tr>
+<tr class="separator:a8f54a1e3c548236aa6a60f4596699819"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13557349423bcdcfcaf35951f66aadb5" id="r_a13557349423bcdcfcaf35951f66aadb5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13557349423bcdcfcaf35951f66aadb5">UNREACHABLE</a>(...)</td></tr>
+<tr class="separator:a13557349423bcdcfcaf35951f66aadb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a0ab770ec1d8686922abbde2ccbdfaa15" id="r_a0ab770ec1d8686922abbde2ccbdfaa15"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ab770ec1d8686922abbde2ccbdfaa15">failure_handler</a> (const libassert::assertion_info &amp;info)</td></tr>
+<tr class="separator:a0ab770ec1d8686922abbde2ccbdfaa15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="af343b20373ba49a92fce523e948f2ab3" name="af343b20373ba49a92fce523e948f2ab3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af343b20373ba49a92fce523e948f2ab3">&#9670;&#160;</a></span>ASSERT</h2>
+<a id="a1904119772d0bc11727caebd5825c07f" name="a1904119772d0bc11727caebd5825c07f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1904119772d0bc11727caebd5825c07f">&#9670;&#160;</a></span>ASSERT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define ASSERT&#160;&#160;&#160;(void);</td>
+          <td class="memname">#define ASSERT</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>expr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em></em></span>...&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<b>Value:</b><div class="fragment"><div class="line">LIBASSERT_ASSERT(expr, __VA_ARGS__)</div>
+</div><!-- fragment -->
 </div>
 </div>
-<a id="a7d04d03f709f4858dfaa509ab368e8a2" name="a7d04d03f709f4858dfaa509ab368e8a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d04d03f709f4858dfaa509ab368e8a2">&#9670;&#160;</a></span>ASSUME</h2>
+<a id="a6ae2e800d8feadbeaaa291ba17f43ce8" name="a6ae2e800d8feadbeaaa291ba17f43ce8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ae2e800d8feadbeaaa291ba17f43ce8">&#9670;&#160;</a></span>ASSUME</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define ASSUME&#160;&#160;&#160;(void);</td>
+          <td class="memname">#define ASSUME</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>expr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em></em></span>...&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<b>Value:</b><div class="fragment"><div class="line">LIBASSERT_ASSUME(expr, __VA_ARGS__)</div>
+</div><!-- fragment -->
 </div>
 </div>
-<a id="aa583c348c858a7681f097347158598fb" name="aa583c348c858a7681f097347158598fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa583c348c858a7681f097347158598fb">&#9670;&#160;</a></span>DEBUG_ASSERT</h2>
+<a id="a7828cd0c0196482516103f2170a4449c" name="a7828cd0c0196482516103f2170a4449c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7828cd0c0196482516103f2170a4449c">&#9670;&#160;</a></span>DEBUG_ASSERT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define DEBUG_ASSERT&#160;&#160;&#160;(void);</td>
+          <td class="memname">#define DEBUG_ASSERT</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>expr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em></em></span>...&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>There's one reason for this file. The libassert/assert.hpp header may not show up in LSPs without having built the project. This is due to how ExternalProject works and I don't see a good reason around it. LSPs should still be able to autocomplete and include the <a class="el" href="assert_8h.html">prismspf/utilities/assert.h</a> header.</p>
-<p>We include header macro guards for the LSP too </p>
-
+<b>Value:</b><div class="fragment"><div class="line">LIBASSERT_ASSERT(expr, __VA_ARGS__)</div>
+</div><!-- fragment -->
 </div>
 </div>
-<a id="a83407c90dbd7ab867fe438dc3e5d9373" name="a83407c90dbd7ab867fe438dc3e5d9373"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a83407c90dbd7ab867fe438dc3e5d9373">&#9670;&#160;</a></span>PANIC</h2>
+<a id="af3334995c549391b9981c1adc858117f" name="af3334995c549391b9981c1adc858117f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3334995c549391b9981c1adc858117f">&#9670;&#160;</a></span>DEBUG_ASSERT_THROW</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define PANIC&#160;&#160;&#160;(void);</td>
+          <td class="memname">#define DEBUG_ASSERT_THROW</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>expr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em></em></span>...&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">LIBASSERT_DEBUG_ASSERT(expr, __VA_ARGS__)</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a0c923dd1d01d5a1cff47112434cde61c" name="a0c923dd1d01d5a1cff47112434cde61c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c923dd1d01d5a1cff47112434cde61c">&#9670;&#160;</a></span>LIBASSERT_PREFIX_ASSERTIONS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LIBASSERT_PREFIX_ASSERTIONS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This define has to come before the libassert include to make sure the assertions are prefixed properly. Otherwise, we'll run into name collisions. </p>
 
 </div>
 </div>
-<a id="acc72016abc8c2f0a7245399318f0c79a" name="acc72016abc8c2f0a7245399318f0c79a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc72016abc8c2f0a7245399318f0c79a">&#9670;&#160;</a></span>UNREACHABLE</h2>
+<a id="a8f54a1e3c548236aa6a60f4596699819" name="a8f54a1e3c548236aa6a60f4596699819"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f54a1e3c548236aa6a60f4596699819">&#9670;&#160;</a></span>PANIC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PANIC</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em></em></span>...</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">LIBASSERT_PANIC(__VA_ARGS__)</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a13557349423bcdcfcaf35951f66aadb5" name="a13557349423bcdcfcaf35951f66aadb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13557349423bcdcfcaf35951f66aadb5">&#9670;&#160;</a></span>UNREACHABLE</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -222,13 +298,43 @@ Macros</h2></td></tr>
         <tr>
           <td class="memname">#define UNREACHABLE</td>
           <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>void</em></span></td><td>)</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em></em></span>...</td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">;</div>
+<b>Value:</b><div class="fragment"><div class="line">LIBASSERT_UNREACHABLE(__VA_ARGS__)</div>
 </div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a0ab770ec1d8686922abbde2ccbdfaa15" name="a0ab770ec1d8686922abbde2ccbdfaa15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ab770ec1d8686922abbde2ccbdfaa15">&#9670;&#160;</a></span>failure_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void failure_handler </td>
+          <td>(</td>
+          <td class="paramtype">const libassert::assertion_info &amp;</td>          <td class="paramname"><span class="paramname"><em>info</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>We want our own custom failure handler for libassert. There are two things we want to do:</p><ol type="1">
+<li>Print the assertion to log file</li>
+<li>Throw an exception for libassert's DEBUG_ASSERT rather than abort </li>
+</ol>
+
 </div>
 </div>
 </div><!-- contents -->
