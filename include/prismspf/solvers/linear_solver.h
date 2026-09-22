@@ -56,7 +56,7 @@ public:
                                                          SmootherPrecond,
                                                          BlockVector<number>>;
 #if DEAL_II_VERSION_GTE(9, 8, 0)
-  using MGTransferType = dealii::MGTransferBlockMatrixFree<dim, BlockVector<number>>;
+  using MGTransferType = dealii::MGTransferBlockMatrixFree<dim, number>;
 #else
   using MGTransferType =
     dealii::MGTransferBlockGlobalCoarsening<dim, BlockVector<number>>;
