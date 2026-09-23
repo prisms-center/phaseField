@@ -13,7 +13,7 @@
 #include <prismspf/core/matrix_free_manager.h>
 #include <prismspf/core/system_wide.h>
 
-#include "prismspf/config.h"
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

@@ -68,7 +68,8 @@ struct FieldAttributes
   std::vector<Types::Index> nucleating_field_indices;
 
   /**
-   * @brief
+   * @brief If this field is an order parameter representing grains, the index of the
+   * block of fields between which grains can be reassigned
    */
   unsigned int grain_reassignment_block_id;
 };

@@ -5,10 +5,6 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-// ============================================================================
-// Methods for SimplifiedGrainRepresentation
-// ============================================================================
-
 template <unsigned int dim>
 SimplifiedGrainRepresentation<dim>::SimplifiedGrainRepresentation(
   const GrainSet<dim> &grain_set)
