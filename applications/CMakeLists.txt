@@ -9,10 +9,11 @@ set(
   cahn_hilliard/implicit
   coupled_allen_cahn_cahn_hilliard
   grain_growth
+  fracture
+  laplace
   mechanics/boundary_value_problem
   mechanics/eshelby_inclusion
   nucleation
-  laplace
   pfhub_benchmarks/1/a
   pfhub_benchmarks/2/b
   pfhub_benchmarks/6/a
