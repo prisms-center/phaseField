@@ -197,6 +197,12 @@ struct RectangularMesh : public Mesh<dim>
            const dealii::Point<dim> &point_2) const override;
 
   /**
+   * @brief Calculate the smallest dx, dy, dz value from these parameters.
+   */
+  double
+  min_dx(int refine_factor) const;
+
+  /**
    * @brief Declare the parameters to be read from an input file.
    */
   static void

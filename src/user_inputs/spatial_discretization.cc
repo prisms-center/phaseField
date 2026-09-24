@@ -208,6 +208,18 @@ RectangularMesh<dim>::distance(const dealii::Point<dim> &point_1,
 }
 
 template <unsigned int dim>
+double
+RectangularMesh<dim>::min_dx(int refine_factor) const
+{
+  double dx = std::numeric_limits<double>::max();
+  for (unsigned int d = 0; d < dim; d++)
+    {
+      dx = std::min(dx, size[d] / subdivisions[d] / double(1 << refine_factor));
+    }
+  return dx;
+}
+
+template <unsigned int dim>
 void
 RectangularMesh<dim>::declare_parameters(dealii::ParameterHandler &parameter_handler)
 {
