@@ -1,0 +1,12 @@
+for (dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE; number : REAL_SCALARS)
+  {
+    template class GrainReassignmentManager<dimension, degree, number>;
+  }
+for (dimension : SPACE_DIMENSIONS)
+  {
+    template class SimplifiedGrainManipulator<dimension>;
+  }
+for (dimension : SPACE_DIMENSIONS; number : REAL_SCALARS)
+  {
+    template class OrderParameterRemapper<dimension, number>;
+  }

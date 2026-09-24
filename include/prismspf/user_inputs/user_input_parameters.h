@@ -9,6 +9,7 @@
 #include <prismspf/core/solve_block.h>
 
 #include <prismspf/user_inputs/constraint_parameters.h>
+#include <prismspf/user_inputs/grain_reassignment_parameters.h>
 #include <prismspf/user_inputs/io_parameters.h>
 #include <prismspf/user_inputs/miscellaneous_parameters.h>
 #include <prismspf/user_inputs/nucleation_parameters.h>
@@ -70,6 +71,7 @@ struct UserInputParameters : public ParameterBase
 
     MiscellaneousParameters::declare(parameter_handler, n_subsections);
     NucleationParameters::declare(parameter_handler, n_subsections);
+    GrainReassignmentParameters::declare(parameter_handler, n_subsections);
 
     user_constants.declare_parameters(parameter_handler);
   };
@@ -96,6 +98,7 @@ struct UserInputParameters : public ParameterBase
 
     misc_parameters.assign(parameter_handler, n_subsections);
     nucleation_parameters.assign(parameter_handler, n_subsections);
+    grain_reassignment_parameters.assign(parameter_handler, n_subsections);
 
     user_constants.assign_parameters(parameter_handler);
   };
@@ -122,6 +125,7 @@ struct UserInputParameters : public ParameterBase
 
     misc_parameters.validate(field_attributes, solve_blocks);
     nucleation_parameters.validate(field_attributes, solve_blocks);
+    grain_reassignment_parameters.validate(field_attributes, solve_blocks);
   }
 
   SpatialDiscretization<dim> spatial_discretization;
@@ -138,6 +142,8 @@ struct UserInputParameters : public ParameterBase
   MiscellaneousParameters misc_parameters;
 
   NucleationParameters nucleation_parameters;
+
+  GrainReassignmentParameters grain_reassignment_parameters;
 
   // TODO: This one needs to be fixed, but I don't want to touch it with a 9 foot pole.
   UserConstants<dim> user_constants;
