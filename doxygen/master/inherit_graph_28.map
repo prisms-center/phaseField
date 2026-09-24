@@ -1,3 +1,35 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classNucleationManager.html" title="The class handles the stochastic nucleation in PRISMS&#45;PF." alt="" coords="5,5,182,50"/>
+<area shape="rect" id="Node000000" href="$structMesh.html" title="Triangulation base class." alt="" coords="10,57,121,85"/>
+<area shape="rect" id="Node000001" href="$structRectangularMesh.html" title="Class for rectangular mesh parameters." alt="" coords="191,5,380,33"/>
+<area shape="poly" id="edge8_Node000000_Node000001" title=" " alt="" coords="136,52,223,31,224,36,137,57"/>
+<area shape="rect" id="Node000002" href="$structSpatialDiscretization.html" title="Struct that holds spatial discretization parameters." alt="" coords="207,109,364,154"/>
+<area shape="poly" id="edge9_Node000000_Node000002" title=" " alt="" coords="134,87,208,107,206,112,133,92"/>
+<area shape="rect" id="Node000016" href="$structSphericalMesh.html" title="Class for spherical mesh parameters." alt="" coords="200,57,371,85"/>
+<area shape="poly" id="edge10_Node000000_Node000016" title=" " alt="" coords="136,68,199,68,199,74,136,74"/>
+<area shape="rect" id="Node000003" href="$structParameterBase.html" title="Virtual base class for parameter groups." alt="" coords="5,437,126,465"/>
+<area shape="poly" id="edge21_Node000003_Node000002" title=" " alt="" coords="67,421,75,367,94,298,124,226,146,193,172,164,205,143,208,148,175,168,150,196,129,229,99,300,81,368,72,422"/>
+<area shape="rect" id="Node000004" href="$structFieldInputParameters.html" title="Simple struct for field input." alt="" coords="206,177,365,205"/>
+<area shape="poly" id="edge11_Node000003_Node000004" title=" " alt="" coords="69,422,80,376,100,320,129,264,149,238,172,216,204,199,206,203,175,220,153,242,134,267,104,323,85,378,74,423"/>
+<area shape="rect" id="Node000005" href="$structFieldOutputParameters.html" title="Simple struct for field output." alt="" coords="200,229,370,257"/>
+<area shape="poly" id="edge12_Node000003_Node000005" title=" " alt="" coords="73,422,87,386,108,344,136,303,172,268,199,253,201,258,175,272,140,306,113,347,92,388,78,424"/>
+<area shape="rect" id="Node000006" href="$structGrainReassignmentParameters.html" title="Struct that holds nucleation parameters." alt="" coords="174,281,397,309"/>
+<area shape="poly" id="edge13_Node000003_Node000006" title=" " alt="" coords="80,422,117,370,143,342,172,320,198,307,200,312,175,324,146,346,121,373,84,425"/>
+<area shape="rect" id="Node000007" href="$structLinearSolveParameters.html" title="Struct that holds linear solver parameters." alt="" coords="200,333,371,361"/>
+<area shape="poly" id="edge14_Node000003_Node000007" title=" " alt="" coords="93,425,129,397,173,371,206,359,208,364,175,376,132,401,96,429"/>
+<area shape="rect" id="Node000008" href="$structLinearSolverParameters.html" title="Struct that stores relevant linear solve information of a certain solve block." alt="" coords="197,385,374,413"/>
+<area shape="poly" id="edge15_Node000003_Node000008" title=" " alt="" coords="140,431,223,411,224,416,141,436"/>
+<area shape="rect" id="Node000009" href="$structMiscellaneousParameters.html" title="Struct that holds miscellaneous parameters." alt="" coords="191,437,380,465"/>
+<area shape="poly" id="edge16_Node000003_Node000009" title=" " alt="" coords="141,448,191,448,191,454,141,454"/>
+<area shape="rect" id="Node000010" href="$structNonlinearSolveParameters.html" title="Struct that holds nonlinear solver parameters." alt="" coords="188,489,382,517"/>
+<area shape="poly" id="edge17_Node000003_Node000010" title=" " alt="" coords="141,466,224,486,223,491,140,471"/>
+<area shape="rect" id="Node000011" href="$structNonlinearSolverParameters.html" title="Struct that stores relevant nonlinear solve information of a certain field." alt="" coords="186,541,385,569"/>
+<area shape="poly" id="edge18_Node000003_Node000011" title=" " alt="" coords="96,473,132,501,175,526,208,538,206,543,173,531,129,506,93,478"/>
+<area shape="rect" id="Node000012" href="$structNucleationParameters.html" title="Struct that holds nucleation parameters." alt="" coords="203,593,368,621"/>
+<area shape="poly" id="edge19_Node000003_Node000012" title=" " alt="" coords="84,477,121,529,146,556,175,578,203,591,201,596,172,583,143,560,117,533,80,480"/>
+<area shape="rect" id="Node000013" href="$structRestartOutputParameters.html" title="Simple struct for restart output." alt="" coords="192,645,378,673"/>
+<area shape="poly" id="edge20_Node000003_Node000013" title=" " alt="" coords="78,479,92,514,113,555,140,596,175,630,197,642,194,647,172,635,136,600,108,558,87,516,73,481"/>
+<area shape="rect" id="Node000014" href="$structTemporalDiscretization.html" title="Struct that holds temporal discretization parameters." alt="" coords="200,697,371,725"/>
+<area shape="poly" id="edge22_Node000003_Node000014" title=" " alt="" coords="74,479,85,525,104,580,134,636,153,661,175,682,201,697,198,702,172,687,149,664,129,638,100,582,80,526,69,481"/>
+<area shape="rect" id="Node000015" href="$classUserInputParameters.html" title=" " alt="" coords="206,749,364,794"/>
+<area shape="poly" id="edge23_Node000003_Node000015" title=" " alt="" coords="72,480,81,534,99,603,129,673,150,706,175,734,207,754,204,759,172,739,146,709,124,676,94,604,75,535,67,481"/>
 </map>

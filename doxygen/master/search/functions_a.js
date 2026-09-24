@@ -13,13 +13,14 @@ var searchData=
   ['mark_5fcells_5ffor_5frefinement_5fand_5fcoarsening_10',['mark_cells_for_refinement_and_coarsening',['../classRefinementManager.html#a60db8f1c1a8bc2bc8259232053b28e3c',1,'RefinementManager']]],
   ['mark_5fperiodic_11',['mark_periodic',['../structMesh.html#a54e3632cc68d8563b23ee76e99b5005c',1,'Mesh::mark_periodic(Triangulation &amp;triangulation) const'],['../structMesh.html#ab1fdc5ad5d452790743782ee4034d175',1,'Mesh::mark_periodic(const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, dealii::AffineConstraints&lt; number &gt; &amp;constraints) const'],['../structMesh.html#ab019130a611de5ee97a30fb628c2cb7b',1,'Mesh::mark_periodic(typename Mesh&lt; dim &gt;::Triangulation &amp;triangulation) const']]],
   ['matrixfreemanager_12',['MatrixFreeManager',['../classMatrixFreeManager.html#ae3c084c27c4bdc64da61df3ceb8aecc2',1,'MatrixFreeManager']]],
-  ['mesh_13',['Mesh',['../structMesh.html#ae25ebef6af2022a6a13fca216b75d18e',1,'Mesh']]],
-  ['mf_5fmanager_14',['mf_manager',['../classInvMManager.html#a6a3d4c02d16afc58cc7173f94709c629',1,'InvMManager']]],
-  ['mfoperator_15',['MFOperator',['../classMFOperator.html#a2df20704c99c55a088f8b8b1c8d17af9',1,'MFOperator']]],
-  ['mg_5ftransfer_5fdown_16',['mg_transfer_down',['../classGroupSolutionHandler.html#af390d05ecd28f0286f613a4b848682c3',1,'GroupSolutionHandler']]],
-  ['mgcontext_17',['MGContext',['../classMGContext.html#ad9642f530e8a8154acafdcd3d1dd88e3',1,'MGContext']]],
-  ['mpi_5fbroadcast_5fnuclei_18',['mpi_broadcast_nuclei',['../classNucleationManager.html#a4cf6ea096ed7b1291bc2928cd0904bca',1,'NucleationManager']]],
-  ['mpi_5fdatatype_19',['mpi_datatype',['../structNucleus.html#a567edb715eee48cd250f9eece9a8008b',1,'Nucleus']]],
-  ['mpi_5fgather_5fnuclei_20',['mpi_gather_nuclei',['../classNucleationManager.html#aa9cad1ef245a6e38a738ca90f3d97f26',1,'NucleationManager']]],
-  ['mpiinitfinalize_21',['MPIInitFinalize',['../classMPIInitFinalize.html#aba602b90b70fc51525c68b326c3e2cbb',1,'MPIInitFinalize']]]
+  ['merge_5fsplit_5fgrains_13',['merge_split_grains',['../classFloodFiller.html#a5f93e61937b1a2bfb2dbd251101b2a9b',1,'FloodFiller']]],
+  ['mesh_14',['Mesh',['../structMesh.html#ae25ebef6af2022a6a13fca216b75d18e',1,'Mesh']]],
+  ['mf_5fmanager_15',['mf_manager',['../classInvMManager.html#a6a3d4c02d16afc58cc7173f94709c629',1,'InvMManager']]],
+  ['mfoperator_16',['MFOperator',['../classMFOperator.html#a2df20704c99c55a088f8b8b1c8d17af9',1,'MFOperator']]],
+  ['mg_5ftransfer_5fdown_17',['mg_transfer_down',['../classGroupSolutionHandler.html#af390d05ecd28f0286f613a4b848682c3',1,'GroupSolutionHandler']]],
+  ['mgcontext_18',['MGContext',['../classMGContext.html#ad9642f530e8a8154acafdcd3d1dd88e3',1,'MGContext']]],
+  ['mpi_5fbroadcast_5fnuclei_19',['mpi_broadcast_nuclei',['../classNucleationManager.html#a4cf6ea096ed7b1291bc2928cd0904bca',1,'NucleationManager']]],
+  ['mpi_5fdatatype_20',['mpi_datatype',['../structNucleus.html#a567edb715eee48cd250f9eece9a8008b',1,'Nucleus']]],
+  ['mpi_5fgather_5fnuclei_21',['mpi_gather_nuclei',['../classNucleationManager.html#aa9cad1ef245a6e38a738ca90f3d97f26',1,'NucleationManager']]],
+  ['mpiinitfinalize_22',['MPIInitFinalize',['../classMPIInitFinalize.html#aba602b90b70fc51525c68b326c3e2cbb',1,'MPIInitFinalize']]]
 ];

@@ -36,20 +36,21 @@ var NAVTREE =
     ] ],
     [ "Parameters", "parameters.html", null ],
     [ "Applications", "applications.html", [
-      [ "laplace", "laplace.html", null ],
-      [ "nucleation", "nucleation.html", null ],
-      [ "pfhub_benchmarks_6_a", "pfhub_benchmarks_6_a.html", null ],
-      [ "pfhub_benchmarks_2_b", "\ref pfhub_benchmarks_2_b", null ],
+      [ "mechanics_boundary_value_problem", "\ref mechanics_boundary_value_problem", null ],
+      [ "mechanics_eshelby_inclusion", "\ref mechanics_eshelby_inclusion", null ],
       [ "pfhub_benchmarks_1_a", "\ref pfhub_benchmarks_1_a", null ],
-      [ "blank", "\ref blank", null ],
-      [ "coupled_allen_cahn_cahn_hilliard", "\ref coupled_allen_cahn_cahn_hilliard", null ],
+      [ "pfhub_benchmarks_2_b", "\ref pfhub_benchmarks_2_b", null ],
+      [ "pfhub_benchmarks_6_a", "\ref pfhub_benchmarks_6_a", null ],
       [ "alloy_solidification", "\ref alloy_solidification", null ],
+      [ "laplace", "\ref laplace", null ],
+      [ "grain_growth", "\ref grain_growth", null ],
       [ "allen_cahn_implicit", "\ref allen_cahn_implicit", null ],
       [ "allen_cahn_explicit", "\ref allen_cahn_explicit", null ],
+      [ "blank", "\ref blank", null ],
       [ "cahn_hilliard_implicit", "\ref cahn_hilliard_implicit", null ],
       [ "cahn_hilliard_explicit", "\ref cahn_hilliard_explicit", null ],
-      [ "mechanics_boundary_value_problem", "\ref mechanics_boundary_value_problem", null ],
-      [ "mechanics_eshelby_inclusion", "\ref mechanics_eshelby_inclusion", null ]
+      [ "nucleation", "\ref nucleation", null ],
+      [ "coupled_allen_cahn_cahn_hilliard", "\ref coupled_allen_cahn_cahn_hilliard", null ]
     ] ],
     [ "Contact", "contact.html", null ],
     [ "Namespaces", "namespaces.html", [
@@ -94,12 +95,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "\ref allen_cahn_explicit",
-"classIntegrator.html",
-"classParseCMDOptions.html#a3d2f1008a3904204187e6154f82cd58e",
-"classTimer.html#a64705ee502c79c919034afc1377d5b61",
-"group__solution__handler_8h.html",
-"structFieldOutputParameters.html#a2516ec54153bcf7c0905a8df14272bb4",
-"structTimer_1_1Scope.html#a65dfdb7a505b1f2e60228a9eceb57360"
+"classGroupSolutionHandler.html#abbde226033b1b92dc63123c4fdf0f14b",
+"classNucleusRefinementFunction.html#a6e8be28b9b15c7071a7b18b21af465f6",
+"classTerminalColor.html#a498b84451de0cf4fb419c5cde2d397f4",
+"functions_vars.html",
+"structDependency.html#a28092cc9bcfff6adc03d7895bad57bec",
+"structRefinementCriterion.html#ad0d97f2d4ffffef01ed12f48e0ce6641"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

@@ -126,7 +126,7 @@ $(function(){initNavTree('parameters.html',''); initResizable(true); });
 <div class="contents">
 <div class="textblock"><p>This page is a list of all user parameters in PRISMS-PF. Here, we document them in tables organized by subsection with names, default values, acceptable values (patterns), descriptions, and aliases.</p>
 <p>Subsections that end in 0 are number in the parameter file. You can as many of these as you would like. By default you have <code><a class="el" href="namespaceNumbers.html#a02636074a0888f7a252ed9ece2013bba" title="Max number of subsections.">Numbers::default_subsections</a></code>. To change have many subsections you have, you can write something like the following. </p><div class="fragment"><div class="line"><a class="code hl_struct" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a>(cli_options.get_parameters_filename(), 10);</div>
-<div class="ttc" id="aclassUserInputParameters_html"><div class="ttname"><a href="classUserInputParameters.html">UserInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:28</div></div>
+<div class="ttc" id="aclassUserInputParameters_html"><div class="ttname"><a href="classUserInputParameters.html">UserInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:29</div></div>
 </div><!-- fragment --><p>Additionally, all the parameters have aliases for a handful of common case styles (e.g., PascalCase, snake_case, Upper Case, and Pascal_Snake_Case).</p>
 <dl class="section note"><dt>Note</dt><dd>You can copy parameter names to clipboard by clicking on them!</dd></dl>
 <table class="doxtable">
@@ -154,6 +154,8 @@ $(function(){initNavTree('parameters.html',''); initResizable(true); });
 <td><span class="parameter-badge" onclick="copy_parameter(this)">start time</span>  </td><td><code>0.0</code> </td><td>[Double 0...MAX_DOUBLE (inclusive)] </td><td>The value of simulated time where the simulation begins. </td><td><span class="alias-badge" onclick="copy_parameter(this)">begin time</span> <span class="alias-badge" onclick="copy_parameter(this)">t0</span>   </td></tr>
 <tr>
 <td><span class="parameter-badge" onclick="copy_parameter(this)">time step</span>  </td><td><code>0.0</code> </td><td>[Double 0...MAX_DOUBLE (inclusive)] </td><td>The time step size for the simulation. </td><td><span class="alias-badge" onclick="copy_parameter(this)">dt</span> <span class="alias-badge" onclick="copy_parameter(this)">timestep</span>   </td></tr>
+<tr>
+<td><span class="parameter-badge" onclick="copy_parameter(this)">use grain reassignment</span>  </td><td><code>false</code> </td><td>[Bool] </td><td>Whether to perform grain reassignment </td><td><span class="alias-badge" onclick="copy_parameter(this)">use grain remapping</span>   </td></tr>
 </table>
 <h1><a class="anchor" id="p_list_rectangular_mesh"></a>
 Rectangular mesh</h1>
@@ -240,6 +242,20 @@ checkpoint</h1>
 <td><span class="parameter-badge" onclick="copy_parameter(this)">load from checkpoint</span>  </td><td><code>false</code> </td><td>[Bool] </td><td>Whether to load from a checkpoint created during a previous simulation. </td><td></td></tr>
 <tr>
 <td><span class="parameter-badge" onclick="copy_parameter(this)">number</span>  </td><td><code>10</code> </td><td>[Integer range 0...2147483647 (inclusive)] </td><td>The number of outputs (or number of outputs per decade for the N_PER_DECADE type). </td><td></td></tr>
+</table>
+<h1><a class="anchor" id="p_list_grain_reassignment"></a>
+grain reassignment</h1>
+<table class="doxtable">
+<tr>
+<th>Parameter </th><th>Default </th><th>Pattern </th><th>Description </th><th>Aliases  </th></tr>
+<tr>
+<td><span class="parameter-badge" onclick="copy_parameter(this)">exclusion distance</span>  </td><td><code>5.0</code> </td><td>[Double 0...MAX_DOUBLE (inclusive)] </td><td>The maximum distance between grains of the same order parameter </td><td></td></tr>
+<tr>
+<td><span class="parameter-badge" onclick="copy_parameter(this)">grain identification threshold</span>  </td><td><code>1e-2</code> </td><td>[Double 1e-15...MAX_DOUBLE (inclusive)] </td><td>The threshold used by the flood filling algorithm for identifying grains </td><td></td></tr>
+<tr>
+<td><span class="parameter-badge" onclick="copy_parameter(this)">load grain structure</span>  </td><td><code>false</code> </td><td>[Bool] </td><td>Whether to load the grain IDs from a file (NOT CURRENTLY IMPLEMENTED) </td><td></td></tr>
+<tr>
+<td><span class="parameter-badge" onclick="copy_parameter(this)">steps between reassignment</span>  </td><td><code>100</code> </td><td>[Integer range 1...2147483647 (inclusive)] </td><td>The number of steps between performing grain reassignment </td><td></td></tr>
 </table>
 <h1><a class="anchor" id="p_list_input_file__0"></a>
 input file: 0</h1>

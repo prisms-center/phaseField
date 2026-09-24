@@ -1,6 +1,7 @@
 var dir_8e29679e8d9320f4689771ebd9c97198 =
 [
     [ "constraint_parameters.h", "constraint__parameters_8h.html", "constraint__parameters_8h" ],
+    [ "grain_reassignment_parameters.h", "grain__reassignment__parameters_8h.html", "grain__reassignment__parameters_8h" ],
     [ "io_parameters.h", "io__parameters_8h.html", "io__parameters_8h" ],
     [ "miscellaneous_parameters.h", "miscellaneous__parameters_8h.html", "miscellaneous__parameters_8h" ],
     [ "nucleation_parameters.h", "nucleation__parameters_8h.html", "nucleation__parameters_8h" ],

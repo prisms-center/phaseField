@@ -141,9 +141,9 @@ Collaboration diagram for FieldAttributes:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5f1c466d71437cb324bf6170e5d2e85b" id="r_a5f1c466d71437cb324bf6170e5d2e85b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f1c466d71437cb324bf6170e5d2e85b">FieldAttributes</a> (std::string _name=&quot;&quot;, <a class="el" href="type__enums_8h.html#a2b0006f00013ab2a87dec51132ccbcdb">TensorRank</a> _field_type=<a class="el" href="type__enums_8h.html#a2b0006f00013ab2a87dec51132ccbcdbad589986008e8fea1b1726f564d17dd13">TensorRank::Scalar</a>, <a class="el" href="structBoundaryConditionSet.html">BoundaryConditionSet</a> _boundary_conditions=<a class="el" href="structBoundaryConditionSet.html">BoundaryConditionSet</a>(), bool _is_nucleation_rate_variable=false, std::vector&lt; <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> &gt; _nucleating_field_indices=std::vector&lt; <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> &gt;())</td></tr>
-<tr class="memdesc:a5f1c466d71437cb324bf6170e5d2e85b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
-<tr class="separator:a5f1c466d71437cb324bf6170e5d2e85b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab56a6a0cb00c797577f9b32b733c4994" id="r_ab56a6a0cb00c797577f9b32b733c4994"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab56a6a0cb00c797577f9b32b733c4994">FieldAttributes</a> (std::string _name=&quot;&quot;, <a class="el" href="type__enums_8h.html#a2b0006f00013ab2a87dec51132ccbcdb">TensorRank</a> _field_type=<a class="el" href="type__enums_8h.html#a2b0006f00013ab2a87dec51132ccbcdbad589986008e8fea1b1726f564d17dd13">TensorRank::Scalar</a>, <a class="el" href="structBoundaryConditionSet.html">BoundaryConditionSet</a> _boundary_conditions=<a class="el" href="structBoundaryConditionSet.html">BoundaryConditionSet</a>(), bool _is_nucleation_rate_variable=false, std::vector&lt; <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> &gt; _nucleating_field_indices=std::vector&lt; <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> &gt;(), unsigned int _grain_reassignment_block_id=-1)</td></tr>
+<tr class="memdesc:ab56a6a0cb00c797577f9b32b733c4994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
+<tr class="separator:ab56a6a0cb00c797577f9b32b733c4994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -162,12 +162,15 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a526154d2afc31a567667fc4924f238e5" id="r_a526154d2afc31a567667fc4924f238e5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a526154d2afc31a567667fc4924f238e5">nucleating_field_indices</a></td></tr>
 <tr class="memdesc:a526154d2afc31a567667fc4924f238e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this is a nucleation rate, the indices of the nucleating fields.  <br /></td></tr>
 <tr class="separator:a526154d2afc31a567667fc4924f238e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a881f555c2952a277739db86cec99c454" id="r_a881f555c2952a277739db86cec99c454"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a881f555c2952a277739db86cec99c454">grain_reassignment_block_id</a></td></tr>
+<tr class="memdesc:a881f555c2952a277739db86cec99c454"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this field is an order parameter representing grains, the index of the block of fields between which grains can be reassigned.  <br /></td></tr>
+<tr class="separator:a881f555c2952a277739db86cec99c454"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Structure to hold the attributes of a field. This includes things like the name, rank, and nucleation information.. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a5f1c466d71437cb324bf6170e5d2e85b" name="a5f1c466d71437cb324bf6170e5d2e85b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f1c466d71437cb324bf6170e5d2e85b">&#9670;&#160;</a></span>FieldAttributes()</h2>
+<a id="ab56a6a0cb00c797577f9b32b733c4994" name="ab56a6a0cb00c797577f9b32b733c4994"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab56a6a0cb00c797577f9b32b733c4994">&#9670;&#160;</a></span>FieldAttributes()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -198,7 +201,12 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>_nucleating_field_indices</em></span><span class="paramdefsep"> = </span><span class="paramdefval">std::vector&lt;<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a>&gt;()</span>&#160;)</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>_nucleating_field_indices</em></span><span class="paramdefsep"> = </span><span class="paramdefval">std::vector&lt;<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a>&gt;()</span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>_grain_reassignment_block_id</em></span><span class="paramdefsep"> = </span><span class="paramdefval">-1</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -242,6 +250,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Field type (Scalar/Vector). </p>
+
+</div>
+</div>
+<a id="a881f555c2952a277739db86cec99c454" name="a881f555c2952a277739db86cec99c454"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a881f555c2952a277739db86cec99c454">&#9670;&#160;</a></span>grain_reassignment_block_id</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int FieldAttributes::grain_reassignment_block_id</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If this field is an order parameter representing grains, the index of the block of fields between which grains can be reassigned. </p>
 
 </div>
 </div>

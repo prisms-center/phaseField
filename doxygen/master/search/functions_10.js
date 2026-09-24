@@ -8,6 +8,7 @@ var searchData=
   ['timer_5',['Timer',['../classTimer.html#a8ed3c5e074223900c0c9a74376471209',1,'Timer::Timer()=default'],['../classTimer.html#ae6b73141ad1d5029d3782d14d2fd5ff0',1,'Timer::Timer(const Timer &amp;)=delete'],['../classTimer.html#a0ef67d1b473d712352dcd55573a4bb2a',1,'Timer::Timer(Timer &amp;&amp;)=delete']]],
   ['timer_5fstack_6',['timer_stack',['../namespacePRISMS__PF__BEGIN__NAMESPACE.html#ab158d849906462dbb04e776b12f75722',1,'PRISMS_PF_BEGIN_NAMESPACE']]],
   ['title_7',['title',['../classLogFormatter.html#a3538231e70c03cd62e1eaa1c7cdd3968',1,'LogFormatter']]],
-  ['triangulationmanager_8',['TriangulationManager',['../classTriangulationManager.html#ad673ff106cea0aacb0a43e5d41bf0b20',1,'TriangulationManager::TriangulationManager()'],['../classTriangulationManager.html#a6352253ea00a75da2d429e5769ac1ec7',1,'TriangulationManager::TriangulationManager()']]],
-  ['tvmult_9',['Tvmult',['../classMFOperator.html#a35eaa4bfe23d30bfefc42d1635c41279',1,'MFOperator']]]
+  ['transfer_5fgrain_5fids_8',['transfer_grain_ids',['../classSimplifiedGrainManipulator.html#a2fce46403fd25127f8272b2f690afab8',1,'SimplifiedGrainManipulator']]],
+  ['triangulationmanager_9',['TriangulationManager',['../classTriangulationManager.html#ad673ff106cea0aacb0a43e5d41bf0b20',1,'TriangulationManager::TriangulationManager()'],['../classTriangulationManager.html#a6352253ea00a75da2d429e5769ac1ec7',1,'TriangulationManager::TriangulationManager()']]],
+  ['tvmult_10',['Tvmult',['../classMFOperator.html#a35eaa4bfe23d30bfefc42d1635c41279',1,'MFOperator']]]
 ];

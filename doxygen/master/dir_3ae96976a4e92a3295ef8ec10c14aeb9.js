@@ -1,6 +1,7 @@
 var dir_3ae96976a4e92a3295ef8ec10c14aeb9 =
 [
     [ "constraint_parameters.cc", "constraint__parameters_8cc.html", null ],
+    [ "grain_reassignment_parameters.cc", "grain__reassignment__parameters_8cc.html", null ],
     [ "io_parameters.cc", "io__parameters_8cc.html", null ],
     [ "miscellaneous_parameters.cc", "miscellaneous__parameters_8cc.html", null ],
     [ "nucleation_parameters.cc", "nucleation__parameters_8cc.html", null ],

@@ -20,11 +20,14 @@ var hierarchy =
     [ "FieldContainer< dim, degree, number >::FEEValuationDeps< Rank >", "structFieldContainer_1_1FEEValuationDeps.html", null ],
     [ "FieldAttributes", "structFieldAttributes.html", null ],
     [ "FieldContainer< dim, degree, number >", "classFieldContainer.html", null ],
+    [ "FloodFiller< dim, degree, number >", "classFloodFiller.html", null ],
     [ "dealii::Function", null, [
       [ "DirichletConditions< dim, degree, number >", "classDirichletConditions.html", null ],
       [ "InitialCondition< dim, degree, number >", "classInitialCondition.html", null ],
       [ "ReadInitialCondition< dim, number >", "classReadInitialCondition.html", null ]
     ] ],
+    [ "GrainReassignmentManager< dim, degree, number >", "classGrainReassignmentManager.html", null ],
+    [ "GrainSet< dim >", "classGrainSet.html", null ],
     [ "GroupSolutionHandler< dim, number >", "classGroupSolutionHandler.html", null ],
     [ "Logger::IndentScope", "classLogger_1_1IndentScope.html", null ],
     [ "InitialConditionFile", "structInitialConditionFile.html", null ],
@@ -50,12 +53,14 @@ var hierarchy =
     [ "NewDependencyExtents", "structNewDependencyExtents.html", null ],
     [ "NucleationManager< dim, degree, number >", "classNucleationManager.html", null ],
     [ "Nucleus< dim >", "structNucleus.html", null ],
+    [ "OrderParameterRemapper< dim, number >", "classOrderParameterRemapper.html", null ],
     [ "std::ostream", null, [
       [ "Logger", "classLogger.html", null ]
     ] ],
     [ "ParameterBase", "structParameterBase.html", [
       [ "FieldInputParameters", "structFieldInputParameters.html", null ],
       [ "FieldOutputParameters", "structFieldOutputParameters.html", null ],
+      [ "GrainReassignmentParameters", "structGrainReassignmentParameters.html", null ],
       [ "LinearSolveParameters", "structLinearSolveParameters.html", null ],
       [ "LinearSolverParameters", "structLinearSolverParameters.html", null ],
       [ "MiscellaneousParameters", "structMiscellaneousParameters.html", null ],
@@ -79,6 +84,8 @@ var hierarchy =
     [ "RefinementCriterion", "structRefinementCriterion.html", null ],
     [ "RefinementManager< dim, degree, number >", "classRefinementManager.html", null ],
     [ "Timer::Scope", "structTimer_1_1Scope.html", null ],
+    [ "SimplifiedGrainManipulator< dim >", "classSimplifiedGrainManipulator.html", null ],
+    [ "SimplifiedGrainRepresentation< dim >", "classSimplifiedGrainRepresentation.html", null ],
     [ "SimulationTimer", "classSimulationTimer.html", null ],
     [ "SolutionIndexer< dim, number >", "classSolutionIndexer.html", null ],
     [ "SolutionLevel< dim, number >", "structSolutionLevel.html", null ],
