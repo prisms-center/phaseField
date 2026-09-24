@@ -16,6 +16,7 @@ var structRectangularMesh =
     [ "distance", "structRectangularMesh.html#a6b18263a63d96b2375dca222022a7430", null ],
     [ "generate_mesh", "structRectangularMesh.html#ac822c1d5606f785033a70f124b8bf563", null ],
     [ "mark_boundaries", "structRectangularMesh.html#adab40ac45b287ba95010d2d98e7b12bb", null ],
+    [ "min_dx", "structRectangularMesh.html#ad9aa574bacf3918d95eda3f032cd48a6", null ],
     [ "periodicity_set", "structRectangularMesh.html#a72443fbcf531f7fb6417c915b9f51d11", null ],
     [ "validate", "structRectangularMesh.html#a37b20d1daeb54fedce1c5b7aed26d9ae", null ],
     [ "lower_bound", "structRectangularMesh.html#a2d9983893c8ed8dfaf90845075906d39", null ],

@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"structRefinementCriterion.html#ab8c5fcc5aacb1fc63c54da77f03e87f3":[8,0,59,7],
 "structRefinementCriterion.html#ad0d97f2d4ffffef01ed12f48e0ce6641":[8,0,59,5],
 "structRefinementCriterion.html#adeae4819de1d5357043678bb9352619b":[8,0,59,4],
 "structRestartOutputParameters.html":[8,0,61],

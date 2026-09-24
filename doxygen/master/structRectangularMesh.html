@@ -186,6 +186,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6b18263a63d96b2375dca222022a7430" id="r_a6b18263a63d96b2375dca222022a7430"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b18263a63d96b2375dca222022a7430">distance</a> (const dealii::Point&lt; dim &gt; &amp;point_1, const dealii::Point&lt; dim &gt; &amp;point_2) const override</td></tr>
 <tr class="memdesc:a6b18263a63d96b2375dca222022a7430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculation the distance between two points considering periodic boundaries.  <br /></td></tr>
 <tr class="separator:a6b18263a63d96b2375dca222022a7430"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9aa574bacf3918d95eda3f032cd48a6" id="r_ad9aa574bacf3918d95eda3f032cd48a6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9aa574bacf3918d95eda3f032cd48a6">min_dx</a> (int refine_factor) const</td></tr>
+<tr class="memdesc:ad9aa574bacf3918d95eda3f032cd48a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the smallest dx, dy, dz value from these parameters.  <br /></td></tr>
+<tr class="separator:ad9aa574bacf3918d95eda3f032cd48a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f3f9c5fe6ac39b4bbbe27ccb79b230b" id="r_a3f3f9c5fe6ac39b4bbbe27ccb79b230b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f3f9c5fe6ac39b4bbbe27ccb79b230b">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
 <tr class="memdesc:a3f3f9c5fe6ac39b4bbbe27ccb79b230b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters read from an input file to this object.  <br /></td></tr>
 <tr class="separator:a3f3f9c5fe6ac39b4bbbe27ccb79b230b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -488,6 +491,27 @@ template&lt;unsigned int dim&gt; </div>
 <p>Mark the boundaries of the mesh. </p>
 
 <p>Reimplemented from <a class="el" href="structMesh.html#a72ff292e383269f5ecf731d08a7ce979">Mesh&lt; dim &gt;</a>.</p>
+
+</div>
+</div>
+<a id="ad9aa574bacf3918d95eda3f032cd48a6" name="ad9aa574bacf3918d95eda3f032cd48a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9aa574bacf3918d95eda3f032cd48a6">&#9670;&#160;</a></span>min_dx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="structRectangularMesh.html">RectangularMesh</a>&lt; dim &gt;::min_dx </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>refine_factor</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculate the smallest dx, dy, dz value from these parameters. </p>
 
 </div>
 </div>

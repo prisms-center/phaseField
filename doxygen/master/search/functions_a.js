@@ -19,8 +19,9 @@ var searchData=
   ['mfoperator_16',['MFOperator',['../classMFOperator.html#a2df20704c99c55a088f8b8b1c8d17af9',1,'MFOperator']]],
   ['mg_5ftransfer_5fdown_17',['mg_transfer_down',['../classGroupSolutionHandler.html#af390d05ecd28f0286f613a4b848682c3',1,'GroupSolutionHandler']]],
   ['mgcontext_18',['MGContext',['../classMGContext.html#ad9642f530e8a8154acafdcd3d1dd88e3',1,'MGContext']]],
-  ['mpi_5fbroadcast_5fnuclei_19',['mpi_broadcast_nuclei',['../classNucleationManager.html#a4cf6ea096ed7b1291bc2928cd0904bca',1,'NucleationManager']]],
-  ['mpi_5fdatatype_20',['mpi_datatype',['../structNucleus.html#a567edb715eee48cd250f9eece9a8008b',1,'Nucleus']]],
-  ['mpi_5fgather_5fnuclei_21',['mpi_gather_nuclei',['../classNucleationManager.html#aa9cad1ef245a6e38a738ca90f3d97f26',1,'NucleationManager']]],
-  ['mpiinitfinalize_22',['MPIInitFinalize',['../classMPIInitFinalize.html#aba602b90b70fc51525c68b326c3e2cbb',1,'MPIInitFinalize']]]
+  ['min_5fdx_19',['min_dx',['../structRectangularMesh.html#ad9aa574bacf3918d95eda3f032cd48a6',1,'RectangularMesh']]],
+  ['mpi_5fbroadcast_5fnuclei_20',['mpi_broadcast_nuclei',['../classNucleationManager.html#a4cf6ea096ed7b1291bc2928cd0904bca',1,'NucleationManager']]],
+  ['mpi_5fdatatype_21',['mpi_datatype',['../structNucleus.html#a567edb715eee48cd250f9eece9a8008b',1,'Nucleus']]],
+  ['mpi_5fgather_5fnuclei_22',['mpi_gather_nuclei',['../classNucleationManager.html#aa9cad1ef245a6e38a738ca90f3d97f26',1,'NucleationManager']]],
+  ['mpiinitfinalize_23',['MPIInitFinalize',['../classMPIInitFinalize.html#aba602b90b70fc51525c68b326c3e2cbb',1,'MPIInitFinalize']]]
 ];

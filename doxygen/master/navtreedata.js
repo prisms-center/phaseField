@@ -100,7 +100,7 @@ var NAVTREEINDEX =
 "classTerminalColor.html#a498b84451de0cf4fb419c5cde2d397f4",
 "functions_vars.html",
 "structDependency.html#a28092cc9bcfff6adc03d7895bad57bec",
-"structRefinementCriterion.html#ad0d97f2d4ffffef01ed12f48e0ce6641"
+"structRefinementCriterion.html#ab8c5fcc5aacb1fc63c54da77f03e87f3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
