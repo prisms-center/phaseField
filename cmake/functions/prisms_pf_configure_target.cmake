@@ -45,6 +45,29 @@ function(prisms_pf_configure_targets TARGETS)
           ON
     )
 
+    # Keep CUDA frontend forwarding options as pairs. Otherwise,
+    # target_compile_options() may de-duplicate repeated -Xcudafe flags.
+    if(PRISMS_PF_GPU)
+      set(_grouped_cxx_flags)
+      while(PRISMS_PF_CXX_FLAGS_LIST)
+        list(POP_FRONT PRISMS_PF_CXX_FLAGS_LIST _flag)
+  
+        if(_flag STREQUAL "-Xcudafe")
+          if(NOT PRISMS_PF_CXX_FLAGS_LIST)
+            message(FATAL_ERROR "-Xcudafe is missing its argument")
+          endif()
+  
+          list(POP_FRONT PRISMS_PF_CXX_FLAGS_LIST _cudafe_flag)
+          list(APPEND _grouped_cxx_flags "SHELL:-Xcudafe ${_cudafe_flag}")
+        else()
+          list(APPEND _grouped_cxx_flags "${_flag}")
+        endif()
+      endwhile()
+  
+      set(PRISMS_PF_CXX_FLAGS_LIST ${_grouped_cxx_flags})
+    endif()
+
+
     # Add the compile flags, which we inherit from deal.II
     # TODO: We really shouldn't do this and have suggested
     # flags that get inherited from deal.II

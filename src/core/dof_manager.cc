@@ -17,7 +17,7 @@ DoFManager<dim, degree>::reinit(const TriangulationManager<dim> &triangulation_m
     {
       dealii::DoFHandler<dim> &dof_handler = level_dof_handlers.at(rank);
       dof_handler.reinit(triangulation_manager.get_triangulation());
-      dof_handler.distribute_dofs(SystemWide<dim, degree>::fe_systems.at(rank));
+      dof_handler.distribute_dofs(SystemWide<dim, degree>::fe_systems().at(rank));
       if (init_mg)
         {
           dof_handler.distribute_mg_dofs();

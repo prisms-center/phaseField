@@ -113,7 +113,7 @@ GrainReassignmentManager<dim, degree, number>::reassign_grains(
     simplified_grain_representations,
     solve_context.get_solution_indexer(),
     solve_context.get_dof_manager().get_field_dof_handler(last_remapped_field_index),
-    SystemWide<dim, degree>::fe_systems[0].dofs_per_cell);
+    SystemWide<dim, degree>::fe_systems()[0].dofs_per_cell);
 
   Logger::instance() << "Reassigning grains completed.\n\n";
 }

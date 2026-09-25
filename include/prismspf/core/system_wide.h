@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/base/mg_level_object.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_system.h>
@@ -13,6 +14,8 @@
 #include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
+
+#include <array>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -37,9 +40,16 @@ public:
   /**
    * @brief Scalar and vector FE systems
    */
-  inline static const std::array<const dealii::FESystem<dim>, 2> fe_systems = {
-    dealii::FESystem<dim>(dealii::FE_Q<dim>(dealii::QGaussLobatto<1>(degree + 1)), 1),
-    dealii::FESystem<dim>(dealii::FE_Q<dim>(dealii::QGaussLobatto<1>(degree + 1)), dim)};
+  static const std::array<dealii::FESystem<dim>, 2> &
+  fe_systems()
+  {
+    static const std::array<dealii::FESystem<dim>, 2> value = {
+      dealii::FESystem<dim>(dealii::FE_Q<dim>(dealii::QGaussLobatto<1>(degree + 1)), 1),
+      dealii::FESystem<dim>(dealii::FE_Q<dim>(dealii::QGaussLobatto<1>(degree + 1)),
+                            dim)};
+
+    return value;
+  }
 
   /**
    * @brief Mappings to and from reference cell
