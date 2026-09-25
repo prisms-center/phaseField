@@ -11,6 +11,8 @@ set(
   grain_growth
   mechanics/boundary_value_problem
   mechanics/eshelby_inclusion
+  mechanics/plane_stress
+  mechanics/plane_strain
   nucleation
   laplace
   pfhub_benchmarks/1/a

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <prismspf/core/pde_operator_base.h>
+#include <prismspf/core/type_enums.h>
 
 #include <prismspf/utilities/mechanics.h>
 
@@ -10,6 +11,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
+requires(dim == 2)
 class CustomPDE : public PDEOperatorBase<dim, degree, number>
 {
 public:
@@ -27,7 +29,8 @@ public:
    */
   CustomPDE(const UserInputParameters<dim> &_user_inputs, PhaseFieldTools<dim> &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
-    , stiffness(get_user_inputs().user_constants.get_elasticity_tensor("stiffness"))
+    , stiffness(
+        get_user_inputs().user_constants.get_elasticity_tensor_plane_strain("stiffness"))
   {}
 
 private:
@@ -65,6 +68,25 @@ private:
       {
         variable_list.set_value_term(0, VectorValue());
       }
+    else if (solve_block_id == 2) // post-processing
+      {
+        VectorGrad strain =
+          variable_list.template get_symmetric_gradient<Vector, Current>(0);
+        VectorGrad  stress {};
+        ScalarValue stress_zz {};
+        Mechanics::compute_stress<dim, StressState::PlaneStrain, ScalarValue>(stiffness,
+                                                                              strain,
+                                                                              stress,
+                                                                              stress_zz);
+
+        variable_list.set_value_term(1, strain[0][0]);
+        variable_list.set_value_term(2, strain[1][1]);
+        variable_list.set_value_term(3, 2.0 * strain[0][1]);
+        variable_list.set_value_term(4, stress[0][0]);
+        variable_list.set_value_term(5, stress[1][1]);
+        variable_list.set_value_term(6, stress[0][1]);
+        variable_list.set_value_term(7, stress_zz);
+      }
   }
 
   void
@@ -74,14 +96,24 @@ private:
   {
     if (solve_block_id == 1) // linear lhs
       {
-        VectorGrad ux = variable_list.template get_symmetric_gradient<Vector, LHS>(0);
-        VectorGrad stress;
-        Mechanics::compute_stress<dim, ScalarValue>(stiffness, ux, stress);
+        VectorGrad strain = variable_list.template get_symmetric_gradient<Vector, LHS>(0);
+        VectorGrad stress {};
+        ScalarValue stress_zz {};
+        // if strain_zz = 0
+        Mechanics::compute_stress<dim, StressState::PlaneStrain, ScalarValue>(stiffness,
+                                                                              strain,
+                                                                              stress,
+                                                                              stress_zz);
+        // if strain_zz is not 0
+        //  Mechanics::compute_stress<dim, StressState::PlaneStrain,
+        //  ScalarValue>(stiffness, strain, strain_zz, stress, stress_zz);
+
         variable_list.set_gradient_term(0, stress);
       }
   }
 
-  dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, number> stiffness;
+  dealii::Tensor<2, Mechanics::voigt_size<dim, StressState::PlaneStrain>, number>
+    stiffness;
 };
 
 PRISMS_PF_END_NAMESPACE

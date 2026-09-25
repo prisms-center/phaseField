@@ -15,6 +15,7 @@
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/utilities/assert.h>
+#include <prismspf/utilities/mechanics.h>
 
 #include <prismspf/config.h>
 
@@ -36,7 +37,8 @@ public:
                                       std::string,
                                       dealii::Tensor<1, dim>,
                                       dealii::Tensor<2, dim>,
-                                      dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>>;
+                                      dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>,
+                                      dealii::Tensor<2, 4>>;
 
   /**
    * @brief Assign the specified user constant to whatever type.
@@ -106,6 +108,10 @@ public:
    */
   [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
   get_elasticity_tensor(const std::string &constant_name) const;
+
+  // Plane strain
+  [[nodiscard]] dealii::Tensor<2, 4>
+  get_elasticity_tensor_plane_strain(const std::string &constant_name) const;
 
   /**
    * @brief Add user-specified constants
@@ -193,12 +199,17 @@ private:
   InputVariant
   primitive_model_constant(std::vector<std::string> &model_constants_strings);
 
-  [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
+  /**
+   * @brief Get the stiffness matrix.
+   */
+  [[nodiscard]] inline boost::variant<dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>,
+                                      dealii::Tensor<2, 4>>
   get_cij_tensor(std::vector<double> elastic_constants,
                  const std::string  &elastic_const_symmetry,
                  const StressState  &stress_state) const;
 
-  [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
+  [[nodiscard]] inline boost::variant<dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>,
+                                      dealii::Tensor<2, 4>>
   get_cij_matrix(const ElasticityModel     &model,
                  const std::vector<double> &constants,
                  const StressState         &stress_state) const;
@@ -299,6 +310,20 @@ UserConstants<dim>::get_elasticity_tensor(const std::string &constant_name) cons
 
   return boost::get<dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>>(
     model_constants.at(constant_name));
+}
+
+template <unsigned int dim>
+inline dealii::Tensor<2, 4>
+UserConstants<dim>::get_elasticity_tensor_plane_strain(
+  const std::string &constant_name) const
+{
+  Assert(model_constants.find(constant_name) != model_constants.end(),
+         dealii::ExcMessage(
+           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
+           "that you attempted to access was " +
+           constant_name + "."));
+
+  return boost::get<dealii::Tensor<2, 4>>(model_constants.at(constant_name));
 }
 
 template <unsigned int dim>
@@ -447,8 +472,8 @@ UserConstants<dim>::construct_user_constant(
       const std::string &elastic_const_symmetry = model_constants_type_strings.at(0);
 
       // get the stress state for the 2D case
-      StressState stress_state = StressState::ThreeDimension;
-      if (dim == 2)
+      StressState stress_state = StressState::ThreeDimensional;
+      if constexpr (dim == 2)
         {
           if (model_constants_type_strings.size() == 4)
             {
@@ -470,8 +495,8 @@ UserConstants<dim>::construct_user_constant(
             }
           else if (model_constants_type_strings.size() == 3)
             {
-              // Default to plane strain if nothing is specified
-              stress_state = StressState::PlaneStrain;
+              // Default to plane stress if nothing is specified
+              stress_state = StressState::PlaneStress;
             }
           else
             {
@@ -481,9 +506,7 @@ UserConstants<dim>::construct_user_constant(
             }
         }
 
-      dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> temp =
-        get_cij_tensor(temp_elastic_constants, elastic_const_symmetry, stress_state);
-      return temp;
+      return get_cij_tensor(temp_elastic_constants, elastic_const_symmetry, stress_state);
     }
 
   AssertThrow(false,
@@ -527,26 +550,26 @@ UserConstants<dim>::primitive_model_constant(
 }
 
 template <unsigned int dim>
-inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
+inline boost::variant<dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>, dealii::Tensor<2, 4>>
 UserConstants<dim>::get_cij_tensor(std::vector<double> elastic_constants,
                                    const std::string  &elastic_const_symmetry,
                                    const StressState  &stress_state) const
 {
   // First set the material model
   ElasticityModel mat_model = Isotropic;
-  if (elastic_const_symmetry == "isotropic")
+  if (boost::iequals(elastic_const_symmetry, "isotropic"))
     {
       mat_model = ElasticityModel::Isotropic;
     }
-  else if (elastic_const_symmetry == "transverse")
+  else if (boost::iequals(elastic_const_symmetry, "transverse"))
     {
       mat_model = ElasticityModel::Transverse;
     }
-  else if (elastic_const_symmetry == "orthotropic")
+  else if (boost::iequals(elastic_const_symmetry, "orthotropic"))
     {
       mat_model = ElasticityModel::Orthotropic;
     }
-  else if (elastic_const_symmetry == "anisotropic")
+  else if (boost::iequals(elastic_const_symmetry, "anisotropic"))
     {
       mat_model = ElasticityModel::Anisotropic;
     }
@@ -557,172 +580,132 @@ UserConstants<dim>::get_cij_tensor(std::vector<double> elastic_constants,
 
   // If the material model is anisotropic for a 2D calculation but the elastic
   // constants are given for a 3D calculation, change the elastic constant
-  // vector to the 2D form
-  constexpr unsigned int max_number = 21;
-  if ((mat_model == Anisotropic) && (dim == 2) && elastic_constants.size() == max_number)
+  // vector to the 2D form.
+  // Note: Simple extraction is only valid for plane strain. It is not recommended to
+  // input 3D stiffness for 2D plane stress.
+  if constexpr (dim == 2)
     {
-      std::vector<double> elastic_constants_temp = elastic_constants;
-      elastic_constants.clear();
-      const std::vector<unsigned int> indices_2d = {0, 1, 5, 6, 10, 14};
-      std::transform(indices_2d.begin(),
-                     indices_2d.end(),
-                     std::back_inserter(elastic_constants),
-                     [&elastic_constants_temp](unsigned int index)
-                     {
-                       return elastic_constants_temp.at(index);
-                     });
+      constexpr unsigned int max_number = 21;
+      if (mat_model == ElasticityModel::Anisotropic &&
+          elastic_constants.size() == max_number)
+        {
+          // TODO: add warning this is not recommended for plane stress.
+
+          const std::vector<unsigned int> indices_2d =
+            stress_state == StressState::PlaneStress
+              ? std::vector<unsigned int> {0, 1, 5, 6, 10, 14}
+              : std::vector<unsigned int> {0, 1, 2, 5, 6, 7, 10, 11, 14, 17};
+
+          const std::vector<double> elastic_constants_3d = elastic_constants;
+
+          elastic_constants.clear();
+          elastic_constants.reserve(indices_2d.size());
+
+          std::transform(indices_2d.begin(),
+                         indices_2d.end(),
+                         std::back_inserter(elastic_constants),
+                         [&elastic_constants_3d](const unsigned int index)
+                         {
+                           return elastic_constants_3d.at(index);
+                         });
+        }
     }
 
   return get_cij_matrix(mat_model, elastic_constants, stress_state);
 }
 
+// This function returns the stiffness matrix
 template <unsigned int dim>
-inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
+inline boost::variant<dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>, dealii::Tensor<2, 4>>
 UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                                    const std::vector<double> &constants,
                                    const StressState         &stress_state) const
 {
-  // Initialize stiffness tensor
-  dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> stiffness;
+  static_assert(dim >= 1 && dim <= 3, "Only dimensions 1, 2, and 3 are supported.");
 
-  switch (dim)
+  if constexpr (dim == 1)
     {
-      case 1:
+      AssertThrow(stress_state == StressState::ThreeDimensional,
+                  dealii::ExcMessage(
+                    "Only ThreeDimensional stress state is valid for dim == 1."));
+
+      AssertThrow(model == ElasticityModel::Isotropic,
+                  dealii::ExcMessage(
+                    "Only isotropic elasticity tensors are accepted in 1D."));
+
+      dealii::Tensor<2, 1> stiffness;
+      stiffness[0][0] = constants.at(0);
+      return stiffness;
+    }
+  else if constexpr (dim == 2)
+    {
+      AssertThrow(stress_state == StressState::PlaneStress ||
+                    stress_state == StressState::PlaneStrain,
+                  dealii::ExcMessage(
+                    "A 2D calculation requires plane stress or plane strain."));
+
+      switch (model)
         {
-          const int xx_dir = 0;
-
-          switch (model)
+          case ElasticityModel::Isotropic:
             {
-              // For the 1D case, it make little sense to accept anything besides an
-              // isotropic elasticity tensor. One hiccup, is that if a user is debugging
-              // an application and switches to 1D, they will have to modify the
-              // elasticity constants to align with that. While more burdensome, there's
-              // less of a chance of producing spurious behavior.
-              case Isotropic:
+              if (stress_state == StressState::PlaneStress)
                 {
-                  const double modulus = constants.at(0);
-
-                  stiffness[xx_dir][xx_dir] = modulus;
-                  break;
+                  return Mechanics::stiffness_isotropic<dim, StressState::PlaneStress>(
+                    constants.at(0),
+                    constants.at(1));
                 }
-              default:
-                AssertThrow(false,
-                            dealii::ExcMessage(
-                              "Invalid elasticity model type for 1D. We only accept "
-                              "isotropic elasticity tensors."));
+              else
+                {
+                  return Mechanics::stiffness_isotropic<dim, StressState::PlaneStrain>(
+                    constants.at(0),
+                    constants.at(1));
+                }
+              break;
             }
-          break;
-        }
-      case 2:
-        {
-          // The voigt indexing scheme for 2 dimensions
-          const int xx_dir = 0;
-          const int yy_dir = 1;
-          const int xy_dir = 2;
 
-          switch (model)
+          case ElasticityModel::Orthotropic:
             {
-              // Like the 1D case, it is nonsensical to have transverse or orthotropic
-              // stiffness tensors, so we throw an error.
-              case Isotropic:
+              if (stress_state == StressState::PlaneStress)
                 {
-                  // For isotropic stiffness tensors, we can simplify the computation to
-                  // two parameters: $\lambda$ and $\mu$, where $\mu$ is the shear
-                  // modulus. In cartesian coordinates,
-                  // $$$
-                  // c_{ijkl} = \lambda \delta_{ij} \delta_{kl} + \mu (\delta_{ik}
-                  // \delta_{jl} + \delta_{il} \delta_{kj})
-                  // $$$
-                  // In 2D, we distinguish between plane stress and plane strain
-                  const double modulus = constants.at(0);
-                  const double poisson = constants.at(1);
-
-                  const double shear_modulus = modulus / (2 * (1 + poisson));
-                  double       lambda        = 0.0;
-                  switch (stress_state)
-                    {
-                      case PlaneStress:
-                        {
-                          lambda = poisson * modulus / ((1 - poisson * poisson));
-                          break;
-                        }
-                      case PlaneStrain:
-                        {
-                          lambda =
-                            poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));
-                          break;
-                        }
-                      default:
-                        AssertThrow(false,
-                                    dealii::ExcMessage("Invalid stress state type"));
-                    }
-
-                  stiffness[xx_dir][xx_dir] = stiffness[yy_dir][yy_dir] =
-                    lambda + 2 * shear_modulus;
-                  stiffness[xy_dir][xy_dir] = shear_modulus;
-                  stiffness[xx_dir][yy_dir] = stiffness[yy_dir][xx_dir] = lambda;
-                  break;
+                  return Mechanics::stiffness_orthotropic<dim, StressState::PlaneStress>(
+                    constants.at(0), // E1
+                    constants.at(1), // E2
+                    constants.at(2), // nu12
+                    constants.at(3)  // G12
+                  );
                 }
-              case Orthotropic:
+              else if (stress_state == StressState::PlaneStrain)
                 {
-                  // In 2D, we distinguish between plane stress and plane strain
-                  switch (stress_state)
-                    {
-                      case PlaneStress:
-                        {
-                          const double E1   = constants.at(0);
-                          const double E2   = constants.at(1);
-                          const double nu12 = constants.at(2);
-                          const double G12  = constants.at(3);
-
-                          const double nu21  = nu12 * (E2 / E1);
-                          const double denom = 1.0 - (nu12 * nu21);
-
-                          stiffness[xx_dir][xx_dir] = E1 / denom;
-                          stiffness[yy_dir][yy_dir] = E2 / denom;
-                          stiffness[xx_dir][yy_dir] = stiffness[yy_dir][xx_dir] =
-                            (nu12 * E2) / denom;
-                          stiffness[xy_dir][xy_dir] = G12;
-                          break;
-                        }
-                      case PlaneStrain:
-                        {
-                          const double E1   = constants.at(0);
-                          const double E2   = constants.at(1);
-                          const double E3   = constants.at(2);
-                          const double nu12 = constants.at(3);
-                          const double nu13 = constants.at(4);
-                          const double nu23 = constants.at(5);
-                          const double G12  = constants.at(6);
-
-                          const double nu21 = nu12 * (E2 / E1);
-                          const double nu31 = nu13 * (E3 / E1);
-                          const double nu32 = nu23 * (E3 / E2);
-
-                          const double delta = 1.0 - (nu12 * nu21) - (nu23 * nu32) -
-                                               (nu13 * nu31) - (2.0 * nu12 * nu23 * nu31);
-
-                          stiffness[xx_dir][xx_dir] =
-                            (E1 * (1.0 - (nu23 * nu32))) / delta;
-                          stiffness[yy_dir][yy_dir] =
-                            (E2 * (1.0 - (nu13 * nu31))) / delta;
-                          stiffness[xx_dir][yy_dir] = stiffness[yy_dir][xx_dir] =
-                            (E1 * (nu21 + (nu31 * nu23))) / delta;
-                          stiffness[xy_dir][xy_dir] = G12;
-                          break;
-                        }
-                      default:
-                        AssertThrow(false,
-                                    dealii::ExcMessage("Invalid stress state type"));
-                    }
-                  break;
+                  return Mechanics::stiffness_orthotropic<dim, StressState::PlaneStrain>(
+                    constants.at(0), // E1
+                    constants.at(1), // E2
+                    constants.at(2), // E3
+                    constants.at(3), // nu12
+                    constants.at(4), // nu13
+                    constants.at(5), // nu23
+                    constants.at(6)  // G12
+                  );
                 }
-              case Anisotropic:
+              else
                 {
-                  // In the anisotropic case, every entry is specified (given the symmetry
-                  // constraints). Also, ignore magic numbers because it is simpler to
-                  // hardcode this.
+                  AssertThrow(false, dealii::ExcMessage("Invalid stress state for 2D."));
+                }
+              break;
+            }
 
+          case ElasticityModel::Anisotropic:
+            {
+              if (stress_state == StressState::PlaneStress)
+                {
+                  // The voigt indexing scheme for 2 dimensions
+                  const int xx_dir = 0;
+                  const int yy_dir = 1;
+                  const int xy_dir = 2;
+
+                  dealii::Tensor<2, 3> stiffness;
+                  // [ 0  3  4 ]
+                  // [    1  5 ]
+                  // [       2 ]
                   stiffness[xx_dir][xx_dir] = constants.at(0);
                   stiffness[yy_dir][yy_dir] = constants.at(1);
                   stiffness[xy_dir][xy_dir] = constants.at(2);
@@ -730,132 +713,139 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                   stiffness[xx_dir][xy_dir] = stiffness[xy_dir][xx_dir] = constants.at(4);
                   stiffness[yy_dir][xy_dir] = stiffness[xy_dir][yy_dir] = constants.at(5);
 
-                  break;
+                  return stiffness;
                 }
-              default:
-                AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
-            }
-          break;
-        }
-      case 3:
-        {
-          const int xx_dir = 0;
-          const int yy_dir = 1;
-          const int zz_dir = 2;
-          const int yz_dir = 3;
-          const int xz_dir = 4;
-          const int xy_dir = 5;
+              else if (stress_state == StressState::PlaneStrain)
+                {
+                  const int xx_dir = 0;
+                  const int yy_dir = 1;
+                  const int zz_dir = 2;
+                  const int xy_dir = 3;
 
-          switch (model)
+                  dealii::Tensor<2, 4> stiffness;
+                  // [ 0  4  5  6 ]
+                  // [    1  7  8 ]
+                  // [       2  9 ]
+                  // [          3 ]
+                  stiffness[xx_dir][xx_dir] = constants.at(0);
+                  stiffness[yy_dir][yy_dir] = constants.at(1);
+                  stiffness[zz_dir][zz_dir] = constants.at(2);
+                  stiffness[xy_dir][xy_dir] = constants.at(3);
+                  stiffness[xx_dir][yy_dir] = stiffness[yy_dir][xx_dir] = constants.at(4);
+                  stiffness[xx_dir][zz_dir] = stiffness[zz_dir][xx_dir] = constants.at(5);
+                  stiffness[xx_dir][xy_dir] = stiffness[xy_dir][xx_dir] = constants.at(6);
+                  stiffness[yy_dir][zz_dir] = stiffness[zz_dir][yy_dir] = constants.at(7);
+                  stiffness[yy_dir][xy_dir] = stiffness[xy_dir][yy_dir] = constants.at(8);
+                  stiffness[zz_dir][xy_dir] = stiffness[xy_dir][zz_dir] = constants.at(9);
+
+                  return stiffness;
+                }
+              else
+                {
+                  AssertThrow(false, dealii::ExcMessage("Invalid stress state for 2D."));
+                }
+              break;
+            }
+
+          default:
             {
-              case Isotropic:
-                {
-                  // For isotropic stiffness tensors, we can simplify the computation to
-                  // two parameters: $\lambda$ and $\mu$, where $\mu$ is the shear
-                  // modulus. In cartesian coordinates,
-                  // $$$
-                  // c_{ijkl} = \lambda \delta_{ij} \delta_{kl} + \mu (\delta_{ik}
-                  // \delta_{jl} + \delta_{il} \delta_{kj})
-                  // $$$
-                  const double modulus = constants.at(0);
-                  const double poisson = constants.at(1);
-
-                  const double shear_modulus = modulus / (2 * (1 + poisson));
-                  const double lambda =
-                    poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));
-
-                  stiffness[xx_dir][xx_dir]     = stiffness[yy_dir][yy_dir] =
-                    stiffness[zz_dir][zz_dir]   = lambda + 2 * shear_modulus;
-                  stiffness[yz_dir][yz_dir]     = stiffness[xz_dir][xz_dir] =
-                    stiffness[xy_dir][xy_dir]   = shear_modulus;
-                  stiffness[xx_dir][yy_dir]     = stiffness[yy_dir][xx_dir] =
-                    stiffness[xx_dir][zz_dir]   = stiffness[zz_dir][xx_dir] =
-                      stiffness[yy_dir][zz_dir] = stiffness[zz_dir][yy_dir] = lambda;
-                  break;
-                }
-              case Anisotropic:
-                {
-                  // In the anisotropic case, every entry is specified (given the symmetry
-                  // constraints). Also, ignore magic numbers because it is simpler to
-                  // hardcode this.
-
-                  stiffness[xx_dir][xx_dir] = constants[0];
-                  stiffness[yy_dir][yy_dir] = constants[1];
-                  stiffness[zz_dir][zz_dir] = constants[2];
-                  stiffness[yz_dir][yz_dir] = constants[3];
-                  stiffness[xz_dir][xz_dir] = constants[4];
-                  stiffness[xy_dir][xy_dir] = constants[5];
-                  stiffness[xx_dir][yy_dir] = stiffness[yy_dir][xx_dir] = constants[6];
-                  stiffness[xx_dir][zz_dir] = stiffness[zz_dir][xx_dir] = constants[7];
-                  stiffness[xx_dir][yz_dir] = stiffness[yz_dir][xx_dir] = constants[8];
-                  stiffness[xx_dir][xz_dir] = stiffness[xz_dir][xx_dir] = constants[9];
-                  stiffness[xx_dir][xy_dir] = stiffness[xy_dir][xx_dir] = constants[10];
-                  stiffness[yy_dir][zz_dir] = stiffness[zz_dir][yy_dir] = constants[11];
-                  stiffness[yy_dir][yz_dir] = stiffness[yz_dir][yy_dir] = constants[12];
-                  stiffness[yy_dir][xz_dir] = stiffness[xz_dir][yy_dir] = constants[13];
-                  stiffness[yy_dir][xy_dir] = stiffness[xy_dir][yy_dir] = constants[14];
-                  stiffness[zz_dir][yz_dir] = stiffness[yz_dir][zz_dir] = constants[15];
-                  stiffness[zz_dir][xz_dir] = stiffness[xz_dir][zz_dir] = constants[16];
-                  stiffness[zz_dir][xy_dir] = stiffness[xy_dir][zz_dir] = constants[17];
-                  stiffness[yz_dir][xz_dir] = stiffness[xz_dir][yz_dir] = constants[18];
-                  stiffness[yz_dir][xy_dir] = stiffness[xy_dir][yz_dir] = constants[19];
-                  stiffness[xz_dir][xy_dir] = stiffness[xy_dir][xz_dir] = constants[20];
-
-                  break;
-                }
-              case Transverse:
-                {
-                  // TODO (landinjm): implement
-                  ASSERT(false,
-                         "Transverse elastic tensors haven't been implemented for model "
-                         "constants");
-                  break;
-                }
-              case Orthotropic:
-                {
-                  const double E1   = constants.at(0);
-                  const double E2   = constants.at(1);
-                  const double E3   = constants.at(2);
-                  const double nu12 = constants.at(3);
-                  const double nu13 = constants.at(4);
-                  const double nu23 = constants.at(5);
-                  const double G12  = constants.at(6);
-                  const double G13  = constants.at(7);
-                  const double G23  = constants.at(8);
-
-                  const double nu21 = nu12 * (E2 / E1);
-                  const double nu31 = nu13 * (E3 / E1);
-                  const double nu32 = nu23 * (E3 / E2);
-
-                  const double delta = 1.0 - (nu12 * nu21) - (nu23 * nu32) -
-                                       (nu13 * nu31) - (2.0 * nu12 * nu23 * nu31);
-
-                  stiffness[xx_dir][xx_dir] = (E1 * (1.0 - nu23 * nu32)) / delta;
-                  stiffness[yy_dir][yy_dir] = (E2 * (1.0 - nu13 * nu31)) / delta;
-                  stiffness[zz_dir][zz_dir] = (E3 * (1.0 - nu12 * nu21)) / delta;
-                  stiffness[xx_dir][yy_dir] = stiffness[yy_dir][xx_dir] =
-                    (E1 * (nu21 + nu31 * nu23)) / delta;
-                  stiffness[xx_dir][zz_dir] = stiffness[zz_dir][xx_dir] =
-                    (E1 * (nu31 + nu21 * nu32)) / delta;
-                  stiffness[yy_dir][zz_dir] = stiffness[zz_dir][yy_dir] =
-                    (E2 * (nu32 + nu12 * nu31)) / delta;
-                  stiffness[yz_dir][yz_dir] = G23;
-                  stiffness[xz_dir][xz_dir] = G13;
-                  stiffness[xy_dir][xy_dir] = G12;
-                  break;
-                }
-              default:
-                AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
+              AssertThrow(false,
+                          dealii::ExcMessage("Invalid elasticity model type for 2D."));
             }
-          break;
         }
-      default:
+    }
+  else if constexpr (dim == 3)
+    {
+      AssertThrow(stress_state == StressState::ThreeDimensional,
+                  dealii::ExcMessage(
+                    "A 3D calculation requires ThreeDimensional stress state."));
+
+      switch (model)
         {
-          Assert(false, UnreachableCode());
+          case ElasticityModel::Isotropic:
+            {
+              return Mechanics::stiffness_isotropic<dim, StressState::ThreeDimensional>(
+                constants.at(0),
+                constants.at(1));
+            }
+
+          case ElasticityModel::Orthotropic:
+            {
+              return Mechanics::stiffness_orthotropic<dim, StressState::ThreeDimensional>(
+                constants.at(0), // E1
+                constants.at(1), // E2
+                constants.at(2), // E3
+                constants.at(3), // nu12
+                constants.at(4), // nu13
+                constants.at(5), // nu23
+                constants.at(6), // G12
+                constants.at(7), // G13
+                constants.at(8)  // G23
+              );
+            }
+
+          case ElasticityModel::Anisotropic:
+            {
+              // In the anisotropic case, every entry is specified (given the symmetry
+              // constraints). Also, ignore magic numbers because it is simpler to
+              // hardcode this.
+
+              const int xx_dir = 0;
+              const int yy_dir = 1;
+              const int zz_dir = 2;
+              const int yz_dir = 3;
+              const int xz_dir = 4;
+              const int xy_dir = 5;
+
+              dealii::Tensor<2, 6> stiffness;
+              // [ 0  6  7  8  9 10 ]
+              // [    1 11 12 13 14 ]
+              // [       2 15 16 17 ]
+              // [          3 18 19 ]
+              // [             4 20 ]
+              // [                5 ]
+              stiffness[xx_dir][xx_dir] = constants[0];
+              stiffness[yy_dir][yy_dir] = constants[1];
+              stiffness[zz_dir][zz_dir] = constants[2];
+              stiffness[yz_dir][yz_dir] = constants[3];
+              stiffness[xz_dir][xz_dir] = constants[4];
+              stiffness[xy_dir][xy_dir] = constants[5];
+              stiffness[xx_dir][yy_dir] = stiffness[yy_dir][xx_dir] = constants[6];
+              stiffness[xx_dir][zz_dir] = stiffness[zz_dir][xx_dir] = constants[7];
+              stiffness[xx_dir][yz_dir] = stiffness[yz_dir][xx_dir] = constants[8];
+              stiffness[xx_dir][xz_dir] = stiffness[xz_dir][xx_dir] = constants[9];
+              stiffness[xx_dir][xy_dir] = stiffness[xy_dir][xx_dir] = constants[10];
+              stiffness[yy_dir][zz_dir] = stiffness[zz_dir][yy_dir] = constants[11];
+              stiffness[yy_dir][yz_dir] = stiffness[yz_dir][yy_dir] = constants[12];
+              stiffness[yy_dir][xz_dir] = stiffness[xz_dir][yy_dir] = constants[13];
+              stiffness[yy_dir][xy_dir] = stiffness[xy_dir][yy_dir] = constants[14];
+              stiffness[zz_dir][yz_dir] = stiffness[yz_dir][zz_dir] = constants[15];
+              stiffness[zz_dir][xz_dir] = stiffness[xz_dir][zz_dir] = constants[16];
+              stiffness[zz_dir][xy_dir] = stiffness[xy_dir][zz_dir] = constants[17];
+              stiffness[yz_dir][xz_dir] = stiffness[xz_dir][yz_dir] = constants[18];
+              stiffness[yz_dir][xy_dir] = stiffness[xy_dir][yz_dir] = constants[19];
+              stiffness[xz_dir][xy_dir] = stiffness[xy_dir][xz_dir] = constants[20];
+
+              return stiffness;
+            }
+          case ElasticityModel::Transverse:
+            {
+              // TODO (landinjm): implement
+              ASSERT(false,
+                     "Transverse elastic tensors haven't been implemented for model "
+                     "constants");
+              break;
+            }
+          default:
+            {
+              AssertThrow(false,
+                          dealii::ExcMessage("Invalid elasticity model type for 3D."));
+            }
         }
     }
 
-  return stiffness;
+  AssertThrow(false, dealii::ExcMessage("Unreachable code."));
+  return {};
 }
 
 template <unsigned int dim>
