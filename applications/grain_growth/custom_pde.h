@@ -172,8 +172,8 @@ private:
         ScalarValue nj;
         ScalarGrad  nix;
 
-        ScalarValue max_op_id;
-        ScalarValue max_op_value;
+        ScalarValue max_op_id    = 0.0;
+        ScalarValue max_op_value = 0.0;
 
         for (unsigned int i = 0; i < number_of_fields; i++)
           {
@@ -193,7 +193,8 @@ private:
 
             for (unsigned int v = 0; v < ScalarValue::size(); v++)
               {
-                if (ni[v] > max_op_value[v])
+                // we have a lower bound to avoid categorizing the background into grains
+                if (ni[v] > max_op_value[v] && ni[v] > 0.05)
                   {
                     max_op_value[v] = ni[v];
                     max_op_id[v]    = i;
