@@ -172,7 +172,7 @@ private:
         ScalarValue nj;
         ScalarGrad  nix;
 
-        ScalarValue max_op_id = 0.0;
+        ScalarValue max_op_id    = 0.0;
         ScalarValue max_op_value = 0.0;
 
         for (unsigned int i = 0; i < number_of_fields; i++)
@@ -192,7 +192,7 @@ private:
             f_total += (kappa / 2.0) * nix.norm_square();
 
             for (unsigned int v = 0; v < ScalarValue::size(); v++)
-            {
+              {
                 // we have a lower bound to avoid categorizing the background into grains
                 if (ni[v] > max_op_value[v] && ni[v] > 0.05)
                   {
