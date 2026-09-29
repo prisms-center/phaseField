@@ -38,6 +38,7 @@
             gnumake
             ninja
             gcc
+            mpi
             inputs.dealii.packages.${system}.default
 
             # Optional packages
