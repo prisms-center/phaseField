@@ -112,6 +112,17 @@ public:
    */
   LogStream(const std::string &file, unsigned int process_id);
 
+  /**
+   * Whether the LogStream has a file attached.
+   */
+  [[nodiscard]] bool
+  has_file() const;
+
+  /**
+   * Add a file stream to the LogStream.
+   *
+   * @note Only one file stream can be active at once.
+   */
   void
   add_file([[maybe_unused]] const std::string &file,
            [[maybe_unused]] unsigned int       process_id);
