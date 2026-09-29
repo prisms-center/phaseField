@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"functions_vars.html":[8,3,2],
 "functions_vars.html":[8,3,2,0],
 "functions_vars_b.html":[8,3,2,1],
 "functions_vars_c.html":[8,3,2,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "structBoundaryParameters.html#a0a935f6a5f3f1f0050d168da049467ea":[8,0,2,3],
 "structBoundaryParameters.html#a3b6c7958f8b13e5f69f062123f63573a":[8,0,2,2],
 "structBoundaryParameters.html#a63a3d897dcc0f4d5c333d8e2d01ff598":[8,0,2,0],
-"structBoundaryParameters.html#ab9b39b586f2a44885b36e5806974af28":[8,0,2,1],
-"structDependency.html":[8,0,5]
+"structBoundaryParameters.html#ab9b39b586f2a44885b36e5806974af28":[8,0,2,1]
 };

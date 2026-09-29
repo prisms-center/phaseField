@@ -96,11 +96,11 @@ var NAVTREEINDEX =
 [
 "\ref allen_cahn_explicit",
 "classGroupSolutionHandler.html#abbde226033b1b92dc63123c4fdf0f14b",
-"classNucleusRefinementFunction.html#a6e8be28b9b15c7071a7b18b21af465f6",
-"classTerminalColor.html#a498b84451de0cf4fb419c5cde2d397f4",
+"classNucleusRefinementFunction.html#a596fc87a41cde78a171b23d80913c3cc",
+"classTerminalColor.html#a3c6488920bc6ea3b7bb9602cb98498c6",
 "functions_vars.html",
-"structDependency.html#a28092cc9bcfff6adc03d7895bad57bec",
-"structRefinementCriterion.html#ab8c5fcc5aacb1fc63c54da77f03e87f3"
+"structDependency.html",
+"structRefinementCriterion.html#a76f156fa9cc6a8e510a45a743e6e7847"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

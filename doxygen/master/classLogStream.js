@@ -9,6 +9,7 @@ var classLogStream =
     [ "LogStream", "classLogStream.html#a3770a684c710aceceac40fa521926ce2", null ],
     [ "add_file", "classLogStream.html#a6333519b25331fc9655aee32670718d0", null ],
     [ "get", "classLogStream.html#a60027fa09c4a10980cd5db7ec45a1c7b", null ],
+    [ "has_file", "classLogStream.html#aa16b998d30e3e167f84c504adf90f9d0", null ],
     [ "is_active", "classLogStream.html#a946c2b1f28fed104c697f798c6203104", null ],
     [ "open_file_if_needed", "classLogStream.html#ae7e5158cc8581e446277d2e97c0524c3", null ],
     [ "operator<<", "classLogStream.html#a5fbe4cb4e72d19ff8b3d2444bb2a4dbb", null ],

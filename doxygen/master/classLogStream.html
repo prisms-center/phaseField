@@ -158,6 +158,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4318f2803e1dfb9333c0cf789d3cc8f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47507452fa41482cb29d3de5b7ef76b6" id="r_a47507452fa41482cb29d3de5b7ef76b6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47507452fa41482cb29d3de5b7ef76b6">LogStream</a> (const std::string &amp;file, unsigned int process_id)</td></tr>
 <tr class="separator:a47507452fa41482cb29d3de5b7ef76b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa16b998d30e3e167f84c504adf90f9d0" id="r_aa16b998d30e3e167f84c504adf90f9d0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa16b998d30e3e167f84c504adf90f9d0">has_file</a> () const</td></tr>
+<tr class="separator:aa16b998d30e3e167f84c504adf90f9d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6333519b25331fc9655aee32670718d0" id="r_a6333519b25331fc9655aee32670718d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6333519b25331fc9655aee32670718d0">add_file</a> (const std::string &amp;file, unsigned int process_id)</td></tr>
 <tr class="separator:a6333519b25331fc9655aee32670718d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e8cf8e9eac6e68e5dbc9ad7a4a14b43" id="r_a0e8cf8e9eac6e68e5dbc9ad7a4a14b43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e8cf8e9eac6e68e5dbc9ad7a4a14b43">set_condition</a> (bool condition)</td></tr>
@@ -369,6 +371,8 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Add a file stream to the <a class="el" href="classLogStream.html" title="Logging of data to a given ostream.">LogStream</a>.</p>
+<dl class="section note"><dt>Note</dt><dd>Only one file stream can be active at once. </dd></dl>
 
 </div>
 </div>
@@ -386,6 +390,32 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa16b998d30e3e167f84c504adf90f9d0" name="aa16b998d30e3e167f84c504adf90f9d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa16b998d30e3e167f84c504adf90f9d0">&#9670;&#160;</a></span>has_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool LogStream::has_file </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Whether the <a class="el" href="classLogStream.html" title="Logging of data to a given ostream.">LogStream</a> has a file attached. </p>
 
 </div>
 </div>
