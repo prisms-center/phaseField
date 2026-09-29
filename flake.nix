@@ -22,6 +22,7 @@
         system,
         ...
       }: let
+        # TODO: Should have option to disable march native
         config = {
           allowUnfree = true;
           cpuArch = "NATIVE";
@@ -33,6 +34,8 @@
       in {
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
+            pkg-config
+
             # Main packages
             cmake
             gnumake
@@ -52,6 +55,10 @@
             doxygen
             graphviz
           ];
+
+          shellHook = ''
+            echo "Dev shell loaded!"
+          '';
         };
       };
     };
