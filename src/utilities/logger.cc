@@ -276,7 +276,7 @@ Logger::Logger()
 void
 Logger::set_file(const std::string &file)
 {
-  ASSERT(instance().log_file.has_file(),
+  ASSERT(!instance().log_file.has_file(),
          "The logger already has a file attached. Currently, there's no way to change "
          "the file if it's already been set.");
   instance().log_file.add_file(file, 0);
