@@ -145,9 +145,9 @@ LogStream::LogStream(const std::string &file, unsigned int process_id)
 {}
 
 bool
-LogStream::has_file()
+LogStream::has_file() const
 {
-  return file_stream;
+  return file_stream.has_value();
 }
 
 void
