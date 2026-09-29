@@ -144,6 +144,12 @@ LogStream::LogStream(const std::string &file, unsigned int process_id)
               true)
 {}
 
+bool
+LogStream::has_file()
+{
+  return file_stream;
+}
+
 void
 LogStream::add_file(const std::string &file, unsigned int process_id)
 {
@@ -270,6 +276,9 @@ Logger::Logger()
 void
 Logger::set_file(const std::string &file)
 {
+  ASSERT(instance().log_file.has_file(),
+         "The logger already has a file attached. Currently, there's no way to change "
+         "the file if it's already been set.");
   instance().log_file.add_file(file, 0);
 }
 
