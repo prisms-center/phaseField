@@ -100,8 +100,7 @@ NucleationParameters::assign(dealii::ParameterHandler &parameter_handler,
 }
 
 void
-NucleationParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                               const std::vector<SolveBlock>      &solve_blocks) const
+NucleationParameters::validate() const
 {
   // TODO: Do this later
 }

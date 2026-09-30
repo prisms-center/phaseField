@@ -110,8 +110,7 @@ BoundaryParameters::assign(dealii::ParameterHandler &parameter_handler,
 }
 
 void
-BoundaryParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                             const std::vector<SolveBlock>      &solve_blocks) const
+BoundaryParameters::validate() const
 {
   // TODO: Do this later
 }

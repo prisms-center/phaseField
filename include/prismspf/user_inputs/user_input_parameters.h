@@ -81,7 +81,7 @@ struct UserInputParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override
+         unsigned int              n_subsections = Numbers::default_subsections)
   {
     spatial_discretization.assign(parameter_handler, n_subsections);
     temporal_discretization.assign(parameter_handler, n_subsections);
@@ -109,23 +109,22 @@ struct UserInputParameters : public ParameterBase
    * This is an optional step.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override
+  validate() const
   {
-    spatial_discretization.validate(field_attributes, solve_blocks);
-    temporal_discretization.validate(field_attributes, solve_blocks);
-    boundary_parameters.validate(field_attributes, solve_blocks);
+    spatial_discretization.validate();
+    temporal_discretization.validate();
+    boundary_parameters.validate();
 
-    linear_solve_parameters.validate(field_attributes, solve_blocks);
-    nonlinear_solve_parameters.validate(field_attributes, solve_blocks);
+    linear_solve_parameters.validate();
+    nonlinear_solve_parameters.validate();
 
-    output_parameters.validate(field_attributes, solve_blocks);
-    restart_parameters.validate(field_attributes, solve_blocks);
-    input_parameters.validate(field_attributes, solve_blocks);
+    output_parameters.validate();
+    restart_parameters.validate();
+    input_parameters.validate();
 
-    misc_parameters.validate(field_attributes, solve_blocks);
-    nucleation_parameters.validate(field_attributes, solve_blocks);
-    grain_reassignment_parameters.validate(field_attributes, solve_blocks);
+    misc_parameters.validate();
+    nucleation_parameters.validate();
+    grain_reassignment_parameters.validate();
   }
 
   SpatialDiscretization<dim> spatial_discretization;

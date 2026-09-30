@@ -107,9 +107,7 @@ TemporalDiscretization::assign(dealii::ParameterHandler &parameter_handler,
 }
 
 void
-TemporalDiscretization::validate(
-  [[maybe_unused]] const std::vector<FieldAttributes> &field_attributes,
-  [[maybe_unused]] const std::vector<SolveBlock>      &solve_blocks) const
+TemporalDiscretization::validate() const
 {
   AssertThrow(n_increments == 0 || dt > 0.0,
               dealii::ExcMessage(

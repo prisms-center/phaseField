@@ -99,8 +99,7 @@ struct BoundaryParameters
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const;
+  validate() const;
 
   // Map of boundary conditions. The first key is the field name.
   std::unordered_map<std::string, BoundaryConditionSet> boundary_condition_list;

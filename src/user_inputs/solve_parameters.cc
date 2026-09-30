@@ -150,8 +150,7 @@ LinearSolverParameters::assign(dealii::ParameterHandler &parameter_handler,
 }
 
 void
-LinearSolverParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                                 const std::vector<SolveBlock>      &solve_blocks) const
+LinearSolverParameters::validate() const
 {
   // TODO: Add validation here
 }
@@ -339,12 +338,11 @@ LinearSolveParameters::assign(dealii::ParameterHandler &parameter_handler,
 }
 
 void
-LinearSolveParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                                const std::vector<SolveBlock>      &solve_blocks) const
+LinearSolveParameters::validate() const
 {
   for (const auto &[solver_id, linear_solver] : linear_solvers)
     {
-      linear_solver.validate(field_attributes, solve_blocks);
+      linear_solver.validate();
     }
 }
 
@@ -410,8 +408,7 @@ NonlinearSolverParameters::assign(dealii::ParameterHandler &parameter_handler,
 }
 
 void
-NonlinearSolverParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                                    const std::vector<SolveBlock> &solve_blocks) const
+NonlinearSolverParameters::validate() const
 {
   // TODO: Add validation here
 }
@@ -470,12 +467,11 @@ NonlinearSolveParameters::assign(dealii::ParameterHandler &parameter_handler,
 }
 
 void
-NonlinearSolveParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                                   const std::vector<SolveBlock>      &solve_blocks) const
+NonlinearSolveParameters::validate() const
 {
   for (const auto &[solver_id, nonlinear_solver] : nonlinear_solvers)
     {
-      nonlinear_solver.validate(field_attributes, solve_blocks);
+      nonlinear_solver.validate();
     }
 }
 

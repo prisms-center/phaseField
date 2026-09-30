@@ -36,14 +36,13 @@ struct LinearSolverParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   // Solver type. richardson|cg|bicgstab|gmres|fgmres|minres
   std::string solver_type = "cg";
@@ -122,14 +121,13 @@ struct LinearSolveParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   // Map of linear solve parameters for fields that require them
   std::map<unsigned int, LinearSolverParameters> linear_solvers;
@@ -152,14 +150,13 @@ struct NonlinearSolverParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   // Nonlinear step length
   double step_length = 1.0;
@@ -188,14 +185,13 @@ struct NonlinearSolveParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   // Map of nonlinear solve parameters for fields that require them
   std::map<Types::Index, NonlinearSolverParameters> nonlinear_solvers;

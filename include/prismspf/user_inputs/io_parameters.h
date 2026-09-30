@@ -122,32 +122,19 @@ struct FieldOutputParameters : public ParameterBase
    * @brief Declare the parameters to be read from file.
    */
   static void
-  declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int              n_subsections = Numbers::default_subsections);
-
-  /**
-   * @brief Assign the parameters from file.
-   *
-   * WARN: This one should not be used
-   */
-  void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+  declare(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Assign the parameters from file.
    */
   void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_increments,
-         unsigned int              n_subsections = Numbers::default_subsections);
+  assign(dealii::ParameterHandler &parameter_handler, unsigned int n_increments);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   /**
    * @brief VTK output types.
@@ -243,32 +230,19 @@ struct RestartOutputParameters : public ParameterBase
    * @brief Declare the parameters to be read from file.
    */
   static void
-  declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int              n_subsections = Numbers::default_subsections);
-
-  /**
-   * @brief Assign the parameters from file.
-   *
-   * WARN: This one should not be used
-   */
-  void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+  declare(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Assign the parameters from file.
    */
   void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_increments,
-         unsigned int              n_subsections = Numbers::default_subsections);
+  assign(dealii::ParameterHandler &parameter_handler, unsigned int n_increments);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   /**
    * @brief Whether a given increment should be outputted.
@@ -362,14 +336,13 @@ struct FieldInputParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   /**
    * @brief Whether to load initial conditions from file

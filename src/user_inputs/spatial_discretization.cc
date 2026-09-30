@@ -518,9 +518,7 @@ SpatialDiscretization<dim>::assign(dealii::ParameterHandler &parameter_handler,
 
 template <unsigned int dim>
 void
-SpatialDiscretization<dim>::validate(
-  [[maybe_unused]] const std::vector<FieldAttributes> &field_attributes,
-  [[maybe_unused]] const std::vector<SolveBlock>      &solve_blocks) const
+SpatialDiscretization<dim>::validate() const
 {
   get_mesh().validate();
 

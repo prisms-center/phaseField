@@ -35,8 +35,7 @@ MiscellaneousParameters::assign(dealii::ParameterHandler &parameter_handler,
 };
 
 void
-MiscellaneousParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                                  const std::vector<SolveBlock> &solve_blocks) const {
+MiscellaneousParameters::validate() const {
   // TODO: Do this later
 };
 

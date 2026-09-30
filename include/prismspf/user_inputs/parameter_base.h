@@ -6,6 +6,8 @@
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/patterns.h>
 
+#include <boost/json.hpp>
+
 #include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
@@ -18,9 +20,6 @@
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
-
-class SolveBlock;
-class FieldAttributes;
 
 /**
  * @brief Cartesian axis labels
@@ -322,18 +321,10 @@ struct ParameterBase
   operator=(ParameterBase &&) = default;
 
   /**
-   * @brief Assign the parameters from file.
+   * @brief Serialize the parameters to file.
    */
-  virtual void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) = 0;
-
-  /**
-   * @brief Validate.
-   */
-  virtual void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const = 0;
+  virtual boost::json::value
+  serialize() = 0;
 };
 
 PRISMS_PF_END_NAMESPACE

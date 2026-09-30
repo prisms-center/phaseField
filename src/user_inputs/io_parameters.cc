@@ -8,8 +8,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-FieldOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
-                               unsigned int              n_subsections)
+FieldOutputParameters::declare(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.enter_subsection("output");
   {
@@ -77,15 +76,7 @@ FieldOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 FieldOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
-                              unsigned int              n_subsections)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-FieldOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
-                              unsigned int              n_increments,
-                              unsigned int              n_subsections)
+                              unsigned int              n_increments)
 {
   const static std::unordered_map<std::string, FieldOutputParameters::OutputType>
     output_type_table = {
@@ -141,8 +132,7 @@ FieldOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
 }
 
 void
-FieldOutputParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                                const std::vector<SolveBlock>      &solve_blocks) const
+FieldOutputParameters::validate() const
 {
   // TODO: Do this later
 }
@@ -154,8 +144,7 @@ FieldOutputParameters::should_output(unsigned int increment) const
 }
 
 void
-RestartOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                 unsigned int              n_subsections)
+RestartOutputParameters::declare(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.enter_subsection("checkpoint");
   {
@@ -199,15 +188,7 @@ RestartOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
 
 void
 RestartOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
-                                unsigned int              n_subsections)
-{
-  AssertThrow(false, dealii::ExcNotImplemented());
-}
-
-void
-RestartOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
-                                unsigned int              n_increments,
-                                unsigned int              n_subsections)
+                                unsigned int              n_increments)
 {
   parameter_handler.enter_subsection("checkpoint");
   {
@@ -242,8 +223,7 @@ RestartOutputParameters::assign(dealii::ParameterHandler &parameter_handler,
 }
 
 void
-RestartOutputParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                                  const std::vector<SolveBlock>      &solve_blocks) const
+RestartOutputParameters::validate() const
 {
   // TODO: Do this later
 }
@@ -366,8 +346,7 @@ FieldInputParameters::assign(dealii::ParameterHandler &parameter_handler,
 }
 
 void
-FieldInputParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                               const std::vector<SolveBlock>      &solve_blocks) const
+FieldInputParameters::validate() const
 {
   // TODO: Do this later
 }
