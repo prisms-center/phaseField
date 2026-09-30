@@ -18,13 +18,13 @@ main(int argc, char *argv[])
   // file
   ParseCMDOptions cli_options(argc, argv);
 
-  constexpr unsigned int dim              = 2;
-  constexpr unsigned int degree           = 2;
-  constexpr unsigned int number_of_fields = 6;
+  constexpr unsigned int dim        = 2;
+  constexpr unsigned int degree     = 2;
+  constexpr unsigned int num_grains = CustomPDE<dim, degree, double>::num_grains;
 
   std::vector<FieldAttributes> field_attributes;
 
-  for (unsigned int i = 0; i < number_of_fields; i++)
+  for (unsigned int i = 0; i < num_grains; i++)
     {
       std::string     field_name = "n" + std::to_string(i);
       FieldAttributes attr(field_name, Scalar);
@@ -49,7 +49,7 @@ main(int argc, char *argv[])
   const Dependency old_1_val_and_grad(EvalFlags::nothing,
                                       EvalFlags::nothing,
                                       {EvalFlags::values | EvalFlags::gradients});
-  for (unsigned int i = 0; i < number_of_fields; i++)
+  for (unsigned int i = 0; i < num_grains; i++)
     {
       exp_block.field_indices.insert(i);
       exp_block.dependencies_rhs[i] = old_1_val_and_grad;
@@ -59,12 +59,12 @@ main(int argc, char *argv[])
   pp_block.id            = 2;
   pp_block.solve_type    = Explicit;
   pp_block.solve_timing  = PostProcess;
-  pp_block.field_indices = {number_of_fields, number_of_fields + 1, number_of_fields + 2};
+  pp_block.field_indices = {num_grains, num_grains + 1, num_grains + 2};
 
   // The postprocessing block depends on the current values and gradients of the order
   // parameters
   const Dependency current_val_and_grad(EvalFlags::values | EvalFlags::gradients);
-  for (unsigned int i = 0; i < number_of_fields; i++)
+  for (unsigned int i = 0; i < num_grains; i++)
     {
       pp_block.dependencies_rhs[i] = current_val_and_grad;
     }

@@ -135,16 +135,16 @@ private:
         ScalarValue nj;
         ScalarGrad  nix;
 
-        std::vector<ScalarValue> value_terms(number_of_fields);
-        std::vector<ScalarGrad>  gradient_terms(number_of_fields);
+        std::vector<ScalarValue> value_terms(num_grains);
+        std::vector<ScalarGrad>  gradient_terms(num_grains);
 
         // Calculate the evolution equations
-        for (unsigned int i = 0; i < number_of_fields; i++)
+        for (unsigned int i = 0; i < num_grains; i++)
           {
             ni          = variable_list.template get_value<Scalar, OldOne>(i);
             nix         = variable_list.template get_gradient<Scalar, OldOne>(i);
             f_multiwell = -ni + ni * ni * ni;
-            for (unsigned int j = 0; j < number_of_fields; j++)
+            for (unsigned int j = 0; j < num_grains; j++)
               {
                 if (i != j)
                   {
@@ -158,7 +158,7 @@ private:
           }
 
         // Submit the terms
-        for (unsigned int i = 0; i < number_of_fields; i++)
+        for (unsigned int i = 0; i < num_grains; i++)
           {
             variable_list.set_value_term(i, value_terms[i]);
             variable_list.set_gradient_term(i, gradient_terms[i]);
@@ -172,15 +172,16 @@ private:
         ScalarValue nj;
         ScalarGrad  nix;
 
-        ScalarValue max_op_id;
-        ScalarValue max_op_value;
+        // Empty region is -1
+        ScalarValue max_op_id    = -1.0;
+        ScalarValue max_op_value = std::numeric_limits<number>::lowest();
 
-        for (unsigned int i = 0; i < number_of_fields; i++)
+        for (unsigned int i = 0; i < num_grains; i++)
           {
             ni  = variable_list.template get_value<Scalar, Current>(i);
             nix = variable_list.template get_gradient<Scalar, Current>(i);
             f_total += m_well * (0.25 + (ni * ni * ni * ni / 4.0) - (ni * ni / 2.0));
-            for (unsigned int j = 0; j < number_of_fields; j++)
+            for (unsigned int j = 0; j < num_grains; j++)
               {
                 if (i != j)
                   {
@@ -193,7 +194,8 @@ private:
 
             for (unsigned int v = 0; v < ScalarValue::size(); v++)
               {
-                if (ni[v] > max_op_value[v])
+                // we have a lower bound to avoid categorizing the background into grains
+                if (ni[v] > max_op_value[v] && ni[v] > 0.05)
                   {
                     max_op_value[v] = ni[v];
                     max_op_id[v]    = i;
@@ -201,9 +203,9 @@ private:
               }
           }
 
-        variable_list.set_value_term(number_of_fields, sum2op);
-        variable_list.set_value_term(number_of_fields + 1, f_total);
-        variable_list.set_value_term(number_of_fields + 2, max_op_id);
+        variable_list.set_value_term(num_grains, sum2op);
+        variable_list.set_value_term(num_grains + 1, f_total);
+        variable_list.set_value_term(num_grains + 2, max_op_id);
       }
   }
 
@@ -212,7 +214,8 @@ private:
   number alpha;
   number kinetic_coef;
 
-  static constexpr unsigned int number_of_fields = 6;
+public:
+  static constexpr unsigned int num_grains = 6;
 };
 
 PRISMS_PF_END_NAMESPACE
