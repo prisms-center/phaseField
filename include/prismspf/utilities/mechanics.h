@@ -7,6 +7,7 @@
 #include <deal.II/base/symmetric_tensor.h>
 #include <deal.II/base/tensor.h>
 
+#include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/utilities/logger.h>
@@ -524,12 +525,13 @@ struct Mechanics
   static inline VoigtMatrix<T>
   stiffness_isotropic(const T E, const T nu)
   {
-    Assert(E > T(0.0),
-           dealii::ExcMessage("Invalid isotropic elastic constants: "
-                              "Young's modulus E must be positive."));
-    Assert(nu > T(-1.0) && nu < T(0.5),
-           dealii::ExcMessage("Invalid isotropic elastic constants: "
-                              "Poisson's ratio must be in range -1 < nu < 0.5"));
+    AssertThrowDebug(E > T(0.0),
+                     dealii::ExcMessage("Invalid isotropic elastic constants: "
+                                        "Young's modulus E must be positive."));
+    AssertThrowDebug(nu > T(-1.0) && nu < T(0.5),
+                     dealii::ExcMessage(
+                       "Invalid isotropic elastic constants: "
+                       "Poisson's ratio must be in range -1 < nu < 0.5"));
 
     VoigtMatrix<T> stiffness;
 
@@ -587,31 +589,33 @@ struct Mechanics
   static inline VoigtMatrix<T>
   stiffness_orthotropic(const T E1, const T E2, const T nu12, const T G12)
   {
-    Assert(E1 > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: E1 must be positive."));
+    AssertThrowDebug(E1 > T(0.0),
+                     dealii::ExcMessage(
+                       "Invalid orthotropic elastic constants: E1 must be positive."));
 
-    Assert(E2 > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: E2 must be positive."));
+    AssertThrowDebug(E2 > T(0.0),
+                     dealii::ExcMessage(
+                       "Invalid orthotropic elastic constants: E2 must be positive."));
 
-    Assert(G12 > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: G12 must be positive."));
+    AssertThrowDebug(G12 > T(0.0),
+                     dealii::ExcMessage(
+                       "Invalid orthotropic elastic constants: G12 must be positive."));
 
     VoigtMatrix<T> stiffness;
 
     const T nu21 = nu12 * (E2 / E1);
 
-    Assert(T(1.0) > nu12 * nu21,
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: 1 - nu12*nu21 must be positive."));
+    AssertThrowDebug(
+      T(1.0) > nu12 * nu21,
+      dealii::ExcMessage(
+        "Invalid orthotropic elastic constants: 1 - nu12*nu21 must be positive."));
 
     const T delta = T(1.0) - nu12 * nu21;
 
-    Assert(delta > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: the determinant must be positive."));
+    AssertThrowDebug(
+      delta > T(0.0),
+      dealii::ExcMessage(
+        "Invalid orthotropic elastic constants: the determinant must be positive."));
 #ifdef DEBUG
     if (delta <= tolerance<T>)
       {
@@ -650,29 +654,29 @@ struct Mechanics
                         const T G13,
                         const T G23)
   {
-    Assert(E1 > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: E1 must be positive."));
+    AssertThrowDebug(E1 > T(0.0),
+                     dealii::ExcMessage(
+                       "Invalid orthotropic elastic constants: E1 must be positive."));
 
-    Assert(E2 > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: E2 must be positive."));
+    AssertThrowDebug(E2 > T(0.0),
+                     dealii::ExcMessage(
+                       "Invalid orthotropic elastic constants: E2 must be positive."));
 
-    Assert(E3 > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: E3 must be positive."));
+    AssertThrowDebug(E3 > T(0.0),
+                     dealii::ExcMessage(
+                       "Invalid orthotropic elastic constants: E3 must be positive."));
 
-    Assert(G12 > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: G12 must be positive."));
+    AssertThrowDebug(G12 > T(0.0),
+                     dealii::ExcMessage(
+                       "Invalid orthotropic elastic constants: G12 must be positive."));
 
-    Assert(G13 > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: G13 must be positive."));
+    AssertThrowDebug(G13 > T(0.0),
+                     dealii::ExcMessage(
+                       "Invalid orthotropic elastic constants: G13 must be positive."));
 
-    Assert(G23 > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: G23 must be positive."));
+    AssertThrowDebug(G23 > T(0.0),
+                     dealii::ExcMessage(
+                       "Invalid orthotropic elastic constants: G23 must be positive."));
 
     VoigtMatrix<T> stiffness;
 
@@ -680,24 +684,28 @@ struct Mechanics
     const T nu31 = nu13 * (E3 / E1);
     const T nu32 = nu23 * (E3 / E2);
 
-    Assert(T(1.0) > nu12 * nu21,
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: 1 - nu12*nu21 must be positive."));
+    AssertThrowDebug(
+      T(1.0) > nu12 * nu21,
+      dealii::ExcMessage(
+        "Invalid orthotropic elastic constants: 1 - nu12*nu21 must be positive."));
 
-    Assert(T(1.0) > nu13 * nu31,
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: 1 - nu13*nu31 must be positive."));
+    AssertThrowDebug(
+      T(1.0) > nu13 * nu31,
+      dealii::ExcMessage(
+        "Invalid orthotropic elastic constants: 1 - nu13*nu31 must be positive."));
 
-    Assert(T(1.0) > nu23 * nu32,
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: 1 - nu23*nu32 must be positive."));
+    AssertThrowDebug(
+      T(1.0) > nu23 * nu32,
+      dealii::ExcMessage(
+        "Invalid orthotropic elastic constants: 1 - nu23*nu32 must be positive."));
 
     const T delta = T(1.0) - (nu12 * nu21) - (nu23 * nu32) - (nu13 * nu31) -
                     (T(2.0) * nu12 * nu23 * nu31);
 
-    Assert(delta > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: the determinant must be positive."));
+    AssertThrowDebug(
+      delta > T(0.0),
+      dealii::ExcMessage(
+        "Invalid orthotropic elastic constants: the determinant must be positive."));
 #ifdef DEBUG
     // Warning for nearly singular
     if (delta <= tolerance<T>)
@@ -1297,12 +1305,13 @@ struct PlaneStrain
   static inline VoigtMatrix<T>
   stiffness_isotropic(const T E, const T nu)
   {
-    Assert(E > T(0.0),
-           dealii::ExcMessage("Invalid isotropic elastic constants: "
-                              "Young's modulus E must be positive."));
-    Assert(nu > T(-1.0) && nu < T(0.5),
-           dealii::ExcMessage("Invalid isotropic elastic constants: "
-                              "Poisson's ratio must be in range -1 < nu < 0.5"));
+    AssertThrowDebug(E > T(0.0),
+                     dealii::ExcMessage("Invalid isotropic elastic constants: "
+                                        "Young's modulus E must be positive."));
+    AssertThrowDebug(nu > T(-1.0) && nu < T(0.5),
+                     dealii::ExcMessage(
+                       "Invalid isotropic elastic constants: "
+                       "Poisson's ratio must be in range -1 < nu < 0.5"));
 
     VoigtMatrix<T> stiffness;
 
@@ -1342,21 +1351,21 @@ struct PlaneStrain
                         const T nu23,
                         const T G12)
   {
-    Assert(E1 > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: E1 must be positive."));
+    AssertThrowDebug(E1 > T(0.0),
+                     dealii::ExcMessage(
+                       "Invalid orthotropic elastic constants: E1 must be positive."));
 
-    Assert(E2 > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: E2 must be positive."));
+    AssertThrowDebug(E2 > T(0.0),
+                     dealii::ExcMessage(
+                       "Invalid orthotropic elastic constants: E2 must be positive."));
 
-    Assert(E3 > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: E3 must be positive."));
+    AssertThrowDebug(E3 > T(0.0),
+                     dealii::ExcMessage(
+                       "Invalid orthotropic elastic constants: E3 must be positive."));
 
-    Assert(G12 > T(0.0),
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: G12 must be positive."));
+    AssertThrowDebug(G12 > T(0.0),
+                     dealii::ExcMessage(
+                       "Invalid orthotropic elastic constants: G12 must be positive."));
 
     VoigtMatrix<T> stiffness;
 
@@ -1364,24 +1373,28 @@ struct PlaneStrain
     const T nu31 = nu13 * (E3 / E1);
     const T nu32 = nu23 * (E3 / E2);
 
-    Assert(T(1.0) > nu12 * nu21,
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: 1 - nu12*nu21 must be positive."));
+    AssertThrowDebug(
+      T(1.0) > nu12 * nu21,
+      dealii::ExcMessage(
+        "Invalid orthotropic elastic constants: 1 - nu12*nu21 must be positive."));
 
-    Assert(T(1.0) > nu13 * nu31,
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: 1 - nu13*nu31 must be positive."));
+    AssertThrowDebug(
+      T(1.0) > nu13 * nu31,
+      dealii::ExcMessage(
+        "Invalid orthotropic elastic constants: 1 - nu13*nu31 must be positive."));
 
-    Assert(T(1.0) > nu23 * nu32,
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: 1 - nu23*nu32 must be positive."));
+    AssertThrowDebug(
+      T(1.0) > nu23 * nu32,
+      dealii::ExcMessage(
+        "Invalid orthotropic elastic constants: 1 - nu23*nu32 must be positive."));
 
     const T delta = T(1.0) - (nu12 * nu21) - (nu23 * nu32) - (nu13 * nu31) -
                     (T(2.0) * nu12 * nu23 * nu31);
 
-    Assert(delta > 0.0,
-           dealii::ExcMessage(
-             "Invalid orthotropic elastic constants: the determinant must be positive."));
+    AssertThrowDebug(
+      delta > 0.0,
+      dealii::ExcMessage(
+        "Invalid orthotropic elastic constants: the determinant must be positive."));
 #ifdef DEBUG
     // Warning for nearly singular
     if (delta <= tolerance<T>)
