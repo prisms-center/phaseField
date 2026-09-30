@@ -14,6 +14,7 @@
 
 #include <prismspf/config.h>
 
+#include <numbers>
 #include <utility>
 
 // NOLINTBEGIN(readability-identifier-naming,readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers,readability-identifier-length)
@@ -56,7 +57,7 @@ struct Mechanics
    * 1D, 2D, 3D.
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   strain_to_voigt(const MechTensor<T> &tensor, VoigtVector<T> &voigt)
   {
     if constexpr (dim == 1)
@@ -88,8 +89,8 @@ struct Mechanics
    * Overload: Return value
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE VoigtVector<T>
-                                      strain_to_voigt(const MechTensor<T> &tensor)
+  static DEAL_II_ALWAYS_INLINE VoigtVector<T>
+                               strain_to_voigt(const MechTensor<T> &tensor)
   {
     VoigtVector<T> voigt;
 
@@ -124,7 +125,7 @@ struct Mechanics
    * Overload: Tensor input is a symmetric tensor.
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   strain_to_voigt(const SymMechTensor<T> &tensor, VoigtVector<T> &voigt)
   {
     if constexpr (dim == 1)
@@ -157,8 +158,8 @@ struct Mechanics
    * Overload: Return value.
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE VoigtVector<T>
-                                      strain_to_voigt(const SymMechTensor<T> &tensor)
+  static DEAL_II_ALWAYS_INLINE VoigtVector<T>
+                               strain_to_voigt(const SymMechTensor<T> &tensor)
   {
     VoigtVector<T> voigt;
 
@@ -192,8 +193,7 @@ struct Mechanics
    * 1D, 2D, 3D.
    */
   template <typename T = double>
-
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   voigt_to_strain(const VoigtVector<T> &voigt, MechTensor<T> &tensor)
   {
     if constexpr (dim == 1)
@@ -224,7 +224,7 @@ struct Mechanics
    * Overload: Tensor output is a symmetric tensor.
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   voigt_to_strain(const VoigtVector<T> &voigt, SymMechTensor<T> &tensor)
   {
     if constexpr (dim == 1)
@@ -255,8 +255,8 @@ struct Mechanics
    * Overload: Return value, always return a symmetric tensor.
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE SymMechTensor<T>
-                                      voigt_to_strain(const VoigtVector<T> &voigt)
+  static DEAL_II_ALWAYS_INLINE SymMechTensor<T>
+                               voigt_to_strain(const VoigtVector<T> &voigt)
   {
     SymMechTensor<T> tensor;
 
@@ -289,7 +289,7 @@ struct Mechanics
    * 1D, 2D, 3D.
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   stress_to_voigt(const MechTensor<T> &tensor, VoigtVector<T> &voigt)
   {
     if constexpr (dim == 1)
@@ -321,8 +321,8 @@ struct Mechanics
    * Overload: Return value.
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE VoigtVector<T>
-                                      stress_to_voigt(const MechTensor<T> &tensor)
+  static DEAL_II_ALWAYS_INLINE VoigtVector<T>
+                               stress_to_voigt(const MechTensor<T> &tensor)
   {
     VoigtVector<T> voigt;
 
@@ -357,7 +357,7 @@ struct Mechanics
    * Overload: Tensor input is a symmetric tensor.
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   stress_to_voigt(const SymMechTensor<T> &tensor, VoigtVector<T> &voigt)
   {
     if constexpr (dim == 1)
@@ -390,8 +390,8 @@ struct Mechanics
    * Overload: Return value.
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE VoigtVector<T>
-                                      stress_to_voigt(const SymMechTensor<T> &tensor)
+  static DEAL_II_ALWAYS_INLINE VoigtVector<T>
+                               stress_to_voigt(const SymMechTensor<T> &tensor)
   {
     VoigtVector<T> voigt;
 
@@ -425,7 +425,7 @@ struct Mechanics
    * 1D, 2D, 3D.
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   voigt_to_stress(const VoigtVector<T> &voigt, MechTensor<T> &tensor)
   {
     if constexpr (dim == 1)
@@ -456,7 +456,7 @@ struct Mechanics
    * Overload: Tensor output is a symmetric tensor.
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   voigt_to_stress(const VoigtVector<T> &voigt, SymMechTensor<T> &tensor)
   {
     if constexpr (dim == 1)
@@ -487,8 +487,8 @@ struct Mechanics
    * Overload: Return value, always return a symmetric tensor.
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE SymMechTensor<T>
-                                      voigt_to_stress(const VoigtVector<T> &voigt)
+  static DEAL_II_ALWAYS_INLINE SymMechTensor<T>
+                               voigt_to_stress(const VoigtVector<T> &voigt)
   {
     SymMechTensor<T> tensor;
 
@@ -520,7 +520,6 @@ struct Mechanics
    * @brief Isotropic stiffness matrix.
    * 1D, 2D, 3D.
    */
-  // TODO: should we use DEAL_II_ALWAYS_INLINE
   template <typename T = double>
   static inline VoigtMatrix<T>
   stiffness_isotropic(const T E, const T nu)
@@ -583,7 +582,6 @@ struct Mechanics
    * @brief Orthotropic stiffness matrix.
    * 2D (Plane Stress)
    */
-  // TODO: should we use DEAL_II_ALWAYS_INLINE
   template <typename T>
   requires(dim == 2)
   static inline VoigtMatrix<T>
@@ -630,8 +628,8 @@ struct Mechanics
 
     stiffness[0][0] = E1 * inv_delta;
     stiffness[1][1] = E2 * inv_delta;
+    stiffness[2][2] = G12;
     stiffness[0][1] = stiffness[1][0] = (nu12 * E2) * inv_delta;
-    stiffness[2][2]                   = G12;
 
     return stiffness;
   }
@@ -640,7 +638,6 @@ struct Mechanics
    * @brief Orthotropic stiffness matrix.
    * 3D
    */
-  // TODO: should we use DEAL_II_ALWAYS_INLINE
   template <typename T>
   requires(dim == 3)
   static inline VoigtMatrix<T>
@@ -737,11 +734,12 @@ struct Mechanics
   /**
    * @brief Compute the stress with a given displacement and elasticity tensor. This
    * assumes that the provided parameters are in Voigt notation.
-   * @note: Strain input is the elastic strain.
    * 1D, 2D, 3D.
+   *
+   * @note: Strain input is the elastic strain.
    */
   template <typename Tstiff, typename Tstrain>
-  static inline DEAL_II_ALWAYS_INLINE auto // VoigtVector
+  static DEAL_II_ALWAYS_INLINE auto // VoigtVector
   compute_stress(const VoigtMatrix<Tstiff>  &elasticity_tensor,
                  const VoigtVector<Tstrain> &strain)
   {
@@ -751,11 +749,12 @@ struct Mechanics
   /**
    * @brief Compute the stress with a given displacement and elasticity tensor. This
    * assumes that the provided parameters are in Voigt notation.
-   * @note: Strain input is the elastic strain.
    * 1D, 2D, 3D.
+   *
+   * @note: Strain input is the elastic strain.
    */
   template <typename Tstiff, typename Tstrain, typename Tstress>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   compute_stress(const VoigtMatrix<Tstiff>  &elasticity_tensor,
                  const VoigtVector<Tstrain> &strain,
                  VoigtVector<Tstress>       &stress)
@@ -771,8 +770,8 @@ struct Mechanics
    * @note This function internally converts to Voigt notation.
    */
   template <typename Tstiff, typename Tstrain>
-  requires(dim != 1)
-  static inline DEAL_II_ALWAYS_INLINE auto // MechTensor
+  requires(dim != 1)                // exclude 1D to prevent conflict with other overloads
+  static DEAL_II_ALWAYS_INLINE auto // MechTensor
   compute_stress(const VoigtMatrix<Tstiff> &elasticity_tensor,
                  const MechTensor<Tstrain> &strain)
   {
@@ -787,8 +786,8 @@ struct Mechanics
    * @note This function internally converts to Voigt notation.
    */
   template <typename Tstiff, typename Tstrain, typename Tstress>
-  requires(dim != 1)
-  static inline DEAL_II_ALWAYS_INLINE void
+  requires(dim != 1) // exclude 1D to prevent conflict with other overloads
+  static DEAL_II_ALWAYS_INLINE void
   compute_stress(const VoigtMatrix<Tstiff> &elasticity_tensor,
                  const MechTensor<Tstrain> &strain,
                  MechTensor<Tstress>       &stress)
@@ -803,7 +802,7 @@ struct Mechanics
    * 1D, 2D, 3D.
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE T
+  static DEAL_II_ALWAYS_INLINE T
   strain_energy(const VoigtVector<T> &stress, const VoigtVector<T> &strain_e)
   {
     return T(0.5) * stress * strain_e;
@@ -814,7 +813,7 @@ struct Mechanics
    * 1D, 2D, 3D.
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE T
+  static DEAL_II_ALWAYS_INLINE T
   stress_mises(const VoigtVector<T> &stress)
   {
     T stress_m2 = T(0);
@@ -859,8 +858,8 @@ struct Mechanics
    * 1D, 2D.
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, dim, T>
-                                      stress_principal(const VoigtVector<T> &stress)
+  static DEAL_II_ALWAYS_INLINE dealii::Tensor<1, dim, T>
+                               stress_principal(const VoigtVector<T> &stress)
   {
     static_assert(
       dim == 1 || dim == 2,
@@ -885,7 +884,33 @@ struct Mechanics
       }
     else if constexpr (dim == 3)
       {
-        // TODO: 3D
+        const T m    = (stress[0] + stress[1] + stress[2]) * (T(1.0) / T(3.0));
+        const T s_xx = stress[0] - m;
+        const T s_yy = stress[1] - m;
+        const T s_zz = stress[2] - m;
+        const T s_yz = stress[3];
+        const T s_xz = stress[4];
+        const T s_xy = stress[5];
+
+        const T J2 = T(0.5) * (s_xx * s_xx + s_yy * s_yy + s_zz * s_zz) + s_yz * s_yz +
+                     s_xz * s_xz + s_xy * s_xy;
+        const T J3 = s_xx * (s_yy * s_zz - s_yz * s_yz) -
+                     s_xy * (s_xy * s_zz - s_xz * s_yz) +
+                     s_xz * (s_xy * s_yz - s_xz * s_yy);
+
+        const T rad = std::max(std::sqrt(J2 * (T(1.0) / T(3.0))), T(1e-30));
+        const T ra3 = rad * rad * rad;
+        const T tmp = min(T(1.0), max(T(-1.0), (J3 * T(0.5)) / ra3));
+        const T phi = std::acos(tmp) * (T(1.0) / T(3.0));
+
+        constexpr double pi   = std::numbers::pi;
+        constexpr double pi23 = 2.0 * pi / 3.0;
+        constexpr double pi43 = 4.0 * pi / 3.0;
+
+        // Principal stresses: sigma_1 >= sigma_2 >= sigma_3
+        stress_p[0] = m + T(2.0) * rad * std::cos(phi);
+        stress_p[1] = m + T(2.0) * rad * std::cos(phi + T(pi43));
+        stress_p[2] = m + T(2.0) * rad * std::cos(phi + T(pi23));
       }
     return stress_p;
   }
@@ -933,7 +958,7 @@ struct PlaneStrain
    * Overload for 2D Plane Strain
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   strain_to_voigt(const MechTensor<T> &tensor_inplane,
                   const T             &component_zz,
                   VoigtVector<T>      &voigt)
@@ -951,7 +976,7 @@ struct PlaneStrain
    * Overload: Return value
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE VoigtVector<T>
+  static DEAL_II_ALWAYS_INLINE VoigtVector<T>
   strain_to_voigt(const MechTensor<T> &tensor_inplane, const T &component_zz)
   {
     VoigtVector<T> voigt;
@@ -971,7 +996,7 @@ struct PlaneStrain
    * Overload: Tensor input is a symmetric tensor.
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   strain_to_voigt(const SymMechTensor<T> &tensor_inplane,
                   const T                &component_zz,
                   VoigtVector<T>         &voigt)
@@ -990,7 +1015,7 @@ struct PlaneStrain
    * Overload: Return value
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE VoigtVector<T>
+  static DEAL_II_ALWAYS_INLINE VoigtVector<T>
   strain_to_voigt(const SymMechTensor<T> &tensor_inplane, const T &component_zz)
   {
     VoigtVector<T> voigt;
@@ -1009,7 +1034,7 @@ struct PlaneStrain
    * Overload for 2D Plane Strain
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   voigt_to_strain(const VoigtVector<T> &voigt,
                   MechTensor<T>        &tensor_inplane,
                   T                    &component_zz)
@@ -1027,7 +1052,7 @@ struct PlaneStrain
    * Overload: Tensor output is a symmetric tensor.
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   voigt_to_strain(const VoigtVector<T> &voigt,
                   SymMechTensor<T>     &tensor_inplane,
                   T                    &component_zz)
@@ -1045,8 +1070,8 @@ struct PlaneStrain
    * Overload: Return value, always return a symmetric tensor.
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE std::pair<SymMechTensor<T>, T>
-                                      voigt_to_strain(const VoigtVector<T> &voigt)
+  static DEAL_II_ALWAYS_INLINE std::pair<SymMechTensor<T>, T>
+                               voigt_to_strain(const VoigtVector<T> &voigt)
   {
     SymMechTensor<T> tensor_inplane;
 
@@ -1064,7 +1089,7 @@ struct PlaneStrain
    * Overload for 2D Plane Strain
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   stress_to_voigt(const MechTensor<T> &tensor_inplane,
                   const T             &component_zz,
                   VoigtVector<T>      &voigt)
@@ -1082,7 +1107,7 @@ struct PlaneStrain
    * Overload: Return value
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE VoigtVector<T>
+  static DEAL_II_ALWAYS_INLINE VoigtVector<T>
   stress_to_voigt(const MechTensor<T> &tensor_inplane, const T &component_zz)
   {
     VoigtVector<T> voigt;
@@ -1102,7 +1127,7 @@ struct PlaneStrain
    * Overload: Tensor input is a symmetric tensor.
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   stress_to_voigt(const SymMechTensor<T> &tensor_inplane,
                   const T                &component_zz,
                   VoigtVector<T>         &voigt)
@@ -1121,7 +1146,7 @@ struct PlaneStrain
    * Overload: Return value
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE VoigtVector<T>
+  static DEAL_II_ALWAYS_INLINE VoigtVector<T>
   stress_to_voigt(const SymMechTensor<T> &tensor_inplane, const T &component_zz)
   {
     VoigtVector<T> voigt;
@@ -1140,7 +1165,7 @@ struct PlaneStrain
    * Overload for 2D Plane Strain
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   voigt_to_stress(const VoigtVector<T> &voigt,
                   MechTensor<T>        &tensor_inplane,
                   T                    &component_zz)
@@ -1158,7 +1183,7 @@ struct PlaneStrain
    * Overload: Tensor output is a symmetric tensor.
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   voigt_to_stress(const VoigtVector<T> &voigt,
                   SymMechTensor<T>     &tensor_inplane,
                   T                    &component_zz)
@@ -1176,8 +1201,8 @@ struct PlaneStrain
    * Overload: Return value, always return a symmetric tensor.
    */
   template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE std::pair<SymMechTensor<T>, T>
-                                      voigt_to_stress(const VoigtVector<T> &voigt)
+  static DEAL_II_ALWAYS_INLINE std::pair<SymMechTensor<T>, T>
+                               voigt_to_stress(const VoigtVector<T> &voigt)
   {
     SymMechTensor<T> tensor_inplane;
 
@@ -1196,7 +1221,7 @@ struct PlaneStrain
    * @note: Strain input is the elastic strain.
    */
   template <typename Tstiff, typename Tstrain>
-  static inline DEAL_II_ALWAYS_INLINE auto // VoigtVector
+  static DEAL_II_ALWAYS_INLINE auto // VoigtVector
   compute_stress(const VoigtMatrix<Tstiff>  &elasticity_tensor,
                  const VoigtVector<Tstrain> &strain)
   {
@@ -1209,7 +1234,7 @@ struct PlaneStrain
    * @note: Strain input is the elastic strain.
    */
   template <typename Tstiff, typename Tstrain, typename Tstress>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   compute_stress(const VoigtMatrix<Tstiff>  &elasticity_tensor,
                  const VoigtVector<Tstrain> &strain,
                  VoigtVector<Tstress>       &stress)
@@ -1227,7 +1252,7 @@ struct PlaneStrain
    * @note This function internally converts to Voigt notation.
    */
   template <typename Tstiff, typename Tstrain, typename Tstress>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   compute_stress(const VoigtMatrix<Tstiff> &elasticity_tensor,
                  const MechTensor<Tstrain> &strain,
                  const Tstrain             &strain_zz,
@@ -1251,7 +1276,7 @@ struct PlaneStrain
    * @note This function internally converts to Voigt notation.
    */
   template <typename Tstiff, typename Tstrain, typename Tstress>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   compute_stress(const VoigtMatrix<Tstiff> &elasticity_tensor,
                  const MechTensor<Tstrain> &strain,
                  MechTensor<Tstress>       &stress,
@@ -1269,7 +1294,7 @@ struct PlaneStrain
    * @note This function internally converts to Voigt notation.
    */
   template <typename Tstiff, typename Tstrain, typename Tstress>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   compute_stress(const VoigtMatrix<Tstiff> &elasticity_tensor,
                  const MechTensor<Tstrain> &strain,
                  const Tstrain             &strain_zz,
@@ -1289,7 +1314,7 @@ struct PlaneStrain
    * @note This function internally converts to Voigt notation.
    */
   template <typename Tstiff, typename Tstrain, typename Tstress>
-  static inline DEAL_II_ALWAYS_INLINE void
+  static DEAL_II_ALWAYS_INLINE void
   compute_stress(const VoigtMatrix<Tstiff> &elasticity_tensor,
                  const MechTensor<Tstrain> &strain,
                  VoigtVector<Tstress>      &stress)
@@ -1300,7 +1325,6 @@ struct PlaneStrain
   /**
    * @brief Isotropic stiffness matrix.
    */
-  // TODO: should we use DEAL_II_ALWAYS_INLINE
   template <typename T = double>
   static inline VoigtMatrix<T>
   stiffness_isotropic(const T E, const T nu)
@@ -1424,7 +1448,7 @@ struct PlaneStrain
    * 1D, 2D, 3D.
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE T
+  static DEAL_II_ALWAYS_INLINE T
   strain_energy(const VoigtVector<T> &stress, const VoigtVector<T> &strain_e)
   {
     return T(0.5) * stress * strain_e;
@@ -1434,7 +1458,7 @@ struct PlaneStrain
    * @brief von Mises stress (Input is in Voigt notation).
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE T
+  static DEAL_II_ALWAYS_INLINE T
   stress_mises(const VoigtVector<T> &stress)
   {
     T stress_m2 = T(0);
@@ -1460,8 +1484,8 @@ struct PlaneStrain
    * tensor.
    */
   template <typename T = double>
-  static inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, dim, T>
-                                      stress_principal(const VoigtVector<T> &stress)
+  static DEAL_II_ALWAYS_INLINE dealii::Tensor<1, dim, T>
+                               stress_principal(const VoigtVector<T> &stress)
   {
     dealii::Tensor<1, dim, T> stress_p {};
 
@@ -1482,8 +1506,8 @@ struct PlaneStrain
    * @note This restricted form assumes the xz and yz elastic shear components are zero,
    * which may not work for general anisotropy and eigenstrain.
    */
-  template <typename T>
-  static inline DEAL_II_ALWAYS_INLINE VoigtMatrix<T>
+  template <typename T = double>
+  static DEAL_II_ALWAYS_INLINE VoigtMatrix<T>
   extract_plane_strain_stiffness(const ThreeDimensionalStiffness<T> &stiffness_3d)
   {
     VoigtMatrix<T> stiffness;
