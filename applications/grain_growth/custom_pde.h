@@ -172,8 +172,9 @@ private:
         ScalarValue nj;
         ScalarGrad  nix;
 
-        ScalarValue max_op_id    = 0.0;
-        ScalarValue max_op_value = 0.0;
+        // Empty region is -1
+        ScalarValue max_op_id    = -1.0;
+        ScalarValue max_op_value = std::numeric_limits<number>::lowest();
 
         for (unsigned int i = 0; i < num_grains; i++)
           {
