@@ -1496,7 +1496,7 @@ using PlaneStrainVector = PlaneStrain::VoigtVector<T>;
 template <typename T = double>
 using PlaneStrainStiffness = PlaneStrain::VoigtMatrix<T>;
 
-namespace OldMechanics
+namespace legacy::Mechanics
 {
   /**
    * -------------------------------------------------------------
@@ -1603,7 +1603,7 @@ namespace OldMechanics
           elasticity_tensor[xx_dir][xx_dir] * strain[xx_dir][xx_dir];
       }
   }
-}; // namespace OldMechanics
+} // namespace legacy::Mechanics
 
 PRISMS_PF_END_NAMESPACE
 // NOLINTEND(readability-identifier-naming,readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers,readability-identifier-length)
