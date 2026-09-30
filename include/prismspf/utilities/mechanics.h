@@ -996,8 +996,6 @@ struct PlaneStrain
     return voigt;
   }
 
-  // -------------------------------------------------------------------------------
-
   /**
    * @brief Voigt notation to Strain tensor.
    * Overload for 2D Plane Strain
@@ -1052,8 +1050,6 @@ struct PlaneStrain
 
     return {tensor_inplane, component_zz};
   }
-
-  // ------------------------------------------------------------------------
 
   /**
    * @brief Stress tensor to Voigt notation.
@@ -1131,8 +1127,6 @@ struct PlaneStrain
     return voigt;
   }
 
-  // ----------------------------------------------------------------------------
-
   /**
    * @brief Voigt to Stress tensor.
    * Overload for 2D Plane Strain
@@ -1188,8 +1182,6 @@ struct PlaneStrain
     return {tensor_inplane, component_zz};
   }
 
-  //---------------------------------------------------------------
-
   /**
    * @brief Compute the stress with a given displacement and elasticity tensor. This
    * assumes that the provided parameters are in Voigt notation.
@@ -1235,7 +1227,8 @@ struct PlaneStrain
                  Tstress                   &stress_zz)
   {
     VoigtVector<Tstrain> epsilon = strain_to_voigt(strain, strain_zz);
-    VoigtVector<Tstress> sigma   = compute_stress(elasticity_tensor, epsilon, sigma);
+    VoigtVector<Tstress> sigma;
+    compute_stress(elasticity_tensor, epsilon, sigma);
     voigt_to_stress(sigma, stress, stress_zz);
   }
 
@@ -1296,7 +1289,6 @@ struct PlaneStrain
     compute_stress(elasticity_tensor, strain, Tstrain(0.0), stress);
   }
 
-  // ----------------------------------------
   /**
    * @brief Isotropic stiffness matrix.
    */
@@ -1414,7 +1406,17 @@ struct PlaneStrain
     return stiffness;
   }
 
-  // -------------------------------------------------
+  /**
+   * @brief Strain energy (Inputs are in Voigt notation).
+   * 1D, 2D, 3D.
+   */
+  template <typename T = double>
+  static inline DEAL_II_ALWAYS_INLINE T
+  strain_energy(const VoigtVector<T> &stress, const VoigtVector<T> &strain_e)
+  {
+    return T(0.5) * stress * strain_e;
+  }
+
   /**
    * @brief von Mises stress (Input is in Voigt notation).
    */
@@ -1439,12 +1441,11 @@ struct PlaneStrain
     return std::sqrt(stress_m2);
   }
 
-  //-----------------------------------------------------
   /**
- * @brief Principal stress (Input is in Voigt notation).
-   @note For plane strain, returns the principal stresses of the in-plane 2x2 stress
- tensor.
- */
+   * @brief Principal stress (Input is in Voigt notation).
+   * @note For plane strain, returns the principal stresses of the in-plane 2x2 stress
+   * tensor.
+   */
   template <typename T = double>
   static inline DEAL_II_ALWAYS_INLINE dealii::Tensor<1, dim, T>
                                       stress_principal(const VoigtVector<T> &stress)
@@ -1462,8 +1463,6 @@ struct PlaneStrain
 
     return stress_p;
   }
-
-  // -------------------------------------------------------
 
   /**
    * @brief Extract 4x4 plane strain stiffness from 6x6 3D stiffness.
