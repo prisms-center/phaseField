@@ -5,7 +5,7 @@
 REAL_SCALARS := { float; double }
 
 // Space dimensions
-SPACE_DIMENSIONS := { 1; 2; 3 }
+SPACE_DIMENSIONS := { @_space_dimensions@ }
 
 // Element degrees
 ELEMENT_DEGREE := { 1; 2@_additional_degrees@ }

@@ -101,7 +101,7 @@ NucleationManager<dim, degree, number>::attempt_nucleation(
   const double delta_t = nuc_params.nucleation_period * time_info.get_timestep();
   auto        &rng     = user_inputs.misc_parameters.rng;
 
-  static dealii::FEValues<dim> fe_values(SystemWide<dim, degree>::fe_systems[0],
+  static dealii::FEValues<dim> fe_values(SystemWide<dim, degree>::fe_systems()[0],
                                          SystemWide<dim, degree>::quadrature,
                                          dealii::UpdateFlags::update_values |
                                            dealii::UpdateFlags::update_JxW_values);
