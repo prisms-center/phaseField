@@ -137,7 +137,7 @@ Include dependency graph for type_enums.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="type__enums_8h__dep__incl.svg" width="3634" height="2030"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="type__enums_8h__dep__incl.svg" width="3612" height="2030"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="type__enums_8h_source.html">Go to the source code of this file.</a></p>
@@ -164,9 +164,9 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:afb65dffc43b1f0e550ca9370a7631284"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespaceSymmetry.html">Symmetry</a> of elastic tensor.  <a href="#afb65dffc43b1f0e550ca9370a7631284">More...</a><br /></td></tr>
 <tr class="separator:afb65dffc43b1f0e550ca9370a7631284"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17bc53e9e9f11a9a90eb8cc303a189d4" id="r_a17bc53e9e9f11a9a90eb8cc303a189d4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17bc53e9e9f11a9a90eb8cc303a189d4">StressState</a> { <a class="el" href="#a17bc53e9e9f11a9a90eb8cc303a189d4a3ecdce43b54d3ec77dd4f578b19821d1">ThreeDimension</a>
-, <a class="el" href="#a17bc53e9e9f11a9a90eb8cc303a189d4adec17294735cc46d1363f5b0e0ebeb3f">PlaneStrain</a>
-, <a class="el" href="#a17bc53e9e9f11a9a90eb8cc303a189d4a7839c036e366958ed63a76f35f6bfb26">PlaneStress</a>
+<tr class="memitem:a17bc53e9e9f11a9a90eb8cc303a189d4" id="r_a17bc53e9e9f11a9a90eb8cc303a189d4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17bc53e9e9f11a9a90eb8cc303a189d4">StressState</a> { <a class="el" href="#a17bc53e9e9f11a9a90eb8cc303a189d4ae53e6a468bc80e076b0d8c3f17f7251e">ThreeDimensional</a>
+, <a class="el" href="#a17bc53e9e9f11a9a90eb8cc303a189d4a9740e037772b28606c9f9125c6d16668">PlaneStrain</a>
+, <a class="el" href="#a17bc53e9e9f11a9a90eb8cc303a189d4a2b62babb295de68f8d78f4c97e5c1740">PlaneStress</a>
  }</td></tr>
 <tr class="memdesc:a17bc53e9e9f11a9a90eb8cc303a189d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">State of stress.  <a href="#a17bc53e9e9f11a9a90eb8cc303a189d4">More...</a><br /></td></tr>
 <tr class="separator:a17bc53e9e9f11a9a90eb8cc303a189d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -338,20 +338,28 @@ Enumerations</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="#a17bc53e9e9f11a9a90eb8cc303a189d4">StressState</a></td>
+          <td class="memname">enum class <a class="el" href="#a17bc53e9e9f11a9a90eb8cc303a189d4">StressState</a></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>State of stress. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a17bc53e9e9f11a9a90eb8cc303a189d4a3ecdce43b54d3ec77dd4f578b19821d1" name="a17bc53e9e9f11a9a90eb8cc303a189d4a3ecdce43b54d3ec77dd4f578b19821d1"></a>ThreeDimension&#160;</td><td class="fielddoc"><p>General 3D stress state. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a17bc53e9e9f11a9a90eb8cc303a189d4ae53e6a468bc80e076b0d8c3f17f7251e" name="a17bc53e9e9f11a9a90eb8cc303a189d4ae53e6a468bc80e076b0d8c3f17f7251e"></a>ThreeDimensional&#160;</td><td class="fielddoc"><p>General 3D stress state. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a17bc53e9e9f11a9a90eb8cc303a189d4adec17294735cc46d1363f5b0e0ebeb3f" name="a17bc53e9e9f11a9a90eb8cc303a189d4adec17294735cc46d1363f5b0e0ebeb3f"></a>PlaneStrain&#160;</td><td class="fielddoc"><p>Assumes the body is very thick or infinitely long. Strain components in the out-of-plane direction are zero: epsilon_z = gamma_xz = gamma_yz = 0. </p>
+<tr><td class="fieldname"><a id="a17bc53e9e9f11a9a90eb8cc303a189d4a9740e037772b28606c9f9125c6d16668" name="a17bc53e9e9f11a9a90eb8cc303a189d4a9740e037772b28606c9f9125c6d16668"></a>PlaneStrain&#160;</td><td class="fielddoc"><p>Assumes the body is very thick or infinitely long. Total strain components in the out-of-plane direction are zero: epsilon^t_zz = gamma^t_xz = gamma^t_yz = 0. The elastic epsilon_zz component may be nonzero in the presence of eigenstrain. In the restricted representation (4x4 stiffness), the xz and yz elastic shear components are assumed to be zero. This may not be true for general anisotropy and general 3D eigenstrain with out-of-plane shear components. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a17bc53e9e9f11a9a90eb8cc303a189d4a7839c036e366958ed63a76f35f6bfb26" name="a17bc53e9e9f11a9a90eb8cc303a189d4a7839c036e366958ed63a76f35f6bfb26"></a>PlaneStress&#160;</td><td class="fielddoc"><p>Assumes the body is very thin. Stress components associated with the out-of-plane direction are zero: sigma_z = tau_xz = tau_yz = 0. </p>
+<tr><td class="fieldname"><a id="a17bc53e9e9f11a9a90eb8cc303a189d4a2b62babb295de68f8d78f4c97e5c1740" name="a17bc53e9e9f11a9a90eb8cc303a189d4a2b62babb295de68f8d78f4c97e5c1740"></a>PlaneStress&#160;</td><td class="fielddoc"><p>Assumes the body is very thin. Stress components associated with the out-of-plane direction are zero: sigma_zz = sigma_xz = simga_yz = 0. </p>
 </td></tr>
 </table>
 

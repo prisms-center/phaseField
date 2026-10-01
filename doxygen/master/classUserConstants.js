@@ -1,6 +1,6 @@
 var classUserConstants =
 [
-    [ "InputVariant", "classUserConstants.html#a7d33694ac1e1d4690d35c88c71608378", null ],
+    [ "InputVariant", "classUserConstants.html#aa277fb5a8279748702c27f02e78ec231", null ],
     [ "add_user_constant", "classUserConstants.html#a5579bbb1335c38ae05a523b9572af082", null ],
     [ "assign_parameters", "classUserConstants.html#aefc6cfff323bb520e40f67ea5f7a1638", null ],
     [ "check_keyword_match", "classUserConstants.html#a82d6f3fdf5bb545a08f5bb6424ad930f", null ],
@@ -10,10 +10,11 @@ var classUserConstants =
     [ "construct_user_constant", "classUserConstants.html#a00d9c5f996c650688da96ce81c5c4be8", null ],
     [ "declare_parameters", "classUserConstants.html#aa908a9ccd10476dd68f8bdb31eda8b9c", null ],
     [ "get_bool", "classUserConstants.html#ae5e3a3244eeb0fe0c7b79c2c4ecbd000", null ],
-    [ "get_cij_matrix", "classUserConstants.html#a017460c517c41ea371eee5ff03ad321a", null ],
-    [ "get_cij_tensor", "classUserConstants.html#a0a264c8ad13002f1793bc6179cf6e0e1", null ],
+    [ "get_cij_matrix", "classUserConstants.html#a0956c2e1725c9cddf71d0cae8236fde0", null ],
+    [ "get_cij_tensor", "classUserConstants.html#a52ce0df9b809244ec8e849fe2ffe5e8f", null ],
     [ "get_double", "classUserConstants.html#a8100bd9df65e23e6fcb94888eb162aaa", null ],
     [ "get_elasticity_tensor", "classUserConstants.html#a83c4cdb1a1b5c417183c0cbd12e75ff3", null ],
+    [ "get_elasticity_tensor_plane_strain", "classUserConstants.html#a7286f43c403ab709b266eede29c6fa4f", null ],
     [ "get_int", "classUserConstants.html#a0b5aa2a9d0ee992ddc9adfce38028fa5", null ],
     [ "get_names", "classUserConstants.html#a70845655d38a5c582b9db6c82ad368e4", null ],
     [ "get_rank_1_tensor", "classUserConstants.html#a4a755509e5cb4b1007d745317fc9db65", null ],

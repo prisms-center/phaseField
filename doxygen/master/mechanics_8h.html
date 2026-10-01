@@ -122,45 +122,231 @@ $(function(){initNavTree('mechanics_8h.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">mechanics.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;deal.II/base/tensor.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;deal.II/base/exceptions.h&gt;</code><br />
+<code>#include &lt;deal.II/base/symmetric_tensor.h&gt;</code><br />
+<code>#include &lt;deal.II/base/tensor.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="exceptions_8h_source.html">prismspf/core/exceptions.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="type__enums_8h_source.html">prismspf/core/type_enums.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="logger_8h_source.html">prismspf/utilities/logger.h</a>&gt;</code><br />
 <code>#include &lt;prismspf/config.h&gt;</code><br />
+<code>#include &lt;numbers&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for mechanics.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="mechanics_8h__incl.svg" width="320" height="148"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="mechanics_8h__incl.svg" width="2166" height="351"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="mechanics_8h__dep__incl.svg" width="2335" height="1152"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="mechanics_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMechanics.html">Mechanics&lt; dim &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class containing solid mechanics utility functions for a templated dimension. 2D assumes plane stress conditions. For plane strain conditions, use the <a class="el" href="structPlaneStrain.html">PlaneStrain</a> class instead.  <a href="structMechanics.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structPlaneStrain.html">PlaneStrain</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMechanics.html">Mechanics</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelegacy.html">legacy</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelegacy_1_1Mechanics.html">legacy::Mechanics</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ad112f2bddd443eb27b63995d55fa9a10" id="r_ad112f2bddd443eb27b63995d55fa9a10"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad112f2bddd443eb27b63995d55fa9a10">PlaneStress</a> = <a class="el" href="structMechanics.html">Mechanics</a>&lt;2&gt;</td></tr>
+<tr class="separator:ad112f2bddd443eb27b63995d55fa9a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22a8e6f5febb1afb5b5e0f825f07f4d2" id="r_a22a8e6f5febb1afb5b5e0f825f07f4d2"><td class="memTemplParams" colspan="2">template&lt;typename T = double&gt; </td></tr>
+<tr class="memitem:a22a8e6f5febb1afb5b5e0f825f07f4d2"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a22a8e6f5febb1afb5b5e0f825f07f4d2">PlaneStressVector</a> = <a class="el" href="structMechanics.html#a0119b25ddd72d9df8720623cf30843f3">PlaneStress::VoigtVector</a>&lt;T&gt;</td></tr>
+<tr class="separator:a22a8e6f5febb1afb5b5e0f825f07f4d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c11eb73adf76e59e8e169dba0c46499" id="r_a8c11eb73adf76e59e8e169dba0c46499"><td class="memTemplParams" colspan="2">template&lt;typename T = double&gt; </td></tr>
+<tr class="memitem:a8c11eb73adf76e59e8e169dba0c46499"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a8c11eb73adf76e59e8e169dba0c46499">PlaneStressStiffness</a> = <a class="el" href="structMechanics.html#a2a36fe9fec06fed5f5f20334225dc6f6">PlaneStress::VoigtMatrix</a>&lt;T&gt;</td></tr>
+<tr class="separator:a8c11eb73adf76e59e8e169dba0c46499"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab11b2a236cba51f3084dc00accd9d14" id="r_aab11b2a236cba51f3084dc00accd9d14"><td class="memTemplParams" colspan="2">template&lt;typename T = double&gt; </td></tr>
+<tr class="memitem:aab11b2a236cba51f3084dc00accd9d14"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aab11b2a236cba51f3084dc00accd9d14">ThreeDimensionalVector</a> = <a class="el" href="structMechanics.html">Mechanics</a>&lt;3&gt;::VoigtVector&lt;T&gt;</td></tr>
+<tr class="separator:aab11b2a236cba51f3084dc00accd9d14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4e8b86e307af436ec22ca45e883747a" id="r_ad4e8b86e307af436ec22ca45e883747a"><td class="memTemplParams" colspan="2">template&lt;typename T = double&gt; </td></tr>
+<tr class="memitem:ad4e8b86e307af436ec22ca45e883747a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ad4e8b86e307af436ec22ca45e883747a">ThreeDimensionalStiffness</a> = <a class="el" href="structMechanics.html">Mechanics</a>&lt;3&gt;::VoigtMatrix&lt;T&gt;</td></tr>
+<tr class="separator:ad4e8b86e307af436ec22ca45e883747a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cd013009ca9a942591dfa8853b614f9" id="r_a3cd013009ca9a942591dfa8853b614f9"><td class="memTemplParams" colspan="2">template&lt;typename T = double&gt; </td></tr>
+<tr class="memitem:a3cd013009ca9a942591dfa8853b614f9"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a3cd013009ca9a942591dfa8853b614f9">PlaneStrainVector</a> = <a class="el" href="structPlaneStrain.html#aec6f07ae4ee2a155a4ac6ce3f5142cba">PlaneStrain::VoigtVector</a>&lt;T&gt;</td></tr>
+<tr class="separator:a3cd013009ca9a942591dfa8853b614f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac96d402dd4bc1d25954fe1b554b94643" id="r_ac96d402dd4bc1d25954fe1b554b94643"><td class="memTemplParams" colspan="2">template&lt;typename T = double&gt; </td></tr>
+<tr class="memitem:ac96d402dd4bc1d25954fe1b554b94643"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac96d402dd4bc1d25954fe1b554b94643">PlaneStrainStiffness</a> = <a class="el" href="structPlaneStrain.html#a5efceeaac6cd61d1ce0b59d6b2b6c495">PlaneStrain::VoigtMatrix</a>&lt;T&gt;</td></tr>
+<tr class="separator:ac96d402dd4bc1d25954fe1b554b94643"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aaf83d1ac4db74ba503d7d85cf2397d42" id="r_aaf83d1ac4db74ba503d7d85cf2397d42"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename T&gt; </td></tr>
-<tr class="memitem:aaf83d1ac4db74ba503d7d85cf2397d42"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMechanics.html#aaf83d1ac4db74ba503d7d85cf2397d42">Mechanics::compute_stress</a> (const dealii::Tensor&lt; 2, <a class="el" href="namespaceMechanics.html#aaa000938fa31b60d2fccd09b6d58c5c1">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;elasticity_tensor, const dealii::Tensor&lt; 1, <a class="el" href="namespaceMechanics.html#aaa000938fa31b60d2fccd09b6d58c5c1">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;strain, dealii::Tensor&lt; 1, <a class="el" href="namespaceMechanics.html#aaa000938fa31b60d2fccd09b6d58c5c1">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;stress)</td></tr>
-<tr class="memdesc:aaf83d1ac4db74ba503d7d85cf2397d42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the stress with a given displacement and elasticity tensor. This assumes that the provided parameters are in Voigt notation.  <br /></td></tr>
-<tr class="separator:aaf83d1ac4db74ba503d7d85cf2397d42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9671447899545e87a1fa4438bc310f6e" id="r_a9671447899545e87a1fa4438bc310f6e"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename T&gt; </td></tr>
-<tr class="memitem:a9671447899545e87a1fa4438bc310f6e"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMechanics.html#a9671447899545e87a1fa4438bc310f6e">Mechanics::compute_stress</a> (const dealii::Tensor&lt; 2, <a class="el" href="namespaceMechanics.html#aaa000938fa31b60d2fccd09b6d58c5c1">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;elasticity_tensor, const dealii::Tensor&lt; 2, dim, T &gt; &amp;strain, dealii::Tensor&lt; 2, dim, T &gt; &amp;stress)</td></tr>
-<tr class="memdesc:a9671447899545e87a1fa4438bc310f6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the stress with a given displacement and elasticity tensor.  <br /></td></tr>
-<tr class="separator:a9671447899545e87a1fa4438bc310f6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e9e776e0a0f9cd1f1c0ce007b2abbfe" id="r_a1e9e776e0a0f9cd1f1c0ce007b2abbfe"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename T&gt; </td></tr>
+<tr class="memitem:a1e9e776e0a0f9cd1f1c0ce007b2abbfe"><td class="memTemplItemLeft" align="right" valign="top">static DEAL_II_ALWAYS_INLINE void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelegacy_1_1Mechanics.html#a1e9e776e0a0f9cd1f1c0ce007b2abbfe">legacy::Mechanics::compute_stress</a> (const dealii::Tensor&lt; 2, <a class="el" href="namespacelegacy_1_1Mechanics.html#a1386967becc9d85b2071f0c7fdb3f43d">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;elasticity_tensor, const dealii::Tensor&lt; 1, <a class="el" href="namespacelegacy_1_1Mechanics.html#a1386967becc9d85b2071f0c7fdb3f43d">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;strain, dealii::Tensor&lt; 1, <a class="el" href="namespacelegacy_1_1Mechanics.html#a1386967becc9d85b2071f0c7fdb3f43d">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;stress)</td></tr>
+<tr class="memdesc:a1e9e776e0a0f9cd1f1c0ce007b2abbfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the stress with a given displacement and elasticity tensor. This assumes that the provided parameters are in Voigt notation.  <br /></td></tr>
+<tr class="separator:a1e9e776e0a0f9cd1f1c0ce007b2abbfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa57b9d901ebaa74961872427b323793b" id="r_aa57b9d901ebaa74961872427b323793b"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename T&gt; </td></tr>
+<tr class="memitem:aa57b9d901ebaa74961872427b323793b"><td class="memTemplItemLeft" align="right" valign="top">static DEAL_II_ALWAYS_INLINE void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelegacy_1_1Mechanics.html#aa57b9d901ebaa74961872427b323793b">legacy::Mechanics::compute_stress</a> (const dealii::Tensor&lt; 2, <a class="el" href="namespacelegacy_1_1Mechanics.html#a1386967becc9d85b2071f0c7fdb3f43d">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;elasticity_tensor, const dealii::Tensor&lt; 2, dim, T &gt; &amp;strain, dealii::Tensor&lt; 2, dim, T &gt; &amp;stress)</td></tr>
+<tr class="memdesc:aa57b9d901ebaa74961872427b323793b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the stress with a given displacement and elasticity tensor.  <br /></td></tr>
+<tr class="separator:aa57b9d901ebaa74961872427b323793b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:aaa000938fa31b60d2fccd09b6d58c5c1" id="r_aaa000938fa31b60d2fccd09b6d58c5c1"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim&gt; </td></tr>
-<tr class="memitem:aaa000938fa31b60d2fccd09b6d58c5c1"><td class="memTemplItemLeft" align="right" valign="top">constexpr unsigned int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMechanics.html#aaa000938fa31b60d2fccd09b6d58c5c1">Mechanics::voigt_tensor_size</a> = (2 * dim) - 1 + (dim / 3)</td></tr>
-<tr class="memdesc:aaa000938fa31b60d2fccd09b6d58c5c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Voigt notation index range.  <br /></td></tr>
-<tr class="separator:aaa000938fa31b60d2fccd09b6d58c5c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82c74087ec55710fa80e12e2666defd7" id="r_a82c74087ec55710fa80e12e2666defd7"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:a82c74087ec55710fa80e12e2666defd7"><td class="memTemplItemLeft" align="right" valign="top">PRISMS_PF_BEGIN_NAMESPACE constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a82c74087ec55710fa80e12e2666defd7">tolerance</a> = std::numeric_limits&lt;T&gt;::epsilon() * 1e4</td></tr>
+<tr class="separator:a82c74087ec55710fa80e12e2666defd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1386967becc9d85b2071f0c7fdb3f43d" id="r_a1386967becc9d85b2071f0c7fdb3f43d"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim&gt; </td></tr>
+<tr class="memitem:a1386967becc9d85b2071f0c7fdb3f43d"><td class="memTemplItemLeft" align="right" valign="top">constexpr unsigned int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelegacy_1_1Mechanics.html#a1386967becc9d85b2071f0c7fdb3f43d">legacy::Mechanics::voigt_tensor_size</a> = (2 * dim) - 1 + (dim / 3)</td></tr>
+<tr class="memdesc:a1386967becc9d85b2071f0c7fdb3f43d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Voigt notation index range. This is used for backward compatibility.  <br /></td></tr>
+<tr class="separator:a1386967becc9d85b2071f0c7fdb3f43d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="ac96d402dd4bc1d25954fe1b554b94643" name="ac96d402dd4bc1d25954fe1b554b94643"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac96d402dd4bc1d25954fe1b554b94643">&#9670;&#160;</a></span>PlaneStrainStiffness</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T = double&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#ac96d402dd4bc1d25954fe1b554b94643">PlaneStrainStiffness</a> = <a class="el" href="structPlaneStrain.html#a5efceeaac6cd61d1ce0b59d6b2b6c495">PlaneStrain::VoigtMatrix</a>&lt;T&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3cd013009ca9a942591dfa8853b614f9" name="a3cd013009ca9a942591dfa8853b614f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cd013009ca9a942591dfa8853b614f9">&#9670;&#160;</a></span>PlaneStrainVector</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T = double&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#a3cd013009ca9a942591dfa8853b614f9">PlaneStrainVector</a> = <a class="el" href="structPlaneStrain.html#aec6f07ae4ee2a155a4ac6ce3f5142cba">PlaneStrain::VoigtVector</a>&lt;T&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad112f2bddd443eb27b63995d55fa9a10" name="ad112f2bddd443eb27b63995d55fa9a10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad112f2bddd443eb27b63995d55fa9a10">&#9670;&#160;</a></span>PlaneStress</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#ad112f2bddd443eb27b63995d55fa9a10">PlaneStress</a> = <a class="el" href="structMechanics.html">Mechanics</a>&lt;2&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8c11eb73adf76e59e8e169dba0c46499" name="a8c11eb73adf76e59e8e169dba0c46499"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c11eb73adf76e59e8e169dba0c46499">&#9670;&#160;</a></span>PlaneStressStiffness</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T = double&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#a8c11eb73adf76e59e8e169dba0c46499">PlaneStressStiffness</a> = <a class="el" href="structMechanics.html#a2a36fe9fec06fed5f5f20334225dc6f6">PlaneStress::VoigtMatrix</a>&lt;T&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a22a8e6f5febb1afb5b5e0f825f07f4d2" name="a22a8e6f5febb1afb5b5e0f825f07f4d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22a8e6f5febb1afb5b5e0f825f07f4d2">&#9670;&#160;</a></span>PlaneStressVector</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T = double&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#a22a8e6f5febb1afb5b5e0f825f07f4d2">PlaneStressVector</a> = <a class="el" href="structMechanics.html#a0119b25ddd72d9df8720623cf30843f3">PlaneStress::VoigtVector</a>&lt;T&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad4e8b86e307af436ec22ca45e883747a" name="ad4e8b86e307af436ec22ca45e883747a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4e8b86e307af436ec22ca45e883747a">&#9670;&#160;</a></span>ThreeDimensionalStiffness</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T = double&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#ad4e8b86e307af436ec22ca45e883747a">ThreeDimensionalStiffness</a> = <a class="el" href="structMechanics.html">Mechanics</a>&lt;3&gt;::VoigtMatrix&lt;T&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aab11b2a236cba51f3084dc00accd9d14" name="aab11b2a236cba51f3084dc00accd9d14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab11b2a236cba51f3084dc00accd9d14">&#9670;&#160;</a></span>ThreeDimensionalVector</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T = double&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#aab11b2a236cba51f3084dc00accd9d14">ThreeDimensionalVector</a> = <a class="el" href="structMechanics.html">Mechanics</a>&lt;3&gt;::VoigtVector&lt;T&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a82c74087ec55710fa80e12e2666defd7" name="a82c74087ec55710fa80e12e2666defd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82c74087ec55710fa80e12e2666defd7">&#9670;&#160;</a></span>tolerance</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE constexpr T tolerance = std::numeric_limits&lt;T&gt;::epsilon() * 1e4</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

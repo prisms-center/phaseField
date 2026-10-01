@@ -13,5 +13,6 @@ var searchData=
   ['execute_5fgrid_5frefinement_10',['execute_grid_refinement',['../classTriangulationManager.html#a7bb857b9b31d0c8ff36a42281190f84a',1,'TriangulationManager']]],
   ['execute_5fsolution_5ftransfer_11',['execute_solution_transfer',['../classGroupSolutionHandler.html#aab67ca948ec1e0d3d0f53c645878a5ab',1,'GroupSolutionHandler::execute_solution_transfer()'],['../classSolverBase.html#a014e7fc567c422256eb895622a82c875',1,'SolverBase::execute_solution_transfer()']]],
   ['explicitsolver_12',['ExplicitSolver',['../classExplicitSolver.html#a7b1568d7be5ce26453a262bd81e19064',1,'ExplicitSolver']]],
-  ['export_5ftriangulation_5fas_5fvtk_13',['export_triangulation_as_vtk',['../classTriangulationManager.html#aa2ab608f86964043ab3ec2a13ab06c6f',1,'TriangulationManager']]]
+  ['export_5ftriangulation_5fas_5fvtk_13',['export_triangulation_as_vtk',['../classTriangulationManager.html#aa2ab608f86964043ab3ec2a13ab06c6f',1,'TriangulationManager']]],
+  ['extract_5fplane_5fstrain_5fstiffness_14',['extract_plane_strain_stiffness',['../structPlaneStrain.html#a10b590d9d11ddc714aa42fd36df34a7a',1,'PlaneStrain']]]
 ];

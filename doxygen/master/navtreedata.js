@@ -36,7 +36,9 @@ var NAVTREE =
     ] ],
     [ "Parameters", "parameters.html", null ],
     [ "Applications", "applications.html", [
+      [ "mechanics_plane_stress", "\ref mechanics_plane_stress", null ],
       [ "mechanics_boundary_value_problem", "\ref mechanics_boundary_value_problem", null ],
+      [ "mechanics_plane_strain", "\ref mechanics_plane_strain", null ],
       [ "mechanics_eshelby_inclusion", "\ref mechanics_eshelby_inclusion", null ],
       [ "pfhub_benchmarks_1_a", "\ref pfhub_benchmarks_1_a", null ],
       [ "pfhub_benchmarks_2_b", "\ref pfhub_benchmarks_2_b", null ],
@@ -95,12 +97,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "\ref allen_cahn_explicit",
-"classGroupSolutionHandler.html#abbde226033b1b92dc63123c4fdf0f14b",
-"classNucleusRefinementFunction.html#a596fc87a41cde78a171b23d80913c3cc",
-"classTerminalColor.html#a3c6488920bc6ea3b7bb9602cb98498c6",
-"functions_vars.html",
-"structDependency.html",
-"structRefinementCriterion.html#a76f156fa9cc6a8e510a45a743e6e7847"
+"classGroupSolutionHandler.html#aab67ca948ec1e0d3d0f53c645878a5ab",
+"classNucleusRefinementFunction.html",
+"classTerminalColor.html#a309913254844ec3701d52fe80eefa1df",
+"functions_type.html",
+"spatial__discretization_8h.html#a1655d11fc528cdc7b7b73d9e16185eafa26b367bcdd210f7345b551b921c5551f",
+"structParameterBase.html#a93bbbfb45132d61dade54cb605bfda1c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

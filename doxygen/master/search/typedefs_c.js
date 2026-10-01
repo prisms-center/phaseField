@@ -5,5 +5,6 @@ var searchData=
   ['smoother_2',['Smoother',['../classMGContext.html#ab486745bf695f206ea336d8a53dc9191',1,'MGContext']]],
   ['smootherprecond_3',['SmootherPrecond',['../classMGContext.html#aba762923e77a2c5eab6291714f3b5efc',1,'MGContext']]],
   ['solutiontransfer_4',['SolutionTransfer',['../classGroupSolutionHandler.html#ac26fdde92556378f13ed857dbff31af6',1,'GroupSolutionHandler']]],
-  ['solutionvector_5',['SolutionVector',['../matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a',1,'matrix_free_manager.h']]]
+  ['solutionvector_5',['SolutionVector',['../matrix__free__manager_8h.html#a34eeef510d886fdd12be13504c2d932a',1,'matrix_free_manager.h']]],
+  ['symmechtensor_6',['SymMechTensor',['../structMechanics.html#aed924629a3d6280bf203172f6a1fbc07',1,'Mechanics::SymMechTensor'],['../structPlaneStrain.html#a29766b9ebafe0bce848f67be95f959d2',1,'PlaneStrain::SymMechTensor']]]
 ];

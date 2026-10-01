@@ -32,7 +32,9 @@ var menudata={children:[
 {text:"Developers",url:"dev_docs.html"}]},
 {text:"Parameters",url:"parameters.html"},
 {text:"Applications",url:"applications.html",children:[
+{text:"mechanics_plane_stress",url:"\\ref mechanics_plane_stress"},
 {text:"mechanics_boundary_value_problem",url:"\\ref mechanics_boundary_value_problem"},
+{text:"mechanics_plane_strain",url:"\\ref mechanics_plane_strain"},
 {text:"mechanics_eshelby_inclusion",url:"\\ref mechanics_eshelby_inclusion"},
 {text:"pfhub_benchmarks_1_a",url:"\\ref pfhub_benchmarks_1_a"},
 {text:"pfhub_benchmarks_2_b",url:"\\ref pfhub_benchmarks_2_b"},

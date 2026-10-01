@@ -40,6 +40,7 @@ var hierarchy =
       [ "MFOperator< dim, degree, number >", "classMFOperator.html", null ]
     ] ],
     [ "MatrixFreeManager< dim, number >", "classMatrixFreeManager.html", null ],
+    [ "Mechanics< dim >", "structMechanics.html", null ],
     [ "Mesh< dim >", "structMesh.html", [
       [ "RectangularMesh< dim >", "structRectangularMesh.html", null ],
       [ "SpatialDiscretization< dim >", "structSpatialDiscretization.html", null ],
@@ -76,6 +77,7 @@ var hierarchy =
     [ "PDEOperatorBase< dim, degree, number >", "classPDEOperatorBase.html", null ],
     [ "PeriodicPair< dim >", "structPeriodicPair.html", null ],
     [ "PhaseFieldTools< dim >", "structPhaseFieldTools.html", null ],
+    [ "PlaneStrain", "structPlaneStrain.html", null ],
     [ "Problem< dim, degree, number >", "classProblem.html", null ],
     [ "ReadFieldBase< dim, number >", "classReadFieldBase.html", [
       [ "ReadBinary< dim, number >", "classReadBinary.html", null ],

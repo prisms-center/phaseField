@@ -23,5 +23,6 @@ var searchData=
   ['explicit_20',['Explicit',['../type__enums_8h.html#aa78dc7cb076d143b360a4b5aa1a8e7f9ad2dd6ed7eca9210b09941bee2c62735f',1,'type_enums.h']]],
   ['explicit_5fsolver_2eh_21',['explicit_solver.h',['../explicit__solver_8h.html',1,'']]],
   ['explicitsolver_22',['ExplicitSolver',['../classExplicitSolver.html',1,'ExplicitSolver&lt; dim, degree, number &gt;'],['../classExplicitSolver.html#a7b1568d7be5ce26453a262bd81e19064',1,'ExplicitSolver::ExplicitSolver()']]],
-  ['export_5ftriangulation_5fas_5fvtk_23',['export_triangulation_as_vtk',['../classTriangulationManager.html#aa2ab608f86964043ab3ec2a13ab06c6f',1,'TriangulationManager']]]
+  ['export_5ftriangulation_5fas_5fvtk_23',['export_triangulation_as_vtk',['../classTriangulationManager.html#aa2ab608f86964043ab3ec2a13ab06c6f',1,'TriangulationManager']]],
+  ['extract_5fplane_5fstrain_5fstiffness_24',['extract_plane_strain_stiffness',['../structPlaneStrain.html#a10b590d9d11ddc714aa42fd36df34a7a',1,'PlaneStrain']]]
 ];
