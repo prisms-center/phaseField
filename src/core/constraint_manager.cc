@@ -25,7 +25,6 @@
 
 #include <prismspf/config.h>
 
-#include <string>
 #include <vector>
 
 // TODO: add checks for things being initialized properly.

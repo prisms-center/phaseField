@@ -15,7 +15,6 @@
 
 #include <prismspf/config.h>
 
-#include <execution>
 #include <map>
 
 PRISMS_PF_BEGIN_NAMESPACE

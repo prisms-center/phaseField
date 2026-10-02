@@ -8,7 +8,6 @@
 #include <prismspf/config.h>
 
 #include <cfloat>
-#include <cstdint>
 #include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE

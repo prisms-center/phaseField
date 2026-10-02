@@ -22,10 +22,8 @@
 
 #include <climits>
 #include <concepts>
-#include <execution>
 #include <set>
 #include <string>
-#include <unordered_map>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

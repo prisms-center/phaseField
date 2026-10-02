@@ -5,7 +5,7 @@
 
 #include <prismspf/grains/flood_filler.h>
 
-#include "prismspf/config.h"
+#include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

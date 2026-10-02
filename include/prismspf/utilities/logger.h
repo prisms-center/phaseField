@@ -6,7 +6,6 @@
 
 #include <prismspf/config.h>
 
-#include <algorithm>
 #include <fstream>
 #include <ios>
 #include <iostream>
