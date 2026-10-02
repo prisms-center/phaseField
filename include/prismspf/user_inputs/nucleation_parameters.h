@@ -18,7 +18,6 @@
 #include <prismspf/config.h>
 
 #include <climits>
-#include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

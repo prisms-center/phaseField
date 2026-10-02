@@ -12,7 +12,6 @@
 #include <prismspf/config.h>
 
 #include <cfloat>
-#include <limits>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

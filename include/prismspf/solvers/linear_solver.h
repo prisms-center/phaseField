@@ -5,8 +5,17 @@
 
 #include <deal.II/lac/diagonal_matrix.h>
 #include <deal.II/lac/precondition.h>
+#include <deal.II/lac/precondition_block.h>
 #include <deal.II/lac/solver_control.h>
 #include <deal.II/lac/solver_selector.h>
+#include <deal.II/multigrid/mg_coarse.h>
+#include <deal.II/multigrid/mg_constrained_dofs.h>
+#include <deal.II/multigrid/mg_matrix.h>
+#include <deal.II/multigrid/mg_smoother.h>
+#include <deal.II/multigrid/mg_tools.h>
+#include <deal.II/multigrid/mg_transfer_global_coarsening.h>
+#include <deal.II/multigrid/mg_transfer_matrix_free.h>
+#include <deal.II/multigrid/multigrid.h>
 
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/invm_manager.h>
@@ -23,17 +32,6 @@
 #include <prismspf/config.h>
 
 #include <memory>
-#include <string>
-//
-#include <deal.II/lac/precondition_block.h>
-#include <deal.II/multigrid/mg_coarse.h>
-#include <deal.II/multigrid/mg_constrained_dofs.h>
-#include <deal.II/multigrid/mg_matrix.h>
-#include <deal.II/multigrid/mg_smoother.h>
-#include <deal.II/multigrid/mg_tools.h>
-#include <deal.II/multigrid/mg_transfer_global_coarsening.h>
-#include <deal.II/multigrid/mg_transfer_matrix_free.h>
-#include <deal.II/multigrid/multigrid.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
