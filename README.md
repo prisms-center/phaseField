@@ -78,6 +78,27 @@ Outputs are most commonly visualized in the following open source applications:
 - VisIt (https://visit-dav.github.io/visit-website/)
 - Paraview (https://www.paraview.org/)
 
+### Known Issues
+
+The following issues appear to be outside of our capabilities to fix, but we have found workarounds.
+
+#### For problems with greater than 20 fields in one solve block, field values may become 0 at MPI domain decomposition boundaries.
+This is a dealii bug which we have reported. We expect a fix in an upcoming dealii version.
+Hotfixes:
+- Split the solve block into multiple solve blocks
+- Change the value of `communication_block_size` in the dealii source code to a number greater than your solve block size and recompile.
+
+#### Anomalous segmentation faults when running on HPC. Often occurs after 2^24 (16M) time increments.
+This may be an issue with dealii's handling of a specific MPI backend. Still under investigation.
+Hotfix:
+- Run program with different MPI backend:
+  ```bash
+  # don't use this
+  mpirun -n 128 main
+  # use this
+  mpirun --mca pml ob1 -n 128 main
+  ```
+
 ## Citing PRISMS-PF
 
 Please cite [the following reference](https://doi.org/10.1038/s41524-020-0298-5) when discussing PRISMS-PF in a publication:
