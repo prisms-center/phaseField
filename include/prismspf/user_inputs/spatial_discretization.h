@@ -103,6 +103,16 @@ struct Mesh
            const dealii::Point<dim, dealii::VectorizedArray<real1>> &point_2) const;
 
   /**
+   * @brief Calculate the minimum "dx".
+   *
+   * This function returns the approximation of the diameter for the smallest active cell
+   * in the triangulation.
+   */
+  template <unsigned int degree>
+  double
+  min_dx(Triangulation &triangulation) const;
+
+  /**
    * @brief Validate.
    */
   virtual void
@@ -197,10 +207,10 @@ struct RectangularMesh : public Mesh<dim>
            const dealii::Point<dim> &point_2) const override;
 
   /**
-   * @brief Calculate the smallest dx, dy, dz value from these parameters.
+   * @brief Calculate the minimum dx.
    */
   double
-  min_dx(int refine_factor) const;
+  min_dx(unsigned int num_refinements) const;
 
   /**
    * @brief Declare the parameters to be read from an input file.
