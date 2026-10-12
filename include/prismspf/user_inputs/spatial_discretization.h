@@ -107,6 +107,9 @@ struct Mesh
    *
    * This function returns the approximation of the diameter for the smallest active cell
    * in the triangulation.
+   *
+   * @note This is intended to be called after the mesh has been globally refined. Calling
+   * this on the coarse mesh may dramatically overestimate the minimum "dx".
    */
   template <unsigned int degree>
   double
