@@ -83,19 +83,19 @@ struct Mesh
   {}
 
   /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
+   * @brief Calculate the distance between two points considering periodic boundaries.
    */
   virtual double
   distance(const dealii::Point<dim> &point_1, const dealii::Point<dim> &point_2) const;
   /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
+   * @brief Calculate the distance between two points considering periodic boundaries.
    */
   template <typename real1, typename real2>
   double
   distance(const dealii::Point<dim, real1> &point_1,
            const dealii::Point<dim, real2> &point_2) const;
   /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
+   * @brief Calculate the distance between two points considering periodic boundaries.
    */
   template <typename real1>
   dealii::VectorizedArray<real1>
@@ -190,7 +190,7 @@ struct RectangularMesh : public Mesh<dim>
   periodicity_set() const override;
 
   /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
+   * @brief Calculate the distance between two points considering periodic boundaries.
    */
   double
   distance(const dealii::Point<dim> &point_1,
@@ -357,7 +357,7 @@ public:
   periodicity_set() const override;
 
   /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
+   * @brief Calculate the distance between two points considering periodic boundaries.
    */
   double
   distance(const dealii::Point<dim> &point_1,
