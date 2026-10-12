@@ -3,13 +3,21 @@
 
 #pragma once
 
+#include <deal.II/base/config.h>
+
+#if DEAL_II_VERSION_GTE(9, 7, 0)
+#include <deal.II/numerics/solution_transfer.h>
+#else
 #include <deal.II/distributed/solution_transfer.h>
+#endif
+
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/lac/la_parallel_block_vector.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/matrix_free/matrix_free.h>
 #include <deal.II/multigrid/mg_transfer_global_coarsening.h>
 
+#include <prismspf/config.h>
 #include <prismspf/core/constraint_manager.h>
 #include <prismspf/core/dependency_extents.h>
 #include <prismspf/core/dof_manager.h>
@@ -18,10 +26,7 @@
 #include <prismspf/core/solve_block.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
-
 #include <prismspf/utilities/timer.h>
-
-#include <prismspf/config.h>
 
 #include <vector>
 
