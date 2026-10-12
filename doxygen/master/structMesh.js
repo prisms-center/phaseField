@@ -10,6 +10,8 @@ var structMesh =
     [ "mark_periodic", "structMesh.html#ab1fdc5ad5d452790743782ee4034d175", null ],
     [ "mark_periodic", "structMesh.html#a54e3632cc68d8563b23ee76e99b5005c", null ],
     [ "mark_periodic", "structMesh.html#ab019130a611de5ee97a30fb628c2cb7b", null ],
+    [ "min_dx", "structMesh.html#a16c1054ab94362ee68e276ce034cd38f", null ],
+    [ "min_dx", "structMesh.html#a86acc2565953440b53101e4056adb9ba", null ],
     [ "periodicity_set", "structMesh.html#a1061d787966f24fee58a5fd511c14f78", null ],
     [ "validate", "structMesh.html#ad09ee8f928a39ccbcb7c1090cf22cc06", null ]
 ];

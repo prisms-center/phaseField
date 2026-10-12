@@ -184,11 +184,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a72443fbcf531f7fb6417c915b9f51d11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Periodicity set.  <br /></td></tr>
 <tr class="separator:a72443fbcf531f7fb6417c915b9f51d11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b18263a63d96b2375dca222022a7430" id="r_a6b18263a63d96b2375dca222022a7430"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b18263a63d96b2375dca222022a7430">distance</a> (const dealii::Point&lt; dim &gt; &amp;point_1, const dealii::Point&lt; dim &gt; &amp;point_2) const override</td></tr>
-<tr class="memdesc:a6b18263a63d96b2375dca222022a7430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculation the distance between two points considering periodic boundaries.  <br /></td></tr>
+<tr class="memdesc:a6b18263a63d96b2375dca222022a7430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the distance between two points considering periodic boundaries.  <br /></td></tr>
 <tr class="separator:a6b18263a63d96b2375dca222022a7430"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9aa574bacf3918d95eda3f032cd48a6" id="r_ad9aa574bacf3918d95eda3f032cd48a6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9aa574bacf3918d95eda3f032cd48a6">min_dx</a> (int refine_factor) const</td></tr>
-<tr class="memdesc:ad9aa574bacf3918d95eda3f032cd48a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the smallest dx, dy, dz value from these parameters.  <br /></td></tr>
-<tr class="separator:ad9aa574bacf3918d95eda3f032cd48a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb67f9228546f41eef0566ac01d80b29" id="r_afb67f9228546f41eef0566ac01d80b29"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb67f9228546f41eef0566ac01d80b29">min_dx</a> (unsigned int num_refinements) const</td></tr>
+<tr class="memdesc:afb67f9228546f41eef0566ac01d80b29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the minimum dx.  <br /></td></tr>
+<tr class="separator:afb67f9228546f41eef0566ac01d80b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f3f9c5fe6ac39b4bbbe27ccb79b230b" id="r_a3f3f9c5fe6ac39b4bbbe27ccb79b230b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f3f9c5fe6ac39b4bbbe27ccb79b230b">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
 <tr class="memdesc:a3f3f9c5fe6ac39b4bbbe27ccb79b230b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters read from an input file to this object.  <br /></td></tr>
 <tr class="separator:a3f3f9c5fe6ac39b4bbbe27ccb79b230b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -201,12 +201,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae25ebef6af2022a6a13fca216b75d18e inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4fe700cbfb53b19b7f7a583396c27c8 inherit pub_methods_structMesh" id="r_af4fe700cbfb53b19b7f7a583396c27c8"><td class="memTemplParams" colspan="2">template&lt;typename real1, typename real2&gt; </td></tr>
 <tr class="memitem:af4fe700cbfb53b19b7f7a583396c27c8 inherit pub_methods_structMesh"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structMesh.html#af4fe700cbfb53b19b7f7a583396c27c8">distance</a> (const dealii::Point&lt; dim, real1 &gt; &amp;point_1, const dealii::Point&lt; dim, real2 &gt; &amp;point_2) const</td></tr>
-<tr class="memdesc:af4fe700cbfb53b19b7f7a583396c27c8 inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculation the distance between two points considering periodic boundaries.  <br /></td></tr>
+<tr class="memdesc:af4fe700cbfb53b19b7f7a583396c27c8 inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the distance between two points considering periodic boundaries.  <br /></td></tr>
 <tr class="separator:af4fe700cbfb53b19b7f7a583396c27c8 inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4425659779d196d39d53946e9b44186 inherit pub_methods_structMesh" id="r_ac4425659779d196d39d53946e9b44186"><td class="memTemplParams" colspan="2">template&lt;typename real1&gt; </td></tr>
 <tr class="memitem:ac4425659779d196d39d53946e9b44186 inherit pub_methods_structMesh"><td class="memTemplItemLeft" align="right" valign="top">dealii::VectorizedArray&lt; real1 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structMesh.html#ac4425659779d196d39d53946e9b44186">distance</a> (const dealii::Point&lt; dim, dealii::VectorizedArray&lt; real1 &gt; &gt; &amp;point_1, const dealii::Point&lt; dim, dealii::VectorizedArray&lt; real1 &gt; &gt; &amp;point_2) const</td></tr>
-<tr class="memdesc:ac4425659779d196d39d53946e9b44186 inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculation the distance between two points considering periodic boundaries.  <br /></td></tr>
+<tr class="memdesc:ac4425659779d196d39d53946e9b44186 inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the distance between two points considering periodic boundaries.  <br /></td></tr>
 <tr class="separator:ac4425659779d196d39d53946e9b44186 inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16c1054ab94362ee68e276ce034cd38f inherit pub_methods_structMesh" id="r_a16c1054ab94362ee68e276ce034cd38f"><td class="memTemplParams" colspan="2">template&lt;unsigned int degree&gt; </td></tr>
+<tr class="memitem:a16c1054ab94362ee68e276ce034cd38f inherit pub_methods_structMesh"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structMesh.html#a16c1054ab94362ee68e276ce034cd38f">min_dx</a> (<a class="el" href="structMesh.html#aeb49288743226761e65753ce8fe6f076">Triangulation</a> &amp;triangulation) const</td></tr>
+<tr class="memdesc:a16c1054ab94362ee68e276ce034cd38f inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the minimum "dx".  <br /></td></tr>
+<tr class="separator:a16c1054ab94362ee68e276ce034cd38f inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54e3632cc68d8563b23ee76e99b5005c inherit pub_methods_structMesh" id="r_a54e3632cc68d8563b23ee76e99b5005c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMesh.html#a54e3632cc68d8563b23ee76e99b5005c">mark_periodic</a> (<a class="el" href="structMesh.html#aeb49288743226761e65753ce8fe6f076">Triangulation</a> &amp;triangulation) const</td></tr>
 <tr class="memdesc:a54e3632cc68d8563b23ee76e99b5005c inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the periodic faces of the mesh.  <br /></td></tr>
 <tr class="separator:a54e3632cc68d8563b23ee76e99b5005c inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,6 +218,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab1fdc5ad5d452790743782ee4034d175 inherit pub_methods_structMesh"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structMesh.html#ab1fdc5ad5d452790743782ee4034d175">mark_periodic</a> (const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, dealii::AffineConstraints&lt; number &gt; &amp;constraints) const</td></tr>
 <tr class="memdesc:ab1fdc5ad5d452790743782ee4034d175 inherit pub_methods_structMesh"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the periodic faces of the mesh.  <br /></td></tr>
 <tr class="separator:ab1fdc5ad5d452790743782ee4034d175 inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86acc2565953440b53101e4056adb9ba inherit pub_methods_structMesh" id="r_a86acc2565953440b53101e4056adb9ba"><td class="memTemplParams" colspan="2">template&lt;unsigned int degree&gt; </td></tr>
+<tr class="memitem:a86acc2565953440b53101e4056adb9ba inherit pub_methods_structMesh"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structMesh.html#a86acc2565953440b53101e4056adb9ba">min_dx</a> (typename <a class="el" href="structMesh.html">Mesh</a>&lt; dim &gt;<a class="el" href="structMesh.html#aeb49288743226761e65753ce8fe6f076">::Triangulation</a> &amp;triangulation) const</td></tr>
+<tr class="separator:a86acc2565953440b53101e4056adb9ba inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab019130a611de5ee97a30fb628c2cb7b inherit pub_methods_structMesh" id="r_ab019130a611de5ee97a30fb628c2cb7b"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim&gt; </td></tr>
 <tr class="memitem:ab019130a611de5ee97a30fb628c2cb7b inherit pub_methods_structMesh"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structMesh.html#ab019130a611de5ee97a30fb628c2cb7b">mark_periodic</a> (typename <a class="el" href="structMesh.html">Mesh</a>&lt; dim &gt;<a class="el" href="structMesh.html#aeb49288743226761e65753ce8fe6f076">::Triangulation</a> &amp;triangulation) const</td></tr>
 <tr class="separator:ab019130a611de5ee97a30fb628c2cb7b inherit pub_methods_structMesh"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -426,7 +433,7 @@ template&lt;unsigned int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Calculation the distance between two points considering periodic boundaries. </p>
+<p>Calculate the distance between two points considering periodic boundaries. </p>
 
 <p>Reimplemented from <a class="el" href="structMesh.html#acaab476d5c208323a8170f480e3bf76a">Mesh&lt; dim &gt;</a>.</p>
 
@@ -494,8 +501,8 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="ad9aa574bacf3918d95eda3f032cd48a6" name="ad9aa574bacf3918d95eda3f032cd48a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9aa574bacf3918d95eda3f032cd48a6">&#9670;&#160;</a></span>min_dx()</h2>
+<a id="afb67f9228546f41eef0566ac01d80b29" name="afb67f9228546f41eef0566ac01d80b29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb67f9228546f41eef0566ac01d80b29">&#9670;&#160;</a></span>min_dx()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -505,13 +512,13 @@ template&lt;unsigned int dim&gt; </div>
         <tr>
           <td class="memname">double <a class="el" href="structRectangularMesh.html">RectangularMesh</a>&lt; dim &gt;::min_dx </td>
           <td>(</td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>refine_factor</em></span></td><td>)</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>num_refinements</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Calculate the smallest dx, dy, dz value from these parameters. </p>
+<p>Calculate the minimum dx. </p>
 
 </div>
 </div>

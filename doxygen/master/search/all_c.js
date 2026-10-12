@@ -63,7 +63,7 @@ var searchData=
   ['mg_5ftransfer_5fdown_60',['mg_transfer_down',['../classGroupSolutionHandler.html#af390d05ecd28f0286f613a4b848682c3',1,'GroupSolutionHandler']]],
   ['mgcontext_61',['MGContext',['../classMGContext.html',1,'MGContext&lt; dim, degree, number &gt;'],['../classMGContext.html#ad9642f530e8a8154acafdcd3d1dd88e3',1,'MGContext::MGContext()']]],
   ['mgtransfertype_62',['MGTransferType',['../classMGContext.html#abc0dd5f378d196d16d1fdf19ce16d4b6',1,'MGContext']]],
-  ['min_5fdx_63',['min_dx',['../structRectangularMesh.html#ad9aa574bacf3918d95eda3f032cd48a6',1,'RectangularMesh']]],
+  ['min_5fdx_63',['min_dx',['../structMesh.html#a16c1054ab94362ee68e276ce034cd38f',1,'Mesh::min_dx()'],['../structRectangularMesh.html#afb67f9228546f41eef0566ac01d80b29',1,'RectangularMesh::min_dx()'],['../structMesh.html#a86acc2565953440b53101e4056adb9ba',1,'Mesh::min_dx()']]],
   ['min_5frefinement_64',['min_refinement',['../classRefinementManager.html#a0a892370a0675b723b710cca2f09ec15',1,'RefinementManager::min_refinement'],['../structSpatialDiscretization.html#a158f04a989353c64db8eb0ce53ba8fcd',1,'SpatialDiscretization::min_refinement']]],
   ['misc_5fparameters_65',['misc_parameters',['../classUserInputParameters.html#a6f0fcf43c69787009be290550403e4ec',1,'UserInputParameters']]],
   ['miscellaneous_66',['miscellaneous',['../parameters.html#p_list_miscellaneous',1,'']]],
