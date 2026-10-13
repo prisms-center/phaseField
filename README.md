@@ -38,7 +38,7 @@ Install the required dependencies:
 
 Before building and installing PRISMS-PF, ensure that the environment variable `DEAL_II_DIR` is set to the directory where deal.II is installed:
 ```
-export PRISMS_PF_DIR=</absolute/path/to/deal.II/install>
+export DEAL_II_DIR=</absolute/path/to/deal.II/install>
 ```
 
 It is recommended to also add this line to your rc file (for example, ~/.bashrc, ~/.zshrc, etc.) so that `DEAL_II_DIR` is automatically set every time a terminal is opened.
