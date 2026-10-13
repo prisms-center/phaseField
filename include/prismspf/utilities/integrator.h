@@ -14,6 +14,8 @@
 #include <prismspf/config.h>
 
 #include <functional>
+#include <tuple>
+#include <utility>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -82,27 +84,36 @@ public:
   }
 
   /**
-   * @brief Integrate function(u(x)) for a scalar field u.
+   * @brief Integrate function(u1(x),u2(x),...,un(x)) for a scalar fields.
    */
-  template <typename Function, typename SolutionVector>
+  template <typename Function, typename... SolutionVectors>
   static number
   integrate_function(const dealii::DoFHandler<dim> &dof_handler,
-                     const SolutionVector          &solution_vector,
-                     Function                     &&function)
+                     Function                     &&function,
+                     const SolutionVectors &...solution_vectors)
   {
+    // compile time check
+    static_assert(sizeof...(SolutionVectors) > 0,
+                  "At least one solution vector must be supplied.");
+
     DEBUG_ASSERT(dof_handler.get_fe().n_components() == 1,
                  "The input must be a scalar field.");
 
-    solution_vector.update_ghost_values();
+    (solution_vectors.update_ghost_values(), ...);
+
+    const auto &quadrature = SystemWide<dim, degree>::quadrature;
 
     static dealii::FEValues<dim> fe_values(dof_handler.get_fe(),
-                                           SystemWide<dim, degree>::quadrature,
+                                           quadrature,
                                            dealii::update_values |
                                              dealii::update_JxW_values);
 
-    const unsigned int num_quad_points = SystemWide<dim, degree>::quadrature.size();
+    const unsigned int num_quad_points = quadrature.size();
 
-    std::vector<number> quad_values(num_quad_points);
+    const auto solutions = std::forward_as_tuple(solution_vectors...);
+
+    auto quad_values = std::make_tuple(
+      (static_cast<void>(solution_vectors), std::vector<number>(num_quad_points))...);
 
     number value = number {};
 
@@ -111,69 +122,24 @@ public:
         if (cell->is_locally_owned())
           {
             fe_values.reinit(cell);
-            fe_values.get_function_values(solution_vector, quad_values);
+
+            [&]<std::size_t... indices>(std::index_sequence<indices...>)
+            {
+              (fe_values.get_function_values(std::get<indices>(solutions),
+                                             std::get<indices>(quad_values)),
+               ...);
+            }(std::index_sequence_for<SolutionVectors...> {});
 
             for (unsigned int q = 0; q < num_quad_points; ++q)
               {
-                value += std::invoke(function, quad_values[q]) * fe_values.JxW(q);
-              }
-          }
-      }
+                const number fvalue = std::apply(
+                  [&](const auto &...values) -> number
+                  {
+                    return std::invoke(function, values[q]...);
+                  },
+                  quad_values);
 
-    return dealii::Utilities::MPI::sum(value, MPI_COMM_WORLD);
-  }
-
-  /**
-   * @brief Integrate function(u(x), v(x)) for two scalar fields.
-   *
-   * Both DoFHandlers must be defined on the same triangulation and have
-   * corresponding active cells.
-   */
-  template <typename Function, typename SolutionVector1, typename SolutionVector2>
-  static number
-  integrate_function(const dealii::DoFHandler<dim> &dof_handler,
-                     const SolutionVector1         &solution1,
-                     const SolutionVector2         &solution2,
-                     Function                     &&function)
-  {
-    DEBUG_ASSERT(dof_handler.get_fe().n_components() == 1,
-                 "The first input must be a scalar field.");
-
-    solution1.update_ghost_values();
-    solution2.update_ghost_values();
-
-    const auto &quadrature = SystemWide<dim, degree>::quadrature;
-
-    static dealii::FEValues<dim> fe_values1(dof_handler.get_fe(),
-                                            quadrature,
-                                            dealii::update_values |
-                                              dealii::update_JxW_values);
-
-    static dealii::FEValues<dim> fe_values2(dof_handler.get_fe(),
-                                            quadrature,
-                                            dealii::update_values);
-
-    const unsigned int num_quad_points = quadrature.size();
-
-    std::vector<number> quad_values1(num_quad_points);
-    std::vector<number> quad_values2(num_quad_points);
-
-    number value = number {};
-
-    for (const auto &cell : dof_handler.active_cell_iterators())
-      {
-        if (cell->is_locally_owned())
-          {
-            fe_values1.reinit(cell);
-            fe_values2.reinit(cell);
-
-            fe_values1.get_function_values(solution1, quad_values1);
-            fe_values2.get_function_values(solution2, quad_values2);
-
-            for (unsigned int q = 0; q < num_quad_points; ++q)
-              {
-                value += std::invoke(function, quad_values1[q], quad_values2[q]) *
-                         fe_values1.JxW(q);
+                value += fvalue * fe_values.JxW(q);
               }
           }
       }
