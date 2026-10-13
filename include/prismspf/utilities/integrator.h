@@ -42,8 +42,9 @@ public:
     solution_vector.update_ghost_values();
 
     static dealii::FEValues<dim> fe_values(dof_handler.get_fe(),
-                                    SystemWide<dim, degree>::quadrature,
-                                    dealii::update_values | dealii::update_JxW_values);
+                                           SystemWide<dim, degree>::quadrature,
+                                           dealii::update_values |
+                                             dealii::update_JxW_values);
 
     const unsigned int num_quad_points = SystemWide<dim, degree>::quadrature.size();
 
@@ -95,8 +96,9 @@ public:
     solution_vector.update_ghost_values();
 
     static dealii::FEValues<dim> fe_values(dof_handler.get_fe(),
-                                    SystemWide<dim, degree>::quadrature,
-                                    dealii::update_values | dealii::update_JxW_values);
+                                           SystemWide<dim, degree>::quadrature,
+                                           dealii::update_values |
+                                             dealii::update_JxW_values);
 
     const unsigned int num_quad_points = SystemWide<dim, degree>::quadrature.size();
 
@@ -143,12 +145,13 @@ public:
     const auto &quadrature = SystemWide<dim, degree>::quadrature;
 
     static dealii::FEValues<dim> fe_values1(dof_handler.get_fe(),
-                                     quadrature,
-                                     dealii::update_values | dealii::update_JxW_values);
+                                            quadrature,
+                                            dealii::update_values |
+                                              dealii::update_JxW_values);
 
     static dealii::FEValues<dim> fe_values2(dof_handler.get_fe(),
-                                     quadrature,
-                                     dealii::update_values);
+                                            quadrature,
+                                            dealii::update_values);
 
     const unsigned int num_quad_points = quadrature.size();
 
