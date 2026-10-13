@@ -3,7 +3,14 @@
 
 #pragma once
 
-#include <deal.II/distributed/solution_transfer.h>
+#include <deal.II/base/config.h>
+
+#if DEAL_II_VERSION_GTE(9, 7, 0)
+#  include <deal.II/numerics/solution_transfer.h>
+#else
+#  include <deal.II/distributed/solution_transfer.h>
+#endif
+
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/lac/la_parallel_block_vector.h>
 #include <deal.II/lac/la_parallel_vector.h>
