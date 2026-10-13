@@ -1,0 +1,29 @@
+# Test integrator
+set mesh type = rectangular
+
+subsection Rectangular mesh
+  set x size = 1.0
+  set y size = 1.0
+  set z size = 1.0
+end
+
+set global refinement = 8
+
+set time step = 0.001
+set number steps = 700
+
+subsection output
+  set folder name = results
+  set condition = EQUAL_SPACING
+  set number = 10
+end
+
+set Model constant m_mix = 4.4013, DOUBLE
+set Model constant kappa = 2.9505e-8, DOUBLE
+set Model constant c1 = 0.5, DOUBLE
+set Model constant c2 = 0.9, DOUBLE
+set Model constant l_int = 0.02423, DOUBLE
+set Model constant Iapp = -1.0, DOUBLE
+set Model constant Vapp = -1.0, DOUBLE
+set Model constant tol_Vapp = 1e-3, DOUBLE
+set Model constant max_newton = 10, INT
