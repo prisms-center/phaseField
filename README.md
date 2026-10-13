@@ -82,14 +82,13 @@ Outputs are most commonly visualized in the following open source applications:
 
 The following issues appear to be outside of our capabilities to fix, but we have found workarounds.
 
-#### For problems with greater than 20 fields in one solve block, field values may become 0 at MPI domain decomposition boundaries.
-This is a dealii bug which we have reported. We expect a fix in an upcoming dealii version.
-Hotfixes:
-- Split the solve block into multiple solve blocks
-- Change the value of `communication_block_size` in the dealii source code to a number greater than your solve block size and recompile.
+#### 1. For problems with greater than 20 fields in one solve block, field values may become 0 at MPI domain decomposition boundaries.
+This is a dealii bug which we have reported. It has been fixed as of [commit 27dc771](https://github.com/dealii/dealii/tree/27dc771c45845a59a0f6a3c4a12d2bcc0b4e16a9) </br>
+Fix:
+- Compile with a dealii version beyond 9.8.0. As of October 2026, this is only the dealii master branch.
 
-#### Anomalous segmentation faults when running on HPC. Often occurs after 2^24 (16M) time increments.
-This may be an issue with dealii's handling of a specific MPI backend. Still under investigation.
+#### 2. Anomalous segmentation faults when running on HPC. Often occurs after 2^24 (16M) time increments.
+This may be an issue with dealii's handling of a specific MPI backend. Still under investigation. </br>
 Hotfix:
 - Run program with different MPI backend:
   ```bash
@@ -98,6 +97,16 @@ Hotfix:
   # use this
   mpirun --mca pml ob1 -n 128 main
   ```
+
+#### 3. Immediate `Floating point exception` when running applications on certain devices.
+Still under investigation. </br>
+Hotfix:
+- Disable taskflow in your dealii installation:
+  ```bash
+  # in dealii candi.cfg
+  DEAL_II_CONFOPTS="-DDEAL_II_WITH_TASKFLOW=OFF"
+  ```
+  or add `-DDEAL_II_WITH_TASKFLOW=OFF` to your cmake command when configuring dealii manually.
 
 ## Citing PRISMS-PF
 
