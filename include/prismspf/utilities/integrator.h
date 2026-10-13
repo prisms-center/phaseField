@@ -41,7 +41,7 @@ public:
 
     solution_vector.update_ghost_values();
 
-    dealii::FEValues<dim> fe_values(dof_handler.get_fe(),
+    static dealii::FEValues<dim> fe_values(dof_handler.get_fe(),
                                     SystemWide<dim, degree>::quadrature,
                                     dealii::update_values | dealii::update_JxW_values);
 
@@ -94,7 +94,7 @@ public:
 
     solution_vector.update_ghost_values();
 
-    dealii::FEValues<dim> fe_values(dof_handler.get_fe(),
+    static dealii::FEValues<dim> fe_values(dof_handler.get_fe(),
                                     SystemWide<dim, degree>::quadrature,
                                     dealii::update_values | dealii::update_JxW_values);
 
@@ -129,28 +129,24 @@ public:
    */
   template <typename Function, typename SolutionVector1, typename SolutionVector2>
   static number
-  integrate_function(const dealii::DoFHandler<dim> &dof_handler1,
+  integrate_function(const dealii::DoFHandler<dim> &dof_handler,
                      const SolutionVector1         &solution1,
-                     const dealii::DoFHandler<dim> &dof_handler2,
                      const SolutionVector2         &solution2,
                      Function                     &&function)
   {
-    DEBUG_ASSERT(dof_handler1.get_fe().n_components() == 1,
+    DEBUG_ASSERT(dof_handler.get_fe().n_components() == 1,
                  "The first input must be a scalar field.");
-
-    DEBUG_ASSERT(dof_handler2.get_fe().n_components() == 1,
-                 "The second input must be a scalar field.");
 
     solution1.update_ghost_values();
     solution2.update_ghost_values();
 
     const auto &quadrature = SystemWide<dim, degree>::quadrature;
 
-    dealii::FEValues<dim> fe_values1(dof_handler1.get_fe(),
+    static dealii::FEValues<dim> fe_values1(dof_handler.get_fe(),
                                      quadrature,
                                      dealii::update_values | dealii::update_JxW_values);
 
-    dealii::FEValues<dim> fe_values2(dof_handler2.get_fe(),
+    static dealii::FEValues<dim> fe_values2(dof_handler.get_fe(),
                                      quadrature,
                                      dealii::update_values);
 
@@ -161,18 +157,12 @@ public:
 
     number value = number {};
 
-    auto cell1 = dof_handler1.begin_active();
-    auto cell2 = dof_handler2.begin_active();
-
-    for (; cell1 != dof_handler1.end() && cell2 != dof_handler2.end(); ++cell1, ++cell2)
+    for (const auto &cell : dof_handler.active_cell_iterators())
       {
-        DEBUG_ASSERT(cell1->id() == cell2->id(),
-                     "The DoFHandlers do not have corresponding active cells.");
-
-        if (cell1->is_locally_owned())
+        if (cell->is_locally_owned())
           {
-            fe_values1.reinit(cell1);
-            fe_values2.reinit(cell2);
+            fe_values1.reinit(cell);
+            fe_values2.reinit(cell);
 
             fe_values1.get_function_values(solution1, quad_values1);
             fe_values2.get_function_values(solution2, quad_values2);
@@ -184,9 +174,6 @@ public:
               }
           }
       }
-
-    DEBUG_ASSERT(cell1 == dof_handler1.end() && cell2 == dof_handler2.end(),
-                 "The DoFHandlers have different numbers of active cells.");
 
     return dealii::Utilities::MPI::sum(value, MPI_COMM_WORLD);
   }
