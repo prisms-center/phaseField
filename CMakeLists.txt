@@ -44,7 +44,7 @@ set_property(
 )
 
 # Project declaration, language, and version
-project(prisms_pf LANGUAGES CXX VERSION 4.0.0)
+project(prisms_pf LANGUAGES CXX VERSION 4.1.0)
 
 # Export compile command for IDE lsp support
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
