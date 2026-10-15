@@ -24,7 +24,7 @@ main(int argc, char *argv[])
   std::vector<FieldAttributes> field_attributes = {
     FieldAttributes("n", Scalar),
     FieldAttributes("n_sol", Scalar),
-    FieldAttributes("error", Scalar),
+    FieldAttributes("error_squared", Scalar),
   };
 
   SolveBlock exp_block;

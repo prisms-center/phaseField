@@ -87,7 +87,7 @@ private:
         ScalarValue error = n_val - n_sol;
 
         variable_list.set_value_term(1, n_sol);
-        variable_list.set_value_term(2, error);
+        variable_list.set_value_term(2, error * error);
       }
   }
 
