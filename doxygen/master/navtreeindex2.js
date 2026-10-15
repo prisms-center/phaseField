@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"classNucleationManager.html#aa9cad1ef245a6e38a738ca90f3d97f26":[8,0,44,4],
 "classNucleusRefinementFunction.html":[8,0,47],
 "classNucleusRefinementFunction.html#a1fcc3a36a63c4152fd4816ecb50ea664":[8,0,47,0],
 "classNucleusRefinementFunction.html#a596fc87a41cde78a171b23d80913c3cc":[8,0,47,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "classTerminalColor.html#a1c74b98b52e0019e9e1a9ef6a1f1eca9":[8,0,77,17],
 "classTerminalColor.html#a2048872beaccdba546644ef03b8a2121":[8,0,77,11],
 "classTerminalColor.html#a29ac20b1698b4854078c5ff9f1acd0fc":[8,0,77,36],
-"classTerminalColor.html#a2c6cd63c02c3dcb0a343b5243a2997aa":[8,0,77,33],
-"classTerminalColor.html#a2f8c79b0d150d154e4d8a36a773745f6":[8,0,77,38]
+"classTerminalColor.html#a2c6cd63c02c3dcb0a343b5243a2997aa":[8,0,77,33]
 };

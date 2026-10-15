@@ -43,6 +43,7 @@ var NAVTREE =
       [ "pfhub_benchmarks_1_a", "\ref pfhub_benchmarks_1_a", null ],
       [ "pfhub_benchmarks_2_b", "\ref pfhub_benchmarks_2_b", null ],
       [ "pfhub_benchmarks_6_a", "\ref pfhub_benchmarks_6_a", null ],
+      [ "pfhub_benchmarks_7_a_explicit", "\ref pfhub_benchmarks_7_a_explicit", null ],
       [ "alloy_solidification", "\ref alloy_solidification", null ],
       [ "laplace", "\ref laplace", null ],
       [ "grain_growth", "\ref grain_growth", null ],
@@ -97,12 +98,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "\ref allen_cahn_explicit",
-"classGroupSolutionHandler.html#aab67ca948ec1e0d3d0f53c645878a5ab",
-"classNucleusRefinementFunction.html",
-"classTerminalColor.html#a309913254844ec3701d52fe80eefa1df",
-"functions_type.html",
-"spatial__discretization_8h.html#a1655d11fc528cdc7b7b73d9e16185eafa26b367bcdd210f7345b551b921c5551f",
-"structParameterBase.html#a1967bf667dad1f49dbcb0e914a81e363"
+"classGroupSolutionHandler.html#aa7130555a45e186bcaf5cd319a877fe9",
+"classNucleationManager.html#aa9cad1ef245a6e38a738ca90f3d97f26",
+"classTerminalColor.html#a2f8c79b0d150d154e4d8a36a773745f6",
+"functions_t.html",
+"spatial__discretization_8h.html#a1655d11fc528cdc7b7b73d9e16185eaf",
+"structParameterBase.html#a138be4e7c8934cbb3f89608aaecdea20"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

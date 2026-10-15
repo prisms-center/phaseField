@@ -39,6 +39,7 @@ var menudata={children:[
 {text:"pfhub_benchmarks_1_a",url:"\\ref pfhub_benchmarks_1_a"},
 {text:"pfhub_benchmarks_2_b",url:"\\ref pfhub_benchmarks_2_b"},
 {text:"pfhub_benchmarks_6_a",url:"\\ref pfhub_benchmarks_6_a"},
+{text:"pfhub_benchmarks_7_a_explicit",url:"\\ref pfhub_benchmarks_7_a_explicit"},
 {text:"alloy_solidification",url:"\\ref alloy_solidification"},
 {text:"laplace",url:"\\ref laplace"},
 {text:"grain_growth",url:"\\ref grain_growth"},

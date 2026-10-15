@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"classTerminalColor.html#a2f8c79b0d150d154e4d8a36a773745f6":[8,0,77,38],
 "classTerminalColor.html#a309913254844ec3701d52fe80eefa1df":[8,0,77,34],
 "classTerminalColor.html#a3c430e9e54b65d51e4d80ff02a685a23":[8,0,77,29],
 "classTerminalColor.html#a3c6488920bc6ea3b7bb9602cb98498c6":[8,0,77,10],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "functions_q.html":[8,3,0,15],
 "functions_r.html":[8,3,0,16],
 "functions_rela.html":[8,3,6],
-"functions_s.html":[8,3,0,17],
-"functions_t.html":[8,3,0,18]
+"functions_s.html":[8,3,0,17]
 };
