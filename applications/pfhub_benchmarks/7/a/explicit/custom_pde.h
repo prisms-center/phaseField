@@ -100,7 +100,7 @@ private:
 
   // Custom functions for PFHub Benchmark 7
   // Generated with SymPy using the included script: generate_cpp_equations.py
-  [[nodiscard]] double
+  [[nodiscard]] inline double
   eta0(double x, double y) const
   {
     using std::sin;
@@ -112,8 +112,8 @@ private:
            0.5;
   }
 
-  ScalarValue
-  eta(ScalarValue x, ScalarValue y, double t) const
+  [[nodiscard]] inline ScalarValue
+  eta(const ScalarValue &x, const ScalarValue &y, double t) const
   {
     using std::sin;
     using std::sqrt;
@@ -126,22 +126,22 @@ private:
            0.5;
   }
 
-  ScalarValue
-  alpha(ScalarValue x, double t) const
+  [[nodiscard]] inline ScalarValue
+  alpha(const ScalarValue &x, double t) const
   {
     using std::sin;
     return A_1 * t * sin(B_1 * x) + A_2 * sin(B_2 * x + C_2 * t) + 0.25;
   }
 
-  ScalarValue
-  sech(ScalarValue arg) const
+  [[nodiscard]] inline ScalarValue
+  sech(const ScalarValue &arg) const
   {
     using std::cosh;
     return 1.0 / cosh(arg);
   }
 
-  ScalarValue
-  S(ScalarValue x, ScalarValue y, double t) const
+  [[nodiscard]] inline ScalarValue
+  S(const ScalarValue &x, const ScalarValue &y, double t) const
   {
     using std::cos;
     using std::pow;
