@@ -18,6 +18,7 @@ set(
   pfhub_benchmarks/1/a
   pfhub_benchmarks/2/b
   pfhub_benchmarks/6/a
+  pfhub_benchmarks/7/a/explicit
 )
 
 # Create a target for each example and feed them into a big target
