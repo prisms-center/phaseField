@@ -3,6 +3,7 @@ set(
   _examples
   allen_cahn/explicit
   allen_cahn/implicit
+  allen_cahn_reaction
   alloy_solidification
   blank
   cahn_hilliard/explicit
