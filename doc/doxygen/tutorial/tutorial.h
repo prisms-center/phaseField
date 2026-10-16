@@ -50,10 +50,10 @@ settings. For example, you can change the size of the finite element mesh and th
 simulation time step in the parameters file.
 
 To implement your own app, you can start by copying the folder of an application
-solving a problem similar to yours (or copy the blank application). Then, edit the `main.cc`
-file to set up fields, solve blocks (a.k.a. solvers), and equations. For more information
-about the structure of an application, see
-\ref structure "Structure of a PRISMS-PF application".
+solving a problem similar to yours (or copy the blank application). Then, edit the
+`main.cc` file to set up fields, solve blocks (a.k.a. solvers), and equations. For more
+information about the structure of an application, see \ref structure "Structure of a
+PRISMS-PF application".
 
 */
 
