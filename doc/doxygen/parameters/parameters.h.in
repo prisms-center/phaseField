@@ -1,16 +1,56 @@
 /** \page parameters Parameters
 
-This page is a list of all user parameters in PRISMS-PF. Here, we document them in tables
-organized by subsection with names, default values, acceptable values (patterns),
-descriptions, and aliases.
+The tables below list the names, default values, data types (patterns), descriptions, and
+aliases that can be read by PRISMS-PF's `UserInputParameters`. The tables are organized by
+subsection, with the first table listing the "top-level" parameters.
 
-Subsections that end in 0 are number in the parameter file. You can as many of these as
-you would like. By default you have `Numbers::default_subsections`. To change have many
-subsections you have, you can write something like the following.
+Entries in the parameters file are either top-level or contained in subsections. The first
+table below gives the top-level parameters. The remaining tables give the parameters
+inside each type of subsection. For top-level entries, the format is:
+@code{}
+set Parameter Name = value
+@endcode
+Substitute `Parameter Name` with one of the names listed in the tables below, and
+substitute `value` with the desired value for the parameter. The expected data type for
+`value` is given in the tables below for each parameter.
+
+For subsections, the format is:
+@code{}
+subsection Section Name <index>
+  set Parameter Name = value
+  set Parameter Name = value
+  ...
+end
+@endcode
+Not all subsections require an `<index>`. Some subsections can be repeated multiple times,
+in which case `<index>` should be given as an integer value starting from 0 and counting
+up. For example, the subsection `boundary conditions:` can be repeated multiple times, to
+allow different fields to be assigned different sets of boundary conditions. In that case,
+you may have:
+@code{}
+subsection boundary conditions: 0
+  set variables = n1, n2
+  set conditions = NATURAL, NATURAL, NATURAL, NATURAL
+end
+subsection boundary conditions: 1
+  set variables = n3, n4
+  set conditions = DIRICHLET, DIRICHLET, NATURAL, NATURAL
+end
+@endcode
+By default, the parameter handler can read a maximum of `Numbers::default_subsections`
+subsections of each type (this default value is 10 for PRISMS-PF 4.0). If you want to
+include even more copies of a given subsection (e.g., you need to specify 40 different
+boundary conditions), then you can increase the maximum subsection count when reading the
+parameters file in your code (typically in `main.cc`):
 @code{.cpp}
-UserInputParameters<dim>(cli_options.get_parameters_filename(), 10);
+UserInputParameters<dim>(cli_options.get_parameters_filename(), 40);
 @endcode
 
+Not all parameters need to be specified in your parameters file. Any parameter that is not
+specified will have a default value as given in the tables below. For examples, see the
+`parameters.prm` files contained in each example application.
+
+Comments can be added to the parameters file; lines starting with `#` are comments.
 Additionally, all the parameters have aliases for a handful of common case styles (e.g.,
 PascalCase, snake_case, Upper Case, and Pascal_Snake_Case).
 

@@ -298,7 +298,7 @@ LinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
           "solver_ids",
           "",
           dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
-          "The ids of the solvers that will use these settings.");
+          "The ids of the solve blocks that will use these settings.");
         declare_aliases(parameter_handler,
                         "solver_ids",
                         std::vector {"solve blocks",

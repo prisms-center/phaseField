@@ -1,16 +1,59 @@
 /** \page tutorial Tutorial
 
-# Tutorial
+Welcome to the tutorial pages!
 
-Welcome to the tutorial section!
-
-Here you can explain step-by-step usage of the code, include images, and even link to
-other parts of the docs.
+Here we will give a recap of our quick start guide, showing how to build and run a
+PRISMS-PF application and make basic changes to suit your needs. After reviewing
+this page, see the next page on the \ref structure "structure of a PRISMS-PF application".
+For developers, please check out our \ref dev_docs "developer's guide" to learn how to
+build this documentation locally and contribute to PRISMS-PF.
 
 \section getting_started Getting Started
-- Step 1
-- Step 2
-- Step 3
+Before starting, you will need to install PRISMS-PF and its dependencies.
+For more information, see our \ref installation page.
+
+Browse our example \ref applications and select one that solves a problem similar
+to your problem of interest. For this tutorial, we will use the explicit Allen-Cahn
+application.
+
+Each application includes a minimum of three components. The first is a subclass
+of \ref PDEOperatorBase, which contains the equations, initial conditions, and boundary
+conditions (called `CustomPDE` in the Allen-Cahn app, in `custom_pde.h`). The second
+part is a `main.cc` file containing the main function, which sets up the user inputs,
+instantiates CustomPDE, creates the \ref Problem, and invokes `Problem.solve()`.
+The final part is a parameters file, typically called `parameters.prm`, which allows
+specifying different conditions under which to run the simulation. Our example
+applications also come with a markdown file containing a description of the equations
+being solved and the derivation of the
+[weak form](https://en.wikipedia.org/wiki/Weak_formulation).
+
+To run an application, you must first compile the code ("build the application"). To do
+this, navigate to the application's directory in your terminal and invoke cmake:
+@code{bash}
+cmake . -DCMAKE_BUILD_TYPE=Debug
+make
+@endcode
+After compiling the application, you can run in serial (one processor) by simply invoking
+the `main` executable and specifying the parameters file using the `-i` option flag:
+@code{bash}
+./main -i parameters.prm
+@endcode
+To run with multiple processors using MPI, use `mpirun`:
+@code{bash}
+mpirun -n 16 ./main -i parameters.prm
+@endcode
+
+By default, the output files are saved in a directory called `solutions` in the same
+directory as the executable. You can change this and many other settings by editing the
+parameters file. See the \ref parameters page for more information on the available
+settings. For example, you can change the size of the finite element mesh and the
+simulation time step in the parameters file.
+
+To implement your own app, you can start by copying the folder of an application
+solving a problem similar to yours (or copy the blank application). Then, edit the
+`main.cc` file to set up fields, solve blocks (a.k.a. solvers), and equations. For more
+information about the structure of an application, see \ref structure "Structure of a
+PRISMS-PF application".
 
 */
 
