@@ -52,22 +52,21 @@ private:
 
   // reaction
   template <typename ValueType>
-  DEAL_II_ALWAYS_INLINE ValueType
-  jbv(const ValueType eta) const
+  [[nodiscard]] inline ValueType
+  jbv(const ValueType &eta) const
   {
     return 2.0 * std::sinh(0.5 * eta);
   }
 
   template <typename ValueType>
-  DEAL_II_ALWAYS_INLINE ValueType
-  djbv(ValueType eta) const
+  [[nodiscard]] inline ValueType
+  djbv(const ValueType &eta) const
   {
     return std::cosh(0.5 * eta);
   }
 
   // derivative of the chemical free energy density
-  DEAL_II_ALWAYS_INLINE
-  ScalarValue
+  [[nodiscard]] inline ScalarValue
   dfchem(const ScalarValue c) const
   {
     return m_mix * (1.0 - 2.0 * c) + std::log(c / (1.0 - c));
@@ -148,11 +147,6 @@ private:
         variable_list.set_value_term(2, jbv(mu + ScalarValue(Vapp)));
       }
   }
-
-  void
-  pre_solve_block([[maybe_unused]] SolveContext<dim, degree, number> &solve_context,
-                  [[maybe_unused]] unsigned int solve_block_id) override
-  {}
 
   void
   post_solve_block([[maybe_unused]] SolveContext<dim, degree, number> &solve_context,

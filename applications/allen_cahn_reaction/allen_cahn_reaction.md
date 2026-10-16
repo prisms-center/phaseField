@@ -33,7 +33,7 @@ $$
 
 ### Initial Condition
 
-The initial condition is $c = c_0 + \epsilon \xi(\vec{x})$, where $\xi \in [0,1]$ is a random number and $\epsilon$ is a small positive number.
+The initial condition is similar to `allen_cahn` application, but rescaled between c1 and c2.
 
 ### Boundary Condition
 
@@ -41,17 +41,17 @@ Natural boundary condition is used here.
 
 
 ## Weak form
-Here, we chose $\eta$ as a separate variable. We multiply the PDE by a sufficiently smooth test function $w(\vec{x})$ and integrate over the entire domain $\Omega$:
+Here, we chose $\mu$ as a separate variable. We multiply the PDE by a sufficiently smooth test function $w(\vec{x})$ and integrate over the entire domain $\Omega$:
 
 $$
 \begin{equation}
-\int_{\Omega} w ~ \frac{\partial c}{\partial t} \, d\Omega = \int_{\Omega} w ~ R(\eta) \, d\Omega
+\int_{\Omega} w ~ \frac{\partial c}{\partial t} \, d\Omega = \int_{\Omega} w ~ R(\mu+V) \, d\Omega
 \end{equation}
 $$
 
 $$
 \begin{equation}
-\int_{\Omega} w ~ \eta \, d\Omega = \int_{\Omega} w ~ \left( f_{,c}(c) - \kappa \nabla^2 c + V(t) \right) \, d\Omega
+\int_{\Omega} w ~ \mu \, d\Omega = \int_{\Omega} w ~ \left( f_{,c}(c) - \kappa \nabla^2 c \right) \, d\Omega
 \end{equation}
 $$
 
@@ -59,7 +59,7 @@ Using Integration by Parts and the Divergence Theorem:
 
 $$
 \begin{equation}
-\int_{\Omega} w ~ \eta \, d\Omega = \int_{\Omega} w ~ (f_{,c}(c) + V(t)) + \nabla w \cdot (\kappa\nabla c) \, d\Omega
+\int_{\Omega} w ~ \mu \, d\Omega = \int_{\Omega} w ~ f_{,c}(c) + \nabla w \cdot (\kappa\nabla c) \, d\Omega
 \end{equation}
 $$
 
@@ -84,7 +84,7 @@ $$
 
 $$
 \begin{equation}
-\int_{\Omega} w ~ \eta^{n} \, d\Omega = \int_{\Omega} w \left(f_{,c}(c^{n} + V^n)\right) + \nabla w \cdot (\kappa \nabla c^{n}) \, d\Omega
+\int_{\Omega} w ~ \mu^{n} \, d\Omega = \int_{\Omega} w \left(f_{,c}(c^{n})\right) + \nabla w \cdot (\kappa \nabla c^{n}) \, d\Omega
 \end{equation}
 $$
 
@@ -92,13 +92,13 @@ We have
 
 $$
 \begin{equation}
-r_{c}= c^{n} + \Delta t R(\eta^{n})
+r_{c}= c^{n-1} + \Delta t ~ R(\mu^{n-1}+V^{n-1})
 \end{equation}
 $$
 
 $$
 \begin{equation}
-r_{\eta}= f_{,c}(c^{n}) + V^n
+r_{\mu}= f_{,c}(c^{n})
 \end{equation}
 $$
 
