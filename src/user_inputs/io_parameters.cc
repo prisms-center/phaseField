@@ -26,11 +26,13 @@ FieldOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
       "The number of subdivisions to apply to the mesh when building output patches. "
       "If 0, the degree is used.");
 
-    parameter_handler.declare_entry("compression level",
-                                    "default",
-                                    dealii::Patterns::Selection(
-                                      "default|speed|size|none"),
-                                    "The compression level for output.");
+    parameter_handler.declare_entry(
+      "compression level",
+      "default",
+      dealii::Patterns::Selection("default|speed|size|none"),
+      "The compression level for output. `speed` is fast but results in larger files, "
+      "`size` is slow but gives the best compression, and `none` skips compression "
+      "entirely.");
 
     parameter_handler.declare_entry("directory",
                                     "solutions",
