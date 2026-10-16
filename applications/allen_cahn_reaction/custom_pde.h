@@ -67,7 +67,7 @@ private:
 
   // derivative of the chemical free energy density
   [[nodiscard]] inline ScalarValue
-  dfchem(const ScalarValue c) const
+  dfchem(const ScalarValue &c) const
   {
     return m_mix * (1.0 - 2.0 * c) + std::log(c / (1.0 - c));
   }
