@@ -8,17 +8,17 @@ Entries in the parameters file are either top-level or contained in subsections.
 table below gives the top-level parameters. The remaining tables give the parameters
 inside each type of subsection. For top-level entries, the format is:
 @code{}
-set Parameter Name = Value
+set Parameter Name = value
 @endcode
 Substitute `Parameter Name` with one of the names listed in the tables below, and
-substitute `Value` with the desired value for the parameter. The expected data type for
-`Value` is given in the tables below for each parameter.
+substitute `value` with the desired value for the parameter. The expected data type for
+`value` is given in the tables below for each parameter.
 
 For subsections, the format is:
 @code{}
 subsection Section Name <index>
-  set Parameter Name = Value
-  set Parameter Name = Value
+  set Parameter Name = value
+  set Parameter Name = value
   ...
 end
 @endcode
@@ -50,6 +50,7 @@ Not all parameters need to be specified in your parameters file. Any parameter t
 specified will have a default value as given in the tables below. For examples, see the
 `parameters.prm` files contained in each example application.
 
+Comments can be added to the parameters file; lines starting with `#` are comments.
 Additionally, all the parameters have aliases for a handful of common case styles (e.g.,
 PascalCase, snake_case, Upper Case, and Pascal_Snake_Case).
 
