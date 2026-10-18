@@ -7,15 +7,27 @@
 # visit -cli -nowin -s visualize2D
 # or:
 # visualize2D
-# if visit is in your PATH and the file is executable
+# if visit is in your PATH and the file has executable permissions
 
 import os
 import json
+import argparse
 from visit import *
 from visit_utils import encoding
 
-# Step 0: Read settings from a JSON file
-with open("plot_settings.json", "r") as f:
+# Step 0: Parse command line arguments and load settings file
+parser = argparse.ArgumentParser(
+    description="Visualize 2D phase-field results.",
+    usage="visualize2D [--settings plot_settings.json]"
+)
+parser.add_argument(
+    "--settings",
+    default="plot_settings.json",
+    help="JSON settings file to load (default: plot_settings.json)"
+)
+args, _ = parser.parse_known_args()
+
+with open(args.settings, "r") as f:
     settings = json.load(f)
 
 # Step 1: Open a database (the whole .vtu time series)
