@@ -84,7 +84,7 @@ public:
   }
 
   /**
-   * @brief Integrate function(u1(x),u2(x),...,un(x)) for a scalar fields.
+   * @brief Integrate function(u1(x),u2(x),...,un(x)) for scalar fields.
    */
   template <typename Function, typename... SolutionVectors>
   static number
@@ -101,7 +101,7 @@ public:
 
     (solution_vectors.update_ghost_values(), ...);
 
-    const auto &quadrature = SystemWide<dim, degree>::quadrature;
+    static const auto &quadrature = SystemWide<dim, degree>::quadrature;
 
     static dealii::FEValues<dim> fe_values(dof_handler.get_fe(),
                                            quadrature,
@@ -115,7 +115,7 @@ public:
     auto quad_values = std::make_tuple(
       (static_cast<void>(solution_vectors), std::vector<number>(num_quad_points))...);
 
-    number value = number {};
+    number value {};
 
     for (const auto &cell : dof_handler.active_cell_iterators())
       {
