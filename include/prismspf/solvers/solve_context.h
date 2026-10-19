@@ -51,7 +51,10 @@ public:
     , invm_manager()
     , sim_timer(user_inputs->temporal_discretization.dt,
                 user_inputs->temporal_discretization.initial_time)
-    , pde_operator(&_pde_operator) {};
+    , pde_operator(&_pde_operator)
+  {
+    sim_timer.set_increment(user_inputs->temporal_discretization.initial_increment);
+  };
 
   /**
    * @brief Get the field attributes.

@@ -64,6 +64,9 @@ struct TemporalDiscretization : public ParameterBase
   // Initial time
   double initial_time = 0.0;
 
+  // Initial increment (e.g. when continuing a run from a loaded initial condition)
+  unsigned int initial_increment = 0;
+
   // Total number of increments
   unsigned int n_increments = 0;
 };

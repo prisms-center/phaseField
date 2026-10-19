@@ -8,6 +8,8 @@
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/solve_block.h>
 
+#include <prismspf/field_input/read_vtk_metadata.h>
+
 #include <prismspf/user_inputs/constraint_parameters.h>
 #include <prismspf/user_inputs/grain_reassignment_parameters.h>
 #include <prismspf/user_inputs/io_parameters.h>
@@ -95,6 +97,36 @@ struct UserInputParameters : public ParameterBase
     output_parameters.assign(parameter_handler, n_increments, n_subsections);
     restart_parameters.assign(parameter_handler, n_increments, n_subsections);
     input_parameters.assign(parameter_handler, n_subsections);
+
+#ifdef PRISMS_PF_WITH_VTK
+    if (input_parameters.read_time_from_file &&
+        !input_parameters.initial_condition_files.empty())
+      {
+        // All initial condition files for a given restart are assumed to originate
+        // from the same output step, so their TIME/CYCLE metadata is identical by
+        // construction -- only the first VTK-format entry is consulted.
+        for (const auto &ic_file : input_parameters.initial_condition_files)
+          {
+            if (ic_file.format ==
+                InitialConditionFile::DataFormatType::VTKUnstructuredGrid)
+              {
+                if (auto metadata = read_vtk_time_cycle_metadata(ic_file.file_name))
+                  {
+                    temporal_discretization.initial_time      = metadata->time;
+                    temporal_discretization.initial_increment = metadata->increment;
+                  }
+                break;
+              }
+          }
+      }
+#else
+    AssertThrow(
+      !input_parameters.read_time_from_file,
+      dealii::ExcMessage(
+        "You have set 'read time from file' to true; however, PRISMS-PF was not "
+        "built with VTK. Please reconfig PRISMS-PF with VTK using "
+        "-D PRISMS_PF_WITH_VTK=ON, or set 'read time from file' to false."));
+#endif
 
     misc_parameters.assign(parameter_handler, n_subsections);
     nucleation_parameters.assign(parameter_handler, n_subsections);
