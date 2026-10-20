@@ -38,6 +38,7 @@
             # Optional packages
             python3
             vtk
+            (pkgs.callPackage ./contrib/nix/caliper.nix {})
 
             # Pre-commit
             llvmPackages_18.clang-tools
