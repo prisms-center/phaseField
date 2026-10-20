@@ -22,12 +22,15 @@ BoundaryParameters::declare(dealii::ParameterHandler &parameter_handler,
           "variables",
           "",
           dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
-          "The names of the fields that will use these constraints.");
+          "The names of the fields that will use the constraints specified in this "
+          "subsection.");
         parameter_handler.declare_entry(
           "conditions",
           "",
           dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
-          "List of conditions.");
+          "List of boundary conditions. For rectangular meshes, given in the following "
+          "order: left (-x), right (+x), bottom (-y), top (+y), front (-z), back (+z). "
+          "Valid values are Natural, Diriclet, or Neumann.");
         parameter_handler.declare_entry("time dependent",
                                         "false",
                                         dealii::Patterns::Bool(),

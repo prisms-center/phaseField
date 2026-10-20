@@ -392,11 +392,13 @@ SpatialDiscretization<dim>::declare(dealii::ParameterHandler &parameter_handler,
   SphericalMesh<dim>::declare_parameters(parameter_handler);
   RectangularMesh<dim>::declare_parameters(parameter_handler);
 
-  parameter_handler.declare_entry("global refinement",
-                                  "0",
-                                  dealii::Patterns::Integer(0, INT_MAX),
-                                  "The number of initial refinements of the coarse mesh.",
-                                  true);
+  parameter_handler.declare_entry(
+    "global refinement",
+    "0",
+    dealii::Patterns::Integer(0, INT_MAX),
+    "The number of initial refinements of the coarse mesh. The number of elements will "
+    "be `subdivisions * (2^global_refinement)`",
+    true);
 
   parameter_handler.declare_entry("mesh adaptivity",
                                   "false",
