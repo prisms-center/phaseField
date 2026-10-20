@@ -41,7 +41,7 @@ var searchData=
   ['triangulation_5fmanager_2eh_38',['triangulation_manager.h',['../triangulation__manager_8h.html',1,'']]],
   ['triangulationmanager_39',['TriangulationManager',['../classTriangulationManager.html',1,'TriangulationManager&lt; dim &gt;'],['../classTriangulationManager.html#ad673ff106cea0aacb0a43e5d41bf0b20',1,'TriangulationManager::TriangulationManager()'],['../classTriangulationManager.html#a6352253ea00a75da2d429e5769ac1ec7',1,'TriangulationManager::TriangulationManager()']]],
   ['triangulationtype_40',['TriangulationType',['../spatial__discretization_8h.html#a1655d11fc528cdc7b7b73d9e16185eaf',1,'spatial_discretization.h']]],
-  ['tutorial_41',['Tutorial',['../tutorial.html',1,'Tutorial'],['../tutorial.html#autotoc_md2',1,'Tutorial']]],
+  ['tutorial_41',['Tutorial',['../tutorial.html',1,'']]],
   ['tutorial_2eh_42',['tutorial.h',['../tutorial_8h.html',1,'']]],
   ['tvmult_43',['Tvmult',['../classMFOperator.html#a35eaa4bfe23d30bfefc42d1635c41279',1,'MFOperator']]],
   ['type_44',['Type',['../read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7',1,'read_field_factory.h']]],

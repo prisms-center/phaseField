@@ -124,17 +124,19 @@ $(function(){initNavTree('tutorial.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">Tutorial</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md2"></a>
-Tutorial</h1>
-<p>Welcome to the tutorial section!</p>
-<p>Here you can explain step-by-step usage of the code, include images, and even link to other parts of the docs.</p>
+<div class="textblock"><p>Welcome to the tutorial pages!</p>
+<p>Here we will give a recap of our quick start guide, showing how to build and run a PRISMS-PF application and make basic changes to suit your needs. After reviewing this page, see the next page on the <a class="el" href="structure.html">structure of a PRISMS-PF application</a>. For developers, please check out our <a class="el" href="dev_docs.html">developer's guide</a> to learn how to build this documentation locally and contribute to PRISMS-PF.</p>
 <h1><a class="anchor" id="getting_started"></a>
 Getting Started</h1>
-<ul>
-<li>Step 1</li>
-<li>Step 2</li>
-<li>Step 3 </li>
-</ul>
+<p>Before starting, you will need to install PRISMS-PF and its dependencies. For more information, see our <a class="el" href="installation.html">Installation</a> page.</p>
+<p>Browse our example <a class="el" href="applications.html">Applications</a> and select one that solves a problem similar to your problem of interest. For this tutorial, we will use the explicit Allen-Cahn application.</p>
+<p>Each application includes a minimum of three components. The first is a subclass of <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>, which contains the equations, initial conditions, and boundary conditions (called <code>CustomPDE</code> in the Allen-Cahn app, in <code>custom_pde.h</code>). The second part is a <code>main.cc</code> file containing the main function, which sets up the user inputs, instantiates CustomPDE, creates the <a class="el" href="classProblem.html">Problem</a>, and invokes <code><a class="el" href="classProblem.html#a9db5e4c168870694e8d6bbcbe32d2d0b" title="Main time-stepping loop that calls solve_increment, reinit_system, output_results,...">Problem.solve()</a></code>. The final part is a parameters file, typically called <code>parameters.prm</code>, which allows specifying different conditions under which to run the simulation. Our example applications also come with a markdown file containing a description of the equations being solved and the derivation of the <a href="https://en.wikipedia.org/wiki/Weak_formulation">weak form</a>.</p>
+<p>To run an application, you must first compile the code ("build the application"). To do this, navigate to the application's directory in your terminal and invoke cmake: </p><div class="fragment"><div class="line">cmake . -DCMAKE_BUILD_TYPE=Debug</div>
+<div class="line">make</div>
+</div><!-- fragment --><p> After compiling the application, you can run in serial (one processor) by simply invoking the <code>main</code> executable and specifying the parameters file using the <code>-i</code> option flag: </p><div class="fragment"><div class="line">./main -i parameters.prm</div>
+</div><!-- fragment --><p> To run with multiple processors using MPI, use <code>mpirun</code>: </p><div class="fragment"><div class="line">mpirun -n 16 ./main -i parameters.prm</div>
+</div><!-- fragment --><p>By default, the output files are saved in a directory called <code>solutions</code> in the same directory as the executable. You can change this and many other settings by editing the parameters file. See the <a class="el" href="parameters.html">Parameters</a> page for more information on the available settings. For example, you can change the size of the finite element mesh and the simulation time step in the parameters file.</p>
+<p>To implement your own app, you can start by copying the folder of an application solving a problem similar to yours (or copy the blank application). Then, edit the <code>main.cc</code> file to set up fields, solve blocks (a.k.a. solvers), and equations. For more information about the structure of an application, see <a class="el" href="structure.html">Structure of a</a>PRISMS-PF application". </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
