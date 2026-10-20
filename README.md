@@ -36,10 +36,19 @@ Install the required dependencies:
 - p4est
 - deal.II [9.6.0+]
 
-Configure, compile, and install the main library. We recommend setting the `PRISMS_PF_DIR` variable into your rc file so you have permanent access to it.
+Before building and installing PRISMS-PF, ensure that the environment variable `DEAL_II_DIR` is set to the directory where deal.II is installed:
 ```
-export PRISMS_PF_DIR="path/to/install"
+export DEAL_II_DIR=</absolute/path/to/deal.II/install>
 ```
+
+It is recommended to also add this line to your rc file (for example, ~/.bashrc, ~/.zshrc, etc.) so that `DEAL_II_DIR` is automatically set every time a terminal is opened.
+
+Similarly, choose an installation directory for PRISMS-PF and set the `PRISMS_PF_DIR` environment variable (it is also recommended you add the following line in your rc file):
+```
+export PRISMS_PF_DIR=</absolute/path/to/PRISMS-PF/install>
+```
+
+Configure, compile, and install the main library
 
 ```
 cmake -B build
@@ -49,7 +58,7 @@ cmake --install build --prefix=$PRISMS_PF_DIR
 
 Here `<nprocs>` denotes the number of threads you want to use to compile the library.
 
-For access to our executable utilities, you should also add `bin` to path. You can also add this into your rc file to have permanent access to it.
+For access to our executable utilities (recommended), you should also add `$PRISMS_PF_DIR/bin` to your path. You can have permanent access by adding the following line to your rc file
 ```
 export PATH=$PATH:$PRISMS_PF_DIR/bin
 ```
@@ -62,7 +71,7 @@ cmake -DCMAKE_BUILD_TYPE=<type> -B build
 cmake --build build -j <nprocs>
 ```
 
-Here `<type>` is the build type. There are two options `Debug` and `Release`. `Release` contains more optimizations than `Debug`, but often has less meaningful error messages.
+Here, `<type>` is the build type. There are two options: `Debug` and `Release`. `Release` contains more optimizations than `Debug` and typically offers much better performance, but `Debug` often provides more meaningful error messages.
 
 Executables can be run in serial or parallel.
 ```
@@ -74,22 +83,21 @@ mpirun -n <nprocs> build/main
 
 ### Visualization
 
-Outputs are most commonly visualized in the following open source applications:
+Outputs are most commonly visualized in the following open-source applications:
 - VisIt (https://visit-dav.github.io/visit-website/)
-- Paraview (https://www.paraview.org/)
+- ParaView (https://www.paraview.org/)
 
 ### Known Issues
 
 The following issues appear to be outside of our capabilities to fix, but we have found workarounds.
 
-#### For problems with greater than 20 fields in one solve block, field values may become 0 at MPI domain decomposition boundaries.
-This is a dealii bug which we have reported. We expect a fix in an upcoming dealii version.
-Hotfixes:
-- Split the solve block into multiple solve blocks
-- Change the value of `communication_block_size` in the dealii source code to a number greater than your solve block size and recompile.
+#### 1. For problems with greater than 20 fields in one solve block, field values may become 0 at MPI domain decomposition boundaries.
+This is a dealii bug which we have reported. It has been fixed as of [commit 27dc771](https://github.com/dealii/dealii/tree/27dc771c45845a59a0f6a3c4a12d2bcc0b4e16a9) </br>
+Fix:
+- Compile with a dealii version beyond 9.8.0. As of October 2026, this is only the dealii master branch.
 
-#### Anomalous segmentation faults when running on HPC. Often occurs after 2^24 (16M) time increments.
-This may be an issue with dealii's handling of a specific MPI backend. Still under investigation.
+#### 2. Anomalous segmentation faults when running on HPC. Often occurs after 2^24 (16M) time increments.
+This may be an issue with dealii's handling of a specific MPI backend. Still under investigation. </br>
 Hotfix:
 - Run program with different MPI backend:
   ```bash
@@ -98,6 +106,16 @@ Hotfix:
   # use this
   mpirun --mca pml ob1 -n 128 main
   ```
+
+#### 3. Immediate `Floating point exception` when running applications on certain devices.
+Still under investigation. </br>
+Hotfix:
+- Disable taskflow in your dealii installation:
+  ```bash
+  # in dealii candi.cfg
+  DEAL_II_CONFOPTS="-DDEAL_II_WITH_TASKFLOW=OFF"
+  ```
+  or add `-DDEAL_II_WITH_TASKFLOW=OFF` to your cmake command when configuring dealii manually.
 
 ## Citing PRISMS-PF
 

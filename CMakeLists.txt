@@ -44,10 +44,17 @@ set_property(
 )
 
 # Project declaration, language, and version
-project(prisms_pf LANGUAGES CXX VERSION 4.0.0)
+project(prisms_pf LANGUAGES CXX VERSION 4.1.0)
 
 # Export compile command for IDE lsp support
+# Also make a symlink to CMAKE_SOURCE_DIR
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+file(
+  CREATE_LINK
+    ${CMAKE_BINARY_DIR}/compile_commands.json
+    ${CMAKE_SOURCE_DIR}/compile_commands.json
+  SYMBOLIC
+)
 
 # Set the location of additional CMake modules
 set(

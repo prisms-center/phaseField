@@ -83,24 +83,37 @@ struct Mesh
   {}
 
   /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
+   * @brief Calculate the distance between two points considering periodic boundaries.
    */
   virtual double
   distance(const dealii::Point<dim> &point_1, const dealii::Point<dim> &point_2) const;
   /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
+   * @brief Calculate the distance between two points considering periodic boundaries.
    */
   template <typename real1, typename real2>
   double
   distance(const dealii::Point<dim, real1> &point_1,
            const dealii::Point<dim, real2> &point_2) const;
   /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
+   * @brief Calculate the distance between two points considering periodic boundaries.
    */
   template <typename real1>
   dealii::VectorizedArray<real1>
   distance(const dealii::Point<dim, dealii::VectorizedArray<real1>> &point_1,
            const dealii::Point<dim, dealii::VectorizedArray<real1>> &point_2) const;
+
+  /**
+   * @brief Calculate the minimum "dx".
+   *
+   * This function returns the approximation of the diameter for the smallest active cell
+   * in the triangulation.
+   *
+   * @note This is intended to be called after the mesh has been globally refined. Calling
+   * this on the coarse mesh may dramatically overestimate the minimum "dx".
+   */
+  template <unsigned int degree>
+  double
+  min_dx(Triangulation &triangulation) const;
 
   /**
    * @brief Validate.
@@ -190,17 +203,17 @@ struct RectangularMesh : public Mesh<dim>
   periodicity_set() const override;
 
   /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
+   * @brief Calculate the distance between two points considering periodic boundaries.
    */
   double
   distance(const dealii::Point<dim> &point_1,
            const dealii::Point<dim> &point_2) const override;
 
   /**
-   * @brief Calculate the smallest dx, dy, dz value from these parameters.
+   * @brief Calculate the minimum dx.
    */
   double
-  min_dx(int refine_factor) const;
+  min_dx(unsigned int num_refinements) const;
 
   /**
    * @brief Declare the parameters to be read from an input file.
@@ -357,7 +370,7 @@ public:
   periodicity_set() const override;
 
   /**
-   * @brief Calculation the distance between two points considering periodic boundaries.
+   * @brief Calculate the distance between two points considering periodic boundaries.
    */
   double
   distance(const dealii::Point<dim> &point_1,

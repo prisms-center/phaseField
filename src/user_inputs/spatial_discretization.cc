@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <deal.II/base/parameter_handler.h>
+#include <deal.II/grid/grid_tools_geometry.h>
 
 #include <prismspf/core/solve_block.h>
+#include <prismspf/core/system_wide.h>
 
 #include <prismspf/user_inputs/parameter_base.h>
 #include <prismspf/user_inputs/spatial_discretization.h>
@@ -59,6 +61,15 @@ Mesh<dim>::distance(
     }
   return out;
 }
+
+template <unsigned int dim>
+template <unsigned int degree>
+double
+Mesh<dim>::min_dx(typename Mesh<dim>::Triangulation &triangulation) const
+{
+  return dealii::GridTools::minimal_cell_diameter(triangulation,
+                                                  SystemWide<dim, degree>::mapping);
+};
 
 template <unsigned int dim>
 std::list<PeriodicPair<dim>>
@@ -209,12 +220,12 @@ RectangularMesh<dim>::distance(const dealii::Point<dim> &point_1,
 
 template <unsigned int dim>
 double
-RectangularMesh<dim>::min_dx(int refine_factor) const
+RectangularMesh<dim>::min_dx(unsigned int num_refinements) const
 {
   double dx = std::numeric_limits<double>::max();
   for (unsigned int d = 0; d < dim; d++)
     {
-      dx = std::min(dx, size[d] / subdivisions[d] / double(1 << refine_factor));
+      dx = std::min(dx, size[d] / subdivisions[d] / double(1 << num_refinements));
     }
   return dx;
 }
@@ -381,11 +392,13 @@ SpatialDiscretization<dim>::declare(dealii::ParameterHandler &parameter_handler,
   SphericalMesh<dim>::declare_parameters(parameter_handler);
   RectangularMesh<dim>::declare_parameters(parameter_handler);
 
-  parameter_handler.declare_entry("global refinement",
-                                  "0",
-                                  dealii::Patterns::Integer(0, INT_MAX),
-                                  "The number of initial refinements of the coarse mesh.",
-                                  true);
+  parameter_handler.declare_entry(
+    "global refinement",
+    "0",
+    dealii::Patterns::Integer(0, INT_MAX),
+    "The number of initial refinements of the coarse mesh. The number of elements will "
+    "be `subdivisions * (2^global_refinement)`",
+    true);
 
   parameter_handler.declare_entry("mesh adaptivity",
                                   "false",

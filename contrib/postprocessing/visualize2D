@@ -7,15 +7,27 @@
 # visit -cli -nowin -s visualize2D
 # or:
 # visualize2D
-# if visit is in your PATH and the file is executable
+# if visit is in your PATH and the file has executable permissions
 
 import os
 import json
+import argparse
 from visit import *
 from visit_utils import encoding
 
-# Step 0: Read settings from a JSON file
-with open("plot_settings.json", "r") as f:
+# Step 0: Parse command line arguments and load settings file
+parser = argparse.ArgumentParser(
+    description="Visualize 2D phase-field results.",
+    usage="visualize2D [--settings plot_settings.json]"
+)
+parser.add_argument(
+    "--settings",
+    default="plot_settings.json",
+    help="JSON settings file to load (default: plot_settings.json)"
+)
+args, _ = parser.parse_known_args()
+
+with open(args.settings, "r") as f:
     settings = json.load(f)
 
 # Step 1: Open a database (the whole .vtu time series)
@@ -25,8 +37,12 @@ dbpath = os.path.join(dbdir, dbname)
 print(f"Opening database: {dbpath}")
 OpenDatabase(dbpath)
 
-# Step 2: Pseudocolor plots
-for var_name, var_settings in settings["pseudocolor"].items():
+# Step 2: Define expressions if needed
+for expr_name, expr in settings.get("scalar_expressions", {}).items():
+    DefineScalarExpression(expr_name, expr)
+
+# Step 3.0: Pseudocolor plots
+for var_name, var_settings in settings.get("pseudocolor", {}).items():
     AddPlot("Pseudocolor", var_name, 1, 1)
     PseudocolorAtts = PseudocolorAttributes()
 
@@ -59,13 +75,57 @@ for var_name, var_settings in settings["pseudocolor"].items():
     elif opacity_type == "ramp":
         PseudocolorAtts.opacityType = PseudocolorAtts.Ramp
     PseudocolorAtts.opacity = opacity
-    if not legend:
-        PseudocolorAtts.legendFlag = 0
+    PseudocolorAtts.legendFlag = 1 if legend else 0
 
     SetPlotOptions(PseudocolorAtts)
+
+# Step 3.1: Contour plots
+for var_name, var_settings in settings.get("contour", {}).items():
+    AddPlot("Contour", var_name, 1, 1)
+
+    values = var_settings.get("values", [0.5])
+    if isinstance(values, float):
+        values = [values]
+    line_width = var_settings.get("line_width", 4)
+    color = var_settings.get("color", [0, 0, 0, 255])
+    color_table = var_settings.get("color_table", "Default")
+
+    # todo add support for range
+    min_val = var_settings.get("min", 0)
+    max_val = var_settings.get("max", 1)
+
+    legend = var_settings.get("legend", False)
+
+    ContourAtts = ContourAttributes()
+
+    ContourAtts.contourMethod = ContourAtts.Value  # Level, Value, Percent
+
+    # value
+    ContourAtts.contourValue = tuple(values)
+
+    # multi value
+    ContourAtts.contourNLevels = 3
+    ContourAtts.minFlag = 1
+    ContourAtts.maxFlag = 1
+    ContourAtts.min = min_val
+    ContourAtts.max = max_val
+    ContourAtts.scaling = ContourAtts.Linear  # Linear, Log
+
+    # style
+    ContourAtts.lineWidth = line_width
+
+    # color # todo add support for color tables
+    ContourAtts.colorType = ContourAtts.ColorBySingleColor  # ColorBySingleColor, ColorByMultipleColors, ColorByColorTable
+    ContourAtts.singleColor = tuple(color)
+    ContourAtts.colorTableName = color_table
+
+    ContourAtts.legendFlag = 1 if legend else 0
+
+    SetPlotOptions(ContourAtts)
+
 DrawPlots()
 
-#Step 3: Adjust annotation and view
+# Step 4: Adjust annotation and view
 view = settings.get("view", "windowless").lower()
 show_time = settings.get("show_time", False)
 label_axes = settings.get("label_axes", False)
@@ -96,7 +156,7 @@ View2DAtts.fullFrameActivationMode = View2DAtts.Off # Don't break aspect ratio
 SetView2D(View2DAtts)
 ResetView()
 
-# Step 4: Animate through time and save results
+# Step 5: Animate through time and save results
 frame_dir = settings.get("frame_directory", "frames")
 frame_prefix = settings.get("frame_prefix", "frame_")
 gapless = settings.get("gapless", False)
