@@ -25,9 +25,25 @@ MPIInitFinalize::MPIInitFinalize(int                          &argc,
                                                                  : _max_n_threads)
 
 {
+  // Search for the output and caliper arguments to use. Can't use getopt here since if
+  // will effect subsequent calls.
+  std::string output_dir     = "outputs/";
+  std::string caliper_config = "runtime-report,mem.highwatermark";
+
+  for (int i = 1; i < argc - 1; ++i)
+    {
+      if (std::string(argv[i]) == "-o")
+        {
+          output_dir = argv[i + 1];
+        }
+      else if (std::string(argv[i]) == "-c")
+        {
+          caliper_config = argv[i + 1];
+        }
+    }
+
   // Set log file
-  // TODO: Move this so it's user specified
-  Logger::set_file("simulation.log");
+  Logger::set_file(output_dir + "simulation.log");
 
   // Restrict deal.II console printing
   dealii::deallog.depth_console(0);
@@ -36,9 +52,8 @@ MPIInitFinalize::MPIInitFinalize(int                          &argc,
   libassert::set_failure_handler(failure_handler);
 
 #ifdef PRISMS_PF_WITH_CALIPER
-  // Add some useful defaults for Caliper
-  // TODO: Make this configurable at the command line
-  mgr.add("runtime-report,mem.highwatermark");
+  // Set the Caliper configuration
+  mgr.add(caliper_config.c_str());
 
   // Check for configuration errors
   if (mgr.error())

@@ -5,13 +5,15 @@
 
 #include <deal.II/base/mpi.h>
 
-#include <prismspf/utilities/logger.h>
+#include <prismspf/utilities/assert.h>
 
 #include <prismspf/config.h>
 
+#include <cstdlib>
 #include <fstream>
+#include <getopt.h>
+#include <iostream>
 #include <string>
-#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -21,137 +23,65 @@ PRISMS_PF_BEGIN_NAMESPACE
 class ParseCMDOptions
 {
 public:
-  ParseCMDOptions(int &_argc, char **argv)
-    : argc(_argc)
+  ParseCMDOptions(int argc, char *argv[])
   {
-    for (int i = 1; i < argc; ++i)
+    int opt = 0;
+    while ((opt = getopt(argc, argv, "i:o:c:h")) != -1)
       {
-        tokens.emplace_back(argv[i]);
-      }
-  }
-
-  std::string
-  get_parameters_filename()
-  {
-    // Allowed number of arguments
-#ifdef PRISMS_PF_WITH_CALIPER
-    const int n_args = 5;
-#else
-    const int n_args = 3;
-#endif
-
-    // Check that there aren't too many arguments
-    if (argc > n_args)
-      {
-        throw std::runtime_error(
-          "Too many command line arguments. The arguments should specify "
-          "the input file name and caliper configurations, if applicable. For example, "
-          "`./main -i parameters.prm`");
-      }
-
-    // Default filename
-    std::string parameters_filename = "parameters.prm";
-
-    if (argc >= n_args - 1 && !cmd_option_exists("-i"))
-      {
-        throw std::runtime_error(
-          "Invalid command line option. Use `-i` to specify the input file, "
-          "e.g., `./main -i parameters.prm`.");
-      }
-
-    // If -i is provided, check for an argument
-    if (cmd_option_exists("-i"))
-      {
-        parameters_filename = get_cmd_option("-i");
-      }
-
-    // Validate the parameters file (i.e., it ends in .prm)
-    if (parameters_filename.size() < 4 ||
-        parameters_filename.substr(parameters_filename.size() - 4) != ".prm")
-      {
-        throw std::runtime_error("The input file must have the `.prm` extension. Please "
-                                 "rename the file accordingly.");
-      }
-
-    // Check if the file exists
-    const std::ifstream ifs_prm(parameters_filename);
-    if (!ifs_prm)
-      {
-        throw std::runtime_error("The specified parameters file `" + parameters_filename +
-                                 "` does not exist.");
-      }
-
-    Logger::instance() << LogFormatter::info("Using parameter file " +
-                                             parameters_filename)
-                       << std::endl;
-
-    return parameters_filename;
-  }
-
-#ifdef PRISMS_PF_WITH_CALIPER
-  std::string
-  get_caliper_configuration()
-  {
-    // Allowed number of arguments
-    const int n_args = 5;
-
-    // Check that there aren't too many arguments
-    if (argc > n_args)
-      {
-        throw std::runtime_error(
-          "Too many command line arguments. The arguments should specify "
-          "the input file name and caliper configurations, if applicable. For example, "
-          "`./main -i parameters.prm -P runtime-report`");
-      }
-
-    // Default config
-    std::string config = "runtime-report,mem.highwatermark";
-
-    if (argc >= n_args - 1 && !cmd_option_exists("-P"))
-      {
-        throw std::runtime_error(
-          "Invalid command line option. Use `-P` to specify caliper configurations, "
-          "e.g., `./main -P runtime-report`.");
-      }
-
-    // If -P is provided, check for an argument
-    if (cmd_option_exists("-P"))
-      {
-        config = get_cmd_option("-P");
-      }
-
-    // Log the filename being used
-    Logger::instance() << LogFormatter::info("Using caliper configuration " + config)
-                       << std::endl;
-    return config;
-  }
-#endif
-
-private:
-  int                      argc;
-  std::vector<std::string> tokens;
-
-  [[nodiscard]] const std::string &
-  get_cmd_option(const std::string &option) const
-  {
-    auto itr = std::ranges::find(tokens, option);
-    if (itr != tokens.end())
-      {
-        ++itr; // Increment the iterator to get the value
-        if (itr != tokens.end())
+        switch (opt)
           {
-            return *itr;
+            case 'i':
+              parameters_file_name = optarg;
+              break;
+            case 'o':
+              output_dir = optarg;
+              break;
+            case 'c':
+              // The actual Caliper configuration options are used in the MPIInitFinalize
+              // call. Here, we just reserve the option and print it in the help option.
+              break;
+            case '?':
+            case 'h':
+              print_usage(argv[0]);
+              std::exit(EXIT_SUCCESS);
+            default:
+              break;
           }
       }
-    static const std::string empty_string;
-    return empty_string;
+  };
+
+  /**
+   * @brief Print command line usage.
+   */
+  static void
+  print_usage(const char *program_name)
+  {
+    std::cout << "Usage: " << program_name << " -i <input_file> -o <output_directory>\n";
+    std::cout << "Options:\n";
+    std::cout << "  -i <file>     Parameters file (default: parameters.prm)\n";
+    std::cout << "  -o <dir>      Output directory (default: output/)\n";
+#ifdef PRISMS_PF_WITH_CALIPER
+    std::cout << "  -c <config>   Caliper configuration (default: "
+                 "runtime-report,mem.highwatermark)\n";
+#endif
+    std::cout << "  -h            Show this help message\n";
   }
 
-  [[nodiscard]] bool
-  cmd_option_exists(const std::string &option) const
+  [[nodiscard]] std::string
+  get_parameters_filename()
   {
-    return std::ranges::find(tokens, option) != tokens.end();
+    // Check that the file exists and is readable
+    std::ifstream file(parameters_file_name);
+    ASSERT(file.is_open(),
+           "The specified parameters file was unable to be opened",
+           parameters_file_name);
+
+    return parameters_file_name;
   }
+
+private:
+  std::string parameters_file_name = "parameters.prm";
+  std::string output_dir           = "output/";
 };
 
 PRISMS_PF_END_NAMESPACE
