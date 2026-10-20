@@ -25,8 +25,8 @@ MPIInitFinalize::MPIInitFinalize(int                          &argc,
                                                                  : _max_n_threads)
 
 {
-  // Search for the output and caliper arguments to use. Can't use getopt here since if
-  // will effect subsequent calls.
+  // Search for the output and caliper arguments to use. Can't use `getopt` here since it
+  // will affect subsequent calls.
   std::string output_dir     = "outputs/";
   std::string caliper_config = "runtime-report,mem.highwatermark";
 

@@ -40,7 +40,6 @@ public:
               // The actual Caliper configuration options are used in the MPIInitFinalize
               // call. Here, we just reserve the option and print it in the help option.
               break;
-            case '?':
             case 'h':
               print_usage(argv[0]);
               std::exit(EXIT_SUCCESS);
