@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <prismspf/user_inputs/miscellaneous_parameters.h>
+#include <prismspf/user_inputs/parameter_base.h>
 
 #include <prismspf/config.h>
 
@@ -13,12 +14,16 @@ MiscellaneousParameters::declare(dealii::ParameterHandler &parameter_handler,
 {
   parameter_handler.enter_subsection("miscellaneous");
   {
-    parameter_handler.declare_entry(
-      "random seed",
-      "2025",
-      dealii::Patterns::Integer(0, INT_MAX),
-      "The random seed for the simulation. "
-      "This is used to initialize the random number generator.");
+    declare_entry(parameter_handler,
+                  "random seed",
+                  "2025",
+                  Patterns::UnsignedInteger(),
+                  "The random seed for the simulation. This is used to initialize the "
+                  "random number generator.",
+                  {},
+                  "Our RNG engine adds the MPI process to the random seed. This means "
+                  "that you must run a simulation with the same number of MPI processes "
+                  "to get the same result when using RNG.");
   }
   parameter_handler.leave_subsection();
 };

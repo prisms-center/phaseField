@@ -14,28 +14,47 @@ BoundaryParameters::declare(dealii::ParameterHandler &parameter_handler,
 {
   for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
-      std::string subsection_text =
-        "boundary conditions: " + std::to_string(criterion_id);
+      std::string subsection_text = "boundary conditions " + std::to_string(criterion_id);
       parameter_handler.enter_subsection(subsection_text);
       {
-        parameter_handler.declare_entry(
+        declare_entry(
+          parameter_handler,
           "variables",
           "",
-          dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
-          "The names of the fields that will use the constraints specified in this "
-          "subsection.");
-        parameter_handler.declare_entry(
-          "conditions",
+          Patterns::StringList(),
+          "A list of field names that will use the constraints specified in this "
+          "subsection.",
+          {"fields"},
           "",
-          dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
-          "List of boundary conditions. For rectangular meshes, given in the following "
-          "order: left (-x), right (+x), bottom (-y), top (+y), front (-z), back (+z). "
-          "Valid values are Natural, Diriclet, or Neumann.");
-        parameter_handler.declare_entry("time dependent",
-                                        "false",
-                                        dealii::Patterns::Bool(),
-                                        "Whether these conditions vary in time.");
-        declare_aliases(parameter_handler, "time dependent");
+          "set variables = phi, psi");
+        declare_entry(
+          parameter_handler,
+          "conditions",
+          "Natural",
+          Patterns::SelectionList("Natural|Dirichlet|Neumann|Periodic"),
+          "A list of boundary conditions that correspond to the boundary ids of the "
+          "mesh. For example, the first condition in the list is applied to boundary id "
+          "0. If only one condition is specified, it is applied to all boundary ids.",
+          {},
+          "Periodic boundary conditions must be specified on the mesh! The periodic "
+          "boundary conditions here are more of placeholder than anything. Additionally, "
+          "if you change your mesh, your boundary ids will change.",
+          "# A rectangular mesh has the following boundary id order:\n"
+          "#  0 -> left (-x)\n"
+          "#  1 -> right (+x)\n"
+          "#  2 -> bottom (-y)\n"
+          "#  3 -> top (+y)\n"
+          "#  4 -> front (-z)\n"
+          "#  5 -> back (+z)\n"
+          "# An example set of boundary conditions in `dim = 2` could be:\n"
+          "set conditions = Natural, Natural, Periodic, Periodic");
+        declare_entry(parameter_handler,
+                      "time dependent",
+                      "false",
+                      Patterns::Bool(),
+                      "Whether these boundary conditions vary in time.",
+                      {"time varying"},
+                      "Time dependent boundary conditions will slow down simulations.");
       }
       parameter_handler.leave_subsection();
     }

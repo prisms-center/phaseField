@@ -5,6 +5,8 @@
 
 #include <prismspf/config.h>
 
+#include "prismspf/user_inputs/parameter_base.h"
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
@@ -13,64 +15,66 @@ FieldOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
 {
   parameter_handler.enter_subsection("output");
   {
-    parameter_handler.declare_entry(
-      "file type",
-      "vtu",
-      dealii::Patterns::Selection("vtu|vtk|pvtu|xdmf"),
-      "The output file type (either vtu, pvtu, vtk, or xdmf).");
-
-    parameter_handler.declare_entry(
-      "subdivisions",
-      "0",
-      dealii::Patterns::Integer(0, INT_MAX),
-      "The number of subdivisions to apply to the mesh when building output patches. "
-      "If 0, the degree is used.");
-
-    parameter_handler.declare_entry(
+    declare_entry(parameter_handler,
+                  "file type",
+                  "vtu",
+                  Patterns::Selection("vtu|vtk|pvtu|xdmf"),
+                  "The output file type.",
+                  {"type", "file extension"});
+    declare_entry(parameter_handler,
+                  "subdivisions",
+                  "0",
+                  Patterns::UnsignedInteger(),
+                  "The number of subdivisions to apply to the mesh when building output "
+                  "patches. If 0, the degree is used.",
+                  {"n patches", "number of patches", "num patches"});
+    declare_entry(
+      parameter_handler,
       "compression level",
       "default",
-      dealii::Patterns::Selection("default|speed|size|none"),
+      Patterns::Selection("default|speed|size|none"),
       "The compression level for output. `speed` is fast but results in larger files, "
       "`size` is slow but gives the best compression, and `none` skips compression "
-      "entirely.");
-
-    parameter_handler.declare_entry("directory",
-                                    "solutions",
-                                    dealii::Patterns::Anything(),
-                                    "The name of the output directory.");
-    parameter_handler.declare_alias("directory", "folder name");
-
-    parameter_handler.declare_entry("file name",
-                                    "solution",
-                                    dealii::Patterns::Anything(),
-                                    "The prefix of the output files, before the "
-                                    "time step and processor info are added.");
-
-    parameter_handler.declare_entry(
-      "condition",
-      "EQUAL_SPACING",
-      dealii::Patterns::Selection("EQUAL_SPACING|LOG_SPACING|N_PER_DECADE"),
-      "The spacing type for outputting the solution fields.");
-    parameter_handler.declare_entry(
-      "number",
-      "10",
-      dealii::Patterns::Integer(0, INT_MAX),
-      "The number of outputs for EQUAL_SPACING and for LOG_SPACING or number of outputs "
-      "per decade for N_PER_DECADE.");
-    parameter_handler.declare_entry(
-      "list",
-      "0",
-      dealii::Patterns::List(dealii::Patterns::Integer(0, INT_MAX), 0, INT_MAX, ","),
-      "Comma-separated list of increments to output on.");
-
-    parameter_handler.declare_entry(
+      "entirely.",
+      {"compression"});
+    declare_entry(parameter_handler,
+                  "directory",
+                  "solutions",
+                  Patterns::Anything(),
+                  "The name of the output directory.",
+                  {"folder name"});
+    declare_entry(parameter_handler,
+                  "file name",
+                  "solution",
+                  Patterns::Anything(),
+                  "The prefix of the output files, before the time step and processor "
+                  "info are added.",
+                  {"base file name", "base name"});
+    declare_entry(parameter_handler,
+                  "condition",
+                  "EQUAL_SPACING",
+                  Patterns::Selection("EQUAL_SPACING|LOG_SPACING|N_PER_DECADE"),
+                  "The spacing type for outputting the solution fields.");
+    declare_entry(parameter_handler,
+                  "number",
+                  "10",
+                  Patterns::UnsignedInteger(),
+                  "The number of outputs for EQUAL_SPACING and for LOG_SPACING or number "
+                  "of outputs per decade for N_PER_DECADE.");
+    declare_entry(parameter_handler,
+                  "list",
+                  "0",
+                  Patterns::UnsignedIntegerList(),
+                  "A list of increments to output on. Note that this is in addition to "
+                  "the `condition` and `number` above.");
+    declare_entry(
+      parameter_handler,
       "variables",
       "",
-      dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
-      "The list of the fields to output. Must be comma delimited. Additionally, for "
-      "the output of left-hand side and old fields, they must follow the same "
-      "delimiters that are used in dependency sets. In other words, something like "
-      "`set variables = n1, old_1(n1), lhs(n1)`.");
+      Patterns::StringList(),
+      "The list of the fields to output. Additionally, for the output of left-hand side "
+      "and old fields, they must follow the same delimiters that are used in dependency "
+      "sets.");
   }
   parameter_handler.leave_subsection();
 }
@@ -159,40 +163,40 @@ RestartOutputParameters::declare(dealii::ParameterHandler &parameter_handler,
 {
   parameter_handler.enter_subsection("checkpoint");
   {
-    parameter_handler.declare_entry(
+    declare_entry(
+      parameter_handler,
       "load from checkpoint",
       "false",
-      dealii::Patterns::Bool(),
+      Patterns::Bool(),
       "Whether to load from a checkpoint created during a previous simulation.");
-
-    parameter_handler.declare_entry("directory",
-                                    "solutions",
-                                    dealii::Patterns::Anything(),
-                                    "The name of the output directory.");
-    parameter_handler.declare_alias("directory", "folder name");
-
-    parameter_handler.declare_entry("file name",
-                                    "solution",
-                                    dealii::Patterns::Anything(),
-                                    "The prefix of the output files, before the "
-                                    "time step and processor info are added.");
-
-    parameter_handler.declare_entry(
-      "condition",
-      "EQUAL_SPACING",
-      dealii::Patterns::Selection("EQUAL_SPACING|LOG_SPACING|N_PER_DECADE|LIST"),
-      "The spacing type for outputting the solution fields.");
-    parameter_handler.declare_entry(
-      "list",
-      "0",
-      dealii::Patterns::List(dealii::Patterns::Integer(0, INT_MAX), 0, INT_MAX, ","),
-      "The list of time steps to output. Used for the LIST type only and must be comma "
-      "delimited.");
-    parameter_handler.declare_entry("number",
-                                    "10",
-                                    dealii::Patterns::Integer(0, INT_MAX),
-                                    "The number of outputs (or number of outputs "
-                                    "per decade for the N_PER_DECADE type).");
+    declare_entry(parameter_handler,
+                  "directory",
+                  "solutions",
+                  Patterns::Anything(),
+                  "The name of the output directory.",
+                  {"folder name"});
+    declare_entry(parameter_handler,
+                  "file name",
+                  "solution",
+                  Patterns::Anything(),
+                  "The prefix of the output files, before the time step and processor "
+                  "info are added.");
+    declare_entry(parameter_handler,
+                  "condition",
+                  "EQUAL_SPACING",
+                  Patterns::Selection("EQUAL_SPACING|LOG_SPACING|N_PER_DECADE"),
+                  "The spacing type for outputting the solution fields.");
+    declare_entry(parameter_handler,
+                  "list",
+                  "0",
+                  Patterns::UnsignedIntegerList(),
+                  "The list of time steps to output.");
+    declare_entry(parameter_handler,
+                  "number",
+                  "10",
+                  Patterns::UnsignedInteger(),
+                  "The number of outputs (or number of outputs "
+                  "per decade for the N_PER_DECADE type).");
   }
   parameter_handler.leave_subsection();
 }
@@ -263,44 +267,45 @@ FieldInputParameters::declare(dealii::ParameterHandler &parameter_handler,
       std::string subsection_text = "input file: " + std::to_string(criterion_id);
       parameter_handler.enter_subsection(subsection_text);
       {
-        parameter_handler.declare_entry("file name",
-                                        "",
-                                        dealii::Patterns::Anything(),
-                                        "The file name to load from for each variable.");
-        parameter_handler.declare_entry("format",
-                                        "vtu",
-                                        dealii::Patterns::Selection(
-                                          "vtk|vtu|vti|pvtu|binary"),
-                                        "The type of grid in the file.");
-        parameter_handler.declare_entry(
-          "file variables",
-          "",
-          dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
-          "The names of the fields in the file.");
-        parameter_handler.declare_entry(
-          "simulation variables",
-          "",
-          dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
-          "The correspond names of the fields in the simulation.");
+        declare_entry(parameter_handler,
+                      "file name",
+                      "",
+                      dealii::Patterns::Anything(),
+                      "The file name to load from for each variable.");
+        declare_entry(parameter_handler,
+                      "format",
+                      "vtu",
+                      dealii::Patterns::Selection("vtk|vtu|vti|pvtu|binary"),
+                      "The type of grid in the file.");
+        declare_entry(parameter_handler,
+                      "file variables",
+                      "",
+                      Patterns::StringList(),
+                      "The names of the fields in the file.");
+        declare_entry(parameter_handler,
+                      "simulation variables",
+                      "",
+                      Patterns::StringList(),
+                      "The correspond names of the fields in the simulation.");
 
         for (const auto &dir : axis_labels)
           {
             const std::string axis {dir};
 
-            parameter_handler.declare_entry(axis + " data points",
-                                            "0",
-                                            dealii::Patterns::Integer(0, INT_MAX),
-                                            "The number of data points in the " + axis +
-                                              "-direction.");
+            declare_entry(parameter_handler,
+                          axis + " data points",
+                          "0",
+                          Patterns::UnsignedInteger(),
+                          "The number of data points in the " + axis + "-direction.");
           }
       }
       parameter_handler.leave_subsection();
     }
-
-  parameter_handler.declare_entry("read initial conditions from file",
-                                  "false",
-                                  dealii::Patterns::Bool(),
-                                  "Whether to read any initial conditions from file.");
+  declare_entry(parameter_handler,
+                "read initial conditions from file",
+                "false",
+                Patterns::Bool(),
+                "Whether to read any initial conditions from file.");
 }
 
 void

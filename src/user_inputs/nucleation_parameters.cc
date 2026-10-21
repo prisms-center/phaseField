@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <prismspf/user_inputs/nucleation_parameters.h>
+#include <prismspf/user_inputs/parameter_base.h>
 
 #include <prismspf/config.h>
 
@@ -13,64 +14,53 @@ NucleationParameters::declare(dealii::ParameterHandler &parameter_handler,
 {
   parameter_handler.enter_subsection("nucleation");
   {
-    // TODO: See bounds for these
-    parameter_handler.declare_entry("nucleus exclusion distance",
-                                    "0.0",
-                                    dealii::Patterns::Double(),
-                                    "The minimum distance between nuclei.");
-    parameter_handler.declare_entry("same field nucleus exclusion distance",
-                                    "0.0",
-                                    dealii::Patterns::Double(),
-                                    "The minimum distance between nuclei.");
-    parameter_handler.declare_entry(
-      "nucleation period",
-      "2147483647",
-      dealii::Patterns::Integer(1),
-      "The number of increments between nucleation attempts.");
-    parameter_handler.declare_entry(
-      "refinement radius",
+    declare_entry(parameter_handler,
+                  "nucleus exclusion distance",
+                  "0.0",
+                  Patterns::PositiveDouble(),
+                  "The minimum distance between seeded nuclei for all nucleating fields.",
+                  {"exclusion distance", "nucleus exclusion radius", "exclusion radius"});
+    declare_entry(
+      parameter_handler,
+      "same field nucleus exclusion distance",
       "0.0",
-      dealii::Patterns::Double(0.0),
-      "The radius around a nucleus in which AMR is applied.");
-    parameter_handler.declare_entry(
+      Patterns::PositiveDouble(),
+      "The minimum distance between seeded nuclei within the same nucleating field.",
+      {"same field exclusion distance",
+       "same field nucleus exclusion radius",
+       "same field exclusion radius"});
+    declare_entry(parameter_handler,
+                  "nucleation stride",
+                  "2147483647",
+                  Patterns::PositiveInteger(),
+                  "The number of steps between nucleation attempts.",
+                  {"nucleation period",
+                   "steps between nucleation",
+                   "number of steps between nucleation",
+                   "n steps between nucleation",
+                   "num steps between nucleation"});
+    declare_entry(parameter_handler,
+                  "refinement radius",
+                  "0.0",
+                  Patterns::PositiveDouble(),
+                  "The radius around a nucleus in which AMR is applied.");
+    declare_entry(
+      parameter_handler,
       "seeding time",
       "0.0",
-      dealii::Patterns::Double(0.0),
+      Patterns::PositiveDouble(),
       "The time duration over which nuclei are considered \"active\" and refinement and "
-      "exclusion zones are applied. Same as \"seeding increments\" but in time.");
-    parameter_handler.declare_entry(
+      "exclusion zones are applied. Same as \"seeding increments\" but in time.",
+      {"t_seed"});
+    declare_entry(
+      parameter_handler,
       "seeding increments",
       "1",
-      dealii::Patterns::Integer(1, INT_MAX),
+      Patterns::PositiveInteger(),
       "The number of increments over which nuclei are considered \"active\" and "
       "refinement and exclusion zones are applied. Same as \"seeding time\" but in "
-      "increments.");
-
-    // TODO: Use helper functions for these
-    parameter_handler.declare_alias("nucleus exclusion distance",
-                                    "nucleus_exclusion_distance");
-    parameter_handler.declare_alias("nucleus exclusion distance",
-                                    "nucleus exclusion radius");
-    parameter_handler.declare_alias("nucleus exclusion distance",
-                                    "nucleus_exclusion_radius");
-    parameter_handler.declare_alias("nucleus exclusion distance", "exclusion distance");
-    parameter_handler.declare_alias("nucleus exclusion distance", "exclusion_distance");
-    parameter_handler.declare_alias("nucleus exclusion distance", "exclusion radius");
-    parameter_handler.declare_alias("nucleus exclusion distance", "exclusion_radius");
-    parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                    "same_field_nucleus_exclusion_distance");
-    parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                    "same field nucleus exclusion radius");
-    parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                    "same_field_nucleus_exclusion_radius");
-    parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                    "same field exclusion distance");
-    parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                    "same_field_exclusion_distance");
-    parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                    "same field exclusion radius");
-    parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                    "same_field_exclusion_radius");
+      "increments.",
+      {"seeding steps", "seeding iterations"});
   }
   parameter_handler.leave_subsection();
 }
@@ -87,7 +77,7 @@ NucleationParameters::assign(dealii::ParameterHandler &parameter_handler,
     same_field_nucleus_exclusion_distance =
       parameter_handler.get_double("same field nucleus exclusion distance");
 
-    nucleation_period = (unsigned int) parameter_handler.get_integer("nucleation period");
+    nucleation_period = (unsigned int) parameter_handler.get_integer("nucleation stride");
 
     refinement_radius = parameter_handler.get_double("refinement radius");
 

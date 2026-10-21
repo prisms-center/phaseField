@@ -243,13 +243,9 @@ RectangularMesh<dim>::declare_parameters(dealii::ParameterHandler &parameter_han
         declare_entry(parameter_handler,
                       axis + " size",
                       "0.0",
-                      Patterns::Double(),
-                      "The upper of the domain in the " + axis +
-                        "-direction. When the lower bound is the origin, this "
-                        "corresponds to the size of the domain.",
-                      {"size " + axis, axis + " upper bound", "upper bound " + axis},
-                      "When setting lower bound, this parameter no longer corresponds to "
-                      "the size of the domain.");
+                      Patterns::PositiveDouble(),
+                      "The size of the domain in the " + axis + "-direction.",
+                      {"size " + axis, axis + " upper bound", "upper bound " + axis});
         declare_entry(parameter_handler,
                       axis + " lower bound",
                       "0.0",
@@ -273,7 +269,7 @@ RectangularMesh<dim>::declare_parameters(dealii::ParameterHandler &parameter_han
                       "Whether to have periodicity in the " + axis + "-direction.",
                       {"periodic " + axis},
                       "If you set a certain direction to be period, make sure the "
-                      "corresponding boundary condition is `NATURAL`.");
+                      "corresponding boundary condition is `NATURAL` or `PERIODIC`.");
       }
   }
   parameter_handler.leave_subsection();
@@ -352,10 +348,11 @@ SphericalMesh<dim>::declare_parameters(dealii::ParameterHandler &parameter_handl
 {
   parameter_handler.enter_subsection("Spherical mesh");
   {
-    parameter_handler.declare_entry("radius",
-                                    "0",
-                                    dealii::Patterns::Double(0.0, DBL_MAX),
-                                    "The radius of the domain.");
+    declare_entry(parameter_handler,
+                  "radius",
+                  "0",
+                  Patterns::PositiveDouble(),
+                  "The radius of the domain.");
   }
   parameter_handler.leave_subsection();
 }
@@ -383,77 +380,88 @@ void
 SpatialDiscretization<dim>::declare(dealii::ParameterHandler &parameter_handler,
                                     unsigned int              n_subsections)
 {
-  parameter_handler.declare_entry("mesh type",
-                                  "rectangular",
-                                  dealii::Patterns::Selection(
-                                    "rectangular|spherical|custom"),
-                                  "The type of mesh to use.",
-                                  true);
+  declare_entry(parameter_handler,
+                "mesh type",
+                "rectangular",
+                Patterns::Selection("rectangular|spherical|custom"),
+                "The type of mesh to use.");
   SphericalMesh<dim>::declare_parameters(parameter_handler);
   RectangularMesh<dim>::declare_parameters(parameter_handler);
 
-  parameter_handler.declare_entry(
+  declare_entry(
+    parameter_handler,
     "global refinement",
     "0",
-    dealii::Patterns::Integer(0, INT_MAX),
-    "The number of initial refinements of the coarse mesh. The number of elements will "
-    "be `subdivisions * (2^global_refinement)`",
-    true);
-
-  parameter_handler.declare_entry("mesh adaptivity",
-                                  "false",
-                                  dealii::Patterns::Bool(),
-                                  "Whether to enable mesh adaptivity.");
-  parameter_handler.declare_entry("max refinement",
-                                  "0",
-                                  dealii::Patterns::Integer(0, INT_MAX),
-                                  "The maximum level of refinement.");
-  parameter_handler.declare_entry("min refinement",
-                                  "0",
-                                  dealii::Patterns::Integer(0, INT_MAX),
-                                  "The minimum level of refinement.");
-  parameter_handler.declare_entry(
-    "remeshing period",
-    "2147483647",
-    dealii::Patterns::Integer(1, INT_MAX),
-    "The number of time steps between mesh refinement operations.");
+    Patterns::UnsignedInteger(),
+    "The number of initial refinements of the coarse mesh. Each refinement divides cells "
+    "into 2^dim children.",
+    {"number of refinements", "n refinements", "num refinements", "refinement"});
+  declare_entry(parameter_handler,
+                "mesh adaptivity",
+                "false",
+                Patterns::Bool(),
+                "Whether to enable mesh adaptivity (AMR).");
+  declare_entry(parameter_handler,
+                "max refinement",
+                "0",
+                Patterns::UnsignedInteger(),
+                "The maximum refinement level for AMR.",
+                {"refinement max"});
+  declare_entry(parameter_handler,
+                "min refinement",
+                "0",
+                Patterns::UnsignedInteger(),
+                "The minimum refinement level AMR.",
+                {"refinement min"});
+  declare_entry(parameter_handler,
+                "remeshing stride",
+                "2147483647",
+                Patterns::PositiveInteger(),
+                "The number of steps between mesh refinement attempts.",
+                {"remeshing period",
+                 "number of steps between refinement",
+                 "n steps between refinement",
+                 "num steps between refinement"});
 
   for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text =
-        "refinement criterion: " + std::to_string(criterion_id);
+        "refinement criterion " + std::to_string(criterion_id);
       parameter_handler.enter_subsection(subsection_text);
       {
-        parameter_handler.declare_entry(
-          "variables",
-          "",
-          dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
-          "The names of the fields that will use this refinement criterion.");
-        parameter_handler.declare_entry(
-          "type",
-          "none",
-          dealii::Patterns::Selection("none|value|gradient|value_and_gradient"),
-          "The type of criterion used to determine if a cell should be "
-          "refined. The options are none, value, gradient, value_and_gradient.");
-        parameter_handler.declare_entry(
+        declare_entry(parameter_handler,
+                      "variables",
+                      "",
+                      Patterns::StringList(),
+                      "A list of field names that will use the refinement criterion in "
+                      "this subsection.");
+        declare_entry(parameter_handler,
+                      "type",
+                      "none",
+                      Patterns::Selection("none|value|gradient|value_and_gradient"),
+                      "The type of criterion used to determine if a cell should be "
+                      "refined.");
+        declare_entry(
+          parameter_handler,
           "value lower bound",
           "0.0",
-          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+          Patterns::Double(),
           "The lower bound for the window determining where the mesh should be "
           "refined.");
-        parameter_handler.declare_entry(
+        declare_entry(
+          parameter_handler,
           "value upper bound",
           "0.0",
-          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+          Patterns::Double(),
           "The upper bound for the window determining where the mesh should be "
           "refined.");
-        parameter_handler.declare_entry("gradient magnitude lower bound",
-                                        "2147483647",
-                                        dealii::Patterns::Double(0.0, DBL_MAX),
-                                        "The magnitude of the gradient above "
-                                        "which the mesh should be refined.");
-        parameter_handler.declare_alias("gradient magnitude lower bound",
-                                        "gradient lower bound");
+        declare_entry(
+          parameter_handler,
+          "gradient magnitude lower bound",
+          "2147483647",
+          Patterns::PositiveDouble(),
+          "The magnitude of the gradient above which the mesh should be refined.",
+          {"gradient lower bound"});
       }
       parameter_handler.leave_subsection();
     }
@@ -479,7 +487,7 @@ SpatialDiscretization<dim>::assign(dealii::ParameterHandler &parameter_handler,
   has_adaptivity = (parameter_handler.get_bool("mesh adaptivity"));
 
   remeshing_period =
-    (static_cast<unsigned int>(parameter_handler.get_integer("remeshing period")));
+    (static_cast<unsigned int>(parameter_handler.get_integer("remeshing stride")));
 
   max_refinement =
     (static_cast<unsigned int>(parameter_handler.get_integer("max refinement")));

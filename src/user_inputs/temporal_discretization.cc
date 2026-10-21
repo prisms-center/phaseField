@@ -36,56 +36,44 @@ void
 TemporalDiscretization::declare(dealii::ParameterHandler &parameter_handler,
                                 unsigned int              n_subsections)
 {
-  parameter_handler.declare_entry("final increment",
-                                  "0",
-                                  dealii::Patterns::Integer(0, INT_MAX),
-                                  "The final increment for the simulation.");
-  declare_aliases(parameter_handler,
-                  "final increment",
-                  std::vector {"number steps",
-                               "number of steps",
-                               "num steps",
-                               "n steps",
-                               "last increment",
-                               "end increment",
-                               "final_increment",
-                               "number_steps",
-                               "number_of_steps",
-                               "num_steps",
-                               "n_steps",
-                               "last_increment",
-                               "end_increment",
-                               "steps",
-                               "iterations",
-                               "final iteration",
-                               "max iteration",
-                               "increments"});
-
-  parameter_handler.declare_entry("time step",
-                                  "0.0",
-                                  dealii::Patterns::Double(0.0, DBL_MAX),
-                                  "The time step size for the simulation.");
-  declare_aliases(parameter_handler,
-                  "time step",
-                  std::vector {"timestep", "time_step", "dt"});
-
-  parameter_handler.declare_entry("start time",
-                                  "0.0",
-                                  dealii::Patterns::Double(0.0, DBL_MAX),
-                                  "The value of simulated time where the simulation "
-                                  "begins.");
-  declare_aliases(parameter_handler,
-                  "start time",
-                  std::vector {"start_time", "t_0", "t0", "begin time", "begin_time"});
-
-  parameter_handler.declare_entry("end time",
-                                  "0.0",
-                                  dealii::Patterns::Double(0.0, DBL_MAX),
-                                  "The value of simulated time where the simulation "
-                                  "ends. Overrides final increment if greater than 0.");
-  declare_aliases(parameter_handler,
-                  "end time",
-                  std::vector {"end_time", "t_f", "tf", "final time", "final_time"});
+  declare_entry(parameter_handler,
+                "final increment",
+                "0",
+                Patterns::UnsignedInteger(),
+                "The final increment for the simulation.",
+                {"number steps",
+                 "number of steps",
+                 "num steps",
+                 "n steps",
+                 "end step",
+                 "final step",
+                 "end increment",
+                 "last increment",
+                 "last step",
+                 "end step",
+                 "steps",
+                 "increments",
+                 "iterations",
+                 "final iteration"});
+  declare_entry(parameter_handler,
+                "time step",
+                "0.0",
+                Patterns::PositiveDouble(),
+                "The time step size for the simulation.",
+                {"dt", "timestep"});
+  declare_entry(parameter_handler,
+                "start time",
+                "0.0",
+                Patterns::PositiveDouble(),
+                "The simulated time at which the simulation begins.",
+                {"t_0", "t0", "begin time"});
+  declare_entry(parameter_handler,
+                "end time",
+                "0.0",
+                Patterns::PositiveDouble(),
+                "The simulated time at which the simulation ends. Overrides the final "
+                "increment if greater than 0.",
+                {"t_f", "tf", "final time"});
 }
 
 void
