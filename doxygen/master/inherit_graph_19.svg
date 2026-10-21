@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classIntegrator.html" target="_top" xlink:title="Compute the integral of a given field.">
+<g id="a_Node000000"><a xlink:href="classIntegrator.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="136.75,-33.5 0,-33.5 0,0 136.75,0 136.75,-33.5"/>
 <text text-anchor="start" x="8" y="-20" font-family="Helvetica,sans-Serif" font-size="10.00">Integrator&lt; dim, degree,</text>
 <text text-anchor="middle" x="68.38" y="-7.25" font-family="Helvetica,sans-Serif" font-size="10.00"> number &gt;</text>

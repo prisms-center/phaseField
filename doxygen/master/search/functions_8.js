@@ -21,9 +21,11 @@ var searchData=
   ['integer_18',['Integer',['../namespacePatterns.html#a7a9be59c2d5785c55fedf599be29b35f',1,'Patterns']]],
   ['integrate_19',['integrate',['../structFieldContainer_1_1FEEValuationDeps.html#a419ad4e46ade2ce497141916a97387d1',1,'FieldContainer::FEEValuationDeps::integrate()'],['../classFieldContainer.html#a6b7f0f176d59695d0770cb85c59f4888',1,'FieldContainer::integrate()'],['../classIntegrator.html#ab49b0feb1acc51106acf14361a7088b6',1,'Integrator::integrate()']]],
   ['integrate_5fand_5fdistribute_20',['integrate_and_distribute',['../structFieldContainer_1_1FEEValuationDeps.html#acad46cf09446961fc4441d88b687e7e6',1,'FieldContainer::FEEValuationDeps::integrate_and_distribute()'],['../classFieldContainer.html#aa819a5fcb462c6253a5aebbc3def745d',1,'FieldContainer::integrate_and_distribute()']]],
-  ['interpolate_21',['interpolate',['../classReadBinary.html#abd5c48fc6cade6fc580aa891aec56123',1,'ReadBinary']]],
-  ['invert_22',['invert',['../classInvMManager.html#ada8b05c17b9e592477d28c51938b71d5',1,'InvMManager']]],
-  ['invmmanager_23',['InvMManager',['../classInvMManager.html#a79757a1439265a83f3d8c4801e5d43aa',1,'InvMManager']]],
-  ['is_5factive_24',['is_active',['../classFanoutStreamBuf.html#a4c82e9b194704b53f290249b73d861e5',1,'FanoutStreamBuf::is_active()'],['../classFanoutOStream.html#a293aa25ebf3c2854fc894d579a9ac323',1,'FanoutOStream::is_active()'],['../classLogStream.html#a946c2b1f28fed104c697f798c6203104',1,'LogStream::is_active()']]],
-  ['is_5fsupported_25',['is_supported',['../classTerminalColor.html#af3188275fba832421adc9ed88dab517c',1,'TerminalColor']]]
+  ['integrate_5ffunction_21',['integrate_function',['../classIntegrator.html#a7bddf71b4e2ee5e9531454e9bedd3de6',1,'Integrator']]],
+  ['integrate_5fscalar_5ffunction_22',['integrate_scalar_function',['../classIntegrator.html#ae8681905cc1a936c11b46a6e1e41d547',1,'Integrator']]],
+  ['interpolate_23',['interpolate',['../classReadBinary.html#abd5c48fc6cade6fc580aa891aec56123',1,'ReadBinary']]],
+  ['invert_24',['invert',['../classInvMManager.html#ada8b05c17b9e592477d28c51938b71d5',1,'InvMManager']]],
+  ['invmmanager_25',['InvMManager',['../classInvMManager.html#a79757a1439265a83f3d8c4801e5d43aa',1,'InvMManager']]],
+  ['is_5factive_26',['is_active',['../classFanoutStreamBuf.html#a4c82e9b194704b53f290249b73d861e5',1,'FanoutStreamBuf::is_active()'],['../classFanoutOStream.html#a293aa25ebf3c2854fc894d579a9ac323',1,'FanoutOStream::is_active()'],['../classLogStream.html#a946c2b1f28fed104c697f798c6203104',1,'LogStream::is_active()']]],
+  ['is_5fsupported_27',['is_supported',['../classTerminalColor.html#af3188275fba832421adc9ed88dab517c',1,'TerminalColor']]]
 ];

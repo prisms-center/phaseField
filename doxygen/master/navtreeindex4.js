@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"functions_rela.html":[8,3,6],
+"functions_s.html":[8,3,0,17],
 "functions_t.html":[8,3,0,18],
 "functions_type.html":[8,3,3],
 "functions_u.html":[8,3,0,19],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "solvers_8cc.html":[9,0,2,2,2],
 "solvers_8h.html":[9,0,1,0,4,7],
 "solvers_8h_source.html":[9,0,1,0,4,7],
-"source.html":[1,1],
-"spatial__discretization_8cc.html":[9,0,2,3,6],
-"spatial__discretization_8h.html":[9,0,1,0,5,7]
+"source.html":[1,1]
 };

@@ -129,9 +129,6 @@ $(function(){initNavTree('classIntegrator.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
-<p>Compute the integral of a given field.  
- <a href="#details">More...</a></p>
-
 <p><code>#include &lt;<a class="el" href="integrator_8h_source.html">integrator.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
@@ -143,12 +140,18 @@ Public Types</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ab49b0feb1acc51106acf14361a7088b6" id="r_ab49b0feb1acc51106acf14361a7088b6"><td class="memTemplParams" colspan="2">template&lt;int rank&gt; </td></tr>
 <tr class="memitem:ab49b0feb1acc51106acf14361a7088b6"><td class="memTemplItemLeft" align="right" valign="top">static dealii::Vector&lt; number &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab49b0feb1acc51106acf14361a7088b6">integrate</a> (const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const auto &amp;solution_vector)</td></tr>
+<tr class="memdesc:ab49b0feb1acc51106acf14361a7088b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the integral of a given field.  <br /></td></tr>
 <tr class="separator:ab49b0feb1acc51106acf14361a7088b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bddf71b4e2ee5e9531454e9bedd3de6" id="r_a7bddf71b4e2ee5e9531454e9bedd3de6"><td class="memTemplParams" colspan="2">template&lt;typename Function, typename... SolutionVectors&gt; </td></tr>
+<tr class="memitem:a7bddf71b4e2ee5e9531454e9bedd3de6"><td class="memTemplItemLeft" align="right" valign="top">static number&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7bddf71b4e2ee5e9531454e9bedd3de6">integrate_function</a> (const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, Function &amp;&amp;function, const SolutionVectors &amp;...solution_vectors)</td></tr>
+<tr class="memdesc:a7bddf71b4e2ee5e9531454e9bedd3de6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate function(u1(x),u2(x),...,un(x)) for scalar fields.  <br /></td></tr>
+<tr class="separator:a7bddf71b4e2ee5e9531454e9bedd3de6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8681905cc1a936c11b46a6e1e41d547" id="r_ae8681905cc1a936c11b46a6e1e41d547"><td class="memTemplParams" colspan="2">template&lt;typename Function, typename... SolutionVectors&gt; </td></tr>
+<tr class="memitem:ae8681905cc1a936c11b46a6e1e41d547"><td class="memTemplItemLeft" align="right" valign="top">static number&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ae8681905cc1a936c11b46a6e1e41d547">integrate_scalar_function</a> (const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, Function &amp;&amp;function, const SolutionVectors &amp;...solution_vectors)</td></tr>
+<tr class="memdesc:ae8681905cc1a936c11b46a6e1e41d547"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate function(u1(x),u2(x),...,un(x)) for scalar fields. alias of integrate_function.  <br /></td></tr>
+<tr class="separator:ae8681905cc1a936c11b46a6e1e41d547"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
-class Integrator&lt; dim, degree, number &gt;</div><p>Compute the integral of a given field. </p>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="af9efd8729c661e6ab1ad89bc9779b122" name="af9efd8729c661e6ab1ad89bc9779b122"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af9efd8729c661e6ab1ad89bc9779b122">&#9670;&#160;</a></span>VectorType</h2>
 
@@ -196,6 +199,88 @@ template&lt;int rank&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Compute the integral of a given field. </p>
+
+</div>
+</div>
+<a id="a7bddf71b4e2ee5e9531454e9bedd3de6" name="a7bddf71b4e2ee5e9531454e9bedd3de6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bddf71b4e2ee5e9531454e9bedd3de6">&#9670;&#160;</a></span>integrate_function()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<div class="memtemplate">
+template&lt;typename Function, typename... SolutionVectors&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static number <a class="el" href="classIntegrator.html">Integrator</a>&lt; dim, degree, number &gt;::integrate_function </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::DoFHandler&lt; dim &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dof_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Function &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>function</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SolutionVectors &amp;...</td>          <td class="paramname"><span class="paramname"><em>solution_vectors</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Integrate function(u1(x),u2(x),...,un(x)) for scalar fields. </p>
+
+</div>
+</div>
+<a id="ae8681905cc1a936c11b46a6e1e41d547" name="ae8681905cc1a936c11b46a6e1e41d547"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8681905cc1a936c11b46a6e1e41d547">&#9670;&#160;</a></span>integrate_scalar_function()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<div class="memtemplate">
+template&lt;typename Function, typename... SolutionVectors&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static number <a class="el" href="classIntegrator.html">Integrator</a>&lt; dim, degree, number &gt;::integrate_scalar_function </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::DoFHandler&lt; dim &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dof_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Function &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>function</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SolutionVectors &amp;...</td>          <td class="paramname"><span class="paramname"><em>solution_vectors</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Integrate function(u1(x),u2(x),...,un(x)) for scalar fields. alias of integrate_function. </p>
 
 </div>
 </div>
