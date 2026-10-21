@@ -296,6 +296,12 @@ namespace Patterns
     return {UnsignedInteger(), 0, INT_MAX, ","};
   }
 
+  static inline dealii::Patterns::List
+  SelectionList(std::string_view options)
+  {
+    return {Selection(options), 0, INT_MAX, ","};
+  }
+
   // NOLINTEND(readability-identifier-naming)
 
 } // namespace Patterns
@@ -307,6 +313,9 @@ namespace Patterns
  * 1. declare
  * 2. assign
  * 3. validate
+ *
+ * Additionally, there's a few heuristics we use when setting default variables for
+ * parameters.
  */
 struct ParameterBase
 {

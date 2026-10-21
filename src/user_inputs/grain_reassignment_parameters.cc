@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <prismspf/user_inputs/grain_reassignment_parameters.h>
+#include <prismspf/user_inputs/parameter_base.h>
 
 #include <prismspf/config.h>
 
@@ -11,48 +12,44 @@ void
 GrainReassignmentParameters::declare(dealii::ParameterHandler &parameter_handler,
                                      unsigned int              n_subsections)
 {
-  parameter_handler.declare_entry("use grain reassignment",
-                                  "false",
-                                  dealii::Patterns::Bool(),
-                                  "Whether to perform grain reassignment");
-
-  parameter_handler.declare_alias("use grain reassignment", "use_grain_reassignment");
-  parameter_handler.declare_alias("use grain reassignment", "use grain_reassignment");
-  parameter_handler.declare_alias("use grain reassignment", "use_grain reassignment");
-  parameter_handler.declare_alias("use grain reassignment", "use grain remapping");
-  parameter_handler.declare_alias("use grain reassignment", "use_grain_remapping");
-  parameter_handler.declare_alias("use grain reassignment", "use_grain remapping");
-  parameter_handler.declare_alias("use grain reassignment", "use grain_remapping");
+  declare_entry(parameter_handler,
+                "use grain reassignment",
+                "false",
+                Patterns::Bool(),
+                "Whether to perform grain reassignment.",
+                {"use grain remapping"});
 
   parameter_handler.enter_subsection("grain reassignment");
   {
-    parameter_handler.declare_entry(
-      "steps between reassignment",
-      "100",
-      dealii::Patterns::Integer(1),
-      "The number of steps between performing grain reassignment");
-
-    parameter_handler.declare_entry(
-      "exclusion distance",
-      "5.0",
-      dealii::Patterns::Double(0.0),
-      "The maximum distance between grains of the same order parameter");
-
-    parameter_handler.declare_entry(
+    declare_entry(parameter_handler,
+                  "reassignment stride",
+                  "2147483647",
+                  Patterns::PositiveInteger(),
+                  "The number of steps between grain reassignment attempts.",
+                  {"steps between reassignment",
+                   "number of steps between reassignment",
+                   "num steps between reassignment",
+                   "reassignment period"});
+    declare_entry(parameter_handler,
+                  "exclusion distance",
+                  "0.0",
+                  Patterns::PositiveDouble(),
+                  "The minimum distance between grains of the same order parameter.");
+    declare_entry(
+      parameter_handler,
       "grain identification threshold",
-      "1e-2",
-      dealii::Patterns::Double(1e-15),
-      "The threshold used by the flood filling algorithm for identifying grains");
-
-    parameter_handler.declare_entry(
-      "load grain structure",
-      "false",
-      dealii::Patterns::Bool(),
-      "Whether to load the grain IDs from a file (NOT CURRENTLY IMPLEMENTED)");
+      "0.0",
+      Patterns::PositiveDouble(),
+      "The threshold used by the flood filling algorithm for identifying grains.",
+      {"identification threshold"});
+    declare_entry(parameter_handler,
+                  "load grain structure",
+                  "false",
+                  Patterns::Bool(),
+                  "Whether to load the grain IDs from a file.",
+                  {"load structure"});
   }
   parameter_handler.leave_subsection();
-
-  // TODO: add more aliases for these parameters
 }
 
 void
@@ -63,7 +60,7 @@ GrainReassignmentParameters::assign(dealii::ParameterHandler &parameter_handler,
 
   parameter_handler.enter_subsection("grain reassignment");
   {
-    reassignment_period = parameter_handler.get_integer("steps between reassignment");
+    reassignment_period = parameter_handler.get_integer("reassignment stride");
 
     exclusion_distance = parameter_handler.get_double("exclusion distance");
 
