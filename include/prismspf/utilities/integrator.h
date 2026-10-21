@@ -8,12 +8,11 @@
 #include <deal.II/lac/la_parallel_vector.h>
 
 #include <prismspf/core/system_wide.h>
+#include <prismspf/core/type_enums.h>
 
 #include <prismspf/utilities/assert.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/core/type_enums.h"
 
 #include <functional>
 #include <tuple>
