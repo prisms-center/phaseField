@@ -324,7 +324,10 @@ struct ParameterBase
    * @brief Serialize the parameters to file.
    */
   virtual boost::json::value
-  serialize() = 0;
+  serialize()
+  {
+    return {};
+  }
 };
 
 PRISMS_PF_END_NAMESPACE

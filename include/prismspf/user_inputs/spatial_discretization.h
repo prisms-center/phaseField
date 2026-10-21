@@ -344,7 +344,7 @@ public:
    * @brief Validate.
    */
   void
-  validate() const;
+  validate() const override;
 
   /**
    * @brief Generate the mesh.

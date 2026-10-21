@@ -30,14 +30,12 @@ struct MiscellaneousParameters : public ParameterBase
    * @brief Declare the parameters to be read from file.
    */
   static void
-  declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int              n_subsections = Numbers::default_subsections);
+  declare(dealii::ParameterHandler &parameter_handler);
   /**
    * @brief Assign the parameters from file.
    */
   void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections);
+  assign(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Validate.

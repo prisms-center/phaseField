@@ -33,8 +33,7 @@ TemporalDiscretization::TemporalDiscretization(double _dt,
 }
 
 void
-TemporalDiscretization::declare(dealii::ParameterHandler &parameter_handler,
-                                unsigned int              n_subsections)
+TemporalDiscretization::declare(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.declare_entry("final increment",
                                   "0",
@@ -89,8 +88,7 @@ TemporalDiscretization::declare(dealii::ParameterHandler &parameter_handler,
 }
 
 void
-TemporalDiscretization::assign(dealii::ParameterHandler &parameter_handler,
-                               unsigned int              n_subsections)
+TemporalDiscretization::assign(dealii::ParameterHandler &parameter_handler)
 {
   n_increments      = (unsigned int) parameter_handler.get_integer("final increment");
   dt                = parameter_handler.get_double("time step");

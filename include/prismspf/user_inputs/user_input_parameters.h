@@ -59,19 +59,19 @@ struct UserInputParameters : public ParameterBase
           unsigned int              n_subsections = Numbers::default_subsections) const
   {
     SpatialDiscretization<dim>::declare(parameter_handler, n_subsections);
-    TemporalDiscretization::declare(parameter_handler, n_subsections);
+    TemporalDiscretization::declare(parameter_handler);
     BoundaryParameters::declare(parameter_handler, n_subsections);
 
     LinearSolveParameters::declare(parameter_handler, n_subsections);
     NonlinearSolveParameters::declare(parameter_handler, n_subsections);
 
-    FieldOutputParameters::declare(parameter_handler, n_subsections);
-    RestartOutputParameters::declare(parameter_handler, n_subsections);
+    FieldOutputParameters::declare(parameter_handler);
+    RestartOutputParameters::declare(parameter_handler);
     FieldInputParameters::declare(parameter_handler, n_subsections);
 
-    MiscellaneousParameters::declare(parameter_handler, n_subsections);
-    NucleationParameters::declare(parameter_handler, n_subsections);
-    GrainReassignmentParameters::declare(parameter_handler, n_subsections);
+    MiscellaneousParameters::declare(parameter_handler);
+    NucleationParameters::declare(parameter_handler);
+    GrainReassignmentParameters::declare(parameter_handler);
 
     user_constants.declare_parameters(parameter_handler);
   };
@@ -84,7 +84,7 @@ struct UserInputParameters : public ParameterBase
          unsigned int              n_subsections = Numbers::default_subsections)
   {
     spatial_discretization.assign(parameter_handler, n_subsections);
-    temporal_discretization.assign(parameter_handler, n_subsections);
+    temporal_discretization.assign(parameter_handler);
     boundary_parameters.assign<dim>(parameter_handler, n_subsections);
 
     linear_solve_parameters.assign(parameter_handler, n_subsections);
@@ -92,13 +92,13 @@ struct UserInputParameters : public ParameterBase
 
     const auto n_increments = temporal_discretization.n_increments;
 
-    output_parameters.assign(parameter_handler, n_increments, n_subsections);
-    restart_parameters.assign(parameter_handler, n_increments, n_subsections);
+    output_parameters.assign(parameter_handler, n_increments);
+    restart_parameters.assign(parameter_handler, n_increments);
     input_parameters.assign(parameter_handler, n_subsections);
 
-    misc_parameters.assign(parameter_handler, n_subsections);
-    nucleation_parameters.assign(parameter_handler, n_subsections);
-    grain_reassignment_parameters.assign(parameter_handler, n_subsections);
+    misc_parameters.assign(parameter_handler);
+    nucleation_parameters.assign(parameter_handler);
+    grain_reassignment_parameters.assign(parameter_handler);
 
     user_constants.assign_parameters(parameter_handler);
   };

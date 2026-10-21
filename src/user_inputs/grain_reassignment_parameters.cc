@@ -8,8 +8,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-GrainReassignmentParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                     unsigned int              n_subsections)
+GrainReassignmentParameters::declare(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.declare_entry("use grain reassignment",
                                   "false",
@@ -56,8 +55,7 @@ GrainReassignmentParameters::declare(dealii::ParameterHandler &parameter_handler
 }
 
 void
-GrainReassignmentParameters::assign(dealii::ParameterHandler &parameter_handler,
-                                    unsigned int              n_subsections)
+GrainReassignmentParameters::assign(dealii::ParameterHandler &parameter_handler)
 {
   grain_reassignment_active = parameter_handler.get_bool("use grain reassignment");
 
@@ -77,9 +75,7 @@ GrainReassignmentParameters::assign(dealii::ParameterHandler &parameter_handler,
 }
 
 void
-GrainReassignmentParameters::validate(
-  const std::vector<FieldAttributes> &field_attributes,
-  const std::vector<SolveBlock>      &solve_blocks) const
+GrainReassignmentParameters::validate() const
 {
   // TODO: Do this later
 }

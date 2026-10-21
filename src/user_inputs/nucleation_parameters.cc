@@ -8,8 +8,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-NucleationParameters::declare(dealii::ParameterHandler &parameter_handler,
-                              unsigned int              n_subsections)
+NucleationParameters::declare(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.enter_subsection("nucleation");
   {
@@ -76,8 +75,7 @@ NucleationParameters::declare(dealii::ParameterHandler &parameter_handler,
 }
 
 void
-NucleationParameters::assign(dealii::ParameterHandler &parameter_handler,
-                             unsigned int              n_subsections)
+NucleationParameters::assign(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.enter_subsection("nucleation");
   {
