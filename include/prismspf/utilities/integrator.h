@@ -13,6 +13,8 @@
 
 #include <prismspf/config.h>
 
+#include "prismspf/core/type_enums.h"
+
 #include <functional>
 #include <tuple>
 #include <utility>
@@ -101,9 +103,9 @@ public:
 
     (solution_vectors.update_ghost_values(), ...);
 
-    static const auto &quadrature = SystemWide<dim, degree>::quadrature;
+    const auto &quadrature = SystemWide<dim, degree>::quadrature;
 
-    static dealii::FEValues<dim> fe_values(dof_handler.get_fe(),
+    static dealii::FEValues<dim> fe_values(SystemWide<dim, degree>::fe_systems[Scalar],
                                            quadrature,
                                            dealii::update_values |
                                              dealii::update_JxW_values);
@@ -145,6 +147,21 @@ public:
       }
 
     return dealii::Utilities::MPI::sum(value, MPI_COMM_WORLD);
+  }
+
+  /**
+   * @brief Integrate function(u1(x),u2(x),...,un(x)) for scalar fields.
+   * alias of integrate_function.
+   */
+  template <typename Function, typename... SolutionVectors>
+  static number
+  integrate_scalar_function(const dealii::DoFHandler<dim> &dof_handler,
+                            Function                     &&function,
+                            const SolutionVectors &...solution_vectors)
+  {
+    return integrate_function(dof_handler,
+                              std::forward<Function>(function),
+                              solution_vectors...);
   }
 };
 
