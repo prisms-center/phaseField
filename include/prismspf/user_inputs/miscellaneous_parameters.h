@@ -42,6 +42,13 @@ struct MiscellaneousParameters : public ParameterBase
    */
   void
   validate() const;
+
+  /**
+   * @brief Serialize to JSON
+   */
+  [[nodiscard]] boost::json::object
+  serialize() const override;
+
   /**
    * @brief Set the random seed and initialize the RNG.
    *

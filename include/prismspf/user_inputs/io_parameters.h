@@ -137,6 +137,12 @@ struct FieldOutputParameters : public ParameterBase
   validate() const;
 
   /**
+   * @brief Serialize to JSON
+   */
+  [[nodiscard]] boost::json::object
+  serialize() const override;
+
+  /**
    * @brief VTK output types.
    */
   enum OutputType

@@ -137,6 +137,13 @@ FieldOutputParameters::validate() const
   // TODO: Do this later
 }
 
+boost::json::object
+FieldOutputParameters::serialize() const
+{
+  boost::json::object obj;
+  return obj;
+}
+
 bool
 FieldOutputParameters::should_output(unsigned int increment) const
 {

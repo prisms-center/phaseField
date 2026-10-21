@@ -115,6 +115,13 @@ BoundaryParameters::validate() const
   // TODO: Do this later
 }
 
+boost::json::object
+BoundaryParameters::serialize() const
+{
+  boost::json::object obj;
+  return obj;
+}
+
 #include "user_inputs/constraint_parameters.inst"
 
 PRISMS_PF_END_NAMESPACE

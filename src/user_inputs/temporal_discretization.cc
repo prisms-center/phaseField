@@ -112,4 +112,11 @@ TemporalDiscretization::validate() const
                 "Time step must be greater than 0 for transient problems."));
 }
 
+boost::json::object
+TemporalDiscretization::serialize() const
+{
+  boost::json::object obj;
+  return obj;
+}
+
 PRISMS_PF_END_NAMESPACE

@@ -347,6 +347,12 @@ public:
   validate() const override;
 
   /**
+   * @brief Serialize to JSON
+   */
+  [[nodiscard]] boost::json::object
+  serialize() const override;
+
+  /**
    * @brief Generate the mesh.
    */
   void

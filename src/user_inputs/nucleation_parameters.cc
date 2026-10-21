@@ -103,6 +103,13 @@ NucleationParameters::validate() const
   // TODO: Do this later
 }
 
+boost::json::object
+NucleationParameters::serialize() const
+{
+  boost::json::object obj;
+  return obj;
+}
+
 bool
 NucleationParameters::should_attempt_nucleation(unsigned int increment) const
 {

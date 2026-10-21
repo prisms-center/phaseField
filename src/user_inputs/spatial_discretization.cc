@@ -548,6 +548,14 @@ SpatialDiscretization<dim>::validate() const
 }
 
 template <unsigned int dim>
+boost::json::object
+SpatialDiscretization<dim>::serialize() const
+{
+  boost::json::object obj;
+  return obj;
+}
+
+template <unsigned int dim>
 const Mesh<dim> &
 SpatialDiscretization<dim>::get_mesh() const
 {

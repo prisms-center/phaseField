@@ -323,8 +323,8 @@ struct ParameterBase
   /**
    * @brief Serialize the parameters to file.
    */
-  virtual boost::json::value
-  serialize()
+  [[nodiscard]] virtual boost::json::object
+  serialize() const
   {
     return {};
   }
