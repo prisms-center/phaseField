@@ -192,7 +192,7 @@ private:
         Vapp = V_guess;
 
         Logger::instance() << LogFormatter::info("Applied voltage (Vapp): ") << Vapp
-                           << ", |dV|: " << std::abs(dV) << ", niter:" << i << "\n";
+                           << ", |dV|: " << std::abs(dV) << ", niter:" << i + 1 << "\n";
       }
   }
 };
