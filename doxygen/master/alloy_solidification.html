@@ -124,10 +124,10 @@ $(function(){initNavTree('alloy_solidification.html',''); initResizable(true); }
   <div class="headertitle"><div class="title">alloy_solidification</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md14"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md21"></a>
 PRISMS-PF: Alloy Solidification</h1>
 <p>This example application [1] implements a simple model to simulate the directional solidification of a binary alloy A-B in the dilute limit with component B acting as a solute in a matrix of A. The implemented model was introduced by Echebarria et al. [2] in 2004. In this model, latent heat is assumed to diffuse much faster than impurities and, therefore, the temperature field is considered to be fixed by external conditions. In the default settings of the application, the simulation starts with a circular solid in the corner of an elongated system which evolves as a system is cooled under a uniform thermal gradient and constant cooling rate. As this seed grows, three variables are tracked: an order parameter, $\phi$, that denotes whether the material is a liquid ($\phi=-1$) or solid ($\phi=1$), a dimensionless supersaturation, $U$, and an auxiliary term, $\xi$. In addition, a solute concentration variable, $c$, is calculated during post-processing and outputted along with the aforementioned variables.</p>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 Model</h2>
 <p>Consider a free energy expression given by:</p>
 <p>$$ \begin{equation} \mathcal{F}[\phi,c,T]= \int_{\Omega} \left[\frac{\sigma}{2}|\nabla \phi|^2 +f(\phi, T_m) + f_{AB}(\phi, c, T) \right] ~dV, \end{equation} $$</p>
@@ -149,7 +149,7 @@ Model</h2>
 <p>where</p>
 <p>$$ \begin{equation} u(c,\phi) = \ln \left( \frac{2c}{c_l^0[1+k-(1-k)\phi]}\right). \end{equation} $$</p>
 <p>The constant $c_l^0$, is the equilibrium liquidus concentration at reference temperature, $T_0$. We define it as $c_l^0 = c_\infty /k$, where $c_\infty$ is the concentration of the liquid far from the solid-liquid interface (equal to the average concentration of the alloy). Thus, the reference temperature is given by $T_0=T_m - |m|c_l^0 =T_m-|m|c_\infty/k$.</p>
-<h2><a class="anchor" id="autotoc_md16"></a>
+<h2><a class="anchor" id="autotoc_md23"></a>
 Governing Equations</h2>
 <p>After nondimensionalization (see Ref. [2] for derivation), the governing equations (in 2D) for $\phi$ and $U$ are given by</p>
 <p>$$ \begin{equation} \tau_\phi\frac{\partial \phi}{\partial t} = \xi(\phi,U) \end{equation} $$</p>
@@ -182,7 +182,7 @@ Governing Equations</h2>
 <p>See Appendix for details.</p>
 <p>Also, the second and third terms on the right-hand side can be expressed using a divergence operator, allowing them to be grouped with the first term, which will simplify matters later. Carrying out these transformations yields:</p>
 <p>$$ \begin{align} \xi = &amp; \nabla \cdot \left[ \left(a_s^2(\theta) \frac{\partial \phi}{\partial x} + \epsilon_m m a_s(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial y}\right)\hat{x} \right.\ &amp; \left . + \left(a_s^2(\theta) \frac{\partial \phi}{\partial y} - \epsilon_m m a_s(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial x}\right)\hat{y}\right]\ &amp;+ \phi-\phi^3 - \lambda{(1-\phi^2)}^2 \left[ U + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right]. \end{align} $$</p>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<h2><a class="anchor" id="autotoc_md24"></a>
 Model Constants</h2>
 <ul>
 <li>$\epsilon$: Strength of the anisotropy ($\epsilon_4$ for a solid with fourfold anisotropy)</li>
@@ -196,14 +196,14 @@ Model Constants</h2>
 <li>$U_{\text{off}}$: Undercooling offset that determines the initial temperature at the interface ($U_{\text{off}}=0$ sets it to the solidus temperature, $U_{\text{off}}=1$ sets it to the liquidus temperature).</li>
 <li>$\tilde{y}_0$: Initial solid-liquid interface position relative to the bottom of the system ($\tilde{y}=0$)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<h2><a class="anchor" id="autotoc_md25"></a>
 Time Discretization</h2>
 <p>Considering forward Euler explicit time stepping, we have the time-discretized kinetics equations:</p>
 <p>$$ \begin{equation} \phi^{n}=\phi^{n-1} + \frac{\xi^{n-1}}{\tau_\phi}\Delta t, \end{equation} $$</p>
 <p>$$ \begin{align} U^{n}=U^{n-1}+\frac{\Delta t}{\tau_U}\left[\nabla \cdot \left( \tilde{D}\frac{1-\phi^{n-1}}{2} \nabla U^{n-1} - \vec{\jmath}_{at}^{\ U} \right) + \frac{1}{2}[1+(1-k)U^{n-1}]\frac{\xi^{n-1}}{\tau_\phi} \right], \end{align} $$</p>
 <p>and</p>
 <p>$$ \begin{align} \xi^{n} = &amp; \nabla \cdot \left[ \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial x} + \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x} \right.\ &amp; \left . + \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial y} - \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right)\hat{y}\right]\ &amp; +\phi^n-{(\phi^n)}^3 - \lambda {\left[1-{(\phi^n)}^2\right]}^2 \left[ U^n + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right]. \end{align} $$</p>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md26"></a>
 Weak Formulation</h2>
 <p>The weak formulation is obtained by multiplying the time-discretized equations by test function, $\omega$, and integrating over the volume, $\Omega$. For $\phi$ we get</p>
 <p>$$ \begin{align} \int_{\Omega} \omega \phi^{n} ~dV = \int_{\Omega} \omega \left(\phi^{n-1} + \frac{ \xi^{n-1}}{\tau_\phi}\Delta t\right) ~dV. \end{align} $$</p>
@@ -222,11 +222,11 @@ Weak Formulation</h2>
 <p>$$ \begin{equation} r_\xi= \phi^n-(\phi^n)^3 - \lambda \left[1-(\phi^n)^2\right]^2 \left[ U^n + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right] \end{equation} $$</p>
 <p>$$ \begin{equation} \begin{split} r_{\xi x}= &amp;-\left[a_s^2(\theta^n) \frac{\partial \phi^n}{\partial x} + \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right]\hat{x}\ &amp;-\left[a_s^2(\theta^n) \frac{\partial \phi^n}{\partial y} - \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right]\hat{y} \end{split} \end{equation} $$</p>
 <p>The above values of $r_{\phi}$, $r_{U}$, $r_{Ux}$, $r_{\xi}$ and $r_{\xi x}$ are used to define the residuals in the following parameters file: <code>applications/alloy_solification/equations.cc</code></p>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md27"></a>
 References</h2>
 <p>[1] Developed by Zhenjie Yao, Department of Material Science and Engineering, University of Michigan (2021).</p>
 <p>[2] B. Echebarria, R. Folch, A. Karma, and M. Plapp, Quantitative phase-field model of alloy solidification, <em>Phys. Rev. E</em> <b>70</b>, 061604 (2004).</p>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 Appendix</h2>
 <p>First, we express $\theta$ as a function of the gradient components:</p>
 <p>$$ \begin{equation} \theta = \arctan\left( \frac{\phi_y}{\phi_x} \right) \end{equation} $$</p>

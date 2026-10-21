@@ -124,16 +124,16 @@ $(function(){initNavTree('laplace.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">laplace</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md0"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md29"></a>
 PRISMS-PF: Laplace's Equation</h1>
 <p>This example application solves <a href="https://en.wikipedia.org/wiki/Laplace%27s_equation">Laplace's equation</a> with Dirichlet boundary values.</p>
 <p>$$ \begin{align} \nabla\cdot\nabla u_{\Omega} = 0 \ u_{\partial \Omega} = \Gamma_D \end{align} $$</p>
 <p>where $\Gamma_D$ are the Dirichlet boundary values.</p>
-<h2><a class="anchor" id="autotoc_md1"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 Governing equations</h2>
 <p>In the weak form (and multiplying by -1), we have</p>
 <p>$$ \begin{align} \int_{\Omega} \nabla w \cdot \nabla u ~dV = \int_{\Omega}0~dV \end{align} $$</p>
-<h2><a class="anchor" id="autotoc_md2"></a>
+<h2><a class="anchor" id="autotoc_md31"></a>
 Expressions</h2>
 <p>In PRISMS-PF, linear equations are solved provided expressions for the left and right hand side of equations of the form $Ax=b$. From the weak form, we find</p>
 <p>$$ \begin{align} r_{ux}^{LHS} = \nabla u^* \end{align} $$</p>

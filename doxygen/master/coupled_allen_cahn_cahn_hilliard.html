@@ -124,17 +124,17 @@ $(function(){initNavTree('coupled_allen_cahn_cahn_hilliard.html',''); initResiza
   <div class="headertitle"><div class="title">coupled_allen_cahn_cahn_hilliard</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md0"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md2"></a>
 PRISMS PhaseField: Coupled Cahn-Hilliard and Allen-Cahn Dynamics</h1>
 <p>Consider a free energy expression of the form:</p>
 <p>$$ \begin{equation} \Pi(c, \eta, \nabla \eta) = \int_{\Omega} \left( f_{\alpha}(1-H) + f_{\beta}H \right) + \frac{\kappa}{2} \nabla \eta \cdot \nabla \eta ~dV \end{equation} $$</p>
 <p>where $f_{\alpha}$ and $f_{\beta}$ are the free energy densities corresponding to $\alpha$ and $\beta$ phases, respectively, and are functions of composition $c$. $H$ is a function of the structural order parameter $\eta$. Note that we don't have the gradient terms for the composition, i.e, $\nabla c$ terms, unlike classical Cahn-Hillard formulation.</p>
-<h2><a class="anchor" id="autotoc_md1"></a>
+<h2><a class="anchor" id="autotoc_md3"></a>
 Variational treatment</h2>
 <p>Following standard variational arguments (see Cahn-Hilliard formulation), we obtain the chemical potentials:</p>
 <p>$$ \begin{align} \mu_{c} &amp;= (f_{\alpha,c}(1-H)+f_{\beta,c}H) \end{align} $$</p>
 <p>$$ \begin{align} \mu_{\eta} &amp;= (f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \nabla^2 \eta \end{align} $$</p>
-<h2><a class="anchor" id="autotoc_md2"></a>
+<h2><a class="anchor" id="autotoc_md4"></a>
 Kinetics</h2>
 <p>Now the PDE for Cahn-Hilliard dynamics is given by:</p>
 <p>$$ \begin{align} \frac{\partial c}{\partial t} &amp;= -~\nabla \cdot (-M_c\nabla \mu_c) \end{align} $$</p>
@@ -143,12 +143,12 @@ Kinetics</h2>
 <p>$$ \begin{align} \frac{\partial \eta}{\partial t} &amp;= -M_\eta \mu_\eta \end{align} $$</p>
 <p>$$ \begin{align} &amp;=-M_\eta ~ ((f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \nabla^2 \eta) \end{align} $$</p>
 <p>where $M_c$ and $M_\eta$ are the constant mobilities.</p>
-<h2><a class="anchor" id="autotoc_md3"></a>
+<h2><a class="anchor" id="autotoc_md5"></a>
 Time discretization</h2>
 <p>Considering forward Euler explicit time stepping, we have the time discretized kinetics equation:</p>
 <p>$$ \begin{align} \eta^{n} &amp;= \eta^{n-1} - \Delta t M_{\eta}~ ((f_{\beta,c}^{n-1}-f_{\alpha,c}^{n-1})H_{,\eta}^{n-1} - \kappa \nabla^2 \eta^{n-1}) \end{align} $$</p>
 <p>$$ \begin{align} c^{n} &amp;= c^{n-1} + \Delta t M_{\eta}~\nabla \cdot (\nabla (f_{\alpha,c}^{n-1}(1-H^{n-1})+f_{\beta,c}^n H^{n-1})) \end{align} $$</p>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h2><a class="anchor" id="autotoc_md6"></a>
 Weak formulation</h2>
 <p>In the weak formulation, considering an arbitrary variation $w$, the above equations can be expressed as residual equations:</p>
 <p>$$ \begin{align} \int_{\Omega} w \eta^{n} ~dV &amp;= \int_{\Omega} w \eta^{n-1} - w \Delta t M_{\eta}~ ((f_{\beta,c}^{n-1}-f_{\alpha,c}^{n-1})H_{,\eta}^{n-1} - \kappa \nabla^2 \eta^{n-1}) ~dV \end{align} $$</p>

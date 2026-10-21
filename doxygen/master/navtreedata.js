@@ -36,24 +36,25 @@ var NAVTREE =
     ] ],
     [ "Parameters", "parameters.html", null ],
     [ "Applications", "applications.html", [
-      [ "mechanics_plane_stress", "\ref mechanics_plane_stress", null ],
-      [ "mechanics_boundary_value_problem", "\ref mechanics_boundary_value_problem", null ],
-      [ "mechanics_plane_strain", "\ref mechanics_plane_strain", null ],
-      [ "mechanics_eshelby_inclusion", "\ref mechanics_eshelby_inclusion", null ],
-      [ "pfhub_benchmarks_1_a", "\ref pfhub_benchmarks_1_a", null ],
-      [ "pfhub_benchmarks_2_b", "\ref pfhub_benchmarks_2_b", null ],
-      [ "pfhub_benchmarks_6_a", "\ref pfhub_benchmarks_6_a", null ],
+      [ "coupled_allen_cahn_cahn_hilliard", "coupled_allen_cahn_cahn_hilliard.html", null ],
+      [ "nucleation", "nucleation.html", null ],
+      [ "alloy_solidification", "alloy_solidification.html", null ],
+      [ "laplace", "laplace.html", null ],
+      [ "allen_cahn_reaction", "allen_cahn_reaction.html", null ],
+      [ "cahn_hilliard_implicit", "cahn_hilliard_implicit.html", null ],
+      [ "cahn_hilliard_explicit", "cahn_hilliard_explicit.html", null ],
+      [ "blank", "\ref blank", null ],
       [ "pfhub_benchmarks_7_a_explicit", "\ref pfhub_benchmarks_7_a_explicit", null ],
-      [ "alloy_solidification", "\ref alloy_solidification", null ],
-      [ "laplace", "\ref laplace", null ],
+      [ "pfhub_benchmarks_2_b", "\ref pfhub_benchmarks_2_b", null ],
+      [ "pfhub_benchmarks_1_a", "\ref pfhub_benchmarks_1_a", null ],
+      [ "pfhub_benchmarks_6_a", "\ref pfhub_benchmarks_6_a", null ],
       [ "grain_growth", "\ref grain_growth", null ],
       [ "allen_cahn_implicit", "\ref allen_cahn_implicit", null ],
       [ "allen_cahn_explicit", "\ref allen_cahn_explicit", null ],
-      [ "blank", "\ref blank", null ],
-      [ "cahn_hilliard_implicit", "\ref cahn_hilliard_implicit", null ],
-      [ "cahn_hilliard_explicit", "\ref cahn_hilliard_explicit", null ],
-      [ "nucleation", "\ref nucleation", null ],
-      [ "coupled_allen_cahn_cahn_hilliard", "\ref coupled_allen_cahn_cahn_hilliard", null ]
+      [ "mechanics_plane_strain", "\ref mechanics_plane_strain", null ],
+      [ "mechanics_eshelby_inclusion", "\ref mechanics_eshelby_inclusion", null ],
+      [ "mechanics_boundary_value_problem", "\ref mechanics_boundary_value_problem", null ],
+      [ "mechanics_plane_stress", "\ref mechanics_plane_stress", null ]
     ] ],
     [ "Contact", "contact.html", null ],
     [ "Namespaces", "namespaces.html", [
@@ -98,11 +99,11 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "\ref allen_cahn_explicit",
-"classGroupSolutionHandler.html#aa7130555a45e186bcaf5cd319a877fe9",
-"classNucleationManager.html#a720ecdfc7c7de043a2ddfebb2afa83bc",
-"classTerminalColor.html#a29ac20b1698b4854078c5ff9f1acd0fc",
-"functions_rela.html",
-"spatial__discretization_8cc.html",
+"classGroupSolutionHandler.html#aad59e8680a215f2a182a79cc4e014c82",
+"classNucleationManager.html#aa9cad1ef245a6e38a738ca90f3d97f26",
+"classTerminalColor.html#a2f8c79b0d150d154e4d8a36a773745f6",
+"functions_s.html",
+"source.html",
 "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html#aef5534cbc948f0ccd67806e4a62d9a7f"
 ];
 

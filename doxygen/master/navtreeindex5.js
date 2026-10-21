@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"source.html":[1,1],
 "spatial__discretization_8cc.html":[9,0,2,3,6],
 "spatial__discretization_8h.html":[9,0,1,0,5,7],
 "spatial__discretization_8h.html#a1655d11fc528cdc7b7b73d9e16185eaf":[9,0,1,0,5,7,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html":[6,0,4,0,0],
 "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html":[8,0,0,0,0],
 "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html#a8571a74b17bf0f67b46b158c5ce871c2":[6,0,4,0,0,1],
-"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html#a8571a74b17bf0f67b46b158c5ce871c2":[8,0,0,0,0,1],
-"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html#aef5534cbc948f0ccd67806e4a62d9a7f":[6,0,4,0,0,0]
+"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html#a8571a74b17bf0f67b46b158c5ce871c2":[8,0,0,0,0,1]
 };

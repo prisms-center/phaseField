@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"functions_rela.html":[8,3,6],
 "functions_s.html":[8,3,0,17],
 "functions_t.html":[8,3,0,18],
 "functions_type.html":[8,3,3],
@@ -85,6 +84,7 @@ var NAVTREEINDEX4 =
 "io__parameters_8h.html#ae7378b9f6e68cf0d61f4fea3e9a5dddd":[9,0,1,0,5,2,4],
 "io__parameters_8h.html#af3fd6c855e9a1deb14b023ad3e102226":[9,0,1,0,5,2,7],
 "io__parameters_8h_source.html":[9,0,1,0,5,2],
+"laplace.html":[4,3],
 "linear__solver_8h.html":[9,0,1,0,4,2],
 "linear__solver_8h_source.html":[9,0,1,0,4,2],
 "logger_8cc.html":[9,0,2,4,1],
@@ -167,6 +167,7 @@ var NAVTREEINDEX4 =
 "namespacestd.html#af30f66fa919ee4207f875331acaaf1e5":[6,0,5,4],
 "newton__solver_8h.html":[9,0,1,0,4,4],
 "newton__solver_8h_source.html":[9,0,1,0,4,4],
+"nucleation.html":[4,1],
 "nucleation__manager_8h.html":[9,0,1,0,3,0],
 "nucleation__manager_8h_source.html":[9,0,1,0,3,0],
 "nucleation__parameters_8cc.html":[9,0,2,3,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "solver__base_8h_source.html":[9,0,1,0,4,6],
 "solvers_8cc.html":[9,0,2,2,2],
 "solvers_8h.html":[9,0,1,0,4,7],
-"solvers_8h_source.html":[9,0,1,0,4,7],
-"source.html":[1,1]
+"solvers_8h_source.html":[9,0,1,0,4,7]
 };
