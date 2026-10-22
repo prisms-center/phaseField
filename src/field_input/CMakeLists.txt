@@ -1,5 +1,5 @@
 # Manually specify files to be included
-set(_sources)
+set(_sources ${PROJECT_SOURCE_DIR}/src/field_input/read_vtk_metadata.cc)
 
 set(
   _headers
@@ -7,6 +7,7 @@ set(
   ${PROJECT_SOURCE_DIR}/include/prismspf/field_input/read_field_base.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/field_input/read_field_factory.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/field_input/read_vtk.h
+  ${PROJECT_SOURCE_DIR}/include/prismspf/field_input/read_vtk_metadata.h
 )
 
 set(_inst_bases)

@@ -376,6 +376,16 @@ struct FieldInputParameters : public ParameterBase
    */
   bool load_from_file = false;
 
+  /**
+   * @brief Whether to read simulated time and increment metadata (TIME/CYCLE) from the
+   * initial condition file, if present, and use it to override the start time and
+   * initial increment. Only supported for the legacy VTK ("vtk") input format. All
+   * initial condition files for a given restart are assumed to share the same
+   * TIME/CYCLE metadata, since they originate from the same output step -- only the
+   * first VTK-format entry is consulted.
+   */
+  bool read_time_from_file = false;
+
   // Collection of initial condition files
   std::vector<InitialConditionFile> initial_condition_files;
 };

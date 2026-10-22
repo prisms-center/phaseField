@@ -301,6 +301,14 @@ FieldInputParameters::declare(dealii::ParameterHandler &parameter_handler,
                                   "false",
                                   dealii::Patterns::Bool(),
                                   "Whether to read any initial conditions from file.");
+
+  parameter_handler.declare_entry(
+    "read time from file",
+    "false",
+    dealii::Patterns::Bool(),
+    "Whether to read simulated time and increment metadata (TIME/CYCLE) from the "
+    "initial condition file, if present, and use it to override the start time and "
+    "initial increment. Only supported for the legacy VTK ('vtk') input format.");
 }
 
 void
@@ -362,7 +370,8 @@ FieldInputParameters::assign(dealii::ParameterHandler &parameter_handler,
       parameter_handler.leave_subsection();
     }
 
-  load_from_file = parameter_handler.get_bool("read initial conditions from file");
+  load_from_file      = parameter_handler.get_bool("read initial conditions from file");
+  read_time_from_file = parameter_handler.get_bool("read time from file");
 }
 
 void
