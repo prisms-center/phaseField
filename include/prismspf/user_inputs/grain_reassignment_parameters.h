@@ -43,12 +43,6 @@ struct GrainReassignmentParameters : public ParameterBase
   validate() const;
 
   /**
-   * @brief Serialize to JSON
-   */
-  [[nodiscard]] boost::json::object
-  serialize() const override;
-
-  /**
    * @brief Whether a given increment should attempt nucleation.
    */
   [[nodiscard]] bool

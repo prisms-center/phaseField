@@ -101,12 +101,6 @@ struct BoundaryParameters : public ParameterBase
   void
   validate() const;
 
-  /**
-   * @brief Serialize to JSON
-   */
-  [[nodiscard]] boost::json::object
-  serialize() const override;
-
   // Map of boundary conditions. The first key is the field name.
   std::unordered_map<std::string, BoundaryConditionSet> boundary_condition_list;
 };

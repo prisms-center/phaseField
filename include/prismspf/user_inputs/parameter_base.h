@@ -320,15 +320,6 @@ struct ParameterBase
   operator=(const ParameterBase &) = default;
   ParameterBase &
   operator=(ParameterBase &&) = default;
-
-  /**
-   * @brief Serialize the parameters to file.
-   */
-  [[nodiscard]] virtual boost::json::object
-  serialize() const
-  {
-    return {};
-  }
 };
 
 PRISMS_PF_END_NAMESPACE

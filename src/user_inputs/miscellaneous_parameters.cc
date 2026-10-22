@@ -37,13 +37,6 @@ MiscellaneousParameters::validate() const {
   // TODO: Do this later
 };
 
-boost::json::object
-MiscellaneousParameters::serialize() const
-{
-  boost::json::object obj;
-  return obj;
-}
-
 void
 MiscellaneousParameters::set_random_seed(const unsigned int &_random_seed)
 {

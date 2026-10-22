@@ -44,12 +44,6 @@ struct MiscellaneousParameters : public ParameterBase
   validate() const;
 
   /**
-   * @brief Serialize to JSON
-   */
-  [[nodiscard]] boost::json::object
-  serialize() const override;
-
-  /**
    * @brief Set the random seed and initialize the RNG.
    *
    * NOTE: When using this method to set the RNG, the MPI process number is added to the

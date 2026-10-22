@@ -55,12 +55,6 @@ struct TemporalDiscretization : public ParameterBase
   void
   validate() const;
 
-  /**
-   * @brief Serialize to JSON
-   */
-  [[nodiscard]] boost::json::object
-  serialize() const override;
-
   // Timestep
   double dt = 1.0;
 

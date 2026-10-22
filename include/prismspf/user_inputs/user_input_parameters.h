@@ -127,25 +127,6 @@ struct UserInputParameters : public ParameterBase
     grain_reassignment_parameters.validate();
   }
 
-  /**
-   * @brief Serialize to JSON
-   */
-  [[nodiscard]] boost::json::object
-  serialize() const override
-  {
-    boost::json::object obj;
-    obj["spatial_discretization"]        = spatial_discretization.serialize();
-    obj["temporal_discretization"]       = temporal_discretization.serialize();
-    obj["boundary_parameters"]           = boundary_parameters.serialize();
-    obj["output_parameters"]             = output_parameters.serialize();
-    obj["restart_parameters"]            = restart_parameters.serialize();
-    obj["input_parameters"]              = input_parameters.serialize();
-    obj["misc_parameters"]               = misc_parameters.serialize();
-    obj["nucleation_parameters"]         = nucleation_parameters.serialize();
-    obj["grain_reassignment_parameters"] = grain_reassignment_parameters.serialize();
-    return obj;
-  }
-
   SpatialDiscretization<dim> spatial_discretization;
   TemporalDiscretization     temporal_discretization;
   BoundaryParameters         boundary_parameters;
@@ -179,6 +160,9 @@ tag_invoke(boost::json::value_from_tag,
   jv = {
     {"temporal_discretization",       boost::json::value_from(params.temporal_discretization)},
     {"boundary_parameters",           boost::json::value_from(params.boundary_parameters)    },
+    {"linear_solve_parameters",       boost::json::value_from(params.linear_solve_parameters)},
+    {"nonlinear_solve_parameters",
+     boost::json::value_from(params.nonlinear_solve_parameters)                              },
     {"output_parameters",             boost::json::value_from(params.output_parameters)      },
     {"restart_parameters",            boost::json::value_from(params.restart_parameters)     },
     {"input_parameters",              boost::json::value_from(params.input_parameters)       },

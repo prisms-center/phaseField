@@ -17,6 +17,32 @@
 
 #include <map>
 
+namespace dealii
+{
+  // TODO: skipping some enums
+  BOOST_DESCRIBE_STRUCT(PreconditionChebyshev<>::AdditionalData,
+                        (),
+                        (degree,
+                         smoothing_range,
+                         eig_cg_n_iterations,
+                         eig_cg_residual,
+                         max_eigenvalue,
+                         safety_factor));
+  BOOST_DESCRIBE_STRUCT(SolverRichardson<>::AdditionalData,
+                        (),
+                        (omega, use_preconditioned_residual));
+  BOOST_DESCRIBE_STRUCT(SolverGMRES<>::AdditionalData,
+                        (),
+                        (max_basis_size,
+                         right_preconditioning,
+                         use_default_residual,
+                         force_re_orthogonalization,
+                         batched_mode));
+  BOOST_DESCRIBE_STRUCT(SolverBicgstab<>::AdditionalData,
+                        (),
+                        (exact_residual, breakdown));
+} // namespace dealii
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**

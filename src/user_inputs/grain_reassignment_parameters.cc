@@ -80,13 +80,6 @@ GrainReassignmentParameters::validate() const
   // TODO: Do this later
 }
 
-boost::json::object
-GrainReassignmentParameters::serialize() const
-{
-  boost::json::object obj;
-  return obj;
-}
-
 bool
 GrainReassignmentParameters::should_perform_grain_reassignment(
   unsigned int increment) const
