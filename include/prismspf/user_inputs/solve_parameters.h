@@ -20,6 +20,8 @@
 namespace dealii
 {
   // TODO: skipping some enums
+  // TODO: the availability of some of these members depends on the deal.II version, so we
+  // need to check for that
   BOOST_DESCRIBE_STRUCT(PreconditionChebyshev<>::AdditionalData,
                         (),
                         (degree,
