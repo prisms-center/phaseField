@@ -5,6 +5,8 @@
 
 #include <deal.II/matrix_free/evaluation_flags.h>
 
+#include <boost/describe.hpp>
+
 #include <prismspf/core/dependencies.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
@@ -339,5 +341,17 @@ validate_solve_blocks(const std::vector<SolveBlock>      &solve_blocks,
     }
   return solve_blocks;
 }
+
+BOOST_DESCRIBE_ENUM(SolveTiming, Primary, Secondary, PostProcess, NucleationRate);
+BOOST_DESCRIBE_STRUCT(SolveBlock,
+                      (),
+                      (id,
+                       solve_type,
+                       solve_timing,
+                       field_indices,
+                       dependencies_rhs,
+                       dependencies_lhs,
+                       linear_solver_parameters,
+                       nonlinear_solver_parameters));
 
 PRISMS_PF_END_NAMESPACE

@@ -4,6 +4,9 @@
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/numbers.h>
 
+#include <boost/json.hpp>
+#include <boost/json/conversion.hpp>
+
 #include <prismspf/core/dependencies.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/problem.h>
@@ -223,6 +226,17 @@ Problem<dim, degree, number>::Problem(
              "Nonlinear solver parameters provided by user inputs for solve block " +
              std::to_string(remaining_nonlin_params.first) + " will be ignored!")
         << std::endl;
+    }
+
+  if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
+    {
+      boost::json::value problem_setup = {
+        {"fields",       boost::json::value_from(field_attributes)},
+        {"solve_blocks", boost::json::value_from(solve_blocks)    },
+        {"user_inputs",  boost::json::value_from(_user_inputs)    }
+      };
+      std::ofstream ofs(_user_inputs.output_parameters.folder + "/problem.json");
+      ofs << boost::json::serialize(problem_setup);
     }
 }
 
