@@ -29,7 +29,10 @@ namespace dealii
                          eig_cg_n_iterations,
                          eig_cg_residual,
                          max_eigenvalue,
-                         safety_factor));
+#if DEAL_II_VERSION_GTE(9, 8, 0)
+                         safety_factor
+#endif
+                         ));
   BOOST_DESCRIBE_STRUCT(SolverRichardson<>::AdditionalData,
                         (),
                         (omega, use_preconditioned_residual));
