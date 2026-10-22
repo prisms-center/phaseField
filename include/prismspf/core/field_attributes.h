@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <boost/describe.hpp>
+
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
@@ -107,5 +109,14 @@ field_map(const std::vector<FieldAttributes> &fields)
     }
   return map;
 }
+
+BOOST_DESCRIBE_STRUCT(FieldAttributes,
+                      (),
+                      (name,
+                       field_type,
+                       boundary_conditions,
+                       is_nucleation_rate_variable,
+                       nucleating_field_indices,
+                       grain_reassignment_block_id));
 
 PRISMS_PF_END_NAMESPACE

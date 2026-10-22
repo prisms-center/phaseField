@@ -41,22 +41,19 @@ struct TemporalDiscretization : public ParameterBase
    * @brief Declare the parameters to be read from file.
    */
   static void
-  declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int              n_subsections = Numbers::default_subsections);
+  declare(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Assign the parameters from file.
    */
   void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+  assign(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   // Timestep
   double dt = 1.0;
@@ -67,5 +64,7 @@ struct TemporalDiscretization : public ParameterBase
   // Total number of increments
   unsigned int n_increments = 0;
 };
+
+BOOST_DESCRIBE_STRUCT(TemporalDiscretization, (), (dt, initial_time, n_increments));
 
 PRISMS_PF_END_NAMESPACE

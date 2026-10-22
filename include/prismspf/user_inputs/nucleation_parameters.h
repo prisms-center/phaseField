@@ -30,22 +30,19 @@ struct NucleationParameters : public ParameterBase
    * @brief Declare the parameters to be read from file.
    */
   static void
-  declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int              n_subsections = Numbers::default_subsections);
+  declare(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Assign the parameters from file.
    */
   void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+  assign(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   /**
    * @brief Whether a given increment should attempt nucleation.
@@ -84,5 +81,15 @@ struct NucleationParameters : public ParameterBase
   // Seeding increments
   unsigned int seeding_increments = 1;
 };
+
+BOOST_DESCRIBE_STRUCT(NucleationParameters,
+                      (),
+                      (nucleation_period,
+                       pp_nucleation_rate_exists,
+                       nucleus_exclusion_distance,
+                       same_field_nucleus_exclusion_distance,
+                       refinement_radius,
+                       seeding_time,
+                       seeding_increments));
 
 PRISMS_PF_END_NAMESPACE

@@ -28,22 +28,19 @@ struct GrainReassignmentParameters : public ParameterBase
    * @brief Declare the parameters to be read from file.
    */
   static void
-  declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int              n_subsections = Numbers::default_subsections);
+  declare(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Assign the parameters from file.
    */
   void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+  assign(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   /**
    * @brief Whether a given increment should attempt nucleation.
@@ -66,5 +63,13 @@ struct GrainReassignmentParameters : public ParameterBase
   // The order parameter cutoff for identifying distinct grains
   double order_parameter_threshold = 0.01;
 };
+
+BOOST_DESCRIBE_STRUCT(GrainReassignmentParameters,
+                      (),
+                      (grain_reassignment_active,
+                       reassignment_period,
+                       load_grain_structure,
+                       exclusion_distance,
+                       order_parameter_threshold));
 
 PRISMS_PF_END_NAMESPACE

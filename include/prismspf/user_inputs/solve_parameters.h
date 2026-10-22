@@ -17,6 +17,37 @@
 
 #include <map>
 
+namespace dealii
+{
+  // TODO: skipping some enums
+  // TODO: the availability of some of these members depends on the deal.II version, so we
+  // need to check for that
+  BOOST_DESCRIBE_STRUCT(PreconditionChebyshev<>::AdditionalData,
+                        (),
+                        (degree,
+                         smoothing_range,
+                         eig_cg_n_iterations,
+                         eig_cg_residual,
+                         max_eigenvalue,
+#if DEAL_II_VERSION_GTE(9, 8, 0)
+                         safety_factor
+#endif
+                         ));
+  BOOST_DESCRIBE_STRUCT(SolverRichardson<>::AdditionalData,
+                        (),
+                        (omega, use_preconditioned_residual));
+  BOOST_DESCRIBE_STRUCT(SolverGMRES<>::AdditionalData,
+                        (),
+                        (max_basis_size,
+                         right_preconditioning,
+                         use_default_residual,
+                         force_re_orthogonalization,
+                         batched_mode));
+  BOOST_DESCRIBE_STRUCT(SolverBicgstab<>::AdditionalData,
+                        (),
+                        (exact_residual, breakdown));
+} // namespace dealii
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -36,14 +67,13 @@ struct LinearSolverParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   // Solver type. richardson|cg|bicgstab|gmres|fgmres|minres
   std::string solver_type = "cg";
@@ -122,14 +152,13 @@ struct LinearSolveParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   // Map of linear solve parameters for fields that require them
   std::map<unsigned int, LinearSolverParameters> linear_solvers;
@@ -152,14 +181,13 @@ struct NonlinearSolverParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   // Nonlinear step length
   double step_length = 1.0;
@@ -188,17 +216,34 @@ struct NonlinearSolveParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   // Map of nonlinear solve parameters for fields that require them
   std::map<Types::Index, NonlinearSolverParameters> nonlinear_solvers;
 };
+
+BOOST_DESCRIBE_STRUCT(LinearSolverParameters,
+                      (),
+                      (solver_type,
+                       tolerance,
+                       tolerance_type,
+                       max_iterations,
+                       mg_depth,
+                       preconditioner,
+                       chebyshev_parameters,
+                       richardson_parameters,
+                       bicgstab_parameters,
+                       gmres_parameters));
+BOOST_DESCRIBE_STRUCT(NonlinearSolverParameters,
+                      (),
+                      (step_length, max_iterations, tolerance_value));
+BOOST_DESCRIBE_STRUCT(LinearSolveParameters, (), (linear_solvers));
+BOOST_DESCRIBE_STRUCT(NonlinearSolveParameters, (), (nonlinear_solvers));
 
 PRISMS_PF_END_NAMESPACE

@@ -30,21 +30,19 @@ struct MiscellaneousParameters : public ParameterBase
    * @brief Declare the parameters to be read from file.
    */
   static void
-  declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int              n_subsections = Numbers::default_subsections);
+  declare(dealii::ParameterHandler &parameter_handler);
   /**
    * @brief Assign the parameters from file.
    */
   void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+  assign(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
+
   /**
    * @brief Set the random seed and initialize the RNG.
    *
@@ -64,5 +62,7 @@ struct MiscellaneousParameters : public ParameterBase
   // RNG
   mutable RNGEngine rng {random_seed};
 };
+
+BOOST_DESCRIBE_STRUCT(MiscellaneousParameters, (), (random_seed));
 
 PRISMS_PF_END_NAMESPACE
