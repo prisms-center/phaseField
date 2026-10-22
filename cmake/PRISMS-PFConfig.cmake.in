@@ -130,6 +130,19 @@ find_dependency(
   $ENV{DEAL_II_DIR}
 )
 
+# Boost.JSON
+if(NOT Boost_ROOT AND DEFINED ENV{BOOST_ROOT})
+  set(Boost_ROOT "$ENV{BOOST_ROOT}")
+endif()
+if(Boost_ROOT)
+  file(GLOB _boost_config_files "${Boost_ROOT}/lib/cmake/Boost-*/BoostConfig.cmake")
+  if(_boost_config_files)
+    list(GET _boost_config_files -1 _boost_config_file)
+    get_filename_component(Boost_DIR "${_boost_config_file}" DIRECTORY)
+  endif()
+endif()
+find_dependency(Boost CONFIG COMPONENTS json)
+
 # Caliper
 find_package(
   caliper
