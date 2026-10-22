@@ -111,4 +111,11 @@ struct BoundaryParameters : public ParameterBase
   std::unordered_map<std::string, BoundaryConditionSet> boundary_condition_list;
 };
 
+/**
+ * @brief Introspection
+ */
+BOOST_DESCRIBE_ENUM(Condition, Natural, Dirichlet, Neumann, Periodic);
+BOOST_DESCRIBE_STRUCT(BoundaryConditionSet, (), (component_constraints, time_dependent));
+BOOST_DESCRIBE_STRUCT(BoundaryParameters, (), (boundary_condition_list));
+
 PRISMS_PF_END_NAMESPACE

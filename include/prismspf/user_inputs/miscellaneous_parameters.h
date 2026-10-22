@@ -69,4 +69,6 @@ struct MiscellaneousParameters : public ParameterBase
   mutable RNGEngine rng {random_seed};
 };
 
+BOOST_DESCRIBE_STRUCT(MiscellaneousParameters, (), (random_seed));
+
 PRISMS_PF_END_NAMESPACE

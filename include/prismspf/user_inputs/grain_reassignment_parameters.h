@@ -70,4 +70,12 @@ struct GrainReassignmentParameters : public ParameterBase
   double order_parameter_threshold = 0.01;
 };
 
+BOOST_DESCRIBE_STRUCT(GrainReassignmentParameters,
+                      (),
+                      (grain_reassignment_active,
+                       reassignment_period,
+                       load_grain_structure,
+                       exclusion_distance,
+                       order_parameter_threshold));
+
 PRISMS_PF_END_NAMESPACE

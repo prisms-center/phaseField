@@ -71,4 +71,6 @@ struct TemporalDiscretization : public ParameterBase
   unsigned int n_increments = 0;
 };
 
+BOOST_DESCRIBE_STRUCT(TemporalDiscretization, (), (dt, initial_time, n_increments));
+
 PRISMS_PF_END_NAMESPACE

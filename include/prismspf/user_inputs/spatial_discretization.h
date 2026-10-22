@@ -433,4 +433,6 @@ public:
   std::map<std::string, RefinementCriterion> refinement_criteria;
 };
 
+BOOST_DESCRIBE_ENUM(TriangulationType, Rectangular, Spherical, Custom);
+
 PRISMS_PF_END_NAMESPACE

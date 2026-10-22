@@ -6,6 +6,7 @@
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/patterns.h>
 
+#include <boost/describe.hpp>
 #include <boost/json.hpp>
 
 #include <prismspf/core/types.h>

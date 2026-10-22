@@ -197,4 +197,22 @@ struct NonlinearSolveParameters : public ParameterBase
   std::map<Types::Index, NonlinearSolverParameters> nonlinear_solvers;
 };
 
+BOOST_DESCRIBE_STRUCT(LinearSolverParameters,
+                      (),
+                      (solver_type,
+                       tolerance,
+                       tolerance_type,
+                       max_iterations,
+                       mg_depth,
+                       preconditioner,
+                       chebyshev_parameters,
+                       richardson_parameters,
+                       bicgstab_parameters,
+                       gmres_parameters));
+BOOST_DESCRIBE_STRUCT(NonlinearSolverParameters,
+                      (),
+                      (step_length, max_iterations, tolerance_value));
+BOOST_DESCRIBE_STRUCT(LinearSolveParameters, (), (linear_solvers));
+BOOST_DESCRIBE_STRUCT(NonlinearSolveParameters, (), (nonlinear_solvers));
+
 PRISMS_PF_END_NAMESPACE

@@ -88,4 +88,14 @@ struct NucleationParameters : public ParameterBase
   unsigned int seeding_increments = 1;
 };
 
+BOOST_DESCRIBE_STRUCT(NucleationParameters,
+                      (),
+                      (nucleation_period,
+                       pp_nucleation_rate_exists,
+                       nucleus_exclusion_distance,
+                       same_field_nucleus_exclusion_distance,
+                       refinement_radius,
+                       seeding_time,
+                       seeding_increments));
+
 PRISMS_PF_END_NAMESPACE

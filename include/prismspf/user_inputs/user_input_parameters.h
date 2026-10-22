@@ -167,4 +167,48 @@ struct UserInputParameters : public ParameterBase
   UserConstants<dim> user_constants;
 };
 
+/**
+ * @brief Serialize to JSON
+ */
+template <unsigned int dim>
+void
+tag_invoke(boost::json::value_from_tag,
+           boost::json::value             &jv,
+           const UserInputParameters<dim> &params)
+{
+  jv = {
+    {"temporal_discretization",       boost::json::value_from(params.temporal_discretization)},
+    {"boundary_parameters",           boost::json::value_from(params.boundary_parameters)    },
+    {"output_parameters",             boost::json::value_from(params.output_parameters)      },
+    {"restart_parameters",            boost::json::value_from(params.restart_parameters)     },
+    {"input_parameters",              boost::json::value_from(params.input_parameters)       },
+    {"misc_parameters",               boost::json::value_from(params.misc_parameters)        },
+    {"nucleation_parameters",         boost::json::value_from(params.nucleation_parameters)  },
+    {"grain_reassignment_parameters",
+     boost::json::value_from(params.grain_reassignment_parameters)                           }
+  };
+}
+
+/**
+ * @brief Deserialize from JSON
+ */
+template <unsigned int dim>
+UserInputParameters<dim>
+tag_invoke(boost::json::value_to_tag<UserInputParameters<dim>>,
+           const boost::json::value &jv)
+{
+  const boost::json::object &obj = jv.as_object();
+  return UserInputParameters<dim> {
+    SpatialDiscretization<dim>(),
+    boost::json::value_to<TemporalDiscretization>(obj.at("temporal_discretization")),
+    boost::json::value_to<BoundaryParameters>(obj.at("boundary_parameters")),
+    boost::json::value_to<FieldOutputParameters>(obj.at("output_parameters")),
+    boost::json::value_to<RestartOutputParameters>(obj.at("restart_parameters")),
+    boost::json::value_to<FieldInputParameters>(obj.at("input_parameters")),
+    boost::json::value_to<MiscellaneousParameters>(obj.at("misc_parameters")),
+    boost::json::value_to<NucleationParameters>(obj.at("nucleation_parameters")),
+    boost::json::value_to<GrainReassignmentParameters>(
+      obj.at("grain_reassignment_parameters"))};
+}
+
 PRISMS_PF_END_NAMESPACE
