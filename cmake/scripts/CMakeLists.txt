@@ -2,6 +2,7 @@
 add_executable(expand_template_instantiations_exe expand_template_instantiations.cc)
 
 target_compile_features(expand_template_instantiations_exe PRIVATE cxx_std_20)
+target_compile_options(expand_template_instantiations_exe PRIVATE --host-only)
 
 set_target_properties(
   expand_template_instantiations_exe

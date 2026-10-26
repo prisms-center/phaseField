@@ -133,7 +133,7 @@ FloodFiller<dim, degree, number>::recursive_flood_fill(
 
       cell->set_user_flag();
 
-      dealii::FEValues<dim> fe_values(SystemWide<dim, degree>::fe_systems[0],
+      dealii::FEValues<dim> fe_values(SystemWide<dim, degree>::fe_systems()[0],
                                       SystemWide<dim, degree>::quadrature,
                                       dealii::update_values);
 

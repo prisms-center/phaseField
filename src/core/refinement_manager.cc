@@ -241,12 +241,12 @@ RefinementManager<dim, degree, number>::mark_cells_for_refinement_and_coarsening
   // TODO: Better off using lazy evaluation
   static dealii::FEValues<dim, dim> scalar_fe_values(
     SystemWide<dim, degree>::mapping,
-    SystemWide<dim, degree>::fe_systems[0],
+    SystemWide<dim, degree>::fe_systems()[0],
     SystemWide<dim, degree>::quadrature,
     dealii::UpdateFlags::update_values | dealii::UpdateFlags::update_gradients);
   static dealii::FEValues<dim, dim> vector_fe_values(
     SystemWide<dim, degree>::mapping,
-    SystemWide<dim, degree>::fe_systems[1],
+    SystemWide<dim, degree>::fe_systems()[1],
     SystemWide<dim, degree>::quadrature,
     dealii::UpdateFlags::update_values | dealii::UpdateFlags::update_gradients);
 

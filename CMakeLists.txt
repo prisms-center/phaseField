@@ -118,6 +118,10 @@ if(PRISMS_PF_UNIT_TESTS OR PRISMS_PF_REGRESSION_TESTS OR PRISMS_PF_PERFORMANCE_T
   include(deps/catch2)
 endif()
 
+if(PRISMS_PF_GPU AND TARGET libassert-lib)
+  target_compile_options(libassert-lib PRIVATE --host-only)
+endif()
+
 # =========================================================
 # Configure targets
 # =========================================================
@@ -135,6 +139,14 @@ if(PRISMS_PF_ADDITIONAL_DEGREES)
 else()
   set(_additional_degrees "")
 endif()
+
+# deal.II Portable::MatrixFree is instantiated only for 2D and 3D.
+if(PRISMS_PF_GPU)
+  set(_space_dimensions "2; 3")
+else()
+  set(_space_dimensions "1; 2; 3")
+endif()
+
 configure_file(cmake/templates.in cmake/templates @ONLY)
 
 # TODO: Move this

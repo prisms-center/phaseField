@@ -4,6 +4,7 @@
 #pragma once
 
 #include <deal.II/base/point.h>
+#include <deal.II/base/vectorization.h>
 
 #include <prismspf/core/types.h>
 
