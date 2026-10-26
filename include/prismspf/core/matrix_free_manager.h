@@ -122,14 +122,13 @@ private:
 
 #ifdef PRISMS_PF_GPU
   /**
-   * @brief Portable MatrixFree object for each field on each level.
+   * @brief Portable MatrixFree object for each field on the active mesh.
    *
    * deal.II 9.6 Portable::MatrixFree is initialized with one DoFHandler,
-   * so the outer vector is indexed by relative level and the inner vector
-   * is indexed by field index.
+   * so one object is created for each field.
    */
-  std::vector<std::vector<dealii::Portable::MatrixFree<dim, number>>>
-    portable_shared_matrix_free_levels;
+  std::vector<dealii::Portable::MatrixFree<dim, number>>
+    portable_shared_matrix_free;
 #endif
 };
 
@@ -157,10 +156,6 @@ MatrixFreeManager<dim, number>::reinit(
 #endif
   const std::array<dealii::DoFHandler<dim>, 2> &generic_dof_handlers =
     dof_manager.get_dof_handlers();
-  const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &generic_dof_handlers_levels =
-    dof_manager.get_dof_handlers_levels();
-  const std::vector<std::array<dealii::AffineConstraints<number>, 2>>
-    &generic_constraints_levels = constraint_manager.get_generic_constraints_levels();
 
   {
     const std::array<dealii::AffineConstraints<number>, 2> &generic_constraints =
@@ -180,13 +175,32 @@ MatrixFreeManager<dim, number>::reinit(
                                std::vector<const dealii::AffineConstraints<number> *>(
                                  {&generic_constraints[0], &generic_constraints[1]}),
                                SystemWide<dim, degree>::quadrature_matrix_free);
+#ifdef PRISMS_PF_GPU
+    // Initialize Portable MatrixFree for each field on the active mesh.
+    const auto &field_dof_handlers =
+      dof_manager.get_field_dof_handlers();
+
+    const auto field_constraints =
+      constraint_manager.get_field_constraints();
+
+    portable_shared_matrix_free.resize(field_dof_handlers.size());
+
+    for (unsigned int field_index = 0;
+         field_index < field_dof_handlers.size();
+         ++field_index)
+      {
+        portable_shared_matrix_free[field_index].reinit(
+          SystemWide<dim, degree>::mapping,
+          *field_dof_handlers[field_index],
+          *field_constraints[field_index],
+          dealii::QGaussLobatto<1>(degree + 1),
+          portable_additional_data);
+      }
+#endif
   }
   const unsigned int num_levels = dof_manager.has_mg() ? dof_manager.num_levels() : 0;
   shared_matrix_free_levels.resize(num_levels);
   generic_matrix_free_levels.resize(num_levels);
-#ifdef PRISMS_PF_GPU
-  portable_shared_matrix_free_levels.resize(num_levels);
-#endif
   for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
     {
       const unsigned int       fine_level = num_levels - 1;
@@ -212,29 +226,6 @@ MatrixFreeManager<dim, number>::reinit(
 
       AdditionalData generic_additional_data;
       generic_additional_data.mg_level = level;
-
-#ifdef PRISMS_PF_GPU
-      // Reinit Portable MatrixFree. deal.II 9.6 initializes one DoFHandler
-      // per Portable::MatrixFree object, so create one object for each field.
-      const auto &field_dof_handlers = dof_manager.get_field_dof_handlers(relative_level);
-      const auto  field_constraints =
-        constraint_manager.get_field_constraints(relative_level);
-
-      auto &portable_shared_matrix_free =
-        portable_shared_matrix_free_levels[relative_level];
-      portable_shared_matrix_free.resize(field_dof_handlers.size());
-
-      for (unsigned int field_index = 0; field_index < field_dof_handlers.size();
-           ++field_index)
-        {
-          portable_shared_matrix_free[field_index].reinit(
-            SystemWide<dim, degree>::mapping,
-            *field_dof_handlers[field_index],
-            *field_constraints[field_index],
-            dealii::QGaussLobatto<1>(degree + 1),
-            portable_additional_data);
-        }
-#endif
 
       // Reinit generic MatrixFree
       generic_mg_matrix_free.reinit(

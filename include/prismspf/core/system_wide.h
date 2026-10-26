@@ -59,8 +59,12 @@ public:
   /**
    * @brief Quadrature rule
    */
+#ifdef PRISMS_PF_GPU
+  static const dealii::QGaussLobatto<dim> quadrature;
+#else
   inline static const dealii::QGaussLobatto<dim> quadrature =
     dealii::QGaussLobatto<dim>(degree + 1);
+#endif
 
   /**
    * @brief Quadrature rule for MatrixFree
@@ -70,5 +74,11 @@ public:
   inline static const dealii::QGaussLobatto<1> quadrature_matrix_free =
     dealii::QGaussLobatto<1>(degree + 1);
 };
+
+#ifdef PRISMS_PF_GPU
+template <unsigned int dim, unsigned int degree>
+inline const dealii::QGaussLobatto<dim>
+  SystemWide<dim, degree>::quadrature(degree + 1);
+#endif
 
 PRISMS_PF_END_NAMESPACE
