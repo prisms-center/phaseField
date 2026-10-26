@@ -51,19 +51,19 @@ function(prisms_pf_configure_targets TARGETS)
       set(_grouped_cxx_flags)
       while(PRISMS_PF_CXX_FLAGS_LIST)
         list(POP_FRONT PRISMS_PF_CXX_FLAGS_LIST _flag)
-  
+
         if(_flag STREQUAL "-Xcudafe")
           if(NOT PRISMS_PF_CXX_FLAGS_LIST)
             message(FATAL_ERROR "-Xcudafe is missing its argument")
           endif()
-  
+
           list(POP_FRONT PRISMS_PF_CXX_FLAGS_LIST _cudafe_flag)
           list(APPEND _grouped_cxx_flags "SHELL:-Xcudafe ${_cudafe_flag}")
         else()
           list(APPEND _grouped_cxx_flags "${_flag}")
         endif()
       endwhile()
-  
+
       set(PRISMS_PF_CXX_FLAGS_LIST ${_grouped_cxx_flags})
     endif()
 
