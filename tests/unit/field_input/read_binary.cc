@@ -1,8 +1,9 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <prismspf/config.h>
 #include <prismspf/field_input/read_binary.h>
+
+#include <prismspf/config.h>
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -20,13 +21,13 @@ TEST_CASE("Read binary file")
   SECTION("1D read/write")
   {
     InitialConditionFile file;
-    std::vector<double> data = {0.0, 1.0, 2.0, 3.0, 4.0, 5.0};
-    file.file_name           = "test_1D.bin";
-    file.format              = InitialConditionFile::DataFormatType::FlatBinary;
-    file.compression         = InitialConditionFile::InputFileCompressionType::None;
-    file.file_variable_names = {"test_field"};
+    std::vector<double>  data      = {0.0, 1.0, 2.0, 3.0, 4.0, 5.0};
+    file.file_name                 = "test_1D.bin";
+    file.format                    = InitialConditionFile::DataFormatType::FlatBinary;
+    file.compression               = InitialConditionFile::InputFileCompressionType::None;
+    file.file_variable_names       = {"test_field"};
     file.simulation_variable_names = {"test_field"};
-    file.n_data_points       = {6, 0, 0};
+    file.n_data_points             = {6, 0, 0};
     ReadBinary<1, double>::write_file(data, file);
     SpatialDiscretization<1> spatial_discretization;
     spatial_discretization.rectangular_mesh.size[0] = 5.0;
@@ -42,11 +43,11 @@ TEST_CASE("Read binary file")
     InitialConditionFile file;
     std::vector<double>  data =
       {0.0, 0.0, 0.0, 0.0, 0.0, 10.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0};
-    file.file_name     = "test_2D.bin";
-    file.format        = InitialConditionFile::DataFormatType::FlatBinary;
-    file.file_variable_names = {"test_field"};
+    file.file_name                 = "test_2D.bin";
+    file.format                    = InitialConditionFile::DataFormatType::FlatBinary;
+    file.file_variable_names       = {"test_field"};
     file.simulation_variable_names = {"test_field"};
-    file.n_data_points = {4, 3, 0};
+    file.n_data_points             = {4, 3, 0};
     ReadBinary<2, double>::write_file(data, file);
     SpatialDiscretization<2> spatial_discretization;
     spatial_discretization.rectangular_mesh.size[0] = 3.0;
@@ -62,12 +63,12 @@ TEST_CASE("Read binary file")
   SECTION("3D read/write")
   {
     InitialConditionFile file;
-    std::vector<double> data = {0.0, 0.0, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0};
-    file.file_name           = "test_3D.bin";
-    file.format              = InitialConditionFile::DataFormatType::FlatBinary;
-    file.file_variable_names = {"test_field"};
+    std::vector<double>  data      = {0.0, 0.0, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0};
+    file.file_name                 = "test_3D.bin";
+    file.format                    = InitialConditionFile::DataFormatType::FlatBinary;
+    file.file_variable_names       = {"test_field"};
     file.simulation_variable_names = {"test_field"};
-    file.n_data_points       = {2, 2, 2};
+    file.n_data_points             = {2, 2, 2};
     ReadBinary<3, double>::write_file(data, file);
     SpatialDiscretization<3> spatial_discretization;
     spatial_discretization.rectangular_mesh.size[0] = 1.0;
@@ -86,14 +87,14 @@ TEST_CASE("Read binary file")
   SECTION("3D vector read/write")
   {
     InitialConditionFile file;
-    std::vector<double> data = {0.0,  10.0, 20.0, 0.0,  10.0, 20.0, 1.0,  11.0,
-                                 21.0, 1.0,  11.0, 21.0, 2.0,  12.0, 22.0, 2.0,
-                                 12.0, 22.0, 3.0,  13.0, 23.0, 3.0,  13.0, 23.0};
-    file.file_name           = "test_3D_vec.bin";
-    file.format              = InitialConditionFile::DataFormatType::FlatBinary;
-    file.file_variable_names = {"test_field"};
+    std::vector<double>  data      = {0.0,  10.0, 20.0, 0.0,  10.0, 20.0, 1.0,  11.0,
+                                      21.0, 1.0,  11.0, 21.0, 2.0,  12.0, 22.0, 2.0,
+                                      12.0, 22.0, 3.0,  13.0, 23.0, 3.0,  13.0, 23.0};
+    file.file_name                 = "test_3D_vec.bin";
+    file.format                    = InitialConditionFile::DataFormatType::FlatBinary;
+    file.file_variable_names       = {"test_field"};
     file.simulation_variable_names = {"test_field"};
-    file.n_data_points       = {2, 2, 2};
+    file.n_data_points             = {2, 2, 2};
     ReadBinary<3, double>::write_file(data, file);
     SpatialDiscretization<3> spatial_discretization;
     spatial_discretization.rectangular_mesh.size[0] = 1.0;
@@ -112,13 +113,13 @@ TEST_CASE("Read binary file")
   SECTION("3D read/write with gzip compression")
   {
     InitialConditionFile file;
-    std::vector<double> data = {0.0, 0.0, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0};
-    file.file_name           = "test_3D_compressed.bin.gz";
-    file.format              = InitialConditionFile::DataFormatType::FlatBinary;
-    file.compression         = InitialConditionFile::InputFileCompressionType::GZip;
-    file.file_variable_names = {"test_field"};
+    std::vector<double>  data      = {0.0, 0.0, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0};
+    file.file_name                 = "test_3D_compressed.bin.gz";
+    file.format                    = InitialConditionFile::DataFormatType::FlatBinary;
+    file.compression               = InitialConditionFile::InputFileCompressionType::GZip;
+    file.file_variable_names       = {"test_field"};
     file.simulation_variable_names = {"test_field"};
-    file.n_data_points       = {2, 2, 2};
+    file.n_data_points             = {2, 2, 2};
     ReadBinary<3, double>::write_file(data, file);
     SpatialDiscretization<3> spatial_discretization;
     spatial_discretization.rectangular_mesh.size[0] = 1.0;
