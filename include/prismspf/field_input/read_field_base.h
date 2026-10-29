@@ -8,6 +8,7 @@
 
 #include <prismspf/core/types.h>
 
+#include <prismspf/user_inputs/io_parameters.h>
 #include <prismspf/user_inputs/spatial_discretization.h>
 
 #include <prismspf/utilities/utilities.h>

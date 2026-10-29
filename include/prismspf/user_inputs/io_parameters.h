@@ -327,11 +327,24 @@ struct InitialConditionFile
     VTKXMLImageData
   };
 
+  /**
+   * @brief Compression type for flat binary input files (if applicable)
+   */
+  enum InputFileCompressionType
+  {
+    None,
+    Zip,
+    GZip
+  };
+
   // File name
   std::string file_name;
 
   // Data format
   DataFormatType format;
+
+  // Compression type for flat binary input files
+  InputFileCompressionType compression;
 
   // File variable names
   std::vector<std::string> file_variable_names;

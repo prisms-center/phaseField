@@ -6,6 +6,9 @@
 #include <deal.II/base/point.h>
 #include <deal.II/lac/vector.h>
 
+#include <boost/iostreams/filter/gzip.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
+
 #include <prismspf/core/types.h>
 
 #include <prismspf/field_input/read_field_base.h>
@@ -133,21 +136,46 @@ inline ReadBinary<dim, number>::ReadBinary(
       n_points *= this->ic_file.n_data_points[d];
     }
 
-  // Check that the binary matches an expected size
-  check_file_size();
+  if (this->ic_file.compression == InitialConditionFile::InputFileCompressionType::GZip)
+    {
+      // Read in the binary file using a Boost filtered input stream
+      std::ifstream std_data_file(this->ic_file.file_name, std::ios::binary);
+      AssertThrow(std_data_file,
+                  dealii::ExcMessage("Could not open gzip-compressed binary file: " +
+                                     this->ic_file.file_name));
 
-  // Read in the binary file
-  std::ifstream data_file(this->ic_file.file_name, std::ios::binary);
-  AssertThrow(data_file,
-              dealii::ExcMessage("Could not open binary file: " +
-                                 this->ic_file.file_name));
+      boost::iostreams::filtering_istream data_file;
+      data_file.push(boost::iostreams::gzip_decompressor());
+      data_file.push(std_data_file);
 
-  // Reserve space in the data vector
-  data.resize(n_values);
+      // Because we can't check that the file size matches in advance, allocate the
+      // expected amount of space. Assume it's a scalar field.
+      // TODO: make compressed file reading work for vector fields.
+      n_values = n_points;
+      data.resize(n_values);
 
-  // Read in the data
-  data_file.read(reinterpret_cast<char *>(data.data()), n_values * sizeof(number));
-  data_file.close();
+      // Read in the data
+      data_file.read(reinterpret_cast<char *>(data.data()), n_values * sizeof(number));
+      std_data_file.close();
+    }
+  else
+    {
+      // Check that the binary matches an expected size
+      check_file_size();
+
+      // Read in the binary file
+      std::ifstream data_file(this->ic_file.file_name, std::ios::binary);
+      AssertThrow(data_file,
+                  dealii::ExcMessage("Could not open binary file: " +
+                                     this->ic_file.file_name));
+
+      // Reserve space in the data vector
+      data.resize(n_values);
+
+      // Read in the data
+      data_file.read(reinterpret_cast<char *>(data.data()), n_values * sizeof(number));
+      data_file.close();
+    }
 }
 
 template <unsigned int dim, typename number>
@@ -186,15 +214,34 @@ inline void
 ReadBinary<dim, number>::write_file(const std::vector<number>  &data,
                                     const InitialConditionFile &ic_file)
 {
-  // Try to open the file
-  std::ofstream data_file(ic_file.file_name, std::ios::binary);
-  AssertThrow(data_file,
-              dealii::ExcMessage("Could not open binary file: " + ic_file.file_name));
+  if (ic_file.compression == InitialConditionFile::InputFileCompressionType::GZip)
+    {
+      // Try to open the file
+      std::ofstream std_data_file(ic_file.file_name, std::ios::binary);
+      AssertThrow(std_data_file,
+                  dealii::ExcMessage("Could not open binary file: " + ic_file.file_name));
 
-  // Write the data
-  data_file.write(reinterpret_cast<const char *>(data.data()),
-                  data.size() * sizeof(number));
-  data_file.close();
+      boost::iostreams::filtering_ostream data_file;
+      data_file.push(boost::iostreams::gzip_compressor());
+      data_file.push(std_data_file);
+
+      // Write the data
+      data_file.write(reinterpret_cast<const char *>(data.data()),
+                      data.size() * sizeof(number));
+      std_data_file.close();
+    }
+  else
+    {
+      // Try to open the file
+      std::ofstream data_file(ic_file.file_name, std::ios::binary);
+      AssertThrow(data_file,
+                  dealii::ExcMessage("Could not open binary file: " + ic_file.file_name));
+
+      // Write the data
+      data_file.write(reinterpret_cast<const char *>(data.data()),
+                      data.size() * sizeof(number));
+      data_file.close();
+    }
 }
 
 template <unsigned int dim, typename number>
