@@ -5,6 +5,8 @@
 
 #include <prismspf/config.h>
 
+#include <stdexcept>
+
 #ifdef PRISMS_PF_WITH_VTK
 
 #  include <filesystem>
