@@ -14,11 +14,14 @@
 #  include <vtkUnstructuredGrid.h>
 #  include <vtkUnstructuredGridReader.h>
 
+#endif
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 std::optional<VTKTimeCycleMetadata>
 read_vtk_time_cycle_metadata(const std::string &file_name)
 {
+#ifdef PRISMS_PF_WITH_VTK
   if (!std::filesystem::exists(file_name))
     {
       return std::nullopt;
@@ -51,8 +54,13 @@ read_vtk_time_cycle_metadata(const std::string &file_name)
   metadata.time      = time_array->GetComponent(0, 0);
   metadata.increment = static_cast<unsigned int>(cycle_array->GetComponent(0, 0));
   return metadata;
+#else
+  throw std::runtime_error("You are attempting to read time information from vtk. "
+                           "However, PRISMS-PF was not "
+                           "built with VTK. Please reconfig PRISMS-PF with VTK using "
+                           "-D PRISMS_PF_WITH_VTK=ON.");
+  return std::nullopt;
+#endif
 }
 
 PRISMS_PF_END_NAMESPACE
-
-#endif

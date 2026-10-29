@@ -364,6 +364,8 @@ Problem<dim, degree, number>::solve()
 
     // Main time-stepping loop
     Logger::instance() << LogFormatter::section("Time-stepping Loop") << std::endl;
+    sim_timer.set_increment(time_info.initial_increment);
+    sim_timer.set_time(time_info.initial_time);
     while (sim_timer.get_increment() <= time_info.n_increments && exit_status == 0)
       {
         // Solve a single increment

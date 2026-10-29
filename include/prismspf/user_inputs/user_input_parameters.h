@@ -98,13 +98,12 @@ struct UserInputParameters : public ParameterBase
     restart_parameters.assign(parameter_handler, n_increments, n_subsections);
     input_parameters.assign(parameter_handler, n_subsections);
 
-#ifdef PRISMS_PF_WITH_VTK
     if (input_parameters.read_time_from_file &&
         !input_parameters.initial_condition_files.empty())
       {
-        // All initial condition files for a given restart are assumed to originate
-        // from the same output step, so their TIME/CYCLE metadata is identical by
-        // construction -- only the first VTK-format entry is consulted.
+        // All initial condition files are assumed to share a common increment, so their
+        // TIME/CYCLE metadata is identical -- only the first VTK-format
+        // entry is consulted.
         for (const auto &ic_file : input_parameters.initial_condition_files)
           {
             if (ic_file.format ==
@@ -119,14 +118,6 @@ struct UserInputParameters : public ParameterBase
               }
           }
       }
-#else
-    AssertThrow(
-      !input_parameters.read_time_from_file,
-      dealii::ExcMessage(
-        "You have set 'read time from file' to true; however, PRISMS-PF was not "
-        "built with VTK. Please reconfig PRISMS-PF with VTK using "
-        "-D PRISMS_PF_WITH_VTK=ON, or set 'read time from file' to false."));
-#endif
 
     misc_parameters.assign(parameter_handler, n_subsections);
     nucleation_parameters.assign(parameter_handler, n_subsections);

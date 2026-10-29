@@ -10,8 +10,6 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-#ifdef PRISMS_PF_WITH_VTK
-
 /**
  * @brief Simulated time and increment metadata read from a VTK file's FieldData.
  */
@@ -30,7 +28,5 @@ struct VTKTimeCycleMetadata
  */
 std::optional<VTKTimeCycleMetadata>
 read_vtk_time_cycle_metadata(const std::string &file_name);
-
-#endif
 
 PRISMS_PF_END_NAMESPACE

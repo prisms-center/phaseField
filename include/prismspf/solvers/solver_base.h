@@ -106,7 +106,7 @@ public:
   virtual void
   solve()
   {
-    if (is_first_solve && solve_block.solve_timing == SolveTiming::Primary)
+    if (is_first_solve() && solve_block.solve_timing == SolveTiming::Primary)
       {
         // Set the initial condition
         set_initial_condition();
@@ -115,11 +115,10 @@ public:
       {
         this->solve_impl();
       }
-    if (is_first_solve)
+    if (is_first_solve())
       {
         solutions.apply_initial_condition_for_old_fields();
       }
-    is_first_solve = false;
     if (solutions.num_levels() > 0)
       {
         solutions.mg_transfer_down(
@@ -255,6 +254,16 @@ public:
     return solve_block;
   }
 
+  /**
+   * @brief Check if this is the initial increment
+   */
+  [[nodiscard]] bool
+  is_first_solve() const
+  {
+    return solve_context->get_simulation_timer().get_increment() ==
+           solve_context->get_user_inputs().temporal_discretization.initial_increment;
+  }
+
 protected:
   /**
    * @brief Information about the solve block this handler is responsible for.
@@ -272,15 +281,6 @@ protected:
   GroupSolutionHandler<dim, number> solutions;
 
   std::vector<SolverBase<dim, degree, number> *> aux_solvers;
-
-  /**
-   * @brief Whether solve() has not yet been called on this solver. Used (instead of
-   * checking the simulation increment against 0) to set the initial condition exactly
-   * once on this solver's first invocation, regardless of what increment the
-   * simulation starts at (e.g. when continuing from a loaded initial condition via
-   * "initial increment").
-   */
-  bool is_first_solve = true;
 };
 
 PRISMS_PF_END_NAMESPACE
