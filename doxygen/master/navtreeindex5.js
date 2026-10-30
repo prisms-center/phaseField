@@ -1,7 +1,14 @@
 var NAVTREEINDEX5 =
 {
+"solve__parameters_8h_source.html":[9,0,1,0,5,6],
+"solver__base_8cc.html":[9,0,2,3,1],
+"solver__base_8h.html":[9,0,1,0,4,6],
+"solver__base_8h_source.html":[9,0,1,0,4,6],
+"solvers_8cc.html":[9,0,2,3,2],
+"solvers_8h.html":[9,0,1,0,4,7],
+"solvers_8h_source.html":[9,0,1,0,4,7],
 "source.html":[1,1],
-"spatial__discretization_8cc.html":[9,0,2,3,6],
+"spatial__discretization_8cc.html":[9,0,2,4,6],
 "spatial__discretization_8h.html":[9,0,1,0,5,7],
 "spatial__discretization_8h.html#a1655d11fc528cdc7b7b73d9e16185eaf":[9,0,1,0,5,7,5],
 "spatial__discretization_8h.html#a1655d11fc528cdc7b7b73d9e16185eafa26b367bcdd210f7345b551b921c5551f":[9,0,1,0,5,7,5,2],
@@ -69,6 +76,7 @@ var NAVTREEINDEX5 =
 "structFieldInputParameters.html#aa141091ae989699f40c9e0bf441dc61b":[8,0,16,4],
 "structFieldInputParameters.html#aad5ef8e8d168fed5be8c82d6ae67f661":[8,0,16,3],
 "structFieldInputParameters.html#af9883faa8985dfa8e86f05214d466dcc":[8,0,16,2],
+"structFieldInputParameters.html#afbad09322ed2c94de179cd9f582b80ab":[8,0,16,5],
 "structFieldOutputParameters.html":[8,0,17],
 "structFieldOutputParameters.html#a2516ec54153bcf7c0905a8df14272bb4":[8,0,17,4],
 "structFieldOutputParameters.html#a261d8a512dc4c1a81c63b4b829e20028":[8,0,17,2],
@@ -241,13 +249,5 @@ var NAVTREEINDEX5 =
 "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html":[8,0,0,0],
 "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a0d7465c7a139fc897146ca50ac69653a":[6,0,4,0,2],
 "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a0d7465c7a139fc897146ca50ac69653a":[8,0,0,0,2],
-"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a1da3c8ed78d53955c2dee85a351866b3":[6,0,4,0,3],
-"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a1da3c8ed78d53955c2dee85a351866b3":[8,0,0,0,3],
-"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a1fdf7838f78b58e467eaf5e1f81c10c4":[6,0,4,0,1],
-"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a1fdf7838f78b58e467eaf5e1f81c10c4":[8,0,0,0,1],
-"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a5cd95be549b09f910cfc4a448ba9fdca":[6,0,4,0,5],
-"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a5cd95be549b09f910cfc4a448ba9fdca":[8,0,0,0,5],
-"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a8efaf36c153055241611181ffc4c9655":[6,0,4,0,6],
-"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a8efaf36c153055241611181ffc4c9655":[8,0,0,0,6],
-"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a97747e29d4cd8de575f95e91f7ac7058":[6,0,4,0,4]
+"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a1da3c8ed78d53955c2dee85a351866b3":[6,0,4,0,3]
 };

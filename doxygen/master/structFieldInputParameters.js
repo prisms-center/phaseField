@@ -4,5 +4,6 @@ var structFieldInputParameters =
     [ "declare", "structFieldInputParameters.html#a9ba37b20a530ff0c7c54df9a5c591f44", null ],
     [ "validate", "structFieldInputParameters.html#af9883faa8985dfa8e86f05214d466dcc", null ],
     [ "initial_condition_files", "structFieldInputParameters.html#aad5ef8e8d168fed5be8c82d6ae67f661", null ],
-    [ "load_from_file", "structFieldInputParameters.html#aa141091ae989699f40c9e0bf441dc61b", null ]
+    [ "load_from_file", "structFieldInputParameters.html#aa141091ae989699f40c9e0bf441dc61b", null ],
+    [ "read_time_from_file", "structFieldInputParameters.html#afbad09322ed2c94de179cd9f582b80ab", null ]
 ];

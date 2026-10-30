@@ -108,5 +108,6 @@ var hierarchy =
     [ "Timer", "classTimer.html", null ],
     [ "PRISMS_PF_BEGIN_NAMESPACE::TimerStack", "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html", null ],
     [ "TriangulationManager< dim >", "classTriangulationManager.html", null ],
-    [ "UserConstants< dim >", "classUserConstants.html", null ]
+    [ "UserConstants< dim >", "classUserConstants.html", null ],
+    [ "VTKTimeCycleMetadata", "structVTKTimeCycleMetadata.html", null ]
 ];

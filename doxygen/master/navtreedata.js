@@ -101,10 +101,11 @@ var NAVTREEINDEX =
 "\ref allen_cahn_explicit",
 "classGroupSolutionHandler.html#aa4ceb6aae94d3dc3fcfc2d4cd7ade7bc",
 "classNucleationManager.html#a4cf6ea096ed7b1291bc2928cd0904bca",
-"classTerminalColor.html#a2048872beaccdba546644ef03b8a2121",
-"functions_r.html",
-"source.html",
-"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a97747e29d4cd8de575f95e91f7ac7058"
+"classTerminalColor.html#a1c74b98b52e0019e9e1a9ef6a1f1eca9",
+"functions_p.html",
+"solve__parameters_8h_source.html",
+"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a1da3c8ed78d53955c2dee85a351866b3",
+"vectorized__operations_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

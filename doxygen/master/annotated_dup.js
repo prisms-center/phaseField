@@ -83,5 +83,6 @@ var annotated_dup =
     [ "Timer", "classTimer.html", "classTimer" ],
     [ "TriangulationManager", "classTriangulationManager.html", "classTriangulationManager" ],
     [ "UserConstants", "classUserConstants.html", "classUserConstants" ],
-    [ "UserInputParameters", "classUserInputParameters.html", "classUserInputParameters" ]
+    [ "UserInputParameters", "classUserInputParameters.html", "classUserInputParameters" ],
+    [ "VTKTimeCycleMetadata", "structVTKTimeCycleMetadata.html", "structVTKTimeCycleMetadata" ]
 ];

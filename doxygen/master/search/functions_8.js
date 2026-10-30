@@ -27,5 +27,6 @@ var searchData=
   ['invert_24',['invert',['../classInvMManager.html#ada8b05c17b9e592477d28c51938b71d5',1,'InvMManager']]],
   ['invmmanager_25',['InvMManager',['../classInvMManager.html#a79757a1439265a83f3d8c4801e5d43aa',1,'InvMManager']]],
   ['is_5factive_26',['is_active',['../classFanoutStreamBuf.html#a4c82e9b194704b53f290249b73d861e5',1,'FanoutStreamBuf::is_active()'],['../classFanoutOStream.html#a293aa25ebf3c2854fc894d579a9ac323',1,'FanoutOStream::is_active()'],['../classLogStream.html#a946c2b1f28fed104c697f798c6203104',1,'LogStream::is_active()']]],
-  ['is_5fsupported_27',['is_supported',['../classTerminalColor.html#af3188275fba832421adc9ed88dab517c',1,'TerminalColor']]]
+  ['is_5ffirst_5fsolve_27',['is_first_solve',['../classSolverBase.html#a137d6dbcd9994331988061cf5e022337',1,'SolverBase']]],
+  ['is_5fsupported_28',['is_supported',['../classTerminalColor.html#af3188275fba832421adc9ed88dab517c',1,'TerminalColor']]]
 ];

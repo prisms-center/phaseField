@@ -7,6 +7,7 @@ var structTemporalDiscretization =
     [ "declare", "structTemporalDiscretization.html#a7268f28f9c3e218c6ccd663153276409", null ],
     [ "validate", "structTemporalDiscretization.html#aa871d8b141d3b9134fb6abd37423bc50", null ],
     [ "dt", "structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a", null ],
+    [ "initial_increment", "structTemporalDiscretization.html#a318e5ae1a97573649c955bd10845593e", null ],
     [ "initial_time", "structTemporalDiscretization.html#a2c9ebaecc801c754ce3a6a93ea49858f", null ],
     [ "n_increments", "structTemporalDiscretization.html#aa83a8c15296e6a0c4cf736d50437e3ce", null ]
 ];

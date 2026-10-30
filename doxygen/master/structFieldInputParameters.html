@@ -178,6 +178,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aa141091ae989699f40c9e0bf441dc61b" id="r_aa141091ae989699f40c9e0bf441dc61b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa141091ae989699f40c9e0bf441dc61b">load_from_file</a> = false</td></tr>
 <tr class="memdesc:aa141091ae989699f40c9e0bf441dc61b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to load initial conditions from file.  <br /></td></tr>
 <tr class="separator:aa141091ae989699f40c9e0bf441dc61b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbad09322ed2c94de179cd9f582b80ab" id="r_afbad09322ed2c94de179cd9f582b80ab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afbad09322ed2c94de179cd9f582b80ab">read_time_from_file</a> = false</td></tr>
+<tr class="memdesc:afbad09322ed2c94de179cd9f582b80ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to read simulated time and increment metadata (TIME/CYCLE) from the initial condition file, if present, and use it to override the start time and initial increment. Only supported for the legacy VTK ("vtk") input format. All initial condition files for a given restart are assumed to share the same TIME/CYCLE metadata, since they originate from the same output step &ndash; only the first VTK-format entry is consulted.  <br /></td></tr>
+<tr class="separator:afbad09322ed2c94de179cd9f582b80ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad5ef8e8d168fed5be8c82d6ae67f661" id="r_aad5ef8e8d168fed5be8c82d6ae67f661"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structInitialConditionFile.html">InitialConditionFile</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad5ef8e8d168fed5be8c82d6ae67f661">initial_condition_files</a></td></tr>
 <tr class="separator:aad5ef8e8d168fed5be8c82d6ae67f661"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -309,6 +312,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Whether to load initial conditions from file. </p>
+
+</div>
+</div>
+<a id="afbad09322ed2c94de179cd9f582b80ab" name="afbad09322ed2c94de179cd9f582b80ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbad09322ed2c94de179cd9f582b80ab">&#9670;&#160;</a></span>read_time_from_file</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FieldInputParameters::read_time_from_file = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Whether to read simulated time and increment metadata (TIME/CYCLE) from the initial condition file, if present, and use it to override the start time and initial increment. Only supported for the legacy VTK ("vtk") input format. All initial condition files for a given restart are assumed to share the same TIME/CYCLE metadata, since they originate from the same output step &ndash; only the first VTK-format entry is consulted. </p>
 
 </div>
 </div>

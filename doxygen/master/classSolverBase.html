@@ -197,6 +197,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2f12aec653c061a5bdc2e3f5bdde048b" id="r_a2f12aec653c061a5bdc2e3f5bdde048b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSolveBlock.html">SolveBlock</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f12aec653c061a5bdc2e3f5bdde048b">get_solve_block</a> () const</td></tr>
 <tr class="memdesc:a2f12aec653c061a5bdc2e3f5bdde048b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solver context.  <br /></td></tr>
 <tr class="separator:a2f12aec653c061a5bdc2e3f5bdde048b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a137d6dbcd9994331988061cf5e022337" id="r_a137d6dbcd9994331988061cf5e022337"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a137d6dbcd9994331988061cf5e022337">is_first_solve</a> () const</td></tr>
+<tr class="memdesc:a137d6dbcd9994331988061cf5e022337"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this is the initial increment.  <br /></td></tr>
+<tr class="separator:a137d6dbcd9994331988061cf5e022337"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -477,6 +480,35 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 <p>Initialize the solver. </p>
 
 <p>Reimplemented in <a class="el" href="classExplicitSolver.html#afff52eb536882c34af0b8485da6c8a9f">ExplicitSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolver.html#a757f4bb146ea81ef2d5b3cab92505b73">LinearSolver&lt; dim, degree, number &gt;</a>, and <a class="el" href="classNewtonSolver.html#aface87b82971da2cfb5d9cbfd303a15a">NewtonSolver&lt; dim, degree, number &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a137d6dbcd9994331988061cf5e022337" name="a137d6dbcd9994331988061cf5e022337"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a137d6dbcd9994331988061cf5e022337">&#9670;&#160;</a></span>is_first_solve()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classSolverBase.html">SolverBase</a>&lt; dim, degree, number &gt;::is_first_solve </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if this is the initial increment. </p>
 
 </div>
 </div>
