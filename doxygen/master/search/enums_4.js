@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['outputtype_0',['OutputType',['../structFieldOutputParameters.html#aeb06d893f288d52bea97b48cb1a09240',1,'FieldOutputParameters']]]
+  ['inputfilecompressiontype_0',['InputFileCompressionType',['../structInitialConditionFile.html#ac9153d2eed6ac41fc71b7bcea7b69443',1,'InitialConditionFile']]]
 ];

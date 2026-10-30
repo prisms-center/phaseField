@@ -147,6 +147,12 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:afe5913e5485124b6056345cc3e41eb4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data formats for input initial conditions.  <a href="#afe5913e5485124b6056345cc3e41eb4d">More...</a><br /></td></tr>
 <tr class="separator:afe5913e5485124b6056345cc3e41eb4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9153d2eed6ac41fc71b7bcea7b69443" id="r_ac9153d2eed6ac41fc71b7bcea7b69443"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9153d2eed6ac41fc71b7bcea7b69443">InputFileCompressionType</a> { <a class="el" href="#ac9153d2eed6ac41fc71b7bcea7b69443a95ed8ba8336c82256ba5a813e77a5a9f">None</a>
+, <a class="el" href="#ac9153d2eed6ac41fc71b7bcea7b69443a188c1178e7e8287f57eba1f62366c014">Zip</a>
+, <a class="el" href="#ac9153d2eed6ac41fc71b7bcea7b69443a6bdca28c8eb770df60237ee0152cee00">GZip</a>
+ }</td></tr>
+<tr class="memdesc:ac9153d2eed6ac41fc71b7bcea7b69443"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compression type for flat binary input files (if applicable)  <a href="#ac9153d2eed6ac41fc71b7bcea7b69443">More...</a><br /></td></tr>
+<tr class="separator:ac9153d2eed6ac41fc71b7bcea7b69443"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -154,6 +160,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a513ea241c71a115e54a9dda54a83765a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2359ea131696e39515d60df0dd241208" id="r_a2359ea131696e39515d60df0dd241208"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#afe5913e5485124b6056345cc3e41eb4d">DataFormatType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2359ea131696e39515d60df0dd241208">format</a></td></tr>
 <tr class="separator:a2359ea131696e39515d60df0dd241208"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdf5583b31f8bd0c54566b120efad695" id="r_abdf5583b31f8bd0c54566b120efad695"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ac9153d2eed6ac41fc71b7bcea7b69443">InputFileCompressionType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abdf5583b31f8bd0c54566b120efad695">compression</a></td></tr>
+<tr class="separator:abdf5583b31f8bd0c54566b120efad695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e94b523e7ae1d5d49aee48768997338" id="r_a2e94b523e7ae1d5d49aee48768997338"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e94b523e7ae1d5d49aee48768997338">file_variable_names</a></td></tr>
 <tr class="separator:a2e94b523e7ae1d5d49aee48768997338"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1085d0ad3f23744df264a18ee789f0c9" id="r_a1085d0ad3f23744df264a18ee789f0c9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1085d0ad3f23744df264a18ee789f0c9">simulation_variable_names</a></td></tr>
@@ -187,7 +195,42 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ac9153d2eed6ac41fc71b7bcea7b69443" name="ac9153d2eed6ac41fc71b7bcea7b69443"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9153d2eed6ac41fc71b7bcea7b69443">&#9670;&#160;</a></span>InputFileCompressionType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#ac9153d2eed6ac41fc71b7bcea7b69443">InitialConditionFile::InputFileCompressionType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compression type for flat binary input files (if applicable) </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac9153d2eed6ac41fc71b7bcea7b69443a95ed8ba8336c82256ba5a813e77a5a9f" name="ac9153d2eed6ac41fc71b7bcea7b69443a95ed8ba8336c82256ba5a813e77a5a9f"></a>None&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac9153d2eed6ac41fc71b7bcea7b69443a188c1178e7e8287f57eba1f62366c014" name="ac9153d2eed6ac41fc71b7bcea7b69443a188c1178e7e8287f57eba1f62366c014"></a>Zip&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac9153d2eed6ac41fc71b7bcea7b69443a6bdca28c8eb770df60237ee0152cee00" name="ac9153d2eed6ac41fc71b7bcea7b69443a6bdca28c8eb770df60237ee0152cee00"></a>GZip&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="abdf5583b31f8bd0c54566b120efad695" name="abdf5583b31f8bd0c54566b120efad695"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdf5583b31f8bd0c54566b120efad695">&#9670;&#160;</a></span>compression</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#ac9153d2eed6ac41fc71b7bcea7b69443">InputFileCompressionType</a> InitialConditionFile::compression</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a513ea241c71a115e54a9dda54a83765a" name="a513ea241c71a115e54a9dda54a83765a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a513ea241c71a115e54a9dda54a83765a">&#9670;&#160;</a></span>file_name</h2>
 

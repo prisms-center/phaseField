@@ -1,5 +1,8 @@
 var NAVTREEINDEX1 =
 {
+"classGroupSolutionHandler.html#aa4ceb6aae94d3dc3fcfc2d4cd7ade7bc":[8,0,22,38],
+"classGroupSolutionHandler.html#aa7130555a45e186bcaf5cd319a877fe9":[8,0,22,12],
+"classGroupSolutionHandler.html#aab67ca948ec1e0d3d0f53c645878a5ab":[8,0,22,6],
 "classGroupSolutionHandler.html#aad59e8680a215f2a182a79cc4e014c82":[8,0,22,25],
 "classGroupSolutionHandler.html#abbde226033b1b92dc63123c4fdf0f14b":[8,0,22,34],
 "classGroupSolutionHandler.html#abefa9c168f3c1f4d4429b768dbc3c309":[8,0,22,40],
@@ -246,8 +249,5 @@ var NAVTREEINDEX1 =
 "classNewtonSolver.html#ad88a436867f113e2b6d0f9955801d273":[8,0,41,0],
 "classNewtonSolver.html#aface87b82971da2cfb5d9cbfd303a15a":[8,0,41,1],
 "classNucleationManager.html":[8,0,44],
-"classNucleationManager.html#a253febf95b10416da010f81aeafcd83e":[8,0,44,0],
-"classNucleationManager.html#a4cf6ea096ed7b1291bc2928cd0904bca":[8,0,44,3],
-"classNucleationManager.html#a720ecdfc7c7de043a2ddfebb2afa83bc":[8,0,44,1],
-"classNucleationManager.html#a971405b99065901cfe2b76bc0aad380f":[8,0,44,2]
+"classNucleationManager.html#a253febf95b10416da010f81aeafcd83e":[8,0,44,0]
 };

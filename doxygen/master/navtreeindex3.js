@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"classTerminalColor.html#a2048872beaccdba546644ef03b8a2121":[8,0,77,11],
+"classTerminalColor.html#a29ac20b1698b4854078c5ff9f1acd0fc":[8,0,77,36],
+"classTerminalColor.html#a2c6cd63c02c3dcb0a343b5243a2997aa":[8,0,77,33],
 "classTerminalColor.html#a2f8c79b0d150d154e4d8a36a773745f6":[8,0,77,38],
 "classTerminalColor.html#a309913254844ec3701d52fe80eefa1df":[8,0,77,34],
 "classTerminalColor.html#a3c430e9e54b65d51e4d80ff02a685a23":[8,0,77,29],
@@ -143,7 +146,6 @@ var NAVTREEINDEX3 =
 "contact.html":[5],
 "contact_8h.html":[9,0,0,2,0],
 "contact_8h_source.html":[9,0,0,2,0],
-"coupled_allen_cahn_cahn_hilliard.html":[4,0],
 "dependencies_8h.html":[9,0,1,0,0,2],
 "dependencies_8h.html#a8ee155eab2c56d1d5418eed94e41a238":[9,0,1,0,0,2,2],
 "dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d":[9,0,1,0,0,2,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX3 =
 "functions_n.html":[8,3,0,12],
 "functions_o.html":[8,3,0,13],
 "functions_p.html":[8,3,0,14],
-"functions_q.html":[8,3,0,15],
-"functions_r.html":[8,3,0,16],
-"functions_rela.html":[8,3,6]
+"functions_q.html":[8,3,0,15]
 };

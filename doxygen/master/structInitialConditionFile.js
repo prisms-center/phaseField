@@ -7,6 +7,12 @@ var structInitialConditionFile =
       [ "VTKPXMLUnstructuredGrid", "structInitialConditionFile.html#afe5913e5485124b6056345cc3e41eb4da341efcfad2b3398c1bd30a50611984fb", null ],
       [ "VTKXMLImageData", "structInitialConditionFile.html#afe5913e5485124b6056345cc3e41eb4da245263e01516722fdf524dfe109ff937", null ]
     ] ],
+    [ "InputFileCompressionType", "structInitialConditionFile.html#ac9153d2eed6ac41fc71b7bcea7b69443", [
+      [ "None", "structInitialConditionFile.html#ac9153d2eed6ac41fc71b7bcea7b69443a95ed8ba8336c82256ba5a813e77a5a9f", null ],
+      [ "Zip", "structInitialConditionFile.html#ac9153d2eed6ac41fc71b7bcea7b69443a188c1178e7e8287f57eba1f62366c014", null ],
+      [ "GZip", "structInitialConditionFile.html#ac9153d2eed6ac41fc71b7bcea7b69443a6bdca28c8eb770df60237ee0152cee00", null ]
+    ] ],
+    [ "compression", "structInitialConditionFile.html#abdf5583b31f8bd0c54566b120efad695", null ],
     [ "file_name", "structInitialConditionFile.html#a513ea241c71a115e54a9dda54a83765a", null ],
     [ "file_variable_names", "structInitialConditionFile.html#a2e94b523e7ae1d5d49aee48768997338", null ],
     [ "format", "structInitialConditionFile.html#a2359ea131696e39515d60df0dd241208", null ],
