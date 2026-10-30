@@ -78,6 +78,18 @@ TemporalDiscretization::declare(dealii::ParameterHandler &parameter_handler,
                   "start time",
                   std::vector {"start_time", "t_0", "t0", "begin time", "begin_time"});
 
+  parameter_handler.declare_entry("initial increment",
+                                  "0",
+                                  dealii::Patterns::Integer(0, INT_MAX),
+                                  "The increment number where the simulation begins. "
+                                  "Useful when continuing a run from a loaded initial "
+                                  "condition.");
+  declare_aliases(parameter_handler,
+                  "initial increment",
+                  std::vector {"initial_increment",
+                               "start increment",
+                               "start_increment"});
+
   parameter_handler.declare_entry("end time",
                                   "0.0",
                                   dealii::Patterns::Double(0.0, DBL_MAX),
@@ -95,6 +107,7 @@ TemporalDiscretization::assign(dealii::ParameterHandler &parameter_handler,
   n_increments      = (unsigned int) parameter_handler.get_integer("final increment");
   dt                = parameter_handler.get_double("time step");
   initial_time      = parameter_handler.get_double("start time");
+  initial_increment = (unsigned int) parameter_handler.get_integer("initial increment");
   double final_time = parameter_handler.get_double("end time");
 
   if (final_time > 0.0)

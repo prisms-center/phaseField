@@ -8,6 +8,8 @@
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/solve_block.h>
 
+#include <prismspf/field_input/read_vtk_metadata.h>
+
 #include <prismspf/user_inputs/constraint_parameters.h>
 #include <prismspf/user_inputs/grain_reassignment_parameters.h>
 #include <prismspf/user_inputs/io_parameters.h>
@@ -95,6 +97,27 @@ struct UserInputParameters : public ParameterBase
     output_parameters.assign(parameter_handler, n_increments, n_subsections);
     restart_parameters.assign(parameter_handler, n_increments, n_subsections);
     input_parameters.assign(parameter_handler, n_subsections);
+
+    if (input_parameters.read_time_from_file &&
+        !input_parameters.initial_condition_files.empty())
+      {
+        // All initial condition files are assumed to share a common increment, so their
+        // TIME/CYCLE metadata is identical -- only the first VTK-format
+        // entry is consulted.
+        for (const auto &ic_file : input_parameters.initial_condition_files)
+          {
+            if (ic_file.format ==
+                InitialConditionFile::DataFormatType::VTKUnstructuredGrid)
+              {
+                if (auto metadata = read_vtk_time_cycle_metadata(ic_file.file_name))
+                  {
+                    temporal_discretization.initial_time      = metadata->time;
+                    temporal_discretization.initial_increment = metadata->increment;
+                  }
+                break;
+              }
+          }
+      }
 
     misc_parameters.assign(parameter_handler, n_subsections);
     nucleation_parameters.assign(parameter_handler, n_subsections);

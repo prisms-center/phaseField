@@ -106,8 +106,7 @@ public:
   virtual void
   solve()
   {
-    if (solve_context->get_simulation_timer().get_increment() == 0 &&
-        solve_block.solve_timing == SolveTiming::Primary)
+    if (is_first_solve() && solve_block.solve_timing == SolveTiming::Primary)
       {
         // Set the initial condition
         set_initial_condition();
@@ -116,7 +115,7 @@ public:
       {
         this->solve_impl();
       }
-    if (solve_context->get_simulation_timer().get_increment() == 0)
+    if (is_first_solve())
       {
         solutions.apply_initial_condition_for_old_fields();
       }
@@ -253,6 +252,16 @@ public:
   get_solve_block() const
   {
     return solve_block;
+  }
+
+  /**
+   * @brief Check if this is the initial increment
+   */
+  [[nodiscard]] bool
+  is_first_solve() const
+  {
+    return solve_context->get_simulation_timer().get_increment() ==
+           solve_context->get_user_inputs().temporal_discretization.initial_increment;
   }
 
 protected:
