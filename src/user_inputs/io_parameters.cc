@@ -273,6 +273,12 @@ FieldInputParameters::declare(dealii::ParameterHandler &parameter_handler,
                                           "vtk|vtu|vti|pvtu|binary"),
                                         "The type of grid in the file.");
         parameter_handler.declare_entry(
+          "compression",
+          "none",
+          dealii::Patterns::Selection("none|gzip"),
+          "The type of compression used by the input file (none or gzip). Only "
+          "applicable to binary input files.");
+        parameter_handler.declare_entry(
           "file variables",
           "",
           dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
@@ -307,6 +313,21 @@ void
 FieldInputParameters::assign(dealii::ParameterHandler &parameter_handler,
                              unsigned int              n_subsections)
 {
+  const static std::unordered_map<std::string, InitialConditionFile::DataFormatType>
+    data_format_type_table = {
+      {"vtu",    InitialConditionFile::DataFormatType::VTKXMLUnstructuredGrid },
+      {"vtk",    InitialConditionFile::DataFormatType::VTKUnstructuredGrid    },
+      {"vti",    InitialConditionFile::DataFormatType::VTKXMLImageData        },
+      {"pvtu",   InitialConditionFile::DataFormatType::VTKPXMLUnstructuredGrid},
+      {"binary", InitialConditionFile::DataFormatType::FlatBinary             }
+  };
+  const static std::unordered_map<std::string,
+                                  InitialConditionFile::InputFileCompressionType>
+    input_file_compression_type_table = {
+      {"none", InitialConditionFile::InputFileCompressionType::None},
+      {"gzip", InitialConditionFile::InputFileCompressionType::GZip}
+  };
+
   for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
     {
       std::string subsection_text = "input file: " + std::to_string(criterion_id);
@@ -322,31 +343,10 @@ FieldInputParameters::assign(dealii::ParameterHandler &parameter_handler,
             ic_file.simulation_variable_names = dealii::Utilities::split_string_list(
               parameter_handler.get("simulation variables"));
 
-            const std::string format = parameter_handler.get("format");
-            // TODO: Make this a map like the other enums
-            if (format == "vtu")
-              {
-                ic_file.format =
-                  InitialConditionFile::DataFormatType::VTKXMLUnstructuredGrid;
-              }
-            else if (format == "vtk")
-              {
-                ic_file.format =
-                  InitialConditionFile::DataFormatType::VTKUnstructuredGrid;
-              }
-            else if (format == "vti")
-              {
-                ic_file.format = InitialConditionFile::DataFormatType::VTKXMLImageData;
-              }
-            else if (format == "pvtu")
-              {
-                ic_file.format =
-                  InitialConditionFile::DataFormatType::VTKPXMLUnstructuredGrid;
-              }
-            else
-              {
-                ic_file.format = InitialConditionFile::DataFormatType::FlatBinary;
-              }
+            ic_file.format = data_format_type_table.at(parameter_handler.get("format"));
+
+            ic_file.compression =
+              input_file_compression_type_table.at(parameter_handler.get("compression"));
 
             for (unsigned int k = 0; k < 3; ++k)
               {

@@ -81,7 +81,7 @@ private:
       }
   }
 
-  typename Mechanics<dim>::VoigtMatrix<double> stiffness;
+  Mechanics<dim>::template VoigtMatrix<double> stiffness;
 };
 
 PRISMS_PF_END_NAMESPACE
