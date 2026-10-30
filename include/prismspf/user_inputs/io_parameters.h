@@ -25,6 +25,15 @@
 #include <set>
 #include <string>
 
+namespace dealii::DataOutBase
+{
+  BOOST_DESCRIBE_ENUM(CompressionLevel,
+                      no_compression,
+                      best_speed,
+                      best_compression,
+                      default_compression);
+}
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 inline void
@@ -122,32 +131,19 @@ struct FieldOutputParameters : public ParameterBase
    * @brief Declare the parameters to be read from file.
    */
   static void
-  declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int              n_subsections = Numbers::default_subsections);
-
-  /**
-   * @brief Assign the parameters from file.
-   *
-   * WARN: This one should not be used
-   */
-  void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+  declare(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Assign the parameters from file.
    */
   void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_increments,
-         unsigned int              n_subsections = Numbers::default_subsections);
+  assign(dealii::ParameterHandler &parameter_handler, unsigned int n_increments);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   /**
    * @brief VTK output types.
@@ -243,32 +239,19 @@ struct RestartOutputParameters : public ParameterBase
    * @brief Declare the parameters to be read from file.
    */
   static void
-  declare(dealii::ParameterHandler &parameter_handler,
-          unsigned int              n_subsections = Numbers::default_subsections);
-
-  /**
-   * @brief Assign the parameters from file.
-   *
-   * WARN: This one should not be used
-   */
-  void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+  declare(dealii::ParameterHandler &parameter_handler);
 
   /**
    * @brief Assign the parameters from file.
    */
   void
-  assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_increments,
-         unsigned int              n_subsections = Numbers::default_subsections);
+  assign(dealii::ParameterHandler &parameter_handler, unsigned int n_increments);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   /**
    * @brief Whether a given increment should be outputted.
@@ -375,14 +358,13 @@ struct FieldInputParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const;
 
   /**
    * @brief Whether to load initial conditions from file
@@ -392,5 +374,35 @@ struct FieldInputParameters : public ParameterBase
   // Collection of initial condition files
   std::vector<InitialConditionFile> initial_condition_files;
 };
+
+/**
+ * @brief Enum introspection
+ */
+BOOST_DESCRIBE_ENUM(FieldOutputParameters::OutputType, VTU, VTK, PVTU, XDMF);
+BOOST_DESCRIBE_ENUM(InitialConditionFile::DataFormatType,
+                    FlatBinary,
+                    VTKUnstructuredGrid,
+                    VTKXMLUnstructuredGrid,
+                    VTKPXMLUnstructuredGrid,
+                    VTKXMLImageData);
+BOOST_DESCRIBE_STRUCT(FieldOutputParameters,
+                      (),
+                      (file_type,
+                       patch_subdivisions,
+                       compression_level,
+                       folder,
+                       file_name,
+                       output_list,
+                       output_fields));
+BOOST_DESCRIBE_STRUCT(RestartOutputParameters,
+                      (),
+                      (load_from_checkpoint, folder, file_name, output_list));
+BOOST_DESCRIBE_STRUCT(
+  InitialConditionFile,
+  (),
+  (file_name, format, file_variable_names, simulation_variable_names, n_data_points));
+BOOST_DESCRIBE_STRUCT(FieldInputParameters,
+                      (),
+                      (load_from_file, initial_condition_files));
 
 PRISMS_PF_END_NAMESPACE

@@ -8,8 +8,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-MiscellaneousParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                 unsigned int              n_subsections)
+MiscellaneousParameters::declare(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.enter_subsection("miscellaneous");
   {
@@ -24,8 +23,7 @@ MiscellaneousParameters::declare(dealii::ParameterHandler &parameter_handler,
 };
 
 void
-MiscellaneousParameters::assign(dealii::ParameterHandler &parameter_handler,
-                                unsigned int              n_subsections)
+MiscellaneousParameters::assign(dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.enter_subsection("miscellaneous");
   {
@@ -35,8 +33,7 @@ MiscellaneousParameters::assign(dealii::ParameterHandler &parameter_handler,
 };
 
 void
-MiscellaneousParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                                  const std::vector<SolveBlock> &solve_blocks) const {
+MiscellaneousParameters::validate() const {
   // TODO: Do this later
 };
 

@@ -338,14 +338,13 @@ public:
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override;
+         unsigned int              n_subsections = Numbers::default_subsections);
 
   /**
    * @brief Validate.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override;
+  validate() const override;
 
   /**
    * @brief Generate the mesh.
@@ -427,5 +426,7 @@ public:
   // The criteria used for remeshing
   std::map<std::string, RefinementCriterion> refinement_criteria;
 };
+
+BOOST_DESCRIBE_ENUM(TriangulationType, Rectangular, Spherical, Custom);
 
 PRISMS_PF_END_NAMESPACE

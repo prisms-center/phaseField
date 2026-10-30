@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <boost/describe.hpp>
+
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -146,5 +148,29 @@ enum PreconditionerType
   Chebyshev,
   GMG
 };
+
+BOOST_DESCRIBE_ENUM(SolveType, Constant, Explicit, Linear, Newton);
+BOOST_DESCRIBE_ENUM(TensorRank, Undefined, Scalar, Vector);
+BOOST_DESCRIBE_ENUM(ElasticityModel, Isotropic, Transverse, Orthotropic, Anisotropic);
+BOOST_DESCRIBE_ENUM(StressState, ThreeDimensional, PlaneStrain, PlaneStress);
+BOOST_DESCRIBE_ENUM(DependencyType,
+                    DST,
+                    SRC,
+                    LHS,
+                    Solution,
+                    Trial,
+                    Change,
+                    Current,
+                    OldOne,
+                    OldTwo,
+                    OldThree,
+                    OldFour);
+BOOST_DESCRIBE_ENUM(SolverToleranceType,
+                    AbsoluteResidual,
+                    RMSEPerField,
+                    IntegratedPerField,
+                    RMSETotal,
+                    IntegratedTotal);
+BOOST_DESCRIBE_ENUM(PreconditionerType, None, Chebyshev, GMG);
 
 PRISMS_PF_END_NAMESPACE

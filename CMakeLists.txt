@@ -97,6 +97,9 @@ include(deps/mpi)
 # TODO: Test compile
 include(deps/dealii)
 
+# Find Boost.JSON
+include(deps/boost)
+
 # Find VTK if we've enabled it
 # TODO: Test compile
 if(PRISMS_PF_WITH_VTK)

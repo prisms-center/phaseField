@@ -59,19 +59,19 @@ struct UserInputParameters : public ParameterBase
           unsigned int              n_subsections = Numbers::default_subsections) const
   {
     SpatialDiscretization<dim>::declare(parameter_handler, n_subsections);
-    TemporalDiscretization::declare(parameter_handler, n_subsections);
+    TemporalDiscretization::declare(parameter_handler);
     BoundaryParameters::declare(parameter_handler, n_subsections);
 
     LinearSolveParameters::declare(parameter_handler, n_subsections);
     NonlinearSolveParameters::declare(parameter_handler, n_subsections);
 
-    FieldOutputParameters::declare(parameter_handler, n_subsections);
-    RestartOutputParameters::declare(parameter_handler, n_subsections);
+    FieldOutputParameters::declare(parameter_handler);
+    RestartOutputParameters::declare(parameter_handler);
     FieldInputParameters::declare(parameter_handler, n_subsections);
 
-    MiscellaneousParameters::declare(parameter_handler, n_subsections);
-    NucleationParameters::declare(parameter_handler, n_subsections);
-    GrainReassignmentParameters::declare(parameter_handler, n_subsections);
+    MiscellaneousParameters::declare(parameter_handler);
+    NucleationParameters::declare(parameter_handler);
+    GrainReassignmentParameters::declare(parameter_handler);
 
     user_constants.declare_parameters(parameter_handler);
   };
@@ -81,10 +81,10 @@ struct UserInputParameters : public ParameterBase
    */
   void
   assign(dealii::ParameterHandler &parameter_handler,
-         unsigned int              n_subsections = Numbers::default_subsections) override
+         unsigned int              n_subsections = Numbers::default_subsections)
   {
     spatial_discretization.assign(parameter_handler, n_subsections);
-    temporal_discretization.assign(parameter_handler, n_subsections);
+    temporal_discretization.assign(parameter_handler);
     boundary_parameters.assign<dim>(parameter_handler, n_subsections);
 
     linear_solve_parameters.assign(parameter_handler, n_subsections);
@@ -92,13 +92,13 @@ struct UserInputParameters : public ParameterBase
 
     const auto n_increments = temporal_discretization.n_increments;
 
-    output_parameters.assign(parameter_handler, n_increments, n_subsections);
-    restart_parameters.assign(parameter_handler, n_increments, n_subsections);
+    output_parameters.assign(parameter_handler, n_increments);
+    restart_parameters.assign(parameter_handler, n_increments);
     input_parameters.assign(parameter_handler, n_subsections);
 
-    misc_parameters.assign(parameter_handler, n_subsections);
-    nucleation_parameters.assign(parameter_handler, n_subsections);
-    grain_reassignment_parameters.assign(parameter_handler, n_subsections);
+    misc_parameters.assign(parameter_handler);
+    nucleation_parameters.assign(parameter_handler);
+    grain_reassignment_parameters.assign(parameter_handler);
 
     user_constants.assign_parameters(parameter_handler);
   };
@@ -109,23 +109,22 @@ struct UserInputParameters : public ParameterBase
    * This is an optional step.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_blocks) const override
+  validate() const
   {
-    spatial_discretization.validate(field_attributes, solve_blocks);
-    temporal_discretization.validate(field_attributes, solve_blocks);
-    boundary_parameters.validate(field_attributes, solve_blocks);
+    spatial_discretization.validate();
+    temporal_discretization.validate();
+    boundary_parameters.validate();
 
-    linear_solve_parameters.validate(field_attributes, solve_blocks);
-    nonlinear_solve_parameters.validate(field_attributes, solve_blocks);
+    linear_solve_parameters.validate();
+    nonlinear_solve_parameters.validate();
 
-    output_parameters.validate(field_attributes, solve_blocks);
-    restart_parameters.validate(field_attributes, solve_blocks);
-    input_parameters.validate(field_attributes, solve_blocks);
+    output_parameters.validate();
+    restart_parameters.validate();
+    input_parameters.validate();
 
-    misc_parameters.validate(field_attributes, solve_blocks);
-    nucleation_parameters.validate(field_attributes, solve_blocks);
-    grain_reassignment_parameters.validate(field_attributes, solve_blocks);
+    misc_parameters.validate();
+    nucleation_parameters.validate();
+    grain_reassignment_parameters.validate();
   }
 
   SpatialDiscretization<dim> spatial_discretization;
@@ -148,5 +147,52 @@ struct UserInputParameters : public ParameterBase
   // TODO: This one needs to be fixed, but I don't want to touch it with a 9 foot pole.
   UserConstants<dim> user_constants;
 };
+
+/**
+ * @brief Serialize to JSON
+ */
+template <unsigned int dim>
+void
+tag_invoke(boost::json::value_from_tag,
+           boost::json::value             &jv,
+           const UserInputParameters<dim> &params)
+{
+  jv = {
+    {"temporal_discretization",       boost::json::value_from(params.temporal_discretization)},
+    {"boundary_parameters",           boost::json::value_from(params.boundary_parameters)    },
+    {"linear_solve_parameters",       boost::json::value_from(params.linear_solve_parameters)},
+    {"nonlinear_solve_parameters",
+     boost::json::value_from(params.nonlinear_solve_parameters)                              },
+    {"output_parameters",             boost::json::value_from(params.output_parameters)      },
+    {"restart_parameters",            boost::json::value_from(params.restart_parameters)     },
+    {"input_parameters",              boost::json::value_from(params.input_parameters)       },
+    {"misc_parameters",               boost::json::value_from(params.misc_parameters)        },
+    {"nucleation_parameters",         boost::json::value_from(params.nucleation_parameters)  },
+    {"grain_reassignment_parameters",
+     boost::json::value_from(params.grain_reassignment_parameters)                           }
+  };
+}
+
+/**
+ * @brief Deserialize from JSON
+ */
+template <unsigned int dim>
+UserInputParameters<dim>
+tag_invoke(boost::json::value_to_tag<UserInputParameters<dim>>,
+           const boost::json::value &jv)
+{
+  const boost::json::object &obj = jv.as_object();
+  return UserInputParameters<dim> {
+    SpatialDiscretization<dim>(),
+    boost::json::value_to<TemporalDiscretization>(obj.at("temporal_discretization")),
+    boost::json::value_to<BoundaryParameters>(obj.at("boundary_parameters")),
+    boost::json::value_to<FieldOutputParameters>(obj.at("output_parameters")),
+    boost::json::value_to<RestartOutputParameters>(obj.at("restart_parameters")),
+    boost::json::value_to<FieldInputParameters>(obj.at("input_parameters")),
+    boost::json::value_to<MiscellaneousParameters>(obj.at("misc_parameters")),
+    boost::json::value_to<NucleationParameters>(obj.at("nucleation_parameters")),
+    boost::json::value_to<GrainReassignmentParameters>(
+      obj.at("grain_reassignment_parameters"))};
+}
 
 PRISMS_PF_END_NAMESPACE

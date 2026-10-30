@@ -6,6 +6,8 @@
 #include <deal.II/base/utilities.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 
+#include <boost/describe.hpp>
+
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
@@ -21,6 +23,11 @@
 #include <set>
 #include <string>
 #include <vector>
+
+namespace dealii::EvaluationFlags
+{
+  BOOST_DESCRIBE_ENUM(EvaluationFlags, nothing, values, gradients, hessians);
+}; // namespace dealii::EvaluationFlags
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -211,5 +218,7 @@ make_dependency_set(const std::vector<FieldAttributes> &field_attributes,
     }
   return result;
 }
+
+BOOST_DESCRIBE_STRUCT(Dependency, (), (flag, src_flag, old_flags));
 
 PRISMS_PF_END_NAMESPACE
