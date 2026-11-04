@@ -44,6 +44,9 @@ public:
 
     solution_vector.update_ghost_values();
 
+    // NOTE: Here we don't use one of the SystemWide FEValues because this function is
+    // general enough that it can be applied to arbitrary rank dealii::Tensors (so long as
+    // the DoFHandler supports it).
     static dealii::FEValues<dim> fe_values(dof_handler.get_fe(),
                                            SystemWide<dim, degree>::quadrature,
                                            dealii::update_values |
@@ -90,10 +93,9 @@ public:
   template <typename Function, typename... SolutionVectors>
   static number
   integrate_function(const dealii::DoFHandler<dim> &dof_handler,
-                     Function                     &&function,
+                     Function                      &function,
                      const SolutionVectors &...solution_vectors)
   {
-    // compile time check
     static_assert(sizeof...(SolutionVectors) > 0,
                   "At least one solution vector must be supplied.");
 
@@ -102,14 +104,10 @@ public:
 
     (solution_vectors.update_ghost_values(), ...);
 
-    const auto &quadrature = SystemWide<dim, degree>::quadrature;
+    dealii::FEValues<dim> &fe_values = SystemWide<dim, degree>::template fe_values<0>(
+      dealii::update_values | dealii::update_JxW_values);
 
-    static dealii::FEValues<dim> fe_values(SystemWide<dim, degree>::fe_systems[Scalar],
-                                           quadrature,
-                                           dealii::update_values |
-                                             dealii::update_JxW_values);
-
-    const unsigned int num_quad_points = quadrature.size();
+    const unsigned int num_quad_points = SystemWide<dim, degree>::quadrature.size();
 
     const auto solutions = std::forward_as_tuple(solution_vectors...);
 
@@ -125,19 +123,19 @@ public:
             fe_values.reinit(cell);
 
             [&]<std::size_t... indices>(std::index_sequence<indices...>)
-            {
-              (fe_values.get_function_values(std::get<indices>(solutions),
-                                             std::get<indices>(quad_values)),
-               ...);
-            }(std::index_sequence_for<SolutionVectors...> {});
+              {
+                (fe_values.get_function_values(std::get<indices>(solutions),
+                                               std::get<indices>(quad_values)),
+                 ...);
+              }(std::index_sequence_for<SolutionVectors...> {});
 
             for (unsigned int q = 0; q < num_quad_points; ++q)
               {
                 const number fvalue = std::apply(
                   [&](const auto &...values) -> number
-                  {
-                    return std::invoke(function, values[q]...);
-                  },
+                    {
+                      return std::invoke(function, values[q]...);
+                    },
                   quad_values);
 
                 value += fvalue * fe_values.JxW(q);
@@ -150,7 +148,6 @@ public:
 
   /**
    * @brief Integrate function(u1(x),u2(x),...,un(x)) for scalar fields.
-   * alias of integrate_function.
    */
   template <typename Function, typename... SolutionVectors>
   static number
