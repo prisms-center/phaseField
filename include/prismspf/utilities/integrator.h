@@ -93,7 +93,7 @@ public:
   template <typename Function, typename... SolutionVectors>
   static number
   integrate_function(const dealii::DoFHandler<dim> &dof_handler,
-                     Function                      &function,
+                     Function                     &&function,
                      const SolutionVectors &...solution_vectors)
   {
     static_assert(sizeof...(SolutionVectors) > 0,
