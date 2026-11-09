@@ -6,12 +6,7 @@ function(add_unit_tests MODULE)
   set(_unit_tests ${ARGN})
 
   foreach(_test ${_unit_tests})
-    string(
-      REGEX REPLACE "\\.cc$"
-      ""
-      _test_name
-      "${_test}"
-    )
+    string(REGEX REPLACE "\\.cc$" "" _test_name "${_test}")
 
     add_executable(
       ${_test_name}
