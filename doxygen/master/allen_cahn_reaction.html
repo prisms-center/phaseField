@@ -124,7 +124,7 @@ $(function(){initNavTree('allen_cahn_reaction.html',''); initResizable(true); })
   <div class="headertitle"><div class="title">allen_cahn_reaction</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2><a class="anchor" id="autotoc_md32"></a>
+<div class="textblock"><h2><a class="anchor" id="autotoc_md2"></a>
 PRISMS-PF: Allen-Cahn-Reaction Dynamics</h2>
 <p>The governing partial differential equation (PDE) is:</p>
 <p>$$ \begin{equation} \frac{\partial c}{\partial t} = R(\eta), \end{equation} $$</p>
@@ -135,20 +135,20 @@ PRISMS-PF: Allen-Cahn-Reaction Dynamics</h2>
 <p>where $f$ is the free energy density, $\kappa$ is the gradient coefficient. Note that, for simplicity, we assume fast diffusion and only keep the reaction term.</p>
 <p>Under galvanostatic condition, we constraint the total reaction rate by an imposed rate $I_{\text{app}}$:</p>
 <p>$$ \begin{equation} \int_{\Omega} R(\eta) \, d\Omega = I_{\text{app}}. \end{equation} $$</p>
-<h3><a class="anchor" id="autotoc_md33"></a>
+<h3><a class="anchor" id="autotoc_md3"></a>
 Initial Condition</h3>
 <p>The initial condition is similar to <code>allen_cahn</code> application, but rescaled between c1 and c2.</p>
-<h3><a class="anchor" id="autotoc_md34"></a>
+<h3><a class="anchor" id="autotoc_md4"></a>
 Boundary Condition</h3>
 <p>Natural boundary condition is used here.</p>
-<h2><a class="anchor" id="autotoc_md35"></a>
+<h2><a class="anchor" id="autotoc_md5"></a>
 Weak form</h2>
 <p>Here, we chose $\mu$ as a separate variable. We multiply the PDE by a sufficiently smooth test function $w(\vec{x})$ and integrate over the entire domain $\Omega$:</p>
 <p>$$ \begin{equation} \int_{\Omega} w ~ \frac{\partial c}{\partial t} \, d\Omega = \int_{\Omega} w ~ R(\mu+V) \, d\Omega \end{equation} $$</p>
 <p>$$ \begin{equation} \int_{\Omega} w ~ \mu \, d\Omega = \int_{\Omega} w ~ \left( f_{,c}(c) - \kappa \nabla^2 c \right) \, d\Omega \end{equation} $$</p>
 <p>Using Integration by Parts and the Divergence Theorem:</p>
 <p>$$ \begin{equation} \int_{\Omega} w ~ \mu \, d\Omega = \int_{\Omega} w ~ f_{,c}(c) + \nabla w \cdot (\kappa\nabla c) \, d\Omega \end{equation} $$</p>
-<h2><a class="anchor" id="autotoc_md36"></a>
+<h2><a class="anchor" id="autotoc_md6"></a>
 Time discretization: Forward Euler (explicit)</h2>
 <p>We discretize the time derivative by</p>
 <p>$$ \begin{equation} \frac{\partial c}{\partial t} = \frac{c^{n} - c^{n-1}}{\Delta t} \end{equation} $$</p>
@@ -160,14 +160,14 @@ Time discretization: Forward Euler (explicit)</h2>
 <p>$$ \begin{equation} r_{c}= c^{n-1} + \Delta t ~ R(\mu^{n-1}+V^{n-1}) \end{equation} $$</p>
 <p>$$ \begin{equation} r_{\mu}= f_{,c}(c^{n}) \end{equation} $$</p>
 <p>$$ \begin{equation} r_{\eta x} = \kappa \nabla c^{n} \end{equation} $$</p>
-<h2><a class="anchor" id="autotoc_md37"></a>
+<h2><a class="anchor" id="autotoc_md7"></a>
 Galvanostatic condition</h2>
 <p>The applied voltage $V^n$ need to be solved from the galvanostatic condition (Eq. 2). Define the residual</p>
 <p>$$ r(V^n) = \int_{\Omega} R(\eta^n(\mu^n, V^n)) \, d\Omega - I_{\text{app}}. $$</p>
 <p>This is a nonlinear equation of $V^n$, which can be solved using Newton's method (start from an initial guess $V_0$)</p>
 <p>$$ V^n = V_0 - \frac{r(V_0)}{r'(V_0)}, $$</p>
 <p>We then use the updated $V^n$ as the new initial guess and repeat until convergence.</p>
-<h2><a class="anchor" id="autotoc_md38"></a>
+<h2><a class="anchor" id="autotoc_md8"></a>
 Special function form</h2>
 <p>We choose the regular solution free energy density</p>
 <p>$$ f(c) = m c(1-c) + c \ln c + (1-c) \ln (1-c) $$</p>

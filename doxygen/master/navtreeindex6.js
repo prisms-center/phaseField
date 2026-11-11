@@ -1,5 +1,13 @@
 var NAVTREEINDEX6 =
 {
+"structNucleus.html#aa7ccb0a79bfccf2642ca8ff10ab2f28e":[8,0,46,8],
+"structNucleus.html#adda8cd9d71c22c4495174740389b8e5a":[8,0,46,7],
+"structNucleus.html#addb86426dbd7ded2fc1cb9f1e624788f":[8,0,46,6],
+"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html":[6,0,4,0],
+"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html":[8,0,0,0],
+"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a0d7465c7a139fc897146ca50ac69653a":[6,0,4,0,2],
+"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a0d7465c7a139fc897146ca50ac69653a":[8,0,0,0,2],
+"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a1da3c8ed78d53955c2dee85a351866b3":[6,0,4,0,3],
 "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a1da3c8ed78d53955c2dee85a351866b3":[8,0,0,0,3],
 "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a1fdf7838f78b58e467eaf5e1f81c10c4":[6,0,4,0,1],
 "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a1fdf7838f78b58e467eaf5e1f81c10c4":[8,0,0,0,1],
@@ -241,13 +249,5 @@ var NAVTREEINDEX6 =
 "utilities_8h.html#a1d764c5ace94fd9ba37dd9fdb6d36625":[9,0,1,0,6,7,4],
 "utilities_8h.html#a29308e85d46b19122900b96a31310a27":[9,0,1,0,6,7,8],
 "utilities_8h.html#a332c5b699f76d9002da29b4db8931786":[9,0,1,0,6,7,10],
-"utilities_8h.html#a39cdcaf23e65767c70faa45302ccf6e3":[9,0,1,0,6,7,5],
-"utilities_8h.html#a3ee55d4355c72a77599aa47eb196ffb9":[9,0,1,0,6,7,9],
-"utilities_8h.html#a6900a956ef14d53b30c0616e7cf7b930":[9,0,1,0,6,7,2],
-"utilities_8h.html#a9e55d522b97c94a8676e937d9b9d06c9":[9,0,1,0,6,7,1],
-"utilities_8h.html#aa82813cf82bc07c48bf1e91eb5d7f381":[9,0,1,0,6,7,3],
-"utilities_8h.html#aba67c90e812e42b2c70c0572bc407d1f":[9,0,1,0,6,7,7],
-"utilities_8h.html#ae1788e3e79a6c15437b8aa7893852549":[9,0,1,0,6,7,6],
-"utilities_8h_source.html":[9,0,1,0,6,7],
-"vectorized__operations_8h.html":[9,0,1,0,6,8]
+"utilities_8h.html#a39cdcaf23e65767c70faa45302ccf6e3":[9,0,1,0,6,7,5]
 };

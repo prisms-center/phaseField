@@ -127,7 +127,6 @@ $(function(){initNavTree('classUserConstants.html',''); initResizable(true); });
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classUserConstants-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">UserConstants&lt; dim &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -148,29 +147,45 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a00d9c5f996c650688da96ce81c5c4be8" id="r_a00d9c5f996c650688da96ce81c5c4be8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#aa277fb5a8279748702c27f02e78ec231">InputVariant</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00d9c5f996c650688da96ce81c5c4be8">construct_user_constant</a> (std::vector&lt; std::string &gt; &amp;model_constants_strings)</td></tr>
 <tr class="memdesc:a00d9c5f996c650688da96ce81c5c4be8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the specified user constant to whatever type.  <br /></td></tr>
 <tr class="separator:a00d9c5f996c650688da96ce81c5c4be8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8100bd9df65e23e6fcb94888eb162aaa" id="r_a8100bd9df65e23e6fcb94888eb162aaa"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8100bd9df65e23e6fcb94888eb162aaa">get_double</a> (const std::string &amp;constant_name) const</td></tr>
-<tr class="memdesc:a8100bd9df65e23e6fcb94888eb162aaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the double from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
-<tr class="separator:a8100bd9df65e23e6fcb94888eb162aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b5aa2a9d0ee992ddc9adfce38028fa5" id="r_a0b5aa2a9d0ee992ddc9adfce38028fa5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b5aa2a9d0ee992ddc9adfce38028fa5">get_int</a> (const std::string &amp;constant_name) const</td></tr>
-<tr class="memdesc:a0b5aa2a9d0ee992ddc9adfce38028fa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the int from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
-<tr class="separator:a0b5aa2a9d0ee992ddc9adfce38028fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5e3a3244eeb0fe0c7b79c2c4ecbd000" id="r_ae5e3a3244eeb0fe0c7b79c2c4ecbd000"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae5e3a3244eeb0fe0c7b79c2c4ecbd000">get_bool</a> (const std::string &amp;constant_name) const</td></tr>
-<tr class="memdesc:ae5e3a3244eeb0fe0c7b79c2c4ecbd000"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the bool from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
-<tr class="separator:ae5e3a3244eeb0fe0c7b79c2c4ecbd000"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc5f0ec32ce7c6074de86223317996f8" id="r_adc5f0ec32ce7c6074de86223317996f8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc5f0ec32ce7c6074de86223317996f8">get_string</a> (const std::string &amp;constant_name) const</td></tr>
-<tr class="memdesc:adc5f0ec32ce7c6074de86223317996f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the string from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
-<tr class="separator:adc5f0ec32ce7c6074de86223317996f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a755509e5cb4b1007d745317fc9db65" id="r_a4a755509e5cb4b1007d745317fc9db65"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 1, dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a755509e5cb4b1007d745317fc9db65">get_rank_1_tensor</a> (const std::string &amp;constant_name) const</td></tr>
-<tr class="memdesc:a4a755509e5cb4b1007d745317fc9db65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the rank 1 tensor from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
-<tr class="separator:a4a755509e5cb4b1007d745317fc9db65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89f5c6fc333437646f0b7b7742e436b7" id="r_a89f5c6fc333437646f0b7b7742e436b7"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2, dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89f5c6fc333437646f0b7b7742e436b7">get_rank_2_tensor</a> (const std::string &amp;constant_name) const</td></tr>
-<tr class="memdesc:a89f5c6fc333437646f0b7b7742e436b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the rank 2 tensor from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
-<tr class="separator:a89f5c6fc333437646f0b7b7742e436b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83c4cdb1a1b5c417183c0cbd12e75ff3" id="r_a83c4cdb1a1b5c417183c0cbd12e75ff3"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2,(2 *dim) - 1+(dim/3)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83c4cdb1a1b5c417183c0cbd12e75ff3">get_elasticity_tensor</a> (const std::string &amp;constant_name) const</td></tr>
-<tr class="memdesc:a83c4cdb1a1b5c417183c0cbd12e75ff3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the elasticity tensor from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
-<tr class="separator:a83c4cdb1a1b5c417183c0cbd12e75ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7286f43c403ab709b266eede29c6fa4f" id="r_a7286f43c403ab709b266eede29c6fa4f"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7286f43c403ab709b266eede29c6fa4f">get_elasticity_tensor_plane_strain</a> (const std::string &amp;constant_name) const</td></tr>
-<tr class="separator:a7286f43c403ab709b266eede29c6fa4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a753303ac2913fd7f75555ebaf8f497d9" id="r_a753303ac2913fd7f75555ebaf8f497d9"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a753303ac2913fd7f75555ebaf8f497d9">get_double</a> (const std::string &amp;constant_name)</td></tr>
+<tr class="memdesc:a753303ac2913fd7f75555ebaf8f497d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the double from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
+<tr class="separator:a753303ac2913fd7f75555ebaf8f497d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d64b4962958fb78f03945003acd3f17" id="r_a4d64b4962958fb78f03945003acd3f17"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d64b4962958fb78f03945003acd3f17">get_double</a> (const std::string &amp;constant_name) const</td></tr>
+<tr class="separator:a4d64b4962958fb78f03945003acd3f17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a806cc08aee3ef7c0a964a956e055cd21" id="r_a806cc08aee3ef7c0a964a956e055cd21"><td class="memItemLeft" align="right" valign="top">int &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a806cc08aee3ef7c0a964a956e055cd21">get_int</a> (const std::string &amp;constant_name)</td></tr>
+<tr class="memdesc:a806cc08aee3ef7c0a964a956e055cd21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the int from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
+<tr class="separator:a806cc08aee3ef7c0a964a956e055cd21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ef563db55b68c1f4444381fdf666244" id="r_a1ef563db55b68c1f4444381fdf666244"><td class="memItemLeft" align="right" valign="top">const int &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ef563db55b68c1f4444381fdf666244">get_int</a> (const std::string &amp;constant_name) const</td></tr>
+<tr class="separator:a1ef563db55b68c1f4444381fdf666244"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50107e417650fb4e1fb3a9b42171ae38" id="r_a50107e417650fb4e1fb3a9b42171ae38"><td class="memItemLeft" align="right" valign="top">bool &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a50107e417650fb4e1fb3a9b42171ae38">get_bool</a> (const std::string &amp;constant_name)</td></tr>
+<tr class="memdesc:a50107e417650fb4e1fb3a9b42171ae38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the bool from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
+<tr class="separator:a50107e417650fb4e1fb3a9b42171ae38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2cce32a4d0d116e9424ecc2186601b5" id="r_ad2cce32a4d0d116e9424ecc2186601b5"><td class="memItemLeft" align="right" valign="top">const bool &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad2cce32a4d0d116e9424ecc2186601b5">get_bool</a> (const std::string &amp;constant_name) const</td></tr>
+<tr class="separator:ad2cce32a4d0d116e9424ecc2186601b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fedae4ad678836f6395a52ee30cdbda" id="r_a2fedae4ad678836f6395a52ee30cdbda"><td class="memItemLeft" align="right" valign="top">std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2fedae4ad678836f6395a52ee30cdbda">get_string</a> (const std::string &amp;constant_name)</td></tr>
+<tr class="memdesc:a2fedae4ad678836f6395a52ee30cdbda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the string from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
+<tr class="separator:a2fedae4ad678836f6395a52ee30cdbda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a363b2c02cd62b4fa7c93acaa27c9b8b5" id="r_a363b2c02cd62b4fa7c93acaa27c9b8b5"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a363b2c02cd62b4fa7c93acaa27c9b8b5">get_string</a> (const std::string &amp;constant_name) const</td></tr>
+<tr class="separator:a363b2c02cd62b4fa7c93acaa27c9b8b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab35b8d4cd397d7c2e6d42e7ad5a3652a" id="r_ab35b8d4cd397d7c2e6d42e7ad5a3652a"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 1, dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab35b8d4cd397d7c2e6d42e7ad5a3652a">get_rank_1_tensor</a> (const std::string &amp;constant_name)</td></tr>
+<tr class="memdesc:ab35b8d4cd397d7c2e6d42e7ad5a3652a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the rank 1 tensor from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
+<tr class="separator:ab35b8d4cd397d7c2e6d42e7ad5a3652a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38b3e4610eaf5dee9690b93591cb305b" id="r_a38b3e4610eaf5dee9690b93591cb305b"><td class="memItemLeft" align="right" valign="top">const dealii::Tensor&lt; 1, dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a38b3e4610eaf5dee9690b93591cb305b">get_rank_1_tensor</a> (const std::string &amp;constant_name) const</td></tr>
+<tr class="separator:a38b3e4610eaf5dee9690b93591cb305b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed5b5ac67bca895cdd127b99171d3430" id="r_aed5b5ac67bca895cdd127b99171d3430"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2, dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed5b5ac67bca895cdd127b99171d3430">get_rank_2_tensor</a> (const std::string &amp;constant_name)</td></tr>
+<tr class="memdesc:aed5b5ac67bca895cdd127b99171d3430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the rank 2 tensor from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
+<tr class="separator:aed5b5ac67bca895cdd127b99171d3430"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58cb7e1425ce31cff18eeb0642099956" id="r_a58cb7e1425ce31cff18eeb0642099956"><td class="memItemLeft" align="right" valign="top">const dealii::Tensor&lt; 2, dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a58cb7e1425ce31cff18eeb0642099956">get_rank_2_tensor</a> (const std::string &amp;constant_name) const</td></tr>
+<tr class="separator:a58cb7e1425ce31cff18eeb0642099956"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28efc3912a911e0c23018e9b0750861e" id="r_a28efc3912a911e0c23018e9b0750861e"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2,(2 *dim) - 1+(dim/3)&gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a28efc3912a911e0c23018e9b0750861e">get_elasticity_tensor</a> (const std::string &amp;constant_name)</td></tr>
+<tr class="memdesc:a28efc3912a911e0c23018e9b0750861e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the elasticity tensor from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
+<tr class="separator:a28efc3912a911e0c23018e9b0750861e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aceb97d3b9f4006604234a3e2ba7346d7" id="r_aceb97d3b9f4006604234a3e2ba7346d7"><td class="memItemLeft" align="right" valign="top">const dealii::Tensor&lt; 2,(2 *dim) - 1+(dim/3)&gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aceb97d3b9f4006604234a3e2ba7346d7">get_elasticity_tensor</a> (const std::string &amp;constant_name) const</td></tr>
+<tr class="separator:aceb97d3b9f4006604234a3e2ba7346d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d2df80531dc033e1539ec2ed0453ed8" id="r_a5d2df80531dc033e1539ec2ed0453ed8"><td class="memItemLeft" align="right" valign="top">dealii::Tensor&lt; 2, 4 &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d2df80531dc033e1539ec2ed0453ed8">get_elasticity_tensor_plane_strain</a> (const std::string &amp;constant_name)</td></tr>
+<tr class="separator:a5d2df80531dc033e1539ec2ed0453ed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1af73df63af61a7b353eddf9454fea7d" id="r_a1af73df63af61a7b353eddf9454fea7d"><td class="memItemLeft" align="right" valign="top">const dealii::Tensor&lt; 2, 4 &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1af73df63af61a7b353eddf9454fea7d">get_elasticity_tensor_plane_strain</a> (const std::string &amp;constant_name) const</td></tr>
+<tr class="separator:a1af73df63af61a7b353eddf9454fea7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5579bbb1335c38ae05a523b9572af082" id="r_a5579bbb1335c38ae05a523b9572af082"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5579bbb1335c38ae05a523b9572af082">add_user_constant</a> (const std::string &amp;constant_name, std::vector&lt; std::string &gt; &amp;model_constants_strings)</td></tr>
 <tr class="memdesc:a5579bbb1335c38ae05a523b9572af082"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add user-specified constants.  <br /></td></tr>
 <tr class="separator:a5579bbb1335c38ae05a523b9572af082"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,6 +211,9 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a57cdd0e2ae29f6f27bc1f4cb3e370d21" id="r_a57cdd0e2ae29f6f27bc1f4cb3e370d21"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, <a class="el" href="#aa277fb5a8279748702c27f02e78ec231">InputVariant</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57cdd0e2ae29f6f27bc1f4cb3e370d21">model_constants</a></td></tr>
+<tr class="memdesc:a57cdd0e2ae29f6f27bc1f4cb3e370d21"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of user-defined constants.  <br /></td></tr>
+<tr class="separator:a57cdd0e2ae29f6f27bc1f4cb3e370d21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab64829c591a81af44b41bc9292fabbc9" id="r_ab64829c591a81af44b41bc9292fabbc9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab64829c591a81af44b41bc9292fabbc9">file_name</a></td></tr>
 <tr class="memdesc:ab64829c591a81af44b41bc9292fabbc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">File to be parsed to extract the user-defined constants.  <br /></td></tr>
 <tr class="separator:ab64829c591a81af44b41bc9292fabbc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -222,12 +240,6 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:a52ce0df9b809244ec8e849fe2ffe5e8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0956c2e1725c9cddf71d0cae8236fde0" id="r_a0956c2e1725c9cddf71d0cae8236fde0"><td class="memItemLeft" align="right" valign="top">boost::variant&lt; dealii::Tensor&lt; 2,(2 *dim) - 1+(dim/3)&gt;, dealii::Tensor&lt; 2, 4 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0956c2e1725c9cddf71d0cae8236fde0">get_cij_matrix</a> (const <a class="el" href="type__enums_8h.html#afb65dffc43b1f0e550ca9370a7631284">ElasticityModel</a> &amp;model, const std::vector&lt; double &gt; &amp;constants, const <a class="el" href="type__enums_8h.html#a17bc53e9e9f11a9a90eb8cc303a189d4">StressState</a> &amp;stress_state) const</td></tr>
 <tr class="separator:a0956c2e1725c9cddf71d0cae8236fde0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a57cdd0e2ae29f6f27bc1f4cb3e370d21" id="r_a57cdd0e2ae29f6f27bc1f4cb3e370d21"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, <a class="el" href="#aa277fb5a8279748702c27f02e78ec231">InputVariant</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57cdd0e2ae29f6f27bc1f4cb3e370d21">model_constants</a></td></tr>
-<tr class="memdesc:a57cdd0e2ae29f6f27bc1f4cb3e370d21"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of user-defined constants.  <br /></td></tr>
-<tr class="separator:a57cdd0e2ae29f6f27bc1f4cb3e370d21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim&gt;<br />
@@ -494,8 +506,8 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="ae5e3a3244eeb0fe0c7b79c2c4ecbd000" name="ae5e3a3244eeb0fe0c7b79c2c4ecbd000"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5e3a3244eeb0fe0c7b79c2c4ecbd000">&#9670;&#160;</a></span>get_bool()</h2>
+<a id="a50107e417650fb4e1fb3a9b42171ae38" name="a50107e417650fb4e1fb3a9b42171ae38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50107e417650fb4e1fb3a9b42171ae38">&#9670;&#160;</a></span>get_bool() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -506,10 +518,10 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_bool </td>
+          <td class="memname">bool &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_bool </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -526,6 +538,33 @@ template&lt;unsigned int dim&gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ad2cce32a4d0d116e9424ecc2186601b5" name="ad2cce32a4d0d116e9424ecc2186601b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2cce32a4d0d116e9424ecc2186601b5">&#9670;&#160;</a></span>get_bool() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const bool &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_bool </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -603,8 +642,8 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="a8100bd9df65e23e6fcb94888eb162aaa" name="a8100bd9df65e23e6fcb94888eb162aaa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8100bd9df65e23e6fcb94888eb162aaa">&#9670;&#160;</a></span>get_double()</h2>
+<a id="a753303ac2913fd7f75555ebaf8f497d9" name="a753303ac2913fd7f75555ebaf8f497d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a753303ac2913fd7f75555ebaf8f497d9">&#9670;&#160;</a></span>get_double() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -615,10 +654,10 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_double </td>
+          <td class="memname">double &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_double </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -638,8 +677,8 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="a83c4cdb1a1b5c417183c0cbd12e75ff3" name="a83c4cdb1a1b5c417183c0cbd12e75ff3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a83c4cdb1a1b5c417183c0cbd12e75ff3">&#9670;&#160;</a></span>get_elasticity_tensor()</h2>
+<a id="a4d64b4962958fb78f03945003acd3f17" name="a4d64b4962958fb78f03945003acd3f17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d64b4962958fb78f03945003acd3f17">&#9670;&#160;</a></span>get_double() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -650,10 +689,37 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">dealii::Tensor&lt; 2,(2 *dim) - 1+(dim/3)&gt; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_elasticity_tensor </td>
+          <td class="memname">const double &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_double </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
           <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a28efc3912a911e0c23018e9b0750861e" name="a28efc3912a911e0c23018e9b0750861e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28efc3912a911e0c23018e9b0750861e">&#9670;&#160;</a></span>get_elasticity_tensor() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Tensor&lt; 2,(2 *dim) - 1+(dim/3)&gt; &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_elasticity_tensor </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -673,8 +739,8 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="a7286f43c403ab709b266eede29c6fa4f" name="a7286f43c403ab709b266eede29c6fa4f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7286f43c403ab709b266eede29c6fa4f">&#9670;&#160;</a></span>get_elasticity_tensor_plane_strain()</h2>
+<a id="aceb97d3b9f4006604234a3e2ba7346d7" name="aceb97d3b9f4006604234a3e2ba7346d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aceb97d3b9f4006604234a3e2ba7346d7">&#9670;&#160;</a></span>get_elasticity_tensor() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -685,7 +751,7 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">dealii::Tensor&lt; 2, 4 &gt; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_elasticity_tensor_plane_strain </td>
+          <td class="memname">const dealii::Tensor&lt; 2,(2 *dim) - 1+(dim/3)&gt; &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_elasticity_tensor </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
           <td> const</td>
@@ -700,8 +766,8 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="a0b5aa2a9d0ee992ddc9adfce38028fa5" name="a0b5aa2a9d0ee992ddc9adfce38028fa5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b5aa2a9d0ee992ddc9adfce38028fa5">&#9670;&#160;</a></span>get_int()</h2>
+<a id="a5d2df80531dc033e1539ec2ed0453ed8" name="a5d2df80531dc033e1539ec2ed0453ed8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d2df80531dc033e1539ec2ed0453ed8">&#9670;&#160;</a></span>get_elasticity_tensor_plane_strain() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -712,10 +778,64 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_int </td>
+          <td class="memname">dealii::Tensor&lt; 2, 4 &gt; &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_elasticity_tensor_plane_strain </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1af73df63af61a7b353eddf9454fea7d" name="a1af73df63af61a7b353eddf9454fea7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1af73df63af61a7b353eddf9454fea7d">&#9670;&#160;</a></span>get_elasticity_tensor_plane_strain() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const dealii::Tensor&lt; 2, 4 &gt; &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_elasticity_tensor_plane_strain </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
           <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a806cc08aee3ef7c0a964a956e055cd21" name="a806cc08aee3ef7c0a964a956e055cd21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a806cc08aee3ef7c0a964a956e055cd21">&#9670;&#160;</a></span>get_int() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_int </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -732,6 +852,33 @@ template&lt;unsigned int dim&gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a1ef563db55b68c1f4444381fdf666244" name="a1ef563db55b68c1f4444381fdf666244"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ef563db55b68c1f4444381fdf666244">&#9670;&#160;</a></span>get_int() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_int </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -764,8 +911,8 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="a4a755509e5cb4b1007d745317fc9db65" name="a4a755509e5cb4b1007d745317fc9db65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a755509e5cb4b1007d745317fc9db65">&#9670;&#160;</a></span>get_rank_1_tensor()</h2>
+<a id="ab35b8d4cd397d7c2e6d42e7ad5a3652a" name="ab35b8d4cd397d7c2e6d42e7ad5a3652a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab35b8d4cd397d7c2e6d42e7ad5a3652a">&#9670;&#160;</a></span>get_rank_1_tensor() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -776,10 +923,10 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">dealii::Tensor&lt; 1, dim &gt; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_rank_1_tensor </td>
+          <td class="memname">dealii::Tensor&lt; 1, dim &gt; &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_rank_1_tensor </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -799,8 +946,8 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="a89f5c6fc333437646f0b7b7742e436b7" name="a89f5c6fc333437646f0b7b7742e436b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89f5c6fc333437646f0b7b7742e436b7">&#9670;&#160;</a></span>get_rank_2_tensor()</h2>
+<a id="a38b3e4610eaf5dee9690b93591cb305b" name="a38b3e4610eaf5dee9690b93591cb305b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38b3e4610eaf5dee9690b93591cb305b">&#9670;&#160;</a></span>get_rank_1_tensor() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -811,10 +958,37 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">dealii::Tensor&lt; 2, dim &gt; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_rank_2_tensor </td>
+          <td class="memname">const dealii::Tensor&lt; 1, dim &gt; &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_rank_1_tensor </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
           <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aed5b5ac67bca895cdd127b99171d3430" name="aed5b5ac67bca895cdd127b99171d3430"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed5b5ac67bca895cdd127b99171d3430">&#9670;&#160;</a></span>get_rank_2_tensor() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Tensor&lt; 2, dim &gt; &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_rank_2_tensor </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -834,8 +1008,8 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="adc5f0ec32ce7c6074de86223317996f8" name="adc5f0ec32ce7c6074de86223317996f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc5f0ec32ce7c6074de86223317996f8">&#9670;&#160;</a></span>get_string()</h2>
+<a id="a58cb7e1425ce31cff18eeb0642099956" name="a58cb7e1425ce31cff18eeb0642099956"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58cb7e1425ce31cff18eeb0642099956">&#9670;&#160;</a></span>get_rank_2_tensor() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -846,10 +1020,37 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_string </td>
+          <td class="memname">const dealii::Tensor&lt; 2, dim &gt; &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_rank_2_tensor </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
           <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2fedae4ad678836f6395a52ee30cdbda" name="a2fedae4ad678836f6395a52ee30cdbda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fedae4ad678836f6395a52ee30cdbda">&#9670;&#160;</a></span>get_string() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_string </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -866,6 +1067,33 @@ template&lt;unsigned int dim&gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a363b2c02cd62b4fa7c93acaa27c9b8b5" name="a363b2c02cd62b4fa7c93acaa27c9b8b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a363b2c02cd62b4fa7c93acaa27c9b8b5">&#9670;&#160;</a></span>get_string() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_string </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>constant_name</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1028,19 +1256,11 @@ template&lt;unsigned int dim&gt; </div>
 <div class="memproto">
 <div class="memtemplate">
 template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::map&lt;std::string, <a class="el" href="#aa277fb5a8279748702c27f02e78ec231">InputVariant</a>&gt; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::model_constants</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>List of user-defined constants. </p>
