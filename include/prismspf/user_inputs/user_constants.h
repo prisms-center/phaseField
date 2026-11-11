@@ -41,6 +41,11 @@ public:
                                       dealii::Tensor<2, 4>>;
 
   /**
+   * @brief List of user-defined constants.
+   */
+  std::map<std::string, InputVariant> model_constants;
+
+  /**
    * @brief Assign the specified user constant to whatever type.
    */
   InputVariant
@@ -52,7 +57,10 @@ public:
    *
    * @param constant_name Name of the constant to retrieve.
    */
-  [[nodiscard]] double
+  [[nodiscard]] double &
+  get_double(const std::string &constant_name);
+
+  [[nodiscard]] const double &
   get_double(const std::string &constant_name) const;
 
   /**
@@ -61,7 +69,10 @@ public:
    *
    * @param constant_name Name of the constant to retrieve.
    */
-  [[nodiscard]] int
+  [[nodiscard]] int &
+  get_int(const std::string &constant_name);
+
+  [[nodiscard]] const int &
   get_int(const std::string &constant_name) const;
 
   /**
@@ -70,7 +81,10 @@ public:
    *
    * @param constant_name Name of the constant to retrieve.
    */
-  [[nodiscard]] bool
+  [[nodiscard]] bool &
+  get_bool(const std::string &constant_name);
+
+  [[nodiscard]] const bool &
   get_bool(const std::string &constant_name) const;
 
   /**
@@ -79,7 +93,10 @@ public:
    *
    * @param constant_name Name of the constant to retrieve.
    */
-  [[nodiscard]] std::string
+  [[nodiscard]] std::string &
+  get_string(const std::string &constant_name);
+
+  [[nodiscard]] const std::string &
   get_string(const std::string &constant_name) const;
 
   /**
@@ -88,7 +105,10 @@ public:
    *
    * @param constant_name Name of the constant to retrieve.
    */
-  [[nodiscard]] dealii::Tensor<1, dim>
+  [[nodiscard]] dealii::Tensor<1, dim> &
+  get_rank_1_tensor(const std::string &constant_name);
+
+  [[nodiscard]] const dealii::Tensor<1, dim> &
   get_rank_1_tensor(const std::string &constant_name) const;
 
   /**
@@ -97,7 +117,10 @@ public:
    *
    * @param constant_name Name of the constant to retrieve.
    */
-  [[nodiscard]] dealii::Tensor<2, dim>
+  [[nodiscard]] dealii::Tensor<2, dim> &
+  get_rank_2_tensor(const std::string &constant_name);
+
+  [[nodiscard]] const dealii::Tensor<2, dim> &
   get_rank_2_tensor(const std::string &constant_name) const;
 
   /**
@@ -106,11 +129,17 @@ public:
    *
    * @param constant_name Name of the constant to retrieve.
    */
-  [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
+  [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> &
+  get_elasticity_tensor(const std::string &constant_name);
+
+  [[nodiscard]] const dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> &
   get_elasticity_tensor(const std::string &constant_name) const;
 
   // Plane strain
-  [[nodiscard]] dealii::Tensor<2, 4>
+  [[nodiscard]] dealii::Tensor<2, 4> &
+  get_elasticity_tensor_plane_strain(const std::string &constant_name);
+
+  [[nodiscard]] const dealii::Tensor<2, 4> &
   get_elasticity_tensor_plane_strain(const std::string &constant_name) const;
 
   /**
@@ -213,115 +242,199 @@ private:
   get_cij_matrix(const ElasticityModel     &model,
                  const std::vector<double> &constants,
                  const StressState         &stress_state) const;
-
-  /**
-   * @brief List of user-defined constants.
-   */
-  std::map<std::string, InputVariant> model_constants;
 };
 
 template <unsigned int dim>
-inline double
-UserConstants<dim>::get_double(const std::string &constant_name) const
+inline double &
+UserConstants<dim>::get_double(const std::string &constant_name)
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
-           "that you attempted to access was " +
-           constant_name + "."));
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
 
   return boost::get<double>(model_constants.at(constant_name));
 }
 
 template <unsigned int dim>
-inline int
-UserConstants<dim>::get_int(const std::string &constant_name) const
+inline const double &
+UserConstants<dim>::get_double(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
-           "that you attempted to access was " +
-           constant_name + "."));
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
+
+  return boost::get<double>(model_constants.at(constant_name));
+}
+
+template <unsigned int dim>
+inline int &
+UserConstants<dim>::get_int(const std::string &constant_name)
+{
+  Assert(model_constants.find(constant_name) != model_constants.end(),
+         dealii::ExcMessage(
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
 
   return boost::get<int>(model_constants.at(constant_name));
 }
 
 template <unsigned int dim>
-inline bool
-UserConstants<dim>::get_bool(const std::string &constant_name) const
+inline const int &
+UserConstants<dim>::get_int(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
-           "that you attempted to access was " +
-           constant_name + "."));
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
+
+  return boost::get<int>(model_constants.at(constant_name));
+}
+
+template <unsigned int dim>
+inline bool &
+UserConstants<dim>::get_bool(const std::string &constant_name)
+{
+  Assert(model_constants.find(constant_name) != model_constants.end(),
+         dealii::ExcMessage(
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
 
   return boost::get<bool>(model_constants.at(constant_name));
 }
 
 template <unsigned int dim>
-inline std::string
-UserConstants<dim>::get_string(const std::string &constant_name) const
+inline const bool &
+UserConstants<dim>::get_bool(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
-           "that you attempted to access was " +
-           constant_name + "."));
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
+
+  return boost::get<bool>(model_constants.at(constant_name));
+}
+
+template <unsigned int dim>
+inline std::string &
+UserConstants<dim>::get_string(const std::string &constant_name)
+{
+  Assert(model_constants.find(constant_name) != model_constants.end(),
+         dealii::ExcMessage(
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
 
   return boost::get<std::string>(model_constants.at(constant_name));
 }
 
 template <unsigned int dim>
-inline dealii::Tensor<1, dim>
-UserConstants<dim>::get_rank_1_tensor(const std::string &constant_name) const
+inline const std::string &
+UserConstants<dim>::get_string(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           " Mismatch between constants in parameters.prm and "
-           "CustomPDE.h. The constant that you attempted to access was " +
-           constant_name + "."));
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
+
+  return boost::get<std::string>(model_constants.at(constant_name));
+}
+
+template <unsigned int dim>
+inline dealii::Tensor<1, dim> &
+UserConstants<dim>::get_rank_1_tensor(const std::string &constant_name)
+{
+  Assert(model_constants.find(constant_name) != model_constants.end(),
+         dealii::ExcMessage(
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
 
   return boost::get<dealii::Tensor<1, dim>>(model_constants.at(constant_name));
 }
 
 template <unsigned int dim>
-inline dealii::Tensor<2, dim>
-UserConstants<dim>::get_rank_2_tensor(const std::string &constant_name) const
+inline const dealii::Tensor<1, dim> &
+UserConstants<dim>::get_rank_1_tensor(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
-           "that you attempted to access was " +
-           constant_name + "."));
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
+
+  return boost::get<dealii::Tensor<1, dim>>(model_constants.at(constant_name));
+}
+
+template <unsigned int dim>
+inline dealii::Tensor<2, dim> &
+UserConstants<dim>::get_rank_2_tensor(const std::string &constant_name)
+{
+  Assert(model_constants.find(constant_name) != model_constants.end(),
+         dealii::ExcMessage(
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
 
   return boost::get<dealii::Tensor<2, dim>>(model_constants.at(constant_name));
 }
 
 template <unsigned int dim>
-inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-UserConstants<dim>::get_elasticity_tensor(const std::string &constant_name) const
+inline const dealii::Tensor<2, dim> &
+UserConstants<dim>::get_rank_2_tensor(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
-           "that you attempted to access was " +
-           constant_name + "."));
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
+
+  return boost::get<dealii::Tensor<2, dim>>(model_constants.at(constant_name));
+}
+
+template <unsigned int dim>
+inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> &
+UserConstants<dim>::get_elasticity_tensor(const std::string &constant_name)
+{
+  Assert(model_constants.find(constant_name) != model_constants.end(),
+         dealii::ExcMessage(
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
 
   return boost::get<dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>>(
     model_constants.at(constant_name));
 }
 
 template <unsigned int dim>
-inline dealii::Tensor<2, 4>
+inline const dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> &
+UserConstants<dim>::get_elasticity_tensor(const std::string &constant_name) const
+{
+  Assert(model_constants.find(constant_name) != model_constants.end(),
+         dealii::ExcMessage(
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
+
+  return boost::get<dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>>(
+    model_constants.at(constant_name));
+}
+
+template <unsigned int dim>
+inline dealii::Tensor<2, 4> &
+UserConstants<dim>::get_elasticity_tensor_plane_strain(const std::string &constant_name)
+{
+  Assert(model_constants.find(constant_name) != model_constants.end(),
+         dealii::ExcMessage(
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
+
+  return boost::get<dealii::Tensor<2, 4>>(model_constants.at(constant_name));
+}
+
+template <unsigned int dim>
+inline const dealii::Tensor<2, 4> &
 UserConstants<dim>::get_elasticity_tensor_plane_strain(
   const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
-           "that you attempted to access was " +
-           constant_name + "."));
+           "Attempted to access user constant '" + constant_name +
+           "', which has not been defined. It may be missing from your parameter file."));
 
   return boost::get<dealii::Tensor<2, 4>>(model_constants.at(constant_name));
 }
