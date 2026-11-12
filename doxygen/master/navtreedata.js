@@ -48,6 +48,7 @@ var NAVTREE =
       [ "pfhub_benchmarks_1_a", "\ref pfhub_benchmarks_1_a", null ],
       [ "pfhub_benchmarks_6_a", "\ref pfhub_benchmarks_6_a", null ],
       [ "nucleation", "\ref nucleation", null ],
+      [ "fracture", "\ref fracture", null ],
       [ "grain_growth", "\ref grain_growth", null ],
       [ "cahn_hilliard_implicit", "\ref cahn_hilliard_implicit", null ],
       [ "cahn_hilliard_explicit", "\ref cahn_hilliard_explicit", null ],
@@ -99,13 +100,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "\ref allen_cahn_explicit",
-"classGroupSolutionHandler.html#aa4ceb6aae94d3dc3fcfc2d4cd7ade7bc",
-"classNucleationManager.html#a4cf6ea096ed7b1291bc2928cd0904bca",
-"classTerminalColor.html#a1c74b98b52e0019e9e1a9ef6a1f1eca9",
-"functions_g.html",
-"solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5daae32940b344dab2f4e31be660ce1ab02",
-"structNucleus.html#aa7ccb0a79bfccf2642ca8ff10ab2f28e",
-"utilities_8h.html#a3ee55d4355c72a77599aa47eb196ffb9"
+"classGroupSolutionHandler.html#a8daede9ed1d401c2adae3d291a07e7c0",
+"classNucleationManager.html#a253febf95b10416da010f81aeafcd83e",
+"classTerminalColor.html#a174f58b4601e21d20a81f644de31b737",
+"functions_func_~.html",
+"solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5daa2658079745aba85e114e0e02f5106ad",
+"structNucleus.html#a9896d837664d2ab8dc582fddb0a1bdc6",
+"utilities_8h.html#a39cdcaf23e65767c70faa45302ccf6e3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

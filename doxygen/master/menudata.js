@@ -44,6 +44,7 @@ var menudata={children:[
 {text:"pfhub_benchmarks_1_a",url:"\\ref pfhub_benchmarks_1_a"},
 {text:"pfhub_benchmarks_6_a",url:"\\ref pfhub_benchmarks_6_a"},
 {text:"nucleation",url:"\\ref nucleation"},
+{text:"fracture",url:"\\ref fracture"},
 {text:"grain_growth",url:"\\ref grain_growth"},
 {text:"cahn_hilliard_implicit",url:"\\ref cahn_hilliard_implicit"},
 {text:"cahn_hilliard_explicit",url:"\\ref cahn_hilliard_explicit"},

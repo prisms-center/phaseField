@@ -2,13 +2,14 @@ var NAVTREEINDEX0 =
 {
 "\ref allen_cahn_explicit":[4,6],
 "\ref allen_cahn_implicit":[4,5],
-"\ref alloy_solidification":[4,15],
-"\ref blank":[4,16],
-"\ref cahn_hilliard_explicit":[4,14],
-"\ref cahn_hilliard_implicit":[4,13],
-"\ref coupled_allen_cahn_cahn_hilliard":[4,18],
-"\ref grain_growth":[4,12],
-"\ref laplace":[4,17],
+"\ref alloy_solidification":[4,16],
+"\ref blank":[4,17],
+"\ref cahn_hilliard_explicit":[4,15],
+"\ref cahn_hilliard_implicit":[4,14],
+"\ref coupled_allen_cahn_cahn_hilliard":[4,19],
+"\ref fracture":[4,12],
+"\ref grain_growth":[4,13],
+"\ref laplace":[4,18],
 "\ref mechanics_boundary_value_problem":[4,2],
 "\ref mechanics_eshelby_inclusion":[4,3],
 "\ref mechanics_plane_strain":[4,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classGroupSolutionHandler.html#a7df00460558844845b63e86bf716b221":[8,0,22,8],
 "classGroupSolutionHandler.html#a80017ea8c86c834ae78e933d907141b7":[8,0,22,10],
 "classGroupSolutionHandler.html#a8975905970acdc1fadd5e2ca42983d6f":[8,0,22,22],
-"classGroupSolutionHandler.html#a8bdd92268192ca6f3790ec072aebc923":[8,0,22,5],
-"classGroupSolutionHandler.html#a8daede9ed1d401c2adae3d291a07e7c0":[8,0,22,17]
+"classGroupSolutionHandler.html#a8bdd92268192ca6f3790ec072aebc923":[8,0,22,5]
 };
