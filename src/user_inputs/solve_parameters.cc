@@ -272,6 +272,7 @@ LinearSolverParameters::assign_gmres(dealii::ParameterHandler &parameter_handler
     {"modified_gram_schmidt",          OStrat::modified_gram_schmidt         },
     {"delayed_classical_gram_schmidt", OStrat::delayed_classical_gram_schmidt}
   };
+  gmres_parameters.max_basis_size = parameter_handler.get_integer("max basis size");
   gmres_parameters.orthogonalization_strategy = orthogonalization_strategy_names.at(
     parameter_handler.get("orthogonalization strategy"));
   gmres_parameters.right_preconditioning =
