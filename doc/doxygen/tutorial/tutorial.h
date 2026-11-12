@@ -183,9 +183,9 @@ extension](https://marketplace.visualstudio.com/items?itemName=xaver.clang-forma
 turning on **format on save** in settings may be useful. You will also need a clang-format
 installation from your cli.
 
-To ensure that your commits will pass our requirements, you can run pre-commit inside the
-repo, which will format the code properly and catch spelling errors. Your changes may need
-to be staged first if new files are added.
+To ensure that your commits will pass our requirements before your pull-request, you can
+run pre-commit inside the repo, which will format the code properly and catch spelling
+errors. Your changes may need to be staged first if new files are added.
 @code
 # One-time installation:
 python3 -m pip install pre_commit
