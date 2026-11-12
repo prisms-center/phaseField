@@ -267,20 +267,19 @@ Problem<dim, degree, number>::init_system()
         triangulation_manager.init_mg();
       }
   }
-  Logger::instance() << LogFormatter::success("Mesh generation succeeded") << std::endl;
+  Logger::instance() << LogFormatter::success("Mesh generated") << std::endl;
 
   // Create the dof handlers.
-  Logger::instance() << "Creating DoFHandlers...\n" << std::flush;
+  Logger::instance() << "Initializing DoFHandlers...\n" << std::flush;
   {
     dof_manager.reinit(triangulation_manager, use_mg);
     dof_manager.reinit_mapping(field_attributes);
   }
-  Logger::instance() << LogFormatter::success("DoFHandler creation succeeded")
-                     << std::endl;
+  Logger::instance() << LogFormatter::success("DoFHandlers initialized") << std::endl;
 
   // Create the constraints
   // See *1
-  Logger::instance() << "Creating constraints...\n" << std::flush;
+  Logger::instance() << "Initializing constraints...\n" << std::flush;
   {
     constraint_manager.init(user_inputs.boundary_parameters,
                             user_inputs.spatial_discretization,
@@ -289,25 +288,23 @@ Problem<dim, degree, number>::init_system()
                             solve_context.get_simulation_timer());
     constraint_manager.reinit(field_attributes);
   }
-  Logger::instance() << LogFormatter::success("Constraint creation succeeded")
-                     << std::endl;
+  Logger::instance() << LogFormatter::success("Constraints initialized") << std::endl;
 
   // Create MatrixFree
-  Logger::instance() << "Creating MatrixFree...\n" << std::flush;
+  Logger::instance() << "Initializing MatrixFree...\n" << std::flush;
   {
     solve_context.get_matrix_free_manager()
       .reinit(solve_context.get_dof_manager(), solve_context.get_constraint_manager());
   }
-  Logger::instance() << LogFormatter::success("MatrixFree creation succeeded")
-                     << std::endl;
+  Logger::instance() << LogFormatter::success("MatrixFree initialized") << std::endl;
 
   // Create InvM
-  Logger::instance() << "Creating InvM...\n" << std::flush;
+  Logger::instance() << "Computing InvM...\n" << std::flush;
   {
     solve_context.get_invm_manager().reinit(solve_context.get_matrix_free_manager());
     solve_context.get_invm_manager().compute_invm();
   }
-  Logger::instance() << LogFormatter::success("InvM creation succeeded") << std::endl;
+  Logger::instance() << LogFormatter::success("InvM computed") << std::endl;
 
   // Initialize the solvers
   Logger::instance() << "Initializing solvers...\n" << std::flush;
@@ -329,8 +326,7 @@ Problem<dim, degree, number>::init_system()
         }
     }
   }
-  Logger::instance() << LogFormatter::success("Solve initialization succeeded")
-                     << std::endl;
+  Logger::instance() << LogFormatter::success("Solvers initialized") << std::endl;
 
   // Attach refinement function for nucleation
   // TODO: Log this?
