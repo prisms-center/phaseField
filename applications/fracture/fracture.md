@@ -22,7 +22,7 @@ where $u$ is the displacement and $n \in [0,1]$ is a scalar phase field describi
 is the elastic strain energy density of the undamaged base material ($\varepsilon(u) =
 \frac{1}{2}(\nabla u + \nabla u^T)$, $C_0$ the base elasticity tensor), and $h(n)=(1-n)^2$ is
 the quadratic degradation function. $E(\mathbf{x}) \in [0,1]$ and $G_c(\mathbf{x})$ are
-dimensionless masks (fields `Ex`, `Gx` in code) that let the base stiffness $C_0$ and baseline
+dimensionless masks (fields `E`, `G` in code) that let the base stiffness $C_0$ and baseline
 toughness $G_c^0$ vary in space, for studies of heterogeneous media [1]; they are assigned
 once through the initial condition and held fixed thereafter. $t = \sigma \cdot \hat{n}$ is
 the surface traction; body forces are zero.

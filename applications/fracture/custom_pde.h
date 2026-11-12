@@ -21,8 +21,8 @@ enum FieldIndex : unsigned int
   n     = 0,
   u     = 1,
   dndt  = 2,
-  Ex    = 3,
-  Gx    = 4,
+  E     = 3,
+  G     = 4,
   f_tot = 5,
   f_int = 6,
   f_el  = 7,
@@ -45,6 +45,11 @@ public:
   using VectorGrad  = dealii::Tensor<2, dim, ScalarValue>;
   using PDEOperatorBase<dim, degree, number>::get_user_inputs;
   using PDEOperatorBase<dim, degree, number>::get_pf_tools;
+
+  template <typename T>
+  using VoigtMatrix = typename Mechanics<dim>::template VoigtMatrix<T>;
+  template <typename T>
+  using VoigtVector = typename Mechanics<dim>::template VoigtVector<T>;
 
   CustomPDE(const UserInputParameters<dim> &_user_inputs, PhaseFieldTools<dim> &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
@@ -82,8 +87,8 @@ private:
         scalar_value = analytical_n(sdf);
       }
 
-    if (index == FieldIndex::Ex ||
-        index == FieldIndex::Gx) // Ex, Gx = 1 everywhere (homogeneous material)
+    if (index == FieldIndex::E ||
+        index == FieldIndex::G) // E, G = 1 everywhere (homogeneous material)
       {
         scalar_value = 1.0;
       }
@@ -156,34 +161,23 @@ private:
 
     else if (solve_block_id == 3) // auxiliary dndt
       {
+        ScalarValue E = variable_list.template get_value<Scalar, Current>(FieldIndex::E);
+        ScalarValue G = variable_list.template get_value<Scalar, Current>(FieldIndex::G);
         ScalarValue n = variable_list.template get_value<Scalar, Current>(FieldIndex::n);
         ScalarGrad  nx =
           variable_list.template get_gradient<Scalar, Current>(FieldIndex::n);
         VectorGrad ux =
           variable_list.template get_symmetric_gradient<Vector, Current>(FieldIndex::u);
-        ScalarValue Ex =
-          variable_list.template get_value<Scalar, Current>(FieldIndex::Ex);
-        ScalarValue Gx =
-          variable_list.template get_value<Scalar, Current>(FieldIndex::Gx);
 
-        dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, ScalarValue> C =
-          CIJ_base * Ex;
-        VectorGrad stress;
-        Mechanics::compute_stress<dim, ScalarValue>(C, ux, stress);
-        ScalarValue psi = 0.0;
-        for (unsigned int i = 0; i < dim; ++i)
-          {
-            for (unsigned int j = 0; j < dim; ++j)
-              {
-                psi += 0.5 * stress[i][j] * ux[i][j];
-              }
-          }
+        VoigtMatrix<ScalarValue> C      = CIJ_base * E;
+        VectorGrad               stress = Mechanics<dim>::compute_stress(C, ux);
+        ScalarValue              psi    = 0.5 * dealii::scalar_product(stress, ux);
 
         variable_list.set_value_term(
           FieldIndex::dndt,
-          -(2.0 * (n - 1.0) * psi + Gc0 * Gx * 3.0 / 8.0 / ell) * Mn);
+          -(2.0 * (n - 1.0) * psi + Gc0 * G * 3.0 / 8.0 / ell) * Mn);
         variable_list.set_gradient_term(FieldIndex::dndt,
-                                        -ell * nx * Gc0 * Gx * (3.0 / 4.0) * Mn);
+                                        -ell * nx * Gc0 * G * (3.0 / 4.0) * Mn);
       }
 
     else if (solve_block_id == 2) // no body force; analytic BC applied via set_dirichlet
@@ -193,24 +187,19 @@ private:
 
     else if (solve_block_id == 4) // postprocessing
       {
+        ScalarValue E = variable_list.template get_value<Scalar, Current>(FieldIndex::E);
+        ScalarValue G = variable_list.template get_value<Scalar, Current>(FieldIndex::G);
         ScalarValue n = variable_list.template get_value<Scalar, Current>(FieldIndex::n);
         ScalarGrad  nx =
           variable_list.template get_gradient<Scalar, Current>(FieldIndex::n);
         VectorGrad ux =
           variable_list.template get_symmetric_gradient<Vector, Current>(FieldIndex::u);
-        ScalarValue Ex =
-          variable_list.template get_value<Scalar, Current>(FieldIndex::Ex);
-        ScalarValue Gx =
-          variable_list.template get_value<Scalar, Current>(FieldIndex::Gx);
 
         ScalarValue f_int =
-          (Gc0 * n * Gx * (3.0 / 8.0) / ell) + (Gc0 * Gx * 3.0 / 8.0 * ell * nx * nx);
-
-        dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, ScalarValue> C_deg =
-          CIJ_base * Ex * (1.0 - 2.0 * n + n * n);
-        VectorGrad stress;
-        Mechanics::compute_stress<dim, ScalarValue>(C_deg, ux, stress);
-        ScalarValue f_el = 0.5 * dealii::scalar_product(stress, ux);
+          (Gc0 * n * G * (3.0 / 8.0) / ell) + (Gc0 * G * 3.0 / 8.0 * ell * nx * nx);
+        VoigtMatrix<ScalarValue> C_deg  = CIJ_base * E * (1.0 - 2.0 * n + n * n);
+        VectorGrad               stress = Mechanics<dim>::compute_stress(C_deg, ux);
+        ScalarValue              f_el   = 0.5 * dealii::scalar_product(stress, ux);
         variable_list.set_value_term(FieldIndex::f_tot, f_el + f_int);
         variable_list.set_value_term(FieldIndex::f_int, f_int);
         variable_list.set_value_term(FieldIndex::f_el, f_el);
@@ -241,16 +230,13 @@ private:
   {
     if (solve_block_id == 2) // degraded stiffness tangent for u
       {
+        ScalarValue E = variable_list.template get_value<Scalar, Current>(FieldIndex::E);
         ScalarValue n = variable_list.template get_value<Scalar, Current>(FieldIndex::n);
         VectorGrad  ux_trial =
           variable_list.template get_symmetric_gradient<Vector, LHS>(FieldIndex::u);
-        ScalarValue Ex =
-          variable_list.template get_value<Scalar, Current>(FieldIndex::Ex);
 
-        dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, ScalarValue> C_deg =
-          CIJ_base * Ex * (1.0 - 2.0 * n + n * n);
-        VectorGrad stress;
-        Mechanics::compute_stress<dim, ScalarValue>(C_deg, ux_trial, stress);
+        VoigtMatrix<ScalarValue> C_deg  = CIJ_base * E * (1.0 - 2.0 * n + n * n);
+        VectorGrad               stress = Mechanics<dim>::compute_stress(C_deg, ux_trial);
         variable_list.set_gradient_term(FieldIndex::u, stress);
       }
   }
@@ -295,13 +281,13 @@ private:
 
   // ---- member variables ----
 
-  number                                                       clength;
-  number                                                       Mn;
-  number                                                       ell;
-  number                                                       Gc0;
-  dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, number> CIJ_base;
-  number                                                       KI_nom;
-  number                                                       vel_nom;
+  number              clength;
+  number              Mn;
+  number              ell;
+  number              Gc0;
+  VoigtMatrix<double> CIJ_base;
+  number              KI_nom;
+  number              vel_nom;
 };
 
 PRISMS_PF_END_NAMESPACE

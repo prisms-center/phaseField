@@ -21,8 +21,8 @@ main(int argc, char *argv[])
     FieldAttributes("n"),         // FieldIndex::n = 0  phase field (explicit)
     FieldAttributes("u", Vector), // FieldIndex::u = 1  displacement (linear)
     FieldAttributes("dndt"),  // FieldIndex::dndt  = 2  crack driving force (auxiliary)
-    FieldAttributes("Ex"),    // FieldIndex::Ex    = 3  stiffness mask (constant)
-    FieldAttributes("Gx"),    // FieldIndex::Gx    = 4  toughness mask (constant)
+    FieldAttributes("E"),     // FieldIndex::E    = 3  stiffness mask (constant)
+    FieldAttributes("G"),     // FieldIndex::G    = 4  toughness mask (constant)
     FieldAttributes("f_tot"), // FieldIndex::f_tot = 5  total energy density (postprocess)
     FieldAttributes("f_int"), // FieldIndex::f_int = 6  interfacial energy (postprocess)
     FieldAttributes("f_el"),  // FieldIndex::f_el  = 7 elastic energy (postprocess)
@@ -45,7 +45,7 @@ main(int argc, char *argv[])
   const_block.id            = 0;
   const_block.solve_type    = Constant;
   const_block.solve_timing  = Initialized;
-  const_block.field_indices = {FieldIndex::Ex, FieldIndex::Gx};
+  const_block.field_indices = {FieldIndex::E, FieldIndex::G};
 
   // Block 1: explicit n update using previous-step n and dndt
   SolveBlock n_block;
@@ -62,16 +62,16 @@ main(int argc, char *argv[])
   u_block.solve_timing     = Secondary;
   u_block.field_indices    = {FieldIndex::u};
   u_block.dependencies_rhs = make_dependency_set(fields, {});
-  u_block.dependencies_lhs = make_dependency_set(fields, {"grad(lhs(u))", "n", "Ex"});
+  u_block.dependencies_lhs = make_dependency_set(fields, {"grad(lhs(u))", "n", "E"});
 
-  // Block 3: auxiliary dndt: computed each step from current n, u, Ex, Gx
+  // Block 3: auxiliary dndt: computed each step from current n, u, E, G
   SolveBlock dndt_block;
   dndt_block.id            = 3;
   dndt_block.solve_type    = Explicit;
   dndt_block.solve_timing  = Secondary;
   dndt_block.field_indices = {FieldIndex::dndt};
   dndt_block.dependencies_rhs =
-    make_dependency_set(fields, {"n", "grad(n)", "grad(u)", "Ex", "Gx"});
+    make_dependency_set(fields, {"n", "grad(n)", "grad(u)", "E", "G"});
 
   // Block 4: postprocessed fields: computed only on output steps
   SolveBlock pp_block;
@@ -92,7 +92,7 @@ main(int argc, char *argv[])
     }
 
   pp_block.dependencies_rhs =
-    make_dependency_set(fields, {"n", "grad(n)", "grad(u)", "Ex", "Gx"});
+    make_dependency_set(fields, {"n", "grad(n)", "grad(u)", "E", "G"});
 
   std::vector<SolveBlock> solve_blocks(
     {const_block, n_block, u_block, dndt_block, pp_block});
