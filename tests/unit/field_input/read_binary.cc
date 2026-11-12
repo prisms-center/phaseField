@@ -3,11 +3,9 @@
 
 #include <prismspf/field_input/read_binary.h>
 
-#include <prismspf/config.h>
-
 #include <catch2/catch_test_macros.hpp>
 
-PRISMS_PF_BEGIN_NAMESPACE
+using namespace prismspf;
 
 TEST_CASE("Read binary file")
 {
@@ -136,5 +134,3 @@ TEST_CASE("Read binary file")
     REQUIRE(reader.get_scalar_value(point3, "n") - 2.5 < 1e-12);
   }
 }
-
-PRISMS_PF_END_NAMESPACE
