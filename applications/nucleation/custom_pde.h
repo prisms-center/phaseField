@@ -166,20 +166,12 @@ public:
           {
             ssf *= ssf1;
           }
-        // Terms for the nucleation rate
-        auto max = [](const ScalarValue &arr, number val)
-          {
-            ScalarValue result;
-            for (unsigned int i = 0; i < arr.size(); ++i)
-              {
-                result[i] = std::max(arr[i], val);
-              }
-            return result;
-          };
         // Calculate the nucleation rate
-        double      current_time = sim_timer.get_time();
+        double current_time = sim_timer.get_time();
+        using std::exp;
+        using std::max;
         ScalarValue J =
-          k1 * std::exp(-k2 / (max(ssf, number(1.0e-6)))) * std::exp(-tau / current_time);
+          k1 * exp(-k2 / (max(ssf, ScalarValue(1.0e-6)))) * exp(-tau / current_time);
         for (unsigned int i = 0; i < ScalarValue::size(); ++i)
           {
             if (n[i] >= 0.01)
@@ -204,26 +196,27 @@ public:
       {
         // Calculate the distance function to the nucleus center
         const dealii::Point<dim, ScalarValue> loc_as_arr = [&]()
-          {
-            dealii::Point<dim, ScalarValue> result;
-            const dealii::Point<dim>       &point = nucleus.location;
-            for (unsigned int d = 0; d < dim; ++d)
-              {
-                result[d] = ScalarValue(point[d]);
-              }
-            return result;
-          }();
+        {
+          dealii::Point<dim, ScalarValue> result;
+          const dealii::Point<dim>       &point = nucleus.location;
+          for (unsigned int d = 0; d < dim; ++d)
+            {
+              result[d] = ScalarValue(point[d]);
+            }
+          return result;
+        }();
 
         ScalarValue dist =
           get_user_inputs().spatial_discretization.distance(q_point_loc, loc_as_arr);
         // Seed a nucleus if it was added to the list of nuclei recently
+        using std::tanh;
         if (current_time < nucleus.seed_time + seeding_duration)
           {
-            gamma *= 0.5 * (1.0 + std::tanh((dist - r_freeze) / interface_coeff));
+            gamma *= 0.5 * (1.0 + tanh((dist - r_freeze) / interface_coeff));
           }
         if (nucleus.seed_increment == current_increment - 1)
           {
-            source_term += 0.5 * (1.0 - std::tanh((dist - r_nuc) / interface_coeff));
+            source_term += 0.5 * (1.0 - tanh((dist - r_nuc) / interface_coeff));
           }
       }
   }

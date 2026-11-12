@@ -109,20 +109,20 @@ We also need the linearization of the residual (the Jacobian) evaluated at a tes
 
 $$
 \begin{align}
-  \frac{\partial R_c}{\partial c^{n}}\bigg\vert_{\Delta c} 
+  \frac{\partial R_c}{\partial c^{n}}\bigg\vert_{\Delta c}
   &= -\Delta c
 \\
-  \frac{\partial R_c}{\partial \mu^{n}}\bigg\vert_{\Delta \mu} 
+  \frac{\partial R_c}{\partial \mu^{n}}\bigg\vert_{\Delta \mu}
   &= \nabla \cdot (\Delta tM\nabla (\Delta \mu))
 \end{align}
 $$
 
 $$
 \begin{align}
-  \frac{\partial R_\mu}{\partial c^{n}}\bigg\vert_{\Delta c} 
+  \frac{\partial R_\mu}{\partial c^{n}}\bigg\vert_{\Delta c}
   &= - f_{,cc}^{n}\Delta c + \nabla \cdot \kappa \nabla (\Delta c)
 \\
-  \frac{\partial R_\mu}{\partial \mu^{n}}\bigg\vert_{\Delta \mu} 
+  \frac{\partial R_\mu}{\partial \mu^{n}}\bigg\vert_{\Delta \mu}
   &= \Delta \mu
 \end{align}
 $$
@@ -144,7 +144,7 @@ $$
 \end{align}
 $$
 
-with 
+with
 
 $$
 \begin{align}
@@ -169,7 +169,7 @@ $$
 \end{align}
 $$
 
-with 
+with
 
 $$
 \begin{align}
