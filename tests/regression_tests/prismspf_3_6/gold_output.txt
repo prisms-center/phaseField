@@ -25,33 +25,33 @@ solving 0th timestep for solve block 0 ...
   solving co-nonlinear time-independent variables...
   solving postprocessed variables...
 outputting initial condition...
-Iteration: 0
+Increment: 0
   Solution index 0 l2-norm: 109.458 integrated value: 1886.46
   Solution index 1 l2-norm: 13.0252 integrated value: 114.755
   Solution index 2 l2-norm: 5.62075 integrated value: 40.9674
 
 
-Iteration: 300
+Increment: 300
   Solution index 0 l2-norm: 111.088 integrated value: 1941.86
   Solution index 1 l2-norm: 9.09789 integrated value: 81.7426
   Solution index 2 l2-norm: 3.83156 integrated value: 28.0803
 
-Iteration: 600
+Increment: 600
   Solution index 0 l2-norm: 112.909 integrated value: 1982.67
   Solution index 1 l2-norm: 8.62057 integrated value: 69.1331
   Solution index 2 l2-norm: 3.57119 integrated value: 23.0634
 
-Iteration: 900
+Increment: 900
   Solution index 0 l2-norm: 113.637 integrated value: 2003.05
   Solution index 1 l2-norm: 8.41167 integrated value: 65.3982
   Solution index 2 l2-norm: 3.48185 integrated value: 21.794
 
-Iteration: 1200
+Increment: 1200
   Solution index 0 l2-norm: 114.294 integrated value: 2022.6
   Solution index 1 l2-norm: 8.23135 integrated value: 62.5033
   Solution index 2 l2-norm: 3.40653 integrated value: 20.8194
 
-Iteration: 1500
+Increment: 1500
   Solution index 0 l2-norm: 114.925 integrated value: 2041.94
   Solution index 1 l2-norm: 8.0718 integrated value: 60.0367
   Solution index 2 l2-norm: 3.34019 integrated value: 19.9929

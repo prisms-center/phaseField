@@ -91,13 +91,13 @@ add_n_per_decade_outputs(unsigned int            n_outputs,
 
   output_list.insert(0);
   output_list.insert(1);
-  for (unsigned int iteration = 2; iteration <= n_increments; iteration++)
+  for (unsigned int increment = 2; increment <= n_increments; increment++)
     {
-      const auto decade    = (unsigned int) (std::ceil(std::log10(iteration)));
+      const auto decade    = (unsigned int) (std::ceil(std::log10(increment)));
       const auto step_size = (unsigned int) (std::pow(10, decade) / n_outputs);
-      if (iteration % step_size == 0)
+      if (increment % step_size == 0)
         {
-          output_list.insert(iteration);
+          output_list.insert(increment);
         }
     }
 }

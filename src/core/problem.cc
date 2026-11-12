@@ -530,7 +530,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
                                           user_inputs);
 
       // Print the l2-norms and integrals of each solution
-      Logger::instance() << "Iteration " << sim_timer.get_increment() << " Time "
+      Logger::instance() << "Increment " << sim_timer.get_increment() << " Time "
                          << sim_timer.get_time() << std::endl;
       for (unsigned int index = 0; index < field_attributes.size(); ++index)
         {
