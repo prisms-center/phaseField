@@ -73,7 +73,7 @@ RefinementManager<dim, degree, number>::do_adaptive_refinement(
 
   Logger::instance()
     << LogFormatter::debug(
-         "[Iteration " +
+         "[Increment " +
          std::to_string(solve_context->get_simulation_timer().get_increment()) +
          "] DoFs " + std::to_string(solve_context->get_dof_manager().get_total_dofs()))
     << std::endl;
