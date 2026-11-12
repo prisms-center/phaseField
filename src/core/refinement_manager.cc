@@ -108,7 +108,7 @@ RefinementManager<dim, degree, number>::do_initial_refinement(
 {
   Timer::Scope timer_scope("Initial Refinement");
 
-  Logger::instance() << "Refining grid..." << std::endl;
+  Logger::instance() << "Adapting mesh..." << std::endl;
   {
     Logger::IndentScope indent;
 
@@ -150,7 +150,7 @@ RefinementManager<dim, degree, number>::do_initial_refinement(
 
     Logger::instance() << "Final DoFs " << old_dofs << std::endl;
   }
-  Logger::instance() << LogFormatter::success("Refinement succeeded") << std::endl;
+  Logger::instance() << LogFormatter::success("Mesh adapted") << std::endl;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
