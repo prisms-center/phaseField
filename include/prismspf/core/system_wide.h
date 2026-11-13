@@ -55,10 +55,25 @@ public:
   /**
    * @brief Quadrature rule for MatrixFree
    *
-   * @todo Figure out why dim = 1
+   * Must be dim = 1 for MatrixFree
    */
   inline static const dealii::QGaussLobatto<1> quadrature_matrix_free =
     dealii::QGaussLobatto<1>(degree + 1);
+
+  /**
+   * @brief FEValues for a scalar/vector field with some update flags
+   *
+   * @tparam fe_index The index of the FE system to use. Determines whether we have a
+   * scalar or vector field.
+   * @param flags The update flags for the FEValues.
+   */
+  template <unsigned int fe_index>
+  static dealii::FEValues<dim, dim> &
+  fe_values(const dealii::UpdateFlags flags)
+  {
+    static dealii::FEValues<dim, dim> fe_values(fe_systems[fe_index], quadrature, flags);
+    return fe_values;
+  }
 };
 
 PRISMS_PF_END_NAMESPACE
