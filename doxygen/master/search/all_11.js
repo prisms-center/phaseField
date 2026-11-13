@@ -65,5 +65,6 @@ var searchData=
   ['rng_62',['rng',['../structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93',1,'MiscellaneousParameters']]],
   ['rngengine_63',['RNGEngine',['../miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93',1,'miscellaneous_parameters.h']]],
   ['rotation_5fmatrix_64',['rotation_matrix',['../structPeriodicPair.html#a23e2e9e06580470edd22972e5d097c8d',1,'PeriodicPair']]],
-  ['run_20a_20simulation_65',['Run a simulation',['../structure.html#problem',1,'']]]
+  ['rules_65',['Formatting Rules',['../dev_docs.html#autotoc_md10',1,'']]],
+  ['run_20a_20simulation_66',['Run a simulation',['../structure.html#problem',1,'']]]
 ];

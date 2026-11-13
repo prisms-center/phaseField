@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=11" />
   <meta name="generator" content="Doxygen 1.13.2" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PRISMS-PF Manual: Developers</title>
+  <title>PRISMS-PF Manual: Contributing</title>
   <link href="tabs.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="jquery.js"></script>
   <script type="text/javascript" src="dynsections.js"></script>
@@ -121,13 +121,37 @@ $(function(){initNavTree('dev_docs.html',''); initResizable(true); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Developers</div></div>
+  <div class="headertitle"><div class="title">Contributing</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>There's a lot of institutional knowledge that comes along with being a developer of PRISMS-PF. Here, we hope to cover all the bits and pieces that you'll need to adhere to our developer standards.</p>
-<h2><a class="anchor" id="Documentation"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md9"></a>
+How to Contribute to PRISMS-PF</h1>
+<p>Thank you for taking an interest in contributing to PRISMS-PF! These are some notes that may be useful for contributors. Feel free to expand this document if you think there is anything else that should be known. We will assume you already have a working knowledge of git and GitHub. If you are new to git, we recommend checking out the <a href="https://docs.github.com/en/get-started/quickstart">GitHub Docs</a></p>
+<h2><a class="anchor" id="autotoc_md10"></a>
+Formatting Rules</h2>
+<p>PRISMS-PF has rules for text formatting. We format with <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a>. We recommend using an autoformatter with your developing environment. If you are using VSCode, installing the <a href="https://marketplace.visualstudio.com/items?itemName=xaver.clang-format">Clang-Format extension</a> and turning on <b>format on save</b> in settings may be useful. You will also need a clang-format installation from your cli.</p>
+<p>To ensure that your commits will pass our requirements before your pull-request, you can run pre-commit inside the repo, which will format the code properly and catch spelling errors. Your changes may need to be staged first if new files are added. </p><div class="fragment"><div class="line"><span class="preprocessor"># One-time installation:</span></div>
+<div class="line">python3 -m pip install pre_commit</div>
+<div class="line"><span class="preprocessor"># From any directory in the repo:</span></div>
+<div class="line">python3 -m pre_commit run --all-files</div>
+<div class="line"><span class="preprocessor"># Repeat until all-passing</span></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md11"></a>
+Adding an application</h2>
+<p>You can start to create a new application by copying an existing one. There are a couple of things you should make sure to do though. First, make sure to rename the project in the new application's <code>CMakeLists.txt</code>. </p><div class="fragment"><div class="line"><span class="preprocessor"># ...</span></div>
+<div class="line"><span class="preprocessor"># Name the application</span></div>
+<div class="line">set(APPLICATION_NAME <span class="stringliteral">&quot;my_app_name&quot;</span>)</div>
+<div class="line"><span class="preprocessor"># ...</span></div>
+</div><!-- fragment --><p> The other step is to add the relative path to your new application directory to the list at the top of <a href="/applications/CMakeLists.txt"><code>applications/CMakeLists.txt</code></a>. </p><div class="fragment"><div class="line">set(</div>
+<div class="line">  # ...</div>
+<div class="line">  coupled_allen_cahn_cahn_hilliard</div>
+<div class="line">  mechanics/boundary_value_problem</div>
+<div class="line">  mechanics/eshelby_inclusion</div>
+<div class="line">  my_app_directory</div>
+<div class="line">  # ...</div>
+<div class="line">)</div>
+</div><!-- fragment --><h2><a class="anchor" id="Documentation"></a>
 Documentation</h2>
-<p>There are a few components of our documentation:</p><ul>
+<p>This section explains how to preview changes to documentation locally.There are a few components of our documentation:</p><ul>
 <li>Doxygen-style inline code documentation (core library and applications)</li>
 <li>Doxygen-style manual documentation</li>
 <li>GitHub pages website</li>
@@ -138,8 +162,8 @@ Documentation</h2>
 </div><!-- fragment --> <dl class="section warning"><dt>Warning</dt><dd>If you don't have Doxygen Awesome the website will not render correctly.</dd></dl>
 <p>With all the prerequisites, we just need to build the documentation. Newer versions of CMake can use the <code>CMakePresets.json</code> </p><div class="fragment"><div class="line">cmake --workflow --preset docs</div>
 </div><!-- fragment --><p> or without the preset </p><div class="fragment"><div class="line">cmake -DPRISMS_PF_DOCS=ON -DCMAKE_BUILD_TYPE=Debug -B build</div>
-<div class="line">cmake --build build/docs --target doc -j &lt;nprocs&gt;</div>
-</div><!-- fragment --><p>Once the build is complete you can visualize the local documentation by navigating to the doxygen folder in the build directory and starting a python HTTP server. </p><div class="fragment"><div class="line">cd build/docs/doc/&lt;branch_name&gt;</div>
+<div class="line">cmake --build build --target doc -j &lt;nprocs&gt;</div>
+</div><!-- fragment --><p>Once the build is complete you can visualize the local documentation by navigating to the doxygen folder in the build directory and starting a python HTTP server. </p><div class="fragment"><div class="line">cd build/docs/doc/contrib</div>
 <div class="line">python3 -m http.server 8000</div>
 </div><!-- fragment --><p> You can open the <code><a href="http://localhost:8000/">http://localhost:8000/</a></code> on whatever web browser you use.</p>
 <dl class="section note"><dt>Note</dt><dd>Some features of the User Manual don't render locally (e.g., the version selector). </dd></dl>

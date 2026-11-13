@@ -52,8 +52,9 @@ var searchData=
   ['folder_49',['folder',['../structFieldOutputParameters.html#a89f949ef0eca4dc1c193651951fcdcc6',1,'FieldOutputParameters::folder'],['../structRestartOutputParameters.html#afd792af8e3d6c249fe3264e5f556e9f7',1,'RestartOutputParameters::folder']]],
   ['form_50',['form',['../allen_cahn_reaction.html#autotoc_md8',1,'Special function form'],['../allen_cahn_reaction.html#autotoc_md5',1,'Weak form']]],
   ['format_51',['format',['../structInitialConditionFile.html#a2359ea131696e39515d60df0dd241208',1,'InitialConditionFile::format'],['../classLogFormatter.html#a4ce55b01deb689d875b081bafdce88c4',1,'LogFormatter::format()']]],
-  ['forward_20euler_20explicit_52',['Time discretization: Forward Euler (explicit)',['../allen_cahn_reaction.html#autotoc_md6',1,'']]],
-  ['from_20source_53',['Installing from Source',['../source.html',1,'']]],
-  ['front_54',['Front',['../structRectangularMesh.html#a09ad825f654f798d5b7126d42cc7599ea63e3fa62121fc74a94abf31f0b5616a2',1,'RectangularMesh']]],
-  ['function_20form_55',['Special function form',['../allen_cahn_reaction.html#autotoc_md8',1,'']]]
+  ['formatting_20rules_52',['Formatting Rules',['../dev_docs.html#autotoc_md10',1,'']]],
+  ['forward_20euler_20explicit_53',['Time discretization: Forward Euler (explicit)',['../allen_cahn_reaction.html#autotoc_md6',1,'']]],
+  ['from_20source_54',['Installing from Source',['../source.html',1,'']]],
+  ['front_55',['Front',['../structRectangularMesh.html#a09ad825f654f798d5b7126d42cc7599ea63e3fa62121fc74a94abf31f0b5616a2',1,'RectangularMesh']]],
+  ['function_20form_56',['Special function form',['../allen_cahn_reaction.html#autotoc_md8',1,'']]]
 ];

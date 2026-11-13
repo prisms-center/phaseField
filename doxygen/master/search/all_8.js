@@ -5,5 +5,6 @@ var searchData=
   ['has_5fmg_2',['has_mg',['../classDoFManager.html#a8ab00639967943be7acfb51956eb0f4b',1,'DoFManager::has_mg()'],['../classTriangulationManager.html#a864648008877f5493e2def77ca78beb0',1,'TriangulationManager::has_mg()']]],
   ['has_5fmultigrid_3',['has_multigrid',['../namespacePRISMS__PF__BEGIN__NAMESPACE.html#a015d58a5af330c144eb2afa118cc716a',1,'PRISMS_PF_BEGIN_NAMESPACE']]],
   ['helpful_20links_20contact_20info_4',['Helpful Links &amp; Contact Info',['../index.html#links_contact',1,'']]],
-  ['hessian_5',['Hessian',['../classFieldContainer.html#a13eab4863a459add07dd080c36346b03',1,'FieldContainer']]]
+  ['hessian_5',['Hessian',['../classFieldContainer.html#a13eab4863a459add07dd080c36346b03',1,'FieldContainer']]],
+  ['how_20to_20contribute_20to_20prisms_20pf_6',['How to Contribute to PRISMS-PF',['../dev_docs.html#autotoc_md9',1,'']]]
 ];

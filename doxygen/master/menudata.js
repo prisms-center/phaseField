@@ -29,7 +29,7 @@ var menudata={children:[
 {text:"Source",url:"source.html"}]},
 {text:"Tutorial",url:"tutorial.html",children:[
 {text:"Structure",url:"structure.html"},
-{text:"Developers",url:"dev_docs.html"}]},
+{text:"Contributing",url:"dev_docs.html"}]},
 {text:"Parameters",url:"parameters.html"},
 {text:"Applications",url:"applications.html",children:[
 {text:"allen_cahn_reaction",url:"allen_cahn_reaction.html"},

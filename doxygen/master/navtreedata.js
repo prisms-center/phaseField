@@ -32,7 +32,7 @@ var NAVTREE =
     ] ],
     [ "Tutorial", "tutorial.html", [
       [ "Structure", "structure.html", null ],
-      [ "Developers", "dev_docs.html", null ]
+      [ "Contributing", "dev_docs.html", null ]
     ] ],
     [ "Parameters", "parameters.html", null ],
     [ "Applications", "applications.html", [
