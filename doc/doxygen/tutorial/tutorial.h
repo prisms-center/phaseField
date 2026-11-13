@@ -165,15 +165,78 @@ problem.run();
 
 */
 
-/** \page dev_docs Developers
+/** \page dev_docs Contributing
 
-There's a lot of institutional knowledge that comes along with being a developer of
-PRISMS-PF. Here, we hope to cover all the bits and pieces that you'll need to adhere to
-our developer standards.
+# How to Contribute to PRISMS-PF
+Thank you for taking an interest in contributing to PRISMS-PF! These are some notes that
+may be useful for contributors. Feel free to expand this document if you think there is
+anything else that should be known. We will assume you already have a working knowledge of
+git and GitHub. If you are new to git, we recommend checking out the [GitHub
+Docs](https://docs.github.com/en/get-started/quickstart)
+
+## Formatting Rules
+PRISMS-PF has rules for text formatting. We format with
+[clang-format](https://clang.llvm.org/docs/ClangFormat.html). We recommend using an
+autoformatter with your developing environment. If you are using VSCode, installing the
+[Clang-Format
+extension](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format) and
+turning on **format on save** in settings may be useful. You will also need a clang-format
+installation from your cli.
+
+To ensure that your commits will pass our requirements before your pull-request, you can
+run pre-commit inside the repo, which will format the code properly and catch spelling
+errors. Your changes may need to be staged first if new files are added.
+@code
+# One-time installation:
+python3 -m pip install pre_commit
+# From any directory in the repo:
+python3 -m pre_commit run --all-files
+# Repeat until all-passing
+@endcode
+
+## Adding an application
+You can start to create a new application by copying an existing one. There are a couple
+of things you should make sure to do though. First, make sure to rename the project in the
+new application's `CMakeLists.txt`.
+@code
+# ...
+# Name the application
+set(APPLICATION_NAME "my_app_name")
+# ...
+@endcode
+The other step is to add the relative path to your new application directory to the list
+at the top of [`applications/CMakeLists.txt`](/applications/CMakeLists.txt).
+@code
+set(
+  # ...
+  coupled_allen_cahn_cahn_hilliard
+  mechanics/boundary_value_problem
+  mechanics/eshelby_inclusion
+  my_app_directory
+  # ...
+)
+@endcode
+
+<!--
+## TODO: Style Guidelines
+-->
+<!--
+Separate stuff into headers and source when appropriate.
+Modify CMakeLists.txt in src.
+Don't be narrow-minded when adding features. Try to keep things general.
+prefer irreducible structs over complex classes.
+Use c++ idioms.
+Catch possible exceptions / do assertions with meaningful output (debug/release).
+Template things where appropriate (never assume double, be SIMD-friendly too).
+Do inline docs.
+For apps, don't use templates if not appropriate (benchmarks for example).
+For apps, don't hardcode things that should not be hard-coded.
+-->
 
 \subsection Documentation
 
-There are a few components of our documentation:
+This section explains how to preview changes to documentation locally.There are a few
+components of our documentation:
 - Doxygen-style inline code documentation (core library and applications)
 - Doxygen-style manual documentation
 - GitHub pages website
@@ -200,18 +263,17 @@ cmake --workflow --preset docs
 or without the preset
 @code
 cmake -DPRISMS_PF_DOCS=ON -DCMAKE_BUILD_TYPE=Debug -B build
-cmake --build build/docs --target doc -j <nprocs>
+cmake --build build --target doc -j <nprocs>
 @endcode
 
 Once the build is complete you can visualize the local documentation by navigating to the
 doxygen folder in the build directory and starting a python HTTP server.
 @code
-cd build/docs/doc/<branch_name>
+cd build/docs/doc/contrib
 python3 -m http.server 8000
 @endcode
 You can open the `http://localhost:8000/` on whatever web browser you use.
 
 @note Some features of the User Manual don't render locally (e.g., the version selector).
-
 
  */
