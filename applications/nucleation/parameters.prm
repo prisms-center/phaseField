@@ -41,7 +41,7 @@ subsection miscellaneous
 end
 
 set Model constant c_avg = 0.2, DOUBLE
-set Model constant McV = 1.0, DOUBLE
+set Model constant M = 1.0, DOUBLE
 set Model constant MnV = 1.0, DOUBLE
 set Model constant KnV = 2.0, DOUBLE
 set Model constant W_barrier = 2.0, DOUBLE

@@ -21,7 +21,7 @@ public:
   using PDEOperatorBase<dim, degree, number>::get_pf_tools;
 
   double c_avg;
-  double McV;
+  double M;
   double MnV;
   double KnV;
   double W_barrier;
@@ -46,7 +46,7 @@ public:
   CustomPDE(const UserInputParameters<dim> &_user_inputs, PhaseFieldTools<dim> &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
     , c_avg(get_user_inputs().user_constants.get_double("c_avg"))
-    , McV(get_user_inputs().user_constants.get_double("McV"))
+    , M(get_user_inputs().user_constants.get_double("M"))
     , MnV(get_user_inputs().user_constants.get_double("MnV"))
     , KnV(get_user_inputs().user_constants.get_double("KnV"))
     , W_barrier(get_user_inputs().user_constants.get_double("W_barrier"))
@@ -137,7 +137,7 @@ public:
         // For concentration
         ScalarValue eq_c = c;
         ScalarGrad  eqx_c =
-          ScalarValue(-McV * delta_t) * (cx + (c_alpha - c_beta) * hnV * nx);
+          ScalarValue(-M * delta_t) * (cx + (c_alpha - c_beta) * hnV * nx);
 
         // For order parameter (gamma is a variable order parameter mobility factor)
         ScalarValue eq_n = n - ScalarValue(delta_t * MnV) * gamma *
@@ -166,20 +166,12 @@ public:
           {
             ssf *= ssf1;
           }
-        // Terms for the nucleation rate
-        auto max = [](const ScalarValue &arr, number val)
-        {
-          ScalarValue result;
-          for (unsigned int i = 0; i < arr.size(); ++i)
-            {
-              result[i] = std::max(arr[i], val);
-            }
-          return result;
-        };
         // Calculate the nucleation rate
-        double      current_time = sim_timer.get_time();
+        double current_time = sim_timer.get_time();
+        using std::exp;
+        using std::max;
         ScalarValue J =
-          k1 * std::exp(-k2 / (max(ssf, number(1.0e-6)))) * std::exp(-tau / current_time);
+          k1 * exp(-k2 / (max(ssf, ScalarValue(1.0e-6)))) * exp(-tau / current_time);
         for (unsigned int i = 0; i < ScalarValue::size(); ++i)
           {
             if (n[i] >= 0.01)
@@ -217,13 +209,14 @@ public:
         ScalarValue dist =
           get_user_inputs().spatial_discretization.distance(q_point_loc, loc_as_arr);
         // Seed a nucleus if it was added to the list of nuclei recently
+        using std::tanh;
         if (current_time < nucleus.seed_time + seeding_duration)
           {
-            gamma *= 0.5 * (1.0 + std::tanh((dist - r_freeze) / interface_coeff));
+            gamma *= 0.5 * (1.0 + tanh((dist - r_freeze) / interface_coeff));
           }
         if (nucleus.seed_increment == current_increment - 1)
           {
-            source_term += 0.5 * (1.0 - std::tanh((dist - r_nuc) / interface_coeff));
+            source_term += 0.5 * (1.0 - tanh((dist - r_nuc) / interface_coeff));
           }
       }
   }

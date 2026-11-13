@@ -86,7 +86,7 @@ $$
 $$
 
 ## Weak formulation
-In the weak formulation, considering an arbitrary variation $w$, the above equations can be expressed as residual equations representing a mixed (split) formulation:
+In the weak formulation, considering an arbitrary variation $w$, the above explicit equations can be expressed as follows:
 
 $$
 \begin{align}
@@ -102,13 +102,13 @@ $$
 
 $$
 \begin{align}
-r_{c} &= c^{n-1}
+RHS_{c} &= c^{n-1}
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{c x} &= (-\Delta t M)~ \cdot (\nabla \mu^{n-1})
+RHS_{c x} &= (-\Delta t M)~ \cdot (\nabla \mu^{n-1})
 \end{align}
 $$
 
@@ -128,16 +128,16 @@ $$
 
 $$
 \begin{align}
-r_{mu} &= f_{,c}^{n}
+RHS_{mu} &= f_{,c}^{n}
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{mux} &= \kappa \nabla c^{n}
+RHS_{mux} &= \kappa \nabla c^{n}
 \end{align}
 $$
 
 
-The above values of $r_{mu}$, $r_{mux}$, $r_{c}$ and $r_{cx}$ are used to define the residuals in the following parameters file:
-`applications/cahn_hilliard/equations.cc`
+The above expressions of $RHS_{mu}$, $RHS_{mux}$, $RHS_{c}$ and $RHS_{cx}$ define the code written in:
+`applications/cahn_hilliard/explicit/custom_pde.h`
