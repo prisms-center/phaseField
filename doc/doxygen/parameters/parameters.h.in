@@ -1,5 +1,36 @@
 /** \page parameters Parameters
 
+PRISMS-PF's `UserInputParameters` class contains parameters that control many aspects of
+a simulation. This class is typically constructed in the main function of an application,
+using an input file (typically called `parameters.prm`, see the Allen-Cahn app for an
+example). Creating an instance of `PDEOperatorBase` and `Problem` usually involves
+providing an instance of `UserInputParameters`, with its fields populated either
+automatically from a parameters file during construction or programmatically in the
+application's code. The `UserInputParameters` object can also be modified after
+constructing it from an input file, for example, to assign a different time step size
+based on the spatial discretization.
+
+In an application, when writing methods in a class derived from
+`PDEOperatorBase`, you can access the `UserInputParameters` instance by
+calling `get_user_inputs()`. This allows accessing any of the values described on this
+page. Each value is contained in a member struct of `UserInputParameters`, such that
+values related to one another are grouped together. For example, `FieldOutputParameters`
+contains the parameters related to file output, such as file type, output folder,
+frequency of output, etc. As an example, say you wanted to access the size of the
+rectangular mesh while setting up the initial condition in `set_initial_condition` of your
+`PDEOperatorBase` subclass. You could do this as follows (see the Allen-Cahn app):
+@code{C++}
+const dealii::Tensor<1, dim> &mesh_size =
+      get_user_inputs().spatial_discretization.rectangular_mesh.size;
+@endcode
+
+@note The values in `UserInputParameters` are not modified by the core library during the
+simulation and represent the initial values. For example,
+`get_user_inputs().temporal_discretization.dt` gives the initial time step size. To access
+the simulation time, current increment, current time step size, etc., use the
+`SimulationTimer` object passed to `compute_rhs` (the Allen-Cahn app has an example of
+this).
+
 The tables below list the names, default values, data types (patterns), descriptions, and
 aliases that can be read by PRISMS-PF's `UserInputParameters`. The tables are organized by
 subsection, with the first table listing the "top-level" parameters.
