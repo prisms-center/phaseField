@@ -43,7 +43,7 @@ private:
                         [[maybe_unused]] number                   &scalar_value,
                         [[maybe_unused]] number &vector_component_value) const override
   {
-    const dealii::Tensor<1, dim> &mesh_size =
+    const dealii::Tensor<1, dim> &domain_size =
       get_user_inputs().spatial_discretization.rectangular_mesh.size;
 
     if (index == 0) // redundant
@@ -78,7 +78,7 @@ private:
                 dist = 0.0;
                 for (unsigned int dir = 0; dir < dim; dir++)
                   {
-                    double comp_diff = point[dir] - center[i][dir] * mesh_size[dir];
+                    double comp_diff = point[dir] - center[i][dir] * domain_size[dir];
                     dist += comp_diff * comp_diff;
                   }
                 dist = std::sqrt(dist) - rad[i];

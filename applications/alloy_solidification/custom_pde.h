@@ -48,7 +48,7 @@ private:
                         [[maybe_unused]] number                   &scalar_value,
                         [[maybe_unused]] number &vector_component_value) const override
   {
-    const dealii::Tensor<1, dim> &mesh_size =
+    const dealii::Tensor<1, dim> &domain_size =
       get_user_inputs().spatial_discretization.rectangular_mesh.size;
 
     if (index == 0)

@@ -40,7 +40,7 @@ private:
 
     if (index < 5)
       {
-        const dealii::Tensor<1, dim> &mesh_size =
+        const dealii::Tensor<1, dim> &domain_size =
           get_user_inputs().spatial_discretization.rectangular_mesh.size;
 
         std::vector<dealii::Point<dim>> center_list;
@@ -88,34 +88,34 @@ private:
         double dist = 0.0;
         for (unsigned int dir = 0; dir < dim; dir++)
           {
-            dist += (point[dir] - center_list[index][dir] * mesh_size[dir]) *
-                    (point[dir] - center_list[index][dir] * mesh_size[dir]);
+            dist += (point[dir] - center_list[index][dir] * domain_size[dir]) *
+                    (point[dir] - center_list[index][dir] * domain_size[dir]);
           }
         dist = std::sqrt(dist);
         scalar_value +=
-          0.5 * (1.0 - std::tanh((dist - radius[index] * mesh_size[0]) / 0.5));
+          0.5 * (1.0 - std::tanh((dist - radius[index] * domain_size[0]) / 0.5));
 
         // The medium grains
         dist = 0.0;
         for (unsigned int dir = 0; dir < dim; dir++)
           {
-            dist += (point[dir] - center_list[index + 5][dir] * mesh_size[dir]) *
-                    (point[dir] - center_list[index + 5][dir] * mesh_size[dir]);
+            dist += (point[dir] - center_list[index + 5][dir] * domain_size[dir]) *
+                    (point[dir] - center_list[index + 5][dir] * domain_size[dir]);
           }
         dist = std::sqrt(dist);
         scalar_value +=
-          0.5 * (1.0 - std::tanh((dist - radius[index + 5] * mesh_size[0]) / 0.5));
+          0.5 * (1.0 - std::tanh((dist - radius[index + 5] * domain_size[0]) / 0.5));
 
         // The small grains
         dist = 0.0;
         for (unsigned int dir = 0; dir < dim; dir++)
           {
-            dist += (point[dir] - center_list[index + 10][dir] * mesh_size[dir]) *
-                    (point[dir] - center_list[index + 10][dir] * mesh_size[dir]);
+            dist += (point[dir] - center_list[index + 10][dir] * domain_size[dir]) *
+                    (point[dir] - center_list[index + 10][dir] * domain_size[dir]);
           }
         dist = std::sqrt(dist);
         scalar_value +=
-          0.5 * (1.0 - std::tanh((dist - radius[index + 10] * mesh_size[0]) / 0.5));
+          0.5 * (1.0 - std::tanh((dist - radius[index + 10] * domain_size[0]) / 0.5));
       }
     else
       {
