@@ -20,6 +20,7 @@
 
 #include <prismspf/config.h>
 
+#include <initializer_list>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -74,6 +75,27 @@ set_zero_entries_to_one(dealii_vector &vec)
           vec[index] = 1.0;
         }
     }
+}
+
+/**
+ * @brief Helper function for use of deal.II 1-rank tensor with initializer that does not
+ * match the size.
+ *
+ * @note If dim < num of entries, they will be ignored.
+ */
+template <int dim, typename RealType>
+DEAL_II_ALWAYS_INLINE inline dealii::Tensor<1, dim, RealType>
+make_tensor(std::initializer_list<RealType> values)
+{
+  dealii::Tensor<1, dim, RealType> tensor;
+
+  auto iterator = values.begin();
+  for (unsigned int i = 0; i < dim && iterator != values.end(); ++i, ++iterator)
+    {
+      tensor[i] = *iterator;
+    }
+
+  return tensor;
 }
 
 /**

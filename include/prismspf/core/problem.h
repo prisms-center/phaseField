@@ -38,7 +38,7 @@ public:
           PDEOperatorBase<dim, degree, number> &_pde_operator);
 
   /**
-   * @brief Main time-stepping loop that calls solve_increment, reinit_system,
+   * @brief Main time-stepping loop that calls solve_increment, init_system,
    * output_results, etc...
    */
   void
