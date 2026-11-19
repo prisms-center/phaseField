@@ -1,483 +1,599 @@
 // SPDX-FileCopyrightText: © 2026 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#pragma once
+
+#include <deal.II/base/index_set.h>
+#include <deal.II/base/quadrature_lib.h>
+#include <deal.II/base/utilities.h>
+
+#include <deal.II/fe/fe_values.h>
+
+#include <deal.II/lac/affine_constraints.h>
+#include <deal.II/lac/block_vector.h>
+#include <deal.II/lac/diagonal_matrix.h>
+#include <deal.II/lac/precondition.h>
+#include <deal.II/lac/solver_control.h>
+#include <deal.II/lac/solver_selector.h>
+
+#include <prismspf/core/group_solution_handler.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
+
+#include <prismspf/solvers/linear_solver.h>
+#include <prismspf/solvers/mf_operator.h>
+#include <prismspf/solvers/solver_base.h>
+
 #include <prismspf/user_inputs/solve_parameters.h>
+
+#include <prismspf/utilities/timer.h>
 
 #include <prismspf/config.h>
 
+#include <cmath>
+#include <memory>
+#include <unordered_set>
+#include <vector>
+
 PRISMS_PF_BEGIN_NAMESPACE
 
-void
-LinearSolverParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                unsigned int              n_subsections)
+template <unsigned int dim, unsigned int degree, typename number>
+class SolveContext;
+
+/**
+ * @brief Matrix-free operator wrapper that enforces homogeneous active-set
+ * constraints (Delta u_i = 0 for i in active_set) on the Jacobian operator
+ * without rebuilding MatrixFree every Newton step.
+ */
+template <unsigned int dim, unsigned int degree, typename number>
+class ActiveSetOperatorWrapper : public MATRIX_FREE_OPERATOR_BASE
 {
-  parameter_handler.declare_entry(
-    "solver type",
-    "cg",
-    dealii::Patterns::Selection(dealii::SolverSelector<>::get_solver_names()),
-    "The type of iterative solver to use for linear solves.");
-  declare_aliases(parameter_handler,
-                  "solver type",
-                  std::vector {"solver_type",
-                               "linear solver type",
-                               "linear_solver_type",
-                               "linear solver",
-                               "linear_solver",
-                               "type"});
+public:
+  ActiveSetOperatorWrapper(MFOperator<dim, degree, number> &base_op,
+                           const unsigned int               constrained_block,
+                           const dealii::IndexSet          &active_set)
+    : base_operator(base_op)
+    , block_idx(constrained_block)
+    , active_dofs(active_set)
+  {}
 
-  parameter_handler.declare_entry("tolerance type",
-                                  "AbsoluteResidual",
-                                  dealii::Patterns::Selection(
-                                    "AbsoluteResidual|RMSEPerField|IntegratedPerField|"
-                                    "RMSETotal|IntegratedTotal"),
-                                  "The tolerance type for the linear solver.");
-
-  parameter_handler.declare_entry("tolerance value",
-                                  "1.0e-10",
-                                  dealii::Patterns::Double(0.0, DBL_MAX),
-                                  "The value of for the linear solver tolerance.");
-  parameter_handler.declare_alias("tolerance value", "tolerance");
-
-  parameter_handler.declare_entry(
-    "max iterations",
-    "100",
-    dealii::Patterns::Integer(1, INT_MAX),
-    "The maximum number of linear solver iterations before the loop "
-    "is stopped.");
-
-  parameter_handler.declare_entry("mg depth",
-                                  "1",
-                                  dealii::Patterns::Integer(1, INT_MAX),
-                                  "The depth of the multigrid hierarchy.");
-  parameter_handler.declare_alias("mg depth", "mg_depth");
-
-  parameter_handler.declare_entry(
-    "preconditioner type",
-    "None",
-    dealii::Patterns::Selection("None|Chebyshev|GMG|none|chebyshev|gmg|MG|mg|multigrid"),
-    "The preconditioner type for the linear solver.");
-  declare_aliases(parameter_handler,
-                  "preconditioner type",
-                  std::vector {"preconditioner_type", "preconditioner"});
-
-  // Now declare parameters for each of the solver's AdditionalData structures.
-  parameter_handler.enter_subsection("Chebyshev");
+  dealii::types::global_dof_index
+  m() const
   {
-    declare_chebyshev(parameter_handler);
+    return base_operator.m();
   }
-  parameter_handler.leave_subsection();
-  parameter_handler.enter_subsection("Richardson");
+
+  number
+  el(const unsigned int &row, const unsigned int &col) const
   {
-    declare_richardson(parameter_handler);
+    return base_operator.el(row, col);
   }
-  parameter_handler.leave_subsection();
-  parameter_handler.enter_subsection("BiCGStab");
+
+  void
+  vmult(BlockVector<number> &dst, const BlockVector<number> &src) const
   {
-    declare_bicgstab(parameter_handler);
-  }
-  parameter_handler.leave_subsection();
-  parameter_handler.enter_subsection("GMRES");
-  {
-    declare_gmres(parameter_handler);
-  }
-  parameter_handler.leave_subsection();
-}
-
-void
-LinearSolverParameters::assign(dealii::ParameterHandler &parameter_handler,
-                               unsigned int              n_subsections)
-{
-  // Set the linear solver type
-  solver_type = parameter_handler.get("solver type");
-
-  // Set the tolerance type
-  static const std::map<std::string, SolverToleranceType> tolerance_types = {
-    {"AbsoluteResidual",   AbsoluteResidual  },
-    {"RMSEPerField",       RMSEPerField      },
-    {"IntegratedPerField", IntegratedPerField},
-    {"RMSETotal",          RMSETotal         },
-    {"IntegratedTotal",    IntegratedTotal   },
-  };
-  const std::string type_string = parameter_handler.get("tolerance type");
-
-  AssertThrow(tolerance_types.contains(type_string),
-              dealii::ExcMessage("Invalid tolerance type: " + type_string));
-  tolerance_type = tolerance_types.at(type_string);
-
-  // Set the tolerance value
-  tolerance = parameter_handler.get_double("tolerance value");
-
-  // Set the maximum number of iterations
-  max_iterations = (unsigned int) (parameter_handler.get_integer("max iterations"));
-
-  mg_depth = (unsigned int) (parameter_handler.get_integer("mg depth"));
-
-  // Set preconditioner type and related parameters
-  static const std::map<std::string, PreconditionerType> preconditioner_map = {
-    {"None",      None     },
-    {"none",      None     },
-    {"",          None     },
-    {"Chebyshev", Chebyshev},
-    {"chebyshev", Chebyshev},
-    {"GMG",       GMG      },
-    {"gmg",       GMG      },
-    {"MG",        GMG      },
-    {"mg",        GMG      },
-    {"multigrid", GMG      }
-  };
-  preconditioner = preconditioner_map.at(parameter_handler.get("preconditioner type"));
-
-  parameter_handler.enter_subsection("Chebyshev");
-  {
-    assign_chebyshev(parameter_handler);
-  }
-  parameter_handler.leave_subsection();
-  parameter_handler.enter_subsection("Richardson");
-  {
-    assign_richardson(parameter_handler);
-  }
-  parameter_handler.leave_subsection();
-  parameter_handler.enter_subsection("BiCGStab");
-  {
-    assign_bicgstab(parameter_handler);
-  }
-  parameter_handler.leave_subsection();
-  parameter_handler.enter_subsection("GMRES");
-  {
-    assign_gmres(parameter_handler);
-  }
-  parameter_handler.leave_subsection();
-}
-
-void
-LinearSolverParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                                 const std::vector<SolveBlock>      &solve_blocks) const
-{
-  // TODO: Add validation here
-}
-
-void
-LinearSolverParameters::declare_chebyshev(dealii::ParameterHandler &parameter_handler)
-{
-  parameter_handler.declare_entry(
-    "smoothing range",
-    "15.0",
-    dealii::Patterns::Double(DBL_MIN, DBL_MAX),
-    "The smoothing range for eigenvalues. Try λ_max / λ_min.");
-  parameter_handler.declare_entry("smoother degree",
-                                  "5",
-                                  dealii::Patterns::Integer(1, INT_MAX),
-                                  "The smoother polynomial degree.");
-  parameter_handler.declare_entry(
-    "eigenvalue cg iterations",
-    "10",
-    dealii::Patterns::Integer(1, INT_MAX),
-    "The maximum number of CG iterations used to find the maximum eigenvalue.");
-}
-
-void
-LinearSolverParameters::assign_chebyshev(dealii::ParameterHandler &parameter_handler)
-{
-  chebyshev_parameters.degree =
-    (unsigned int) (parameter_handler.get_integer("smoother degree"));
-
-  chebyshev_parameters.smoothing_range = parameter_handler.get_double("smoothing range");
-
-  chebyshev_parameters.eig_cg_n_iterations =
-    (unsigned int) (parameter_handler.get_integer("eigenvalue cg iterations"));
-}
-
-void
-LinearSolverParameters::declare_richardson(dealii::ParameterHandler &parameter_handler)
-{
-  parameter_handler.declare_entry("omega",
-                                  "1.0",
-                                  dealii::Patterns::Double(),
-                                  "Damping factor.");
-  parameter_handler.declare_entry("use preconditioned residual",
-                                  "false",
-                                  dealii::Patterns::Bool(),
-                                  "Whether to use the preconditioned residual l2 "
-                                  "norm in the stopping criterion.");
-}
-
-void
-LinearSolverParameters::assign_richardson(dealii::ParameterHandler &parameter_handler)
-{
-  richardson_parameters.omega = parameter_handler.get_double("omega");
-  richardson_parameters.use_preconditioned_residual =
-    parameter_handler.get_bool("use preconditioned residual");
-}
-
-void
-LinearSolverParameters::declare_bicgstab(dealii::ParameterHandler &parameter_handler)
-{
-  parameter_handler.declare_entry("exact residual",
-                                  "true",
-                                  dealii::Patterns::Bool(),
-                                  "Flag for exact computation of residual.");
-  parameter_handler.declare_entry("breakdown",
-                                  std::to_string(std::numeric_limits<double>::min()),
-                                  dealii::Patterns::Double(),
-                                  "Breakdown threshold.");
-}
-
-void
-LinearSolverParameters::assign_bicgstab(dealii::ParameterHandler &parameter_handler)
-{
-  bicgstab_parameters.exact_residual = parameter_handler.get_bool("exact residual");
-  bicgstab_parameters.breakdown      = parameter_handler.get_double("breakdown");
-}
-
-void
-LinearSolverParameters::declare_gmres(dealii::ParameterHandler &parameter_handler)
-{
-  parameter_handler.declare_entry(
-    "max basis size",
-    "30",
-    dealii::Patterns::Integer(1, INT_MAX),
-    "The maximum size of the Krylov basis used in GMRES before restarting.");
-  parameter_handler.declare_entry("orthogonalization strategy",
-                                  "delayed_classical_gram_schmidt",
-                                  dealii::Patterns::Selection(
-                                    "classical_gram_schmidt|modified_gram_schmidt|"
-                                    "delayed_classical_gram_schmidt"),
-                                  "The orthogonalization strategy to use in GMRES.");
-  parameter_handler.declare_entry("right preconditioning",
-                                  "false",
-                                  dealii::Patterns::Bool(),
-                                  "Whether to use right preconditioning.");
-  parameter_handler.declare_entry(
-    "use default residual",
-    "true",
-    dealii::Patterns::Bool(),
-    "Whether to use the default residual computation in GMRES.");
-  parameter_handler.declare_entry(
-    "force re-orthogonalization",
-    "false",
-    dealii::Patterns::Bool(),
-    "Whether to force re-orthogonalization of the Krylov basis in GMRES.");
-  parameter_handler.declare_entry("batched mode",
-                                  "false",
-                                  dealii::Patterns::Bool(),
-                                  "Whether to use batched mode in GMRES.");
-}
-
-void
-LinearSolverParameters::assign_gmres(dealii::ParameterHandler &parameter_handler)
-{
-  using OStrat = dealii::LinearAlgebra::OrthogonalizationStrategy;
-  static const std::map<std::string, OStrat> orthogonalization_strategy_names = {
-    {"classical_gram_schmidt",         OStrat::classical_gram_schmidt        },
-    {"modified_gram_schmidt",          OStrat::modified_gram_schmidt         },
-    {"delayed_classical_gram_schmidt", OStrat::delayed_classical_gram_schmidt}
-  };
-  gmres_parameters.max_basis_size = parameter_handler.get_integer("max basis size");
-  gmres_parameters.orthogonalization_strategy = orthogonalization_strategy_names.at(
-    parameter_handler.get("orthogonalization strategy"));
-  gmres_parameters.right_preconditioning =
-    parameter_handler.get_bool("right preconditioning");
-  gmres_parameters.use_default_residual =
-    parameter_handler.get_bool("use default residual");
-  gmres_parameters.force_re_orthogonalization =
-    parameter_handler.get_bool("force re-orthogonalization");
-  gmres_parameters.batched_mode = parameter_handler.get_bool("batched mode");
-}
-
-void
-LinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
-                               unsigned int              n_subsections)
-{
-  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
-    {
-      std::string subsection_text =
-        "linear solver parameters: " + std::to_string(criterion_id);
-
-      parameter_handler.enter_subsection(subsection_text);
+    BlockVector<number> filtered_src(src);
+    filtered_src.zero_out_ghost_values();
+    for (const auto idx : active_dofs)
       {
-        parameter_handler.declare_entry(
-          "solver_ids",
-          "",
-          dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
-          "The ids of the solve blocks that will use these settings.");
-        declare_aliases(parameter_handler,
-                        "solver_ids",
-                        std::vector {"solve blocks",
-                                     "solve_blocks",
-                                     "solve block ids",
-                                     "solve_block_ids",
-                                     "solver ids"});
-        LinearSolverParameters::declare(parameter_handler);
-      }
-      parameter_handler.leave_subsection();
-    }
-}
-
-void
-LinearSolveParameters::assign(dealii::ParameterHandler &parameter_handler,
-                              unsigned int              n_subsections)
-{
-  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
-    {
-      // For linear solves
-      std::string subsection_text =
-        "linear solver parameters: " + std::to_string(criterion_id);
-      parameter_handler.enter_subsection(subsection_text);
-      {
-        std::vector<int> solver_ids = dealii::Utilities::string_to_int(
-          dealii::Utilities::split_string_list(parameter_handler.get("solver_ids")));
-
-        LinearSolverParameters linear_solver;
-        linear_solver.assign(parameter_handler);
-
-        for (auto solver_id : solver_ids)
+        if (filtered_src.block(block_idx).in_local_range(idx))
           {
-            linear_solvers[(unsigned int) (solver_id)] = linear_solver;
+            filtered_src.block(block_idx)[idx] = 0.0;
           }
       }
-      parameter_handler.leave_subsection();
-    }
-}
+    filtered_src.update_ghost_values();
 
-void
-LinearSolveParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                                const std::vector<SolveBlock>      &solve_blocks) const
-{
-  for (const auto &[solver_id, linear_solver] : linear_solvers)
-    {
-      linear_solver.validate(field_attributes, solve_blocks);
-    }
-}
+    base_operator.vmult(dst, filtered_src);
 
-void
-NonlinearSolverParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                   unsigned int              n_subsections)
-{
-  parameter_handler.declare_entry("max iterations",
-                                  "100",
-                                  dealii::Patterns::Integer(1, INT_MAX),
-                                  "The maximum number of nonlinear solver "
-                                  "iterations before the loop is stopped.");
-
-  /*         parameter_handler.declare_entry(
-        "tolerance type",
-        "AbsoluteResidual",
-        dealii::Patterns::Selection("AbsoluteResidual|RMSEPerField|IntegratedPerField|"
-                                    "RMSETotal|IntegratedTotal"),
-        "The tolerance type for the nonlinear solver."); */
-
-  parameter_handler.declare_entry("tolerance value",
-                                  "1.0e-10",
-                                  dealii::Patterns::Double(0.0, DBL_MAX),
-                                  "The value of for the nonlinear solver tolerance.");
-  parameter_handler.declare_alias("tolerance value", "tolerance");
-
-  /*         parameter_handler.declare_entry(
-        "use backtracking line search",
-        "true",
-        dealii::Patterns::Bool(),
-        "Whether to use a backtracking line-search to find the best "
-        "choice of the damping coefficient.");
-      parameter_handler.declare_entry(
-        "step size modifier",
-        "0.5",
-        dealii::Patterns::Double(0.0, 1.0),
-        "The constant that determines how much the step size decreases "
-        "per backtrack. The 'tau' parameter.");
-      parameter_handler.declare_entry(
-        "residual decrease coefficient",
-        "0.5",
-        dealii::Patterns::Double(0.0, 1.0),
-        "The constant that determines how much the residual must "
-        "decrease to be accepted as sufficient. The 'c' parameter."); */
-
-  parameter_handler.declare_entry(
-    "step size",
-    "1.0",
-    dealii::Patterns::Double(0.0),
-    "The constant damping value to be used if the backtrace "
-    "line-search approach isn't used.");
-}
-
-void
-NonlinearSolverParameters::assign(dealii::ParameterHandler &parameter_handler,
-                                  unsigned int              n_subsections)
-{
-  max_iterations = (unsigned int) (parameter_handler.get_integer("max iterations"));
-
-  step_length = parameter_handler.get_double("step size");
-
-  tolerance_value = parameter_handler.get_double("tolerance value");
-}
-
-void
-NonlinearSolverParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                                    const std::vector<SolveBlock> &solve_blocks) const
-{
-  // TODO: Add validation here
-}
-
-void
-NonlinearSolveParameters::declare(dealii::ParameterHandler &parameter_handler,
-                                  unsigned int              n_subsections)
-{
-  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
-    {
-      std::string subsection_text =
-        "newton solver parameters: " + std::to_string(criterion_id);
-      parameter_handler.enter_subsection(subsection_text);
+    // Pin active rows to identity (dst_i = src_i) and keep dst non-ghosted
+    // as required by MFOperator::vmult.
+    for (const auto idx : active_dofs)
       {
-        parameter_handler.declare_entry(
-          "solver_ids",
-          "",
-          dealii::Patterns::List(dealii::Patterns::Anything(), 0, INT_MAX, ","),
-          "The ids of the solvers that will use these settings.");
-        declare_aliases(parameter_handler,
-                        "solver_ids",
-                        std::vector {"solve blocks",
-                                     "solve_blocks",
-                                     "solve block ids",
-                                     "solve_block_ids",
-                                     "solver ids"});
-        NonlinearSolverParameters::declare(parameter_handler);
-      }
-      parameter_handler.leave_subsection();
-    }
-}
-
-void
-NonlinearSolveParameters::assign(dealii::ParameterHandler &parameter_handler,
-                                 unsigned int              n_subsections)
-{
-  for (unsigned int criterion_id = 0; criterion_id < n_subsections; criterion_id++)
-    {
-      std::string subsection_text =
-        "newton solver parameters: " + std::to_string(criterion_id);
-      parameter_handler.enter_subsection(subsection_text);
-      {
-        std::vector<int> solver_ids = dealii::Utilities::string_to_int(
-          dealii::Utilities::split_string_list(parameter_handler.get("solver_ids")));
-
-        NonlinearSolverParameters nonlinear_solver;
-        nonlinear_solver.assign(parameter_handler);
-
-        for (auto solver_id : solver_ids)
+        if (dst.block(block_idx).in_local_range(idx))
           {
-            nonlinear_solvers[(unsigned int) (solver_id)] = nonlinear_solver;
+            dst.block(block_idx)[idx] = src.block(block_idx)[idx];
           }
       }
-      parameter_handler.leave_subsection();
-    }
-}
+  }
 
-void
-NonlinearSolveParameters::validate(const std::vector<FieldAttributes> &field_attributes,
-                                   const std::vector<SolveBlock>      &solve_blocks) const
+private:
+  MFOperator<dim, degree, number> &base_operator;
+  const unsigned int               block_idx;
+  const dealii::IndexSet          &active_dofs;
+};
+
+/**
+ * @brief Nonlinear Newton solver with a primal-dual active-set strategy
+ * (modeled after deal.II step-42) for obstacle / variational inequality problems.
+ */
+template <unsigned int dim, unsigned int degree, typename number>
+class ActiveSetNewtonSolver : public LinearSolver<dim, degree, number>
 {
-  for (const auto &[solver_id, nonlinear_solver] : nonlinear_solvers)
-    {
-      nonlinear_solver.validate(field_attributes, solve_blocks);
-    }
-}
+protected:
+  using SolverBase<dim, degree, number>::solutions;
+  using SolverBase<dim, degree, number>::solve_context;
+  using SolverBase<dim, degree, number>::solve_block;
+  using LinearSolver<dim, degree, number>::normalization_value;
+  using LinearSolver<dim, degree, number>::lhs_operator;
+  using LinearSolver<dim, degree, number>::rhs_operator;
+  using LinearSolver<dim, degree, number>::rhs_vector;
+
+  using ActiveSetPreconditionChebyshev =
+    dealii::PreconditionChebyshev<ActiveSetOperatorWrapper<dim, degree, number>,
+                                  BlockVector<number>,
+                                  dealii::DiagonalMatrix<BlockVector<number>>>;
+
+public:
+  ActiveSetNewtonSolver(SolveBlock                               _solve_block,
+                        const SolveContext<dim, degree, number> &_solve_context,
+                        const unsigned int _constrained_block = 0,
+                        const number       _penalty_c         = 1.0e4)
+    : LinearSolver<dim, degree, number>(_solve_block, _solve_context)
+    , constrained_block(_constrained_block)
+    , penalty_c(_penalty_c)
+  {}
+
+  void
+  init(const std::list<SolveBlock> &all_solve_blocks) override
+  {
+    LinearSolver<dim, degree, number>::init(all_solve_blocks);
+    initialize_active_set_linear_solver();
+    setup_active_set_structures();
+  }
+
+  void
+  reinit() override
+  {
+    LinearSolver<dim, degree, number>::reinit();
+    initialize_active_set_linear_solver();
+    setup_active_set_structures();
+  }
+
+  void
+  solve_impl() override
+  {
+    Timer::Scope scope("Active-Set Nonlinear Solver");
+
+    const number       base_step_length      = newton_params().step_length;
+    const number       newton_tolerance      = newton_params().tolerance_value * normalization_value();
+    const unsigned int newton_max_iterations = newton_params().max_iterations;
+
+    BlockVector<number>             &newton_residual = rhs_vector;
+    MFOperator<dim, degree, number> &rhs_op          = rhs_operator;
+    MFOperator<dim, degree, number> &lhs_op          = lhs_operator;
+
+    ActiveSetOperatorWrapper<dim, degree, number> constrained_lhs_op(
+      lhs_op, constrained_block, active_set);
+
+    if (!solutions.get_primary_solutions().old_solutions.empty())
+      {
+        solutions.get_solution_full_vector() = solutions.get_old_solution_full_vector(0);
+      }
+
+    active_set.clear();
+    dealii::IndexSet old_active_set(active_set);
+
+    bool         newton_unconverged = true;
+    unsigned int iter               = 0;
+    number       l2_norm            = -1.0;
+    int          total_lin_iters    = 0;
+
+    while (newton_unconverged && iter < newton_max_iterations)
+      {
+        // 1. Enforce base Dirichlet and hanging-node constraints
+        solutions.apply_constraints();
+        solutions.update_ghosts();
+
+        // 2. Compute UNCONDENSED residual (without active-set zeroing)
+        //    so reaction forces / multipliers lambda_i are preserved.
+        newton_residual.zero_out_ghost_values();
+        rhs_op.compute_operator(newton_residual);
+        newton_residual.update_ghost_values();
+
+        // 3. Update active set and project active DoFs onto the obstacle
+        old_active_set = active_set;
+        update_active_set_and_project(newton_residual);
+
+        // Re-evaluate residual at the newly projected state if active set changed
+        const unsigned int active_set_diff = dealii::Utilities::MPI::sum(
+          (active_set == old_active_set) ? 0u : 1u, MPI_COMM_WORLD);
+
+        if (active_set_diff > 0)
+          {
+            solutions.apply_constraints();
+            solutions.update_ghosts();
+
+            newton_residual.zero_out_ghost_values();
+            rhs_op.compute_operator(newton_residual);
+            newton_residual.update_ghost_values();
+          }
+
+        // 4. Condense active DoFs out of the residual for the linear solve
+        //    and convergence check (residual on active DoFs = reaction force).
+        zero_active_dofs(newton_residual);
+
+        l2_norm = newton_residual.l2_norm();
+        newton_unconverged =
+          (l2_norm > newton_tolerance) || (active_set_diff > 0);
+
+        if (!newton_unconverged || iter == newton_max_iterations)
+          {
+            break;
+          }
+
+        // 5. Solve linearized system for the increment Delta u
+        if (solutions.num_levels() > 1)
+          {
+            solutions.mg_transfer_down(
+              solve_context->get_dof_manager(),
+              solve_context->get_user_inputs().spatial_discretization.global_refinement,
+              false);
+          }
+
+        newton_update = 0.0;
+        total_lin_iters +=
+          do_active_set_linear_solve(newton_residual, constrained_lhs_op, newton_update);
+        zero_active_dofs(newton_update);
+        newton_update.update_ghost_values();
+
+        // 6. Backtracking line search keeping active DoFs pinned
+        old_solution = solutions.get_solution_full_vector();
+        number alpha = base_step_length;
+
+        for (unsigned int ls = 0; ls < 5; ++ls)
+          {
+            solutions.get_solution_full_vector().zero_out_ghost_values();
+            solutions.get_solution_full_vector() = old_solution;
+            solutions.get_solution_full_vector().add(alpha, newton_update);
+            solutions.apply_constraints();
+            solutions.update_ghosts();
+
+            // First iteration or active-set switch: accept step without line search
+            if (iter == 0 || active_set_diff > 0)
+              {
+                break;
+              }
+
+            trial_residual.zero_out_ghost_values();
+            rhs_op.compute_operator(trial_residual);
+            trial_residual.update_ghost_values();
+            zero_active_dofs(trial_residual);
+
+            if (trial_residual.l2_norm() < l2_norm)
+              {
+                break;
+              }
+
+            alpha *= 0.5;
+          }
+
+        iter++;
+      }
+
+    if (solve_context->get_user_inputs().output_parameters.should_output(
+          solve_context->get_simulation_timer().get_increment()))
+      {
+        const auto global_active = dealii::Utilities::MPI::sum(
+          (active_set & locally_owned_dofs).n_elements(), MPI_COMM_WORLD);
+
+        Logger::instance() << " Active-Set Newton final residual : "
+                           << l2_norm / normalization_value()
+                           << " | Active DoFs: " << global_active
+                           << " | Newton steps: " << iter
+                           << " | Total linear steps: " << total_lin_iters
+                           << "\n"
+                           << std::flush;
+      }
+
+    if (iter >= newton_max_iterations)
+      {
+        Logger::instance() << "[Increment "
+                           << solve_context->get_simulation_timer().get_increment()
+                           << "] "
+                           << "Warning: Active-Set Newton solver did not converge before "
+                           << newton_max_iterations << " iterations.\n\n";
+      }
+  }
+
+protected:
+  /**
+   * @brief User-defined upper obstacle function psi(p) at support point p.
+   * Override or bind to a dealii::Function<dim> for your specific problem.
+   */
+  virtual number
+  evaluate_obstacle(const dealii::Point<dim> &p) const
+  {
+    (void)p;
+    return static_cast<number>(0.0);
+  }
+
+private:
+  unsigned int constrained_block;
+  number       penalty_c;
+
+  BlockVector<number> newton_update;
+  BlockVector<number> old_solution;
+  BlockVector<number> trial_residual;
+  BlockVector<number> diag_mass_matrix;
+
+  dealii::IndexSet locally_owned_dofs;
+  dealii::IndexSet active_set;
+
+  dealii::SolverControl                       active_set_solver_control;
+  dealii::SolverSelector<BlockVector<number>> active_set_lin_solver;
+
+  std::shared_ptr<dealii::DiagonalMatrix<BlockVector<number>>> active_set_inv_diag =
+    std::make_shared<dealii::DiagonalMatrix<BlockVector<number>>>();
+
+  [[nodiscard]] unsigned int
+  constrained_field_index() const
+  {
+    return solutions.get_block_to_global_index()[constrained_block];
+  }
+
+  void
+  initialize_active_set_linear_solver()
+  {
+    const auto &lp = lin_params();
+    active_set_solver_control.set_max_steps(lp.max_iterations);
+    active_set_solver_control.set_tolerance(lp.tolerance * normalization_value());
+
+    const typename dealii::SolverRichardson<BlockVector<number>>::AdditionalData
+      local_richardson_parameters(lp.richardson_parameters.omega,
+                                  lp.richardson_parameters.use_preconditioned_residual);
+    const typename dealii::SolverBicgstab<BlockVector<number>>::AdditionalData
+      local_bicgstab_parameters(lp.bicgstab_parameters.exact_residual,
+                                lp.bicgstab_parameters.breakdown);
+    const typename dealii::SolverGMRES<BlockVector<number>>::AdditionalData
+      local_gmres_parameters(lp.gmres_parameters.max_basis_size,
+                             lp.gmres_parameters.right_preconditioning,
+                             lp.gmres_parameters.use_default_residual,
+                             lp.gmres_parameters.force_re_orthogonalization,
+                             lp.gmres_parameters.batched_mode,
+                             lp.gmres_parameters.orthogonalization_strategy);
+    const typename dealii::SolverFGMRES<BlockVector<number>>::AdditionalData
+      local_fgmres_parameters(lp.gmres_parameters.max_basis_size,
+                              lp.gmres_parameters.orthogonalization_strategy);
+
+    active_set_lin_solver.set_data(local_richardson_parameters);
+    active_set_lin_solver.set_data(local_bicgstab_parameters);
+    active_set_lin_solver.set_data(local_gmres_parameters);
+    active_set_lin_solver.set_data(local_fgmres_parameters);
+
+    active_set_lin_solver.select(lp.solver_type);
+    active_set_lin_solver.set_control(active_set_solver_control);
+  }
+
+  int
+  do_active_set_linear_solve(
+    BlockVector<number>                           &b_vector,
+    ActiveSetOperatorWrapper<dim, degree, number> &constrained_lhs_op,
+    BlockVector<number>                           &x_vector)
+  {
+    // SolverSelector expects non-ghosted vectors
+    b_vector.zero_out_ghost_values();
+    x_vector.zero_out_ghost_values();
+
+    try
+      {
+        if (lin_params().preconditioner == Chebyshev)
+          {
+            lhs_operator.reinit_matrix_diagonal();
+            lhs_operator.eval_matrix_diagonal();
+
+            // Copy inverse diagonal and set active-set rows to 1.0 to match
+            // ActiveSetOperatorWrapper's identity rows.
+            active_set_inv_diag->get_vector() =
+              lhs_operator.get_matrix_diagonal_inverse()->get_vector();
+            active_set_inv_diag->get_vector().zero_out_ghost_values();
+            auto &diag_block =
+              active_set_inv_diag->get_vector().block(constrained_block);
+            for (const auto idx : active_set)
+              {
+                if (diag_block.in_local_range(idx))
+                  {
+                    diag_block[idx] = 1.0;
+                  }
+              }
+
+            const auto &chebyshev_params = lin_params().chebyshev_parameters;
+            typename ActiveSetPreconditionChebyshev::AdditionalData precond_data;
+            precond_data.degree              = chebyshev_params.degree;
+            precond_data.smoothing_range     = chebyshev_params.smoothing_range;
+            precond_data.eig_cg_n_iterations = chebyshev_params.eig_cg_n_iterations;
+            precond_data.preconditioner      = active_set_inv_diag;
+
+            ActiveSetPreconditionChebyshev precond_chebyshev;
+            precond_chebyshev.initialize(constrained_lhs_op, precond_data);
+
+            active_set_lin_solver.solve(constrained_lhs_op,
+                                        x_vector,
+                                        b_vector,
+                                        precond_chebyshev);
+          }
+        else
+          {
+            active_set_lin_solver.solve(constrained_lhs_op,
+                                        x_vector,
+                                        b_vector,
+                                        dealii::PreconditionIdentity());
+          }
+      }
+    catch (dealii::SolverControl::NoConvergence &)
+      {
+        Logger::instance()
+          << "[Increment " << solve_context->get_simulation_timer().get_increment()
+          << "] "
+          << "Warning: active-set linear solver did not converge before "
+          << lin_params().max_iterations << " iterations.\n";
+      }
+
+    return active_set_solver_control.last_step();
+  }
+
+  void
+  setup_active_set_structures()
+  {
+    const auto &sol = solutions.get_solution_full_vector();
+    newton_update.reinit(sol);
+    old_solution.reinit(sol);
+    trial_residual.reinit(sol);
+    diag_mass_matrix.reinit(sol);
+
+    locally_owned_dofs = sol.block(constrained_block).locally_owned_elements();
+    active_set.clear();
+    active_set.set_size(sol.block(constrained_block).size());
+
+    compute_mass_matrix_diagonal();
+  }
+
+  /**
+   * @brief Assemble diagonal lumped mass weights M_ii using QGaussLobatto
+   * quadrature so support points coincide with quadrature points (step-42).
+   */
+  void
+  compute_mass_matrix_diagonal()
+  {
+    const unsigned int field_index = constrained_field_index();
+    const auto        &dof_handler =
+      solve_context->get_dof_manager().get_field_dof_handler(field_index);
+    const auto &fe = dof_handler.get_fe();
+
+    // Use QGaussLobatto<dim> for a volume obstacle (e.g., phase-field bounds),
+    // or QGaussLobatto<dim - 1> on boundary_id == 1 for surface contact (step-42).
+    const dealii::QGaussLobatto<dim> quadrature(degree + 1);
+    dealii::FEValues<dim>            fe_values(fe,
+                                    quadrature,
+                                    dealii::update_values |
+                                      dealii::update_JxW_values);
+
+    const unsigned int dofs_per_cell = fe.n_dofs_per_cell();
+    const unsigned int n_q_points    = quadrature.size();
+    std::vector<dealii::types::global_dof_index> local_dof_indices(dofs_per_cell);
+
+    diag_mass_matrix = 0.0;
+    diag_mass_matrix.zero_out_ghost_values();
+
+    for (const auto &cell : dof_handler.active_cell_iterators())
+      {
+        if (!cell->is_locally_owned())
+          {
+            continue;
+          }
+
+        fe_values.reinit(cell);
+        cell->get_dof_indices(local_dof_indices);
+
+        for (unsigned int q = 0; q < n_q_points; ++q)
+          {
+            for (unsigned int i = 0; i < dofs_per_cell; ++i)
+              {
+                const number phi_i = fe_values.shape_value(i, q);
+                diag_mass_matrix.block(constrained_block)[local_dof_indices[i]] +=
+                  phi_i * phi_i * fe_values.JxW(q);
+              }
+          }
+      }
+
+    diag_mass_matrix.compress(dealii::VectorOperation::add);
+    diag_mass_matrix.update_ghost_values();
+  }
+
+  /**
+   * @brief Evaluate complementarity condition:
+   *   lambda_i / M_ii + c * (u_i - psi_i) > 0
+   * and project active DoFs onto u_i = psi_i.
+   */
+  void
+  update_active_set_and_project(const BlockVector<number> &uncondensed_residual)
+  {
+    const unsigned int field_index = constrained_field_index();
+    const auto        &dof_handler =
+      solve_context->get_dof_manager().get_field_dof_handler(field_index);
+    const auto &base_constraints =
+      lhs_operator.get_matrix_free()->get_affine_constraints(field_index);
+    const auto &fe = dof_handler.get_fe();
+
+    const dealii::Quadrature<dim> support_quadrature(fe.get_unit_support_points());
+    dealii::FEValues<dim>         fe_values(fe,
+                                    support_quadrature,
+                                    dealii::update_quadrature_points);
+
+    const unsigned int dofs_per_cell = fe.n_dofs_per_cell();
+    std::vector<dealii::types::global_dof_index> local_dof_indices(dofs_per_cell);
+    std::unordered_set<dealii::types::global_dof_index> visited_dofs;
+
+    auto &sol_block = solutions.get_solution_full_vector().block(constrained_block);
+    const auto &res_block  = uncondensed_residual.block(constrained_block);
+    const auto &mass_block = diag_mass_matrix.block(constrained_block);
+
+    active_set.clear();
+    sol_block.zero_out_ghost_values();
+
+    for (const auto &cell : dof_handler.active_cell_iterators())
+      {
+        if (!cell->is_locally_owned())
+          {
+            continue;
+          }
+
+        fe_values.reinit(cell);
+        cell->get_dof_indices(local_dof_indices);
+
+        for (unsigned int i = 0; i < dofs_per_cell; ++i)
+          {
+            const auto dof_idx = local_dof_indices[i];
+
+            if (!locally_owned_dofs.is_element(dof_idx) ||
+                base_constraints.is_constrained(dof_idx) ||
+                !visited_dofs.insert(dof_idx).second)
+              {
+                continue;
+              }
+
+            const number psi_i    = evaluate_obstacle(fe_values.quadrature_point(i));
+            const number u_i      = sol_block[dof_idx];
+            const number lambda_i = res_block[dof_idx];
+            const number m_ii     = mass_block[dof_idx];
+
+            if (m_ii > 0.0 && (lambda_i / m_ii + penalty_c * (u_i - psi_i) > 0.0))
+              {
+                active_set.add_index(dof_idx);
+                sol_block[dof_idx] = psi_i;
+              }
+          }
+      }
+
+    sol_block.compress(dealii::VectorOperation::insert);
+    solutions.update_ghosts();
+  }
+
+  void
+  zero_active_dofs(BlockVector<number> &vec) const
+  {
+    vec.zero_out_ghost_values();
+    auto &block = vec.block(constrained_block);
+    for (const auto idx : active_set)
+      {
+        if (block.in_local_range(idx))
+          {
+            block[idx] = 0.0;
+          }
+      }
+    vec.update_ghost_values();
+  }
+
+  [[nodiscard]] const NonlinearSolverParameters &
+  newton_params() const
+  {
+    return solve_block.nonlinear_solver_parameters;
+  }
+
+  [[nodiscard]] const LinearSolverParameters &
+  lin_params() const
+  {
+    return solve_block.linear_solver_parameters;
+  }
+};
 
 PRISMS_PF_END_NAMESPACE

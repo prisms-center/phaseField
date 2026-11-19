@@ -7,3 +7,5 @@
 #include <prismspf/solvers/explicit_solver.h>
 #include <prismspf/solvers/linear_solver.h>
 #include <prismspf/solvers/newton_solver.h>
+#include <prismspf/solvers/constrained_newton_solver.h>
+

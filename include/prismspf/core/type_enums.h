@@ -37,7 +37,8 @@ enum SolveType
    * x -> x + damping * Deltax.
    * See [Newton's Method](https://en.wikipedia.org/wiki/Newton%27s_method)
    */
-  Newton
+  Newton,
+  ActiveSetNewton
 };
 
 /**
