@@ -9,7 +9,7 @@ end
 set global refinement = 8
 set max refinement                    = 8
 set min refinement                    = 3
-set mesh adaptivity                   = true
+set mesh adaptivity                   = false
 set remeshing period                  = 800
 
 subsection refinement criterion: 0

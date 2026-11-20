@@ -127,7 +127,7 @@ public:
   ActiveSetNewtonSolver(SolveBlock                               _solve_block,
                         const SolveContext<dim, degree, number> &_solve_context,
                         const unsigned int _constrained_block = 0,
-                        const number       _penalty_c         = 1.0e4)
+                        const number       _penalty_c         = 1.0)
     : LinearSolver<dim, degree, number>(_solve_block, _solve_context)
     , constrained_block(_constrained_block)
     , penalty_c(_penalty_c)
@@ -177,7 +177,6 @@ public:
     unsigned int iter               = 0;
     number       l2_norm            = -1.0;
     int          total_lin_iters    = 0;
-
     while (newton_unconverged && iter < newton_max_iterations)
       {
         // 1. Enforce base Dirichlet and hanging-node constraints
@@ -555,11 +554,21 @@ private:
             const number u_i      = sol_block[dof_idx];
             const number lambda_i = res_block[dof_idx];
             const number m_ii     = mass_block[dof_idx];
+            const number upper_bound = 1.0;
+            const number lower_bound = 0.0;
 
-            if (m_ii > 0.0 && (lambda_i / m_ii + penalty_c * (u_i - psi_i) > 0.0))
+            if (m_ii > 0.0)
               {
-                active_set.add_index(dof_idx);
-                sol_block[dof_idx] = psi_i;
+                if (lambda_i / m_ii + penalty_c * (u_i - upper_bound) > 0.0)
+                  {
+                    active_set.add_index(dof_idx);
+                    sol_block[dof_idx] = upper_bound;
+                  }
+                else if (-lambda_i / m_ii + penalty_c * (lower_bound - u_i) > 0.0)
+                  {
+                    active_set.add_index(dof_idx);
+                    sol_block[dof_idx] = lower_bound;
+                  }
               }
           }
       }

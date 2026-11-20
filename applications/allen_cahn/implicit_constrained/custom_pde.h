@@ -80,7 +80,7 @@ private:
         ScalarGrad  nx    = variable_list.template get_gradient<Scalar, Current>(0);
         ScalarValue old_n = variable_list.template get_value<Scalar, OldOne>(0);
 
-        ScalarValue f_well = 2.0 * n - 1.0;
+        ScalarValue f_well = -(2.0 * n - 1.0);
         ScalarValue eq_n   = old_n - n - sim_timer.get_timestep() * m_well * f_well;
         ScalarGrad  eqx_n  = -sim_timer.get_timestep() * kappa * m_well * nx;
 
@@ -113,7 +113,7 @@ private:
         ScalarValue change_n  = variable_list.template get_value<Scalar, Change>(0);
         ScalarGrad  change_nx = variable_list.template get_gradient<Scalar, Change>(0);
 
-        ScalarValue df_well = 2.0;
+        ScalarValue df_well = -2.0;
         ScalarValue eq_change_n =
           change_n * (1.0 + sim_timer.get_timestep() * m_well * df_well);
         ScalarGrad eqx_change_n = sim_timer.get_timestep() * kappa * m_well * change_nx;
