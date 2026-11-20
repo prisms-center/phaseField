@@ -133,8 +133,8 @@ SolveBlock::validate() const
     {
       ASSERT(
         solve_type == SolveType::Constant || solve_type == SolveType::Explicit ||
-          solve_type == SolveType::Linear || solve_type == SolveType::Newton,
-        "A valid solve type must be selected (Constant | Explicit | Linear | Newton)",
+          solve_type == SolveType::Linear || solve_type == SolveType::Newton || solve_type == SolveType::ActiveSetNewton,
+        "A valid solve type must be selected (Constant | Explicit | Linear | Newton | ActiveSetNewton)",
         solve_type);
       ASSERT(!field_indices.empty(), "Solve blocks must manage at least 1 field");
       if (solve_type == SolveType::Newton || solve_type == SolveType::ActiveSetNewton)

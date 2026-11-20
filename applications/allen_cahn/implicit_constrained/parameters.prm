@@ -20,11 +20,11 @@ subsection refinement criterion: 0
 end
 
 set time step = 1.0e-2
-set number steps = 10000
+set number steps = 1000
 
 subsection output
-  set condition = EQUAL_SPACING
-  set number = 5
+  set condition = LOG_SPACING
+  set number = 20
 end
 
 set Model constant m_well = 1.0, DOUBLE
