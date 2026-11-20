@@ -56,6 +56,11 @@ namespace
                 std::make_shared<NewtonSolver<dim, degree, number>>(solve_block,
                                                                     solve_context));
               break;
+            case SolveType::ActiveSetNewton:
+              solvers.emplace_back(
+                std::make_shared<ActiveSetNewtonSolver<dim, degree, number>>(solve_block,
+                                                                            solve_context));
+              break;
             case SolveType::Constant:
               solvers.emplace_back(
                 std::make_shared<ConstantSolver<dim, degree, number>>(solve_block,

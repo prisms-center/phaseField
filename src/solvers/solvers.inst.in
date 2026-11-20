@@ -3,4 +3,5 @@ for (dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE; number : REAL_SCALAR
     template class ExplicitSolver<dimension, degree, number>;
     template class LinearSolver<dimension, degree, number>;
     template class NewtonSolver<dimension, degree, number>;
+    template class ActiveSetNewtonSolver<dimension, degree, number>;
   }
