@@ -10,4 +10,8 @@ set_target_properties(
       "${CMAKE_CURRENT_BINARY_DIR}"
     CXX_EXTENSIONS
       OFF
+    CXX_STANDARD
+      20
+    CXX_STANDARD_REQUIRED
+      ON
 )
