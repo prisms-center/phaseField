@@ -133,11 +133,11 @@ SolveBlock::validate() const
     {
       ASSERT(
         solve_type == SolveType::Constant || solve_type == SolveType::Explicit ||
-          solve_type == SolveType::Linear || solve_type == SolveType::Newton,
-        "A valid solve type must be selected (Constant | Explicit | Linear | Newton)",
+          solve_type == SolveType::Linear || solve_type == SolveType::Newton || solve_type == SolveType::ActiveSetNewton,
+        "A valid solve type must be selected (Constant | Explicit | Linear | Newton | ActiveSetNewton)",
         solve_type);
       ASSERT(!field_indices.empty(), "Solve blocks must manage at least 1 field");
-      if (solve_type == SolveType::Newton)
+      if (solve_type == SolveType::Newton || solve_type == SolveType::ActiveSetNewton)
         {
           for (unsigned int field_index : field_indices)
             {
@@ -307,7 +307,7 @@ validate_solve_blocks(const std::vector<SolveBlock>      &solve_blocks,
       for (const auto &[field_index, dependency] : solve_block.dependencies_rhs)
         {
           if (dependency.flag != EvalFlags::nothing &&
-              solve_block.solve_type != SolveType::Newton)
+              (solve_block.solve_type != SolveType::Newton && solve_block.solve_type != SolveType::ActiveSetNewton))
             {
               ASSERT(solved_field_indices.find(field_index) != solved_field_indices.end(),
                      "Solve block with id " + std::to_string(solve_block.id) +
@@ -321,7 +321,7 @@ validate_solve_blocks(const std::vector<SolveBlock>      &solve_blocks,
       for (const auto &[field_index, dependency] : solve_block.dependencies_lhs)
         {
           if (dependency.flag != EvalFlags::nothing &&
-              solve_block.solve_type != SolveType::Newton)
+              (solve_block.solve_type != SolveType::Newton && solve_block.solve_type != SolveType::ActiveSetNewton))
             {
               ASSERT(solved_field_indices.find(field_index) != solved_field_indices.end(),
                      "Solve block with id " + std::to_string(solve_block.id) +

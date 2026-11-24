@@ -13,6 +13,7 @@ set(
   ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/linear_solver.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/mf_operator.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/newton_solver.h
+  ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/constrained_newton_solver.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/solve_context.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/solver_base.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/solvers.h
