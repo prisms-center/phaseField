@@ -124,10 +124,10 @@ $(function(){initNavTree('dev_docs.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">Contributing</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md9"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md5"></a>
 How to Contribute to PRISMS-PF</h1>
 <p>Thank you for taking an interest in contributing to PRISMS-PF! These are some notes that may be useful for contributors. Feel free to expand this document if you think there is anything else that should be known. We will assume you already have a working knowledge of git and GitHub. If you are new to git, we recommend checking out the <a href="https://docs.github.com/en/get-started/quickstart">GitHub Docs</a></p>
-<h2><a class="anchor" id="autotoc_md10"></a>
+<h2><a class="anchor" id="autotoc_md6"></a>
 Formatting Rules</h2>
 <p>PRISMS-PF has rules for text formatting. We format with <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a>. We recommend using an autoformatter with your developing environment. If you are using VSCode, installing the <a href="https://marketplace.visualstudio.com/items?itemName=xaver.clang-format">Clang-Format extension</a> and turning on <b>format on save</b> in settings may be useful. You will also need a clang-format installation from your cli.</p>
 <p>To ensure that your commits will pass our requirements before your pull-request, you can run pre-commit inside the repo, which will format the code properly and catch spelling errors. Your changes may need to be staged first if new files are added. </p><div class="fragment"><div class="line"><span class="preprocessor"># One-time installation:</span></div>
@@ -135,7 +135,7 @@ Formatting Rules</h2>
 <div class="line"><span class="preprocessor"># From any directory in the repo:</span></div>
 <div class="line">python3 -m pre_commit run --all-files</div>
 <div class="line"><span class="preprocessor"># Repeat until all-passing</span></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md11"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md7"></a>
 Adding an application</h2>
 <p>You can start to create a new application by copying an existing one. There are a couple of things you should make sure to do though. First, make sure to rename the project in the new application's <code>CMakeLists.txt</code>. </p><div class="fragment"><div class="line"><span class="preprocessor"># ...</span></div>
 <div class="line"><span class="preprocessor"># Name the application</span></div>

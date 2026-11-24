@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"functions_func_~.html":[8,3,1,21],
 "functions_g.html":[8,3,0,6],
 "functions_h.html":[8,3,0,7],
 "functions_i.html":[8,3,0,8],
@@ -118,6 +117,7 @@ var NAVTREEINDEX4 =
 "mechanics_8h.html#ad112f2bddd443eb27b63995d55fa9a10":[9,0,1,0,6,3,4],
 "mechanics_8h.html#ad4e8b86e307af436ec22ca45e883747a":[9,0,1,0,6,3,7],
 "mechanics_8h_source.html":[9,0,1,0,6,3],
+"mechanics_eshelby_inclusion.html":[4,0],
 "mf__operator_8cc.html":[9,0,2,3,0],
 "mf__operator_8h.html":[9,0,1,0,4,3],
 "mf__operator_8h.html#ac9580fcfb7f0f76f344b19fe0b55b68a":[9,0,1,0,4,3,1],
