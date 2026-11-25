@@ -5,6 +5,7 @@
 #include <prismspf/config.h>
 
 #include <algorithm>
+#include <filesystem>
 #include <fstream>
 #include <ios>
 #include <iostream>
@@ -218,6 +219,14 @@ LogStream::open_file_if_needed(const std::optional<std::string> &file,
     {
       filename += "_" + std::to_string(this_rank());
     }
+
+  // Create parent directories, if needed.
+  const std::filesystem::path path(filename);
+  if (path.has_parent_path())
+    {
+      std::filesystem::create_directories(path.parent_path());
+    }
+
   std::optional<std::ofstream> out {std::in_place,
                                     filename,
                                     std::ios::out | std::ios::trunc};
