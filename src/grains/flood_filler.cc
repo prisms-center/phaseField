@@ -133,9 +133,8 @@ FloodFiller<dim, degree, number>::recursive_flood_fill(
 
       cell->set_user_flag();
 
-      dealii::FEValues<dim> fe_values(SystemWide<dim, degree>::fe_systems[0],
-                                      SystemWide<dim, degree>::quadrature,
-                                      dealii::update_values);
+      dealii::FEValues<dim> &fe_values = SystemWide<dim, degree>::template fe_values<0>(
+        dealii::UpdateFlags::update_values);
 
       unsigned int num_quad_points = SystemWide<dim, degree>::quadrature.size();
 

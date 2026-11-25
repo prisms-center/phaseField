@@ -157,6 +157,44 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 RefinementManager<dim, degree, number>::mark_cells_for_refinement_and_coarsening()
 {
+  auto get_fe_values = [](const RefinementFlags &flags,
+                          const TensorRank       rank) -> dealii::FEValues<dim, dim> &
+    {
+      if (flags == RefinementFlags::Value)
+        {
+          return rank == TensorRank::Scalar
+                   ? SystemWide<dim, degree>::template fe_values<0>(
+                       dealii::UpdateFlags::update_values)
+                   : SystemWide<dim, degree>::template fe_values<1>(
+                       dealii::UpdateFlags::update_values);
+        }
+      else if (flags == RefinementFlags::Gradient)
+        {
+          return rank == TensorRank::Scalar
+                   ? SystemWide<dim, degree>::template fe_values<0>(
+                       dealii::UpdateFlags::update_gradients)
+                   : SystemWide<dim, degree>::template fe_values<1>(
+                       dealii::UpdateFlags::update_gradients);
+        }
+      else if (RefinementFlags::Value | RefinementFlags::Gradient)
+        {
+          return rank == TensorRank::Scalar
+                   ? SystemWide<dim, degree>::template fe_values<0>(
+                       dealii::UpdateFlags::update_values |
+                       dealii::UpdateFlags::update_gradients)
+                   : SystemWide<dim, degree>::template fe_values<1>(
+                       dealii::UpdateFlags::update_values |
+                       dealii::UpdateFlags::update_gradients);
+        }
+      else
+        {
+          DEBUG_ASSERT(false,
+                       "There is no FEValues for the requested refinement flags.",
+                       flags);
+          PANIC();
+        }
+    };
+
   const auto value_criterion =
     [](const RefinementCriterion           &criterion,
        const TensorRank                     rank,
@@ -164,34 +202,34 @@ RefinementManager<dim, degree, number>::mark_cells_for_refinement_and_coarsening
        const SolutionVector<number>        &vec,
        std::vector<number>                 &values,
        std::vector<dealii::Vector<number>> &vector_values) -> bool
-  {
-    if (rank == TensorRank::Scalar)
-      {
-        // Get the values for a scalar field
-        fe_values.get_function_values(vec, values);
+    {
+      if (rank == TensorRank::Scalar)
+        {
+          // Get the values for a scalar field
+          fe_values.get_function_values(vec, values);
 
-        // Check if any of the quadrature points meet the refinement criterion
-        return std::any_of(values.begin(),
-                           values.end(),
-                           [&](number value)
+          // Check if any of the quadrature points meet the refinement criterion
+          return std::any_of(values.begin(),
+                             values.end(),
+                             [&](number value)
+                               {
+                                 return criterion.value_in_open_range(value);
+                               });
+        }
+
+      // Get the values for vector fields
+      fe_values.get_function_values(vec, vector_values);
+
+      // Check if any of the quadrature points meet the refinement criterion
+      // @todo We don't necessarily have to take the sqrt here if we square the range
+      // values
+      return std::any_of(vector_values.begin(),
+                         vector_values.end(),
+                         [&](const dealii::Vector<number> &vector_value)
                            {
-                             return criterion.value_in_open_range(value);
+                             return criterion.value_in_open_range(vector_value.l2_norm());
                            });
-      }
-
-    // Get the values for vector fields
-    fe_values.get_function_values(vec, vector_values);
-
-    // Check if any of the quadrature points meet the refinement criterion
-    // @todo We don't necessarily have to take the sqrt here if we square the range
-    // values
-    return std::any_of(vector_values.begin(),
-                       vector_values.end(),
-                       [&](const dealii::Vector<number> &vector_value)
-                       {
-                         return criterion.value_in_open_range(vector_value.l2_norm());
-                       });
-  };
+    };
 
   const auto gradient_criterion =
     [](const RefinementCriterion                                &criterion,
@@ -200,55 +238,42 @@ RefinementManager<dim, degree, number>::mark_cells_for_refinement_and_coarsening
        const SolutionVector<number>                             &vec,
        std::vector<dealii::Tensor<1, dim, number>>              &gradients,
        std::vector<std::vector<dealii::Tensor<1, dim, number>>> &vector_gradients) -> bool
-  {
-    if (rank == TensorRank::Scalar)
-      {
-        // Get the gradients for a scalar field
-        fe_values.get_function_gradients(vec, gradients);
+    {
+      if (rank == TensorRank::Scalar)
+        {
+          // Get the gradients for a scalar field
+          fe_values.get_function_gradients(vec, gradients);
 
-        // Check if any of the quadrature points meet the refinement criterion
-        return std::any_of(gradients.begin(),
-                           gradients.end(),
-                           [&](const dealii::Tensor<1, dim, number> &gradient)
-                           {
-                             return criterion.gradient_magnitude_above_threshold(
-                               gradient.norm());
-                           });
-      }
+          // Check if any of the quadrature points meet the refinement criterion
+          return std::any_of(gradients.begin(),
+                             gradients.end(),
+                             [&](const dealii::Tensor<1, dim, number> &gradient)
+                               {
+                                 return criterion.gradient_magnitude_above_threshold(
+                                   gradient.norm());
+                               });
+        }
 
-    // Get the values for vector fields
-    fe_values.get_function_gradients(vec, vector_gradients);
+      // Get the values for vector fields
+      fe_values.get_function_gradients(vec, vector_gradients);
 
-    // Check if any of the quadrature points meet the refinement criterion
-    return std::any_of(
-      vector_gradients.begin(),
-      vector_gradients.end(),
-      [&](const std::vector<dealii::Tensor<1, dim, number>> &vector_gradient)
-      {
-        // @todo clean up this allocation
-        dealii::Vector<number> vector_gradient_component_magnitude(dim);
-        for (unsigned int dimension = 0; dimension < dim; dimension++)
+      // Check if any of the quadrature points meet the refinement criterion
+      return std::any_of(
+        vector_gradients.begin(),
+        vector_gradients.end(),
+        [&](const std::vector<dealii::Tensor<1, dim, number>> &vector_gradient)
           {
-            vector_gradient_component_magnitude[dimension] =
-              vector_gradient[dimension].norm();
-          }
-        return criterion.value_in_open_range(
-          vector_gradient_component_magnitude.l2_norm());
-      });
-  };
-
-  // Create FEValues
-  // TODO: Better off using lazy evaluation
-  static dealii::FEValues<dim, dim> scalar_fe_values(
-    SystemWide<dim, degree>::mapping,
-    SystemWide<dim, degree>::fe_systems[0],
-    SystemWide<dim, degree>::quadrature,
-    dealii::UpdateFlags::update_values | dealii::UpdateFlags::update_gradients);
-  static dealii::FEValues<dim, dim> vector_fe_values(
-    SystemWide<dim, degree>::mapping,
-    SystemWide<dim, degree>::fe_systems[1],
-    SystemWide<dim, degree>::quadrature,
-    dealii::UpdateFlags::update_values | dealii::UpdateFlags::update_gradients);
+            // @todo clean up this allocation
+            dealii::Vector<number> vector_gradient_component_magnitude(dim);
+            for (unsigned int dimension = 0; dimension < dim; dimension++)
+              {
+                vector_gradient_component_magnitude[dimension] =
+                  vector_gradient[dimension].norm();
+              }
+            return criterion.value_in_open_range(
+              vector_gradient_component_magnitude.l2_norm());
+          });
+    };
 
   // Create the an object for the refinement criterion at each of the quad points. This
   // will either contain the value for scalar fields, the magnitude for vector fields,
@@ -289,10 +314,11 @@ RefinementManager<dim, degree, number>::mark_cells_for_refinement_and_coarsening
               const auto dof_iterator = cell->as_dof_handler_iterator(
                 solve_context->get_dof_manager().get_field_dof_handler(index));
 
-              // Reinit the cell
-              auto &fe_values = local_field_type == TensorRank::Scalar ? scalar_fe_values
-                                                                       : vector_fe_values;
+              // Grab the relevant FEValues
+              dealii::FEValues<dim> &fe_values =
+                get_fe_values(field_criterion.criterion, local_field_type);
 
+              // Reinit the cell
               fe_values.reinit(dof_iterator);
               const auto &solution_vector =
                 solve_context->get_solution_indexer().get_solution_vector(index);
@@ -370,10 +396,10 @@ RefinementManager<dim, degree, number>::mark_cells_for_refinement()
                 marker_functions.begin(),
                 marker_functions.end(),
                 [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
-                {
-                  return marker_function->flag(*cell,
-                                               solve_context->get_simulation_timer());
-                }))
+                  {
+                    return marker_function->flag(*cell,
+                                                 solve_context->get_simulation_timer());
+                  }))
             {
               cell->set_user_flag();
               cell->clear_coarsen_flag();
